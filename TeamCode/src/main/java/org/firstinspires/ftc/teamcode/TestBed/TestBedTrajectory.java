@@ -23,11 +23,10 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
 
-public abstract class TestBedTrajectory extends LinearOpMode{
+public abstract class TestBedTrajectory {
 
 
-    @Override
-    public void runOpMode() {
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
 
         // vision here that outputs position
@@ -41,5 +40,4 @@ public abstract class TestBedTrajectory extends LinearOpMode{
         trajectoryAction1 = drive.actionBuilder(drive.pose)
                 .setTangent(Math.toRadians(0))
                 .build();
-    }
 }

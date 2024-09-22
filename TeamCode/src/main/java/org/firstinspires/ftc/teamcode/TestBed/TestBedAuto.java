@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TestBed;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -24,9 +26,10 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.TestBed.TestBedTrajectory;
 
 
+
 @Config
 @Autonomous(name = "TestBedAuto", group = "Autonomous")
-public abstract class TestBedAuto extends LinearOpMode {
+public abstract class TestBedAuto extends TestBedTrajectory {
     @Override
 public void runOpMode() {
     MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
