@@ -23,16 +23,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.TestBed.TestBedTrajectory;
+
 
 
 
 @Config
 @Autonomous(name = "TestBedAuto", group = "Autonomous")
-public abstract class TestBedAuto extends TestBedTrajectory {
+public abstract class TestBedAuto extends LinearOpMode {
     @Override
+
 public void runOpMode() {
-    MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
+    MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(64, -15, Math.toRadians(180)));
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -41,7 +42,7 @@ public void runOpMode() {
     Action trajectoryActionCloseOut;
 
     trajectoryAction1 = drive.actionBuilder(drive.pose)
-            .setTangent(Math.toRadians(0))
+            .strafeTo(new Vector2d(30, -4))
             .build();
 
 
@@ -58,11 +59,12 @@ public void runOpMode() {
 
     if (isStopRequested()) return;
 
-        Actions.runBlocking(
+    Actions.runBlocking(
                 new SequentialAction(
-                        trajectoryAction1)
-                );
-}
+                        trajectoryAction1
+                )
+    );
+    }
 }
 
 

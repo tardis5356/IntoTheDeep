@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TestBed;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import androidx.annotation.NonNull;
 
 // RR-specific imports
@@ -21,7 +23,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
-@Config
+
 
 public abstract class TestBedTrajectory {
 
@@ -37,7 +39,10 @@ public abstract class TestBedTrajectory {
         Action trajectoryAction3;
         Action trajectoryActionCloseOut;
 
-        trajectoryAction1 = drive.actionBuilder(drive.pose)
+        public Action getTrajectoryAction1() {
+                Action = drive.actionBuilder(drive.pose);
+
                 .setTangent(Math.toRadians(0))
-                .build();
+                        .build();
+        }
 }
