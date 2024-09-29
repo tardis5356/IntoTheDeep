@@ -1,27 +1,15 @@
 package org.firstinspires.ftc.teamcode.TestBed;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-// RR-specific imports
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-
-// Non-RR imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
@@ -29,22 +17,35 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
 @Autonomous(name = "TestBedAuto", group = "Autonomous")
-public abstract class TestBedAuto extends LinearOpMode {
+public class TestBedAuto extends LinearOpMode {
     @Override
 
 public void runOpMode() {
-    MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(64, -15, Math.toRadians(180)));
-
+        Pose2d initialPose = new Pose2d(64, -15, Math.toRadians(180));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
     // vision here that outputs position
     int visionOutputPosition = 1;
 
-    Action trajectoryAction1;
-    Action trajectoryActionCloseOut;
 
-    trajectoryAction1 = drive.actionBuilder(drive.pose)
-            .strafeTo(new Vector2d(30, -4))
-            .build();
 
+        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
+//            .strafeTo(new Vector2d(36, -4));
+                .strafeTo(new Vector2d(60, -10));
+            //.lineToX(30)
+            //.lineToY(-4)
+        Action trajectoryActionCloseOut = tab1.fresh()
+//                .strafeTo(new Vector2d(30, 32))
+                .waitSeconds(1)
+                .setTangent(Math.toRadians(90))
+                .build();
+
+
+
+//    trajectoryAction2 = drive.actionBuilder(drive.pose)
+//            .turn(Math.toRadians(90))
+//            .lineToY(-48)
+//            .lineToX(48)
+//            .build();
 
     while (!isStopRequested() && !opModeIsActive()) {
         int position = visionOutputPosition;
@@ -59,9 +60,13 @@ public void runOpMode() {
 
     if (isStopRequested()) return;
 
+    Action trajectoryActionChosen;
+    trajectoryActionChosen = tab1.build();
+
     Actions.runBlocking(
                 new SequentialAction(
-                        trajectoryAction1
+                        trajectoryActionChosen,
+                        trajectoryActionCloseOut
                 )
     );
     }
