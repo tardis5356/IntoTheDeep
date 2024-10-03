@@ -21,7 +21,7 @@ public class TestBedAuto extends LinearOpMode {
     @Override
 
 public void runOpMode() {
-        Pose2d initialPose = new Pose2d(64, -15, Math.toRadians(180));
+        Pose2d initialPose = new Pose2d(-15, -64, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -29,14 +29,14 @@ public void runOpMode() {
 
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-//            .strafeTo(new Vector2d(36, -4));
-                .strafeTo(new Vector2d(60, -10));
+                .strafeTo(new Vector2d(-15, -60));
+             // .strafeTo(new Vector2d(36, -4));
             //.lineToX(30)
             //.lineToY(-4)
         Action trajectoryActionCloseOut = tab1.fresh()
 //                .strafeTo(new Vector2d(30, 32))
                 .waitSeconds(1)
-                .setTangent(Math.toRadians(90))
+                .strafeTo(new Vector2d(-5,-60))
                 .build();
 
 
