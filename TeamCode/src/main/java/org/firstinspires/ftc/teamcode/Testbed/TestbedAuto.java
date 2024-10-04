@@ -29,16 +29,20 @@ public class TestbedAuto extends LinearOpMode {
 
 
 
-        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(-15, -60));
+         Action TrajectoryActionBuilder = drive.actionBuilder(initialPose)
+                .strafeTo(new Vector2d(-10, -36))
+                .waitSeconds(1)
+                .strafeTo(new Vector2d(40,-36))
+                .build();
+
         // .strafeTo(new Vector2d(36, -4));
         //.lineToX(30)
         //.lineToY(-4)
-        Action trajectoryActionCloseOut = tab1.fresh()
+        //Action trajectoryActionCloseOut = tab1.fresh()
 //                .strafeTo(new Vector2d(30, 32))
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(-5,-60))
-                .build();
+//                .waitSeconds(1)
+//                .strafeTo(new Vector2d(32,-36))
+//                .build();
 
 
 
@@ -61,13 +65,12 @@ public class TestbedAuto extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Action trajectoryActionChosen;
-        trajectoryActionChosen = tab1.build();
+//        Action trajectoryActionChosen;
+//        trajectoryActionChosen = tab1.build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                        trajectoryActionChosen,
-                        trajectoryActionCloseOut
+                        TrajectoryActionBuilder
                 )
         );
     }
