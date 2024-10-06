@@ -32,7 +32,7 @@ public class TestbedAuto extends LinearOpMode {
                 .strafeTo(new Vector2d(-10, -36))
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(48,-36))
-                .waitSeconds(1)
+                .waitSeconds(2)
                 .build();
 
         // .strafeTo(new Vector2d(36, -4));
