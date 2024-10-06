@@ -16,12 +16,12 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
 @Config
-@Autonomous(name = "TestBedAuto", group = "Autonomous")
-public class TestbedAuto extends LinearOpMode {
+@Autonomous(name = "RedBasketAuto", group = "Autonomous")
+public class RedBasketAuto extends LinearOpMode {
     @Override
 
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-15, -64, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-15, -64, Math.toRadians(270));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         // vision here that outputs position
         int visionOutputPosition = 1;
@@ -29,28 +29,30 @@ public class TestbedAuto extends LinearOpMode {
 
 
         Action TrajectoryActionBuilder = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(-10, -36))
+                .setTangent(90)
+                .splineToLinearHeading(new Pose2d(-10,-36, Math.toRadians(270)), Math.PI / 2)
+                .strafeTo(new Vector2d(-48,-40))
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(48,-36))
+                .setTangent(90)
+                .splineToLinearHeading(new Pose2d(-53,-56, Math.toRadians(45)), Math.PI / 2)
                 .waitSeconds(2)
+                .setTangent(45)
+                .splineToLinearHeading(new Pose2d(-57,-40, Math.toRadians(90)), Math.PI / 2)
+                .waitSeconds(1)
+                .setTangent(90)
+                .splineToLinearHeading(new Pose2d(-53,-56, Math.toRadians(45)), Math.PI / 2)
+                .waitSeconds(2)
+                .setTangent(45)
+                .splineToLinearHeading(new Pose2d(-57,-40, Math.toRadians(135)), Math.PI / 2)
+                .waitSeconds(1)
+                .splineToLinearHeading(new Pose2d(-53,-56, Math.toRadians(45)), Math.PI / 2)
+                .waitSeconds(2)
+                .setTangent(45)
+                .strafeTo(new Vector2d(-32, -11))
+                .turnTo(Math.toRadians(180))
+//                .strafeTo(new Vector2d(-27,-10,Math.toRadians(180)),Math.PI/2)
                 .build();
 
-        // .strafeTo(new Vector2d(36, -4));
-        //.lineToX(30)
-        //.lineToY(-4)
-        //Action trajectoryActionCloseOut = tab1.fresh()
-//                .strafeTo(new Vector2d(30, 32))
-//                .waitSeconds(1)
-//                .strafeTo(new Vector2d(32,-36))
-//                .build();
-
-
-
-//    trajectoryAction2 = drive.actionBuilder(drive.pose)
-//            .turn(Math.toRadians(90))
-//            .lineToY(-48)
-//            .lineToX(48)
-//            .build();
 
         while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
