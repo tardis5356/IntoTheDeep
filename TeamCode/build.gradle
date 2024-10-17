@@ -48,7 +48,7 @@ android {
 
 repositories {
     //JOOS stuff, not really needed
-    maven { url = 'https://jitpack.io' }
+//    maven { url = 'https://jitpack.io' }
     maven {
         url = 'https://maven.brott.dev/'
     }
@@ -64,9 +64,9 @@ dependencies {
     implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
     //JOOS stuff, not really needed
-    implementation "com.amarcolini.joos:command:0.4.9"
-    annotationProcessor "com.amarcolini.joos:annotation:0.4.9"
-    annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+//    implementation "com.amarcolini.joos:command:0.4.9"
+//    annotationProcessor "com.amarcolini.joos:annotation:0.4.9"
+//    annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 }
 
 
