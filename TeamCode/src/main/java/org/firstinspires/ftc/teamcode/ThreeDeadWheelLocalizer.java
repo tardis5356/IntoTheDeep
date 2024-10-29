@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.messages.ThreeDeadWheelInputsMessage;
 
 @Config
-public final class ThreeDeadWheelLocalizer implements Localizer {
+public class ThreeDeadWheelLocalizer implements Localizer {
     public static class Params {
         public double par0YTicks = -12411.771094068956; // y position of the first parallel encoder (in tick units)
         public double par1YTicks = 12538.659734216906; // y position of the second parallel encoder (in tick units)
@@ -31,8 +31,14 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
 
     public final double inPerTick;
 
-    private int lastPar0Pos, lastPar1Pos, lastPerpPos;
-    private boolean initialized;
+    public int lastPar0Pos, lastPar1Pos, lastPerpPos;
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    boolean initialized;
 
     public ThreeDeadWheelLocalizer(HardwareMap hardwareMap, double inPerTick) {
         // TODO: make sure your config has **motors** with these names (or change them)
