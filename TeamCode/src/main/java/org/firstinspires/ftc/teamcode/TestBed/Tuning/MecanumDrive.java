@@ -53,7 +53,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Config
-public final class MecanumDrive {
+public class MecanumDrive {
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -64,14 +64,14 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = 0.00052839;
-        public double lateralInPerTick = 0.00042145826939852453;
-        public double trackWidthTicks = 24115.12709698697;
+        public double inPerTick =0.0006887956; // 0.00053065
+        public double lateralInPerTick = 0.0005555102337468545; //0.00042145826939852453
+        public double trackWidthTicks = 24264.058206711634; //24180.892621514482; 24115.12709698697
 
         // feedforward parameters (in tick units)
-        public double kS =  0.8306274788948262;
-        public double kV = 0.00010597696143860526;
-        public double kA = 0.000015;
+        public double kS = 1.015066051015491 ; //0.8306274788948262
+        public double kV = 0.00009771025766009416; //0.00010597696143860526
+        public double kA = 0.000016;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -113,12 +113,12 @@ public final class MecanumDrive {
 
     public final LazyImu lazyImu;
 
-    public final Localizer localizer;
+    public Localizer localizer;
     public Pose2d pose;
 
-    private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
+    public final LinkedList<Pose2d> poseHistory = new LinkedList<>();
 
-    private final DownsampledWriter estimatedPoseWriter = new DownsampledWriter("ESTIMATED_POSE", 50_000_000);
+    public final DownsampledWriter estimatedPoseWriter = new DownsampledWriter("ESTIMATED_POSE", 50_000_000);
     private final DownsampledWriter targetPoseWriter = new DownsampledWriter("TARGET_POSE", 50_000_000);
     private final DownsampledWriter driveCommandWriter = new DownsampledWriter("DRIVE_COMMAND", 50_000_000);
     private final DownsampledWriter mecanumCommandWriter = new DownsampledWriter("MECANUM_COMMAND", 50_000_000);
@@ -218,8 +218,8 @@ public final class MecanumDrive {
 
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        leftFront = hardwareMap.get(DcMotorEx.class, "mFL");
         leftBack = hardwareMap.get(DcMotorEx.class, "mBL");
+        leftFront = hardwareMap.get(DcMotorEx.class, "mFL");
         rightBack = hardwareMap.get(DcMotorEx.class, "mBR");
         rightFront = hardwareMap.get(DcMotorEx.class, "mFR");
 
