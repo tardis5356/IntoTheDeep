@@ -40,6 +40,7 @@ public final class TwoDeadWheelLocalizer implements Localizer {
 
     private final double inPerTick;
 
+
     private double lastRawHeadingVel, headingVelOffset;
     private boolean initialized;
 
