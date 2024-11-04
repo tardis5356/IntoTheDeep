@@ -7,6 +7,15 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
+    public static final Pose2d redBasket_StartPos = new Pose2d(-15, -64, Math.toRadians(270));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-53,-56, Math.toRadians(45));
+    public static final Pose2d redBasket_SubDrop = new Pose2d(-10, -36, Math.toRadians(270));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -40, Math.toRadians(90));
+    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-57,-40, Math.toRadians(90));
+    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-57,-40, Math.toRadians(135));
+    public static final Pose2d redBasket_AscentPos = new Pose2d(-28, -11, Math.toRadians(180));
+    public static final Pose2d redBasket_ObsSampPos = new Pose2d(33, -63, Math.toRadians(270));
+
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
 
@@ -15,36 +24,33 @@ public class MeepMeepTesting {
                 .setConstraints(70, 70, Math.toRadians(360), Math.toRadians(360), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(15, -64, Math.toRadians(270)))
-                .setTangent(90)
-                .splineToLinearHeading(new Pose2d(10, -36, Math.toRadians(270)), Math.toRadians(90))
-                .waitSeconds(2)
-                .setTangent(200)
-                .splineToLinearHeading(new Pose2d(50, -45, Math.toRadians(90)), Math.toRadians(0))
-                .waitSeconds(2)
-                .setTangent(0)
-                .splineToLinearHeading(new Pose2d(58, -45, Math.toRadians(90)), Math.toRadians(0))
-                .waitSeconds(2)
-                .setTangent(270)
-                .splineToLinearHeading(new Pose2d(58, -45, Math.toRadians(75)), Math.toRadians(0))
-                .waitSeconds(2)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-15, -64, Math.toRadians(270)))
+                .setTangent(70)
+                .splineToLinearHeading(redBasket_SubDrop, Math.toRadians(90))
                 .setTangent(180)
-                .splineToLinearHeading(new Pose2d(33, -63, Math.toRadians(90)), Math.toRadians(270))
+                .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
+                .waitSeconds(1)
+                .setTangent(180)
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+                .waitSeconds(2)
+                .setTangent(45)
+                .splineToLinearHeading(redBasket_MidSampleZonePos, Math.toRadians(90))
+                .waitSeconds(1)
+                .setTangent(180)
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+                .waitSeconds(2)
+                .setTangent(45)
+                .splineToLinearHeading(redBasket_LeftSampleZonePos, Math.toRadians(90))
+                .waitSeconds(1)
+                .setTangent(180)
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                 .waitSeconds(2)
                 .setTangent(90)
-                .splineToLinearHeading(new Pose2d(10, -36, Math.toRadians(270)), Math.toRadians(90))
-                .waitSeconds(2)
-                .setTangent(200)
-                .splineToLinearHeading(new Pose2d(33, -63, Math.toRadians(90)), Math.toRadians(270))
-                .waitSeconds(2)
-                .setTangent(90)
-                .splineToLinearHeading(new Pose2d(10, -36, Math.toRadians(270)), Math.toRadians(90))
-                .waitSeconds(2)
-                .setTangent(200)
-                .splineToLinearHeading(new Pose2d(33, -63, Math.toRadians(90)), Math.toRadians(270))
-                .waitSeconds(2)
-                .setTangent(90)
-                .splineToLinearHeading(new Pose2d(10, -36, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(redBasket_ObsSampPos, Math.toRadians(270))
+                .setTangent(270)
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(90))
+                .setTangent(180)
+                .splineToLinearHeading(redBasket_AscentPos, Math.toRadians(180))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)

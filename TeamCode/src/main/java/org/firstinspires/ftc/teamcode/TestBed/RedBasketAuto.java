@@ -9,22 +9,23 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-
-
+import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
 
 
 @Config
 @Autonomous(name = "RedBasketAuto", group = "Autonomous")
 public class RedBasketAuto extends LinearOpMode {
 
-    public final Pose2d redBasket_StartPos = new Pose2d(-15, -64, Math.toRadians(270));
-    public final Pose2d redBasket_BasketDrop = new Pose2d(-53,-56, Math.toRadians(45));
-    public final Pose2d redBasket_SubDrop = new Pose2d(-10, -36, Math.toRadians(270));
-    public final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -40, Math.toRadians(90));
-    public final Pose2d redBasket_MidSampleZonePos = new Pose2d(-57,-40, Math.toRadians(90));
-    public final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-57,-40, Math.toRadians(135));
-    public final Pose2d redBasket_AscentPos = new Pose2d(-28, -11, Math.toRadians(180));
+    //Basket Positions
+    public static final Pose2d redBasket_StartPos = new Pose2d(-15, -64, Math.toRadians(270));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45));
+    public static final Pose2d redBasket_SubDrop = new Pose2d(-10, -36, Math.toRadians(270));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-45, -40, Math.toRadians(90));
+    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-55,-40, Math.toRadians(90));
+    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-53,-40, Math.toRadians(130));
+    public static final Pose2d redBasket_AscentPos = new Pose2d(-28, -11, Math.toRadians(180));
+    public final Pose2d redBasket_ObsSampPos = new Pose2d(33, -63, Math.toRadians(270));
+
 
     @Override
 
