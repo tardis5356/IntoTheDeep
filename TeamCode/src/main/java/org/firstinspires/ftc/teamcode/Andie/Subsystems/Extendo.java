@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
-public class Extendo {
+import com.arcrobotics.ftclib.command.SubsystemBase;
+
+public class Extendo extends SubsystemBase {
 }
