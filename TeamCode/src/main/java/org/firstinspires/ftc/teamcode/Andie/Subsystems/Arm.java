@@ -18,15 +18,19 @@ public class Arm extends SubsystemBase {
     public void periodic(){}
 
     public void armSpecimen(){
-        sW.setPosition(BotPositions.WRIST_TRANSIT);
+        sAL.setPosition(BotPositions.ARM_SPECIMEN);
+        sAR.setPosition(BotPositions.ARM_SPECIMEN);
     }
-    public void armWall(){
-        sW.setPosition(BotPositions.WRIST_WALL);
+    public void armBasket(){
+        sAL.setPosition(BotPositions.ARM_BASKET);
+        sAR.setPosition(BotPositions.ARM_BASKET);
     }
     public void armTransit(){
-        sW.setPosition(BotPositions.WRIST_INTAKE);
+        sAL.setPosition(BotPositions.ARM_TRANSIT);
+        sAR.setPosition(BotPositions.ARM_TRANSIT);
     }
-    public void armIntake(){sAl.setPosition(BotPositions.WRIST_BASKET);
-        sAR
+    public void armIntake(){
+        sAL.setPosition(BotPositions.ARM_INTAKE);
+        sAR.setPosition(BotPositions.ARM_INTAKE);
     }
 }
