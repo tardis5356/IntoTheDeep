@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.SPECIMEN_WALL;
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.LIFT_WALL;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -49,7 +49,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, SPECIMEN_WALL, 25),
+                                new LiftToStateCommand(lift, LIFT_WALL, 25),
                                 new InstantCommand(arm::armSpecimen),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
@@ -62,6 +62,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::wristTuck),
                                 new WaitCommand(250),
                                 new InstantCommand(arm::armSpecimen),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
                 );
@@ -69,7 +70,6 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "intakeToBasket":
                 currentState = "basket";
                 addCommands(
-//                        new IntakeOutCommand(intake),
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristBasket),
                                 new InstantCommand(arm::armBasket)
