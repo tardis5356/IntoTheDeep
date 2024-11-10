@@ -36,6 +36,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
+                                new LiftToStateCommand(lift, 2, 25),
                                 new InstantCommand(wrist::wristTuck),
                                 new InstantCommand(arm::armIntake),
                                 new WaitCommand(400),
