@@ -71,8 +71,19 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "basket";
                 addCommands(
                         new SequentialCommandGroup(
+                                new InstantCommand(wrist::wristTuck),
+                                new WaitCommand(250),
                                 new InstantCommand(wrist::wristBasket),
                                 new InstantCommand(arm::armBasket)
+                        )
+                );
+                break;
+            case "transit":
+                currentState = "transit";
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(wrist::wristTuck),
+                                new LiftToStateCommand(lift, LIFT_WALL, 25)
                         )
                 );
                 break;
