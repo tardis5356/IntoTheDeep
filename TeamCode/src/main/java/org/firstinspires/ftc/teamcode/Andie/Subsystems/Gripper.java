@@ -27,6 +27,7 @@ public class Gripper extends SubsystemBase {
         if(checkGripper(gripperClosed, sensorClose) == true){
             closeGripper();
         }
+
     }
 
     public void openGripper(){
