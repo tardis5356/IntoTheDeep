@@ -83,6 +83,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristTuck),
+                                new InstantCommand(arm::armTransit),
                                 new LiftToStateCommand(lift, LIFT_WALL, 25)
                         )
                 );
