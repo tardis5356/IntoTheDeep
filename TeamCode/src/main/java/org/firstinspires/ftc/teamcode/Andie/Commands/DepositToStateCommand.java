@@ -23,12 +23,13 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(wrist::wristTuck),
+                                new InstantCommand(wrist::wristIntake),
                                 new InstantCommand(arm::armIntake),
                                 new WaitCommand(400),
-                                new LiftToStateCommand(lift, 0, 25),
-                                new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(gripper::openGripper)
+                                new InstantCommand(gripper::intakeGripper),
+                                new LiftToStateCommand(lift, 0, 25)
+                                //new InstantCommand(wrist::wristIntake)
+
                         )
                 );
                 break;
@@ -36,13 +37,15 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, 2, 25),
+                                new LiftToStateCommand(lift, 10, 25),
                                 new InstantCommand(wrist::wristTuck),
+                                new WaitCommand(10),
                                 new InstantCommand(arm::armIntake),
                                 new WaitCommand(400),
-                                new LiftToStateCommand(lift, 0, 25),
                                 new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(gripper::openGripper)
+                                new InstantCommand(gripper::intakeGripper),
+                                new LiftToStateCommand(lift, 0, 25)
+
                         )
                 );
                 break;
@@ -50,8 +53,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, LIFT_WALL, 25),
+                                new LiftToStateCommand(lift, 10, 25),
+                                new InstantCommand(wrist::wristTuck),
                                 new InstantCommand(arm::armSpecimen),
+                                new WaitCommand(100),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
                 );
