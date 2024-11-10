@@ -36,4 +36,41 @@ public class Lift extends SubsystemBase {
 
         controller = new PIDController(0.02, 0, 0);
     }
+
+    public void ManualMode(double left, double right) {
+        joystickPowerInput = left + right * 0.5;
+    }
+
+    public void periodic() {
+        // runs every loop
+        if (joystickPowerInput != 0) {
+            motorPower = joystickPowerInput - 0.09;
+            targetPosition = -15;
+        } else if (targetPosition == -10) {
+            motorPower = 0;
+        } else if (targetPosition != -15) {
+            motorPower = -0.09 + getCurrentPID();
+        } else {
+            motorPower = -0.09;
+        }
+
+        mLL.setPower(motorPower);
+        mLR.setPower(motorPower);
+    }
+
+    public double getCurrentPosition() {
+        return mLL.getCurrentPosition();
+    }
+
+    public double getCurrentPID() {
+        return -controller.calculate(-mLL.getCurrentPosition(), targetPosition);
+    }
+
+    public void setTargetPosition(double newTargetPosition){
+        targetPosition = newTargetPosition;
+    }
+
+    public double getCurrentMotorPower() {
+        return motorPower;
+    }
 }
