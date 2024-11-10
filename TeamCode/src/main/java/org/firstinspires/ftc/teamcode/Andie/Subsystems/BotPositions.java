@@ -8,4 +8,7 @@ public class BotPositions {
     public static double WRIST_TRANSIT = 0, WRIST_WALL = .2, WRIST_INTAKE = .3, WRIST_BASKET = .7;
     public static double ARM_BASKET = 1, ARM_INTAKE = .4, ARM_SPECIMEN = .7, ARM_TRANSIT = .5;
     public static double INTAKE_NEUTRAL = 0, INTAKE_DOWN = 0.3, INTAKE_IN = 1, INTAKE_OUT = -1;
+    public static int specimenHigh = 40;
+    public static int SPECIMEN_WALL = 10;
+    public static int basketHigh = 50;
 }

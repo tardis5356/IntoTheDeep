@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.SPECIMEN_WALL;
+
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -13,10 +15,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 public class DepositToStateCommand extends ParallelCommandGroup {
 
     public String currentState = "";
-    public int specimenHigh = 40;
-    public int specimenWall = 10;
 
-    public int basketHigh = 50;
 
     public DepositToStateCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, String state) {
         switch (state.toLowerCase()) {
@@ -50,7 +49,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 currentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, specimenWall, 25),
+                                new LiftToStateCommand(lift, SPECIMEN_WALL, 25),
                                 new InstantCommand(arm::armSpecimen),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
