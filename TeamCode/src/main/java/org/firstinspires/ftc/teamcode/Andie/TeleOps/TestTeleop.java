@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
@@ -89,6 +91,13 @@ public class TestTeleop extends CommandOpMode {
         //gripper Command
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .toggleWhenActive(new InstantCommand(gripper::openGripper), new InstantCommand(gripper::closeGripper));
+
+        //lift presets
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
+
+        //temporary wrist
+
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .toggleWhenActive(new InstantCommand(intake::intakeNeutral), new InstantCommand(intake::intakeDown));
