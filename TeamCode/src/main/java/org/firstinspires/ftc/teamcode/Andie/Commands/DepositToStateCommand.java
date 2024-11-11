@@ -14,55 +14,50 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 public class DepositToStateCommand extends ParallelCommandGroup {
 
-    public String currentState = "";
+    public String depositCurrentState = "";
 
 
     public DepositToStateCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, String state) {
         switch (state.toLowerCase()) {
             case "basketToIntake":
-                currentState = "intake";
+                depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(wrist::wristIntake),
+                                new InstantCommand(wrist::wristTuck),
                                 new InstantCommand(arm::armIntake),
                                 new WaitCommand(400),
-                                new InstantCommand(gripper::intakeGripper),
-                                new LiftToStateCommand(lift, 0, 25)
-                                //new InstantCommand(wrist::wristIntake)
-
+                                new LiftToStateCommand(lift, 0, 25),
+                                new InstantCommand(wrist::wristIntake),
+                                new InstantCommand(gripper::openGripper)
                         )
                 );
                 break;
             case "specimenToIntake":
-                currentState = "intake";
+                depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, 10, 25),
+                                new LiftToStateCommand(lift, 2, 25),
                                 new InstantCommand(wrist::wristTuck),
-                                new WaitCommand(10),
                                 new InstantCommand(arm::armIntake),
                                 new WaitCommand(400),
+                                new LiftToStateCommand(lift, 0, 25),
                                 new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(gripper::intakeGripper),
-                                new LiftToStateCommand(lift, 0, 25)
-
+                                new InstantCommand(gripper::openGripper)
                         )
                 );
                 break;
             case "intakeToSpecimen":
-                currentState = "specimen";
+                depositCurrentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, 10, 25),
-                                new InstantCommand(wrist::wristTuck),
+                                new LiftToStateCommand(lift, LIFT_WALL, 25),
                                 new InstantCommand(arm::armSpecimen),
-                                new WaitCommand(100),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
                 );
                 break;
             case "basketToSpecimen":
-                currentState = "specimen";
+                depositCurrentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristTuck),
@@ -74,7 +69,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 );
                 break;
             case "intakeToBasket":
-                currentState = "basket";
+                depositCurrentState = "basket";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristTuck),
@@ -85,7 +80,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 );
                 break;
             case "transit":
-                currentState = "transit";
+                depositCurrentState = "transit";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristTuck),
