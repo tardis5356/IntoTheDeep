@@ -74,10 +74,10 @@ public class IndexTeleop extends CommandOpMode {
         //extendo
         extendo = new Extendo(hardwareMap, driver2.gamepad.left_trigger);
 
-        //extendo
+        //arm
         arm = new Arm(hardwareMap);
 
-        //arm
+
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
                 .whenActive(new InstantCommand(arm::armTransit));
 
