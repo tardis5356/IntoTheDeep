@@ -22,7 +22,6 @@ public class IntakeToStateCommand  extends ParallelCommandGroup {
     public IntakeToStateCommand(Extendo extendo, Intake intake, String state) {
         switch (state.toLowerCase()) {
             case "Out":
-                intakeCurrentState = "Out";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::intakeNeutral),
@@ -30,8 +29,15 @@ public class IntakeToStateCommand  extends ParallelCommandGroup {
                         )
                 );
                 break;
+            case "Middle":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::intakeNeutral),
+                                new InstantCommand(extendo::extendoMiddle)
+                        )
+                );
+                break;
             case "In":
-                intakeCurrentState = "In";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::intakeNeutral),
