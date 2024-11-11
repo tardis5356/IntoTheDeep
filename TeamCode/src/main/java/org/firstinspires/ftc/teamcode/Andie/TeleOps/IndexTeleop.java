@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
-@TeleOp(name="indexTele")
+@TeleOp(name = "indexTele")
 //@Disabled
 public class IndexTeleop extends CommandOpMode {
 
@@ -53,7 +53,6 @@ public class IndexTeleop extends CommandOpMode {
     private Arm arm;
 
 
-
     @Override
     public void initialize() {
         //init controllers
@@ -75,51 +74,51 @@ public class IndexTeleop extends CommandOpMode {
         //extendo
         extendo = new Extendo(hardwareMap, driver2.gamepad.left_trigger);
 
-        //extendo
+        //arm
         arm = new Arm(hardwareMap);
 
-            //arm
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
-                    .whenActive(new InstantCommand(arm::armTransit));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.Y))
-                    .whenActive(new InstantCommand(arm::armSpecimen));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
+                .whenActive(new InstantCommand(arm::armTransit));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
-                    .whenActive(new InstantCommand(arm::armIntake));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.Y))
+                .whenActive(new InstantCommand(arm::armSpecimen));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
-                    .whenActive(new InstantCommand(arm::armBasket));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
+                .whenActive(new InstantCommand(arm::armIntake));
 
-            //intake
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                    .whenActive(new InstantCommand(intake::intakeDown));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
+                .whenActive(new InstantCommand(arm::armBasket));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                    .whenActive(new InstantCommand(intake::intakeNeutral));
+        //intake
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+                .whenActive(new InstantCommand(intake::intakeDown));
 
-            //wrist
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                    .whenActive(new InstantCommand(wrist::wristTuck));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER))
+                .whenActive(new InstantCommand(intake::intakeNeutral));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
-                    .whenActive(new InstantCommand(wrist::wristSpecimen));
+        //wrist
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whenActive(new InstantCommand(wrist::wristTuck));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
-                    .whenActive(new InstantCommand(wrist::wristIntake));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
+                .whenActive(new InstantCommand(wrist::wristSpecimen));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
-                    .whenActive(new InstantCommand(wrist::wristBasket));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenActive(new InstantCommand(wrist::wristIntake));
 
-            //Extendo
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                    .whenActive(new InstantCommand(extendo::extendoIn));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
+                .whenActive(new InstantCommand(wrist::wristBasket));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                    .whenActive(new InstantCommand(extendo::extendoOut));
+        //Extendo
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
+                .whenActive(new InstantCommand(extendo::extendoIn));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-                    .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+                .whenActive(new InstantCommand(extendo::extendoOut));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
                 .toggleWhenActive(new InstantCommand(gripper::closeGripper), new InstantCommand(gripper::openGripper));
@@ -130,7 +129,7 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
                 .whileActiveContinuous(new InstantCommand(intake::intakeIn))
                 .whenInactive(new InstantCommand(intake::intakeStop));
-        }
+    }
 
 
     public void run() {
@@ -151,6 +150,7 @@ public class IndexTeleop extends CommandOpMode {
         mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
     }
+
     private double cubicScaling(float joystickValue) {
         double v = 0.05 * joystickValue + 0.95 * Math.pow(joystickValue, 3);
         if (joystickValue > 0.02)
