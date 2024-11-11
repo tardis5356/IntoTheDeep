@@ -41,5 +41,9 @@ public class Intake extends SubsystemBase {
         sIR.setPower(BotPositions.INTAKE_OUT);
         sIL.setPower(BotPositions.INTAKE_OUT);
     }
+    public void intakeStop(){
+        sIR.setPower(BotPositions.INTAKE_STOP);
+        sIL.setPower(BotPositions.INTAKE_STOP);
+    }
 
 }
