@@ -11,7 +11,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @Config
 @TeleOp(name = "Gen1_TeleOp", group = "AGen1")
@@ -27,12 +32,29 @@ public class TestTeleop extends CommandOpMode {
     double SLOW_SPEED_MULTIPLIER = 0.5;
     double CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
 
+    //gripper
+    private Gripper gripper;
+
+    //lift
+    private Lift lift;
+
+    //wrist
+    private Wrist wrist;
 
     @Override
     public void initialize() {
         //init controllers
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
+
+        //gripper
+        gripper = new Gripper(hardwareMap);
+
+        //lift
+        lift = new Lift(hardwareMap);
+
+        //wrist
+        wrist = new Wrist(hardwareMap);
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -56,9 +78,15 @@ public class TestTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand());
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
                 .whenActive(() -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
+
+        //gripper Command
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+                .toggleWhenActive(new InstantCommand(gripper::openGripper), new InstantCommand(gripper::closeGripper));
     }
     public void run() {
         super.run();
+
+        lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
 
         //applies stick values to motor variables with cubic scaling
         Rotation = cubicScaling(-gamepad1.right_stick_x);
