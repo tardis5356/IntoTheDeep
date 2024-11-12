@@ -1,18 +1,12 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.LIFT_WALL;
-
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 public class IntakeToStateCommand  extends ParallelCommandGroup {
 
@@ -24,7 +18,7 @@ public class IntakeToStateCommand  extends ParallelCommandGroup {
             case "Out":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::intakeNeutral),
+                                new InstantCommand(intake::intakeUp),
                                 new InstantCommand(extendo::extendoOut)
                         )
                 );
@@ -32,7 +26,7 @@ public class IntakeToStateCommand  extends ParallelCommandGroup {
             case "Middle":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::intakeNeutral),
+                                new InstantCommand(intake::intakeUp),
                                 new InstantCommand(extendo::extendoMiddle)
                         )
                 );
@@ -40,7 +34,7 @@ public class IntakeToStateCommand  extends ParallelCommandGroup {
             case "In":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::intakeNeutral),
+                                new InstantCommand(intake::intakeUp),
                                 new WaitCommand(200),
                                 new InstantCommand(extendo::extendoIn)
                         )

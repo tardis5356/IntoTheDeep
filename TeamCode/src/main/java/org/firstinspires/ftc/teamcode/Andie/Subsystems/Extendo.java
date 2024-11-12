@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Extendo extends SubsystemBase {
-    private Servo sER, sEL;
+    public Servo sER, sEL;
     double extensionPosition;
     double stickInput;
 
@@ -17,6 +17,7 @@ public class Extendo extends SubsystemBase {
         sER = hardwareMap.get(Servo.class, "sER");
         sEL = hardwareMap.get(Servo.class, "sEL");
         stickInput = stickPosition;
+        extensionPosition = EXTENDO_IN;
     }
 
     @Override

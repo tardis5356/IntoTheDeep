@@ -5,18 +5,15 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @TeleOp(name = "indexTele")
@@ -38,7 +35,7 @@ public class IndexTeleop extends CommandOpMode {
     private Gripper gripper;
 
     //lift
-    private Lift lift;
+   // private Lift lift;
 
     //wrist
     private Wrist wrist;
@@ -59,11 +56,27 @@ public class IndexTeleop extends CommandOpMode {
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
+        mFL = hardwareMap.get(DcMotorEx.class, "mFL");
+        mFR = hardwareMap.get(DcMotorEx.class, "mFR");
+        mBR = hardwareMap.get(DcMotorEx.class, "mBR");
+        mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+
+        mBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        mFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        //mBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        //mFL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //makes the motors brake when power = zero. Is better for driver precision
+        mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         //gripper
         gripper = new Gripper(hardwareMap);
 
         //lift
-        lift = new Lift(hardwareMap);
+        //lift = new Lift(hardwareMap);
 
         //wrist
         wrist = new Wrist(hardwareMap);
@@ -95,7 +108,7 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand(intake::intakeDown));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .whenActive(new InstantCommand(intake::intakeNeutral));
+                .whenActive(new InstantCommand(intake::intakeUp));
 
         //wrist
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
@@ -117,8 +130,8 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
+        //new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
+        //        .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
                 .toggleWhenActive(new InstantCommand(gripper::closeGripper), new InstantCommand(gripper::openGripper));
@@ -127,8 +140,10 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand(gripper::intakeGripper));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
-                .whileActiveContinuous(new InstantCommand(intake::intakeIn))
-                .whenInactive(new InstantCommand(intake::intakeStop));
+                .toggleWhenActive(new InstantCommand(intake::intakeIn), new InstantCommand(intake::intakeStop));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
+                .whenActive(new InstantCommand(intake::intakeOut));
     }
 
 
@@ -149,6 +164,9 @@ public class IndexTeleop extends CommandOpMode {
         mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
         mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+
+        telemetry.addData("ExtendoPosition", extendo.sER.getPosition());
+        telemetry.update();
     }
 
     private double cubicScaling(float joystickValue) {

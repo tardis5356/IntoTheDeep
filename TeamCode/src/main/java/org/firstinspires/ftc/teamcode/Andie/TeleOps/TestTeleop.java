@@ -6,13 +6,10 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
@@ -74,6 +71,8 @@ public class TestTeleop extends CommandOpMode {
         //this motor physically runs opposite. For convenience, reverse direction.
         mBR.setDirection(DcMotorSimple.Direction.REVERSE);
         mFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        //mBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        //mFL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //makes the motors brake when power = zero. Is better for driver precision
         mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -100,7 +99,7 @@ public class TestTeleop extends CommandOpMode {
 
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .toggleWhenActive(new InstantCommand(intake::intakeNeutral), new InstantCommand(intake::intakeDown));
+                .toggleWhenActive(new InstantCommand(intake::intakeUp), new InstantCommand(intake::intakeDown));
     }
 
     public void run() {

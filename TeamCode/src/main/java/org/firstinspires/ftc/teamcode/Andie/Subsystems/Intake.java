@@ -5,7 +5,6 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -21,6 +20,7 @@ public class Intake extends SubsystemBase {
         sIL = hardwareMap.get(CRServo.class, "sIL");
         cI = hardwareMap.get(ColorSensor.class, "cI");
         sIL.setDirection(REVERSE);
+        sIT.setPosition(BotPositions.INTAKE_UP);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
     public void periodic(){}
 
     public void intakeDown(){sIT.setPosition(BotPositions.INTAKE_DOWN);}
-    public void intakeNeutral(){sIT.setPosition(BotPositions.INTAKE_NEUTRAL);}
+    public void intakeUp(){sIT.setPosition(BotPositions.INTAKE_UP);}
 
 
 
