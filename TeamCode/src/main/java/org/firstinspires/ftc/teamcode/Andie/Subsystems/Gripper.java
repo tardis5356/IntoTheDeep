@@ -18,7 +18,8 @@ public class Gripper extends SubsystemBase {
     public Gripper(HardwareMap hardwareMap){
         sG = hardwareMap.get(Servo.class, "sG");
         cG = hardwareMap.get(ColorSensor.class, "cG");
-        sensorClose = true;
+        sensorClose = false;
+        sG.setPosition(BotPositions.GRIPPER_INTAKE);
     }
 
     @Override
