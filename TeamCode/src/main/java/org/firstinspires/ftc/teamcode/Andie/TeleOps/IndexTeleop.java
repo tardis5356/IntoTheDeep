@@ -49,6 +49,8 @@ public class IndexTeleop extends CommandOpMode {
     //arm
     private Arm arm;
 
+    double Trigger;
+
 
     @Override
     public void initialize() {
@@ -85,7 +87,7 @@ public class IndexTeleop extends CommandOpMode {
         intake = new Intake(hardwareMap);
 
         //extendo
-        extendo = new Extendo(hardwareMap, driver2.gamepad.left_trigger);
+        extendo = new Extendo(hardwareMap, Trigger);
 
         //arm
         arm = new Arm(hardwareMap);
@@ -139,16 +141,22 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
                 .whenActive(new InstantCommand(gripper::intakeGripper));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
-                .toggleWhenActive(new InstantCommand(intake::intakeIn), new InstantCommand(intake::intakeStop));
+
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
                 .whenActive(new InstantCommand(intake::intakeOut));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
+                .whenActive(new InstantCommand(intake::intakeIn));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whenActive(new InstantCommand(intake::intakeStop));
     }
 
 
     public void run() {
         super.run();
+        Trigger= driver2.gamepad.left_trigger - driver2.gamepad.right_trigger;
 
         Rotation = cubicScaling(-gamepad1.right_stick_x);
         FB = cubicScaling(gamepad1.left_stick_y);

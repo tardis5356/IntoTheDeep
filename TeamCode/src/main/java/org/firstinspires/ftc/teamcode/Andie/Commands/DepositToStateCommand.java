@@ -19,16 +19,16 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
 
     public DepositToStateCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, String state) {
-        switch (state.toLowerCase()) {
+        switch (state) {
             case "basketToIntake":
                 depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(arm::armIntake),
-                                new WaitCommand(400),
-                                new InstantCommand(gripper::intakeGripper),
-                                new LiftToStateCommand(lift, 0, 25)
+                                new InstantCommand(arm::armIntake)
+//                                new WaitCommand(400),
+//                                new InstantCommand(gripper::intakeGripper),
+//                                new LiftToStateCommand(lift, 0, 25)
                                 //new InstantCommand(wrist::wristIntake)
 
                         )
@@ -38,7 +38,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, 10, 25),
+//                                new LiftToStateCommand(lift, 10, 25),
                                 new InstantCommand(wrist::wristTuck),
                                 new WaitCommand(10),
                                 new InstantCommand(arm::armIntake),
@@ -54,11 +54,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 depositCurrentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, 10, 25),
-                                new InstantCommand(wrist::wristTuck),
-                                new WaitCommand(100),
+//                                new LiftToStateCommand(lift, 10, 25),
+//                                new InstantCommand(wrist::wristTuck),
+//                                new WaitCommand(100),
                                 new InstantCommand(arm::armSpecimen),
-                                new WaitCommand(100),
+//                                new WaitCommand(100),
                                 new InstantCommand(wrist::wristSpecimen)
                         )
                 );
@@ -84,8 +84,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 depositCurrentState = "basket";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-                                new WaitCommand(250),
+//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                                new WaitCommand(250),
                                 new InstantCommand(wrist::wristBasket),
                                 new InstantCommand(arm::armBasket)
                         )
