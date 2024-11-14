@@ -4,13 +4,14 @@ import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTEN
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_MIDDLE;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_OUT;
 
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Extendo extends SubsystemBase {
     public Servo sER, sEL;
-    double extensionPosition;
+    public double extensionPosition;
     double stickInput;
 
     public Extendo(HardwareMap hardwareMap, double stickPosition){
@@ -26,6 +27,7 @@ public class Extendo extends SubsystemBase {
         sER.setPosition(extensionPosition);
         sEL.setPosition(extensionPosition);
         extensionPosition += stickInput;
+
     }
 
     public void extendoIn(){
