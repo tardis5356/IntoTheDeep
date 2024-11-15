@@ -144,13 +144,16 @@ public class TestTeleop extends CommandOpMode {
 ////        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.1)
 ////                .whenActive();
 ////
-        if(okdnfoa){}
-        new Trigger(() -> intake.checkIntake() == false)
-                .whenActive(
-                        new SequentialCommandGroup(
-                        new WaitCommand(300),
-                        new InstantCommand(intake::intakeStop)
-                ));
+
+//            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
+//                    .whenActive(
+//                                    new InstantCommand(intake::intakeStop)
+//                            );
+//
+//        new Trigger(() -> !intake.IntakeStopped && intake.checkIntake())
+//                .whenActive(
+//                        new InstantCommand(intake::intakeStop)
+//                );
 //
 //
 //

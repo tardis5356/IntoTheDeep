@@ -50,25 +50,17 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-        if(checkIntake()) {
-
             if (checkIntakeBlue()) {
                 intakeIn();
+                IntakeStopped = true;
             }
 
 
             if (checkIntakeRed() ) {
 
                intakeIn();
-
+                IntakeStopped = true;
             }
-
-        }
-
-
-        if(IntakeStopped && !checkIntake()){
-
-        }
     }
 
     public void intakeDown(){sIT.setPosition(BotPositions.INTAKE_DOWN);}
@@ -82,8 +74,7 @@ public class Intake extends SubsystemBase {
         IntakeStopped = false;
     }
     public void intakePass(){
-        sIR.setPower(BotPositions.INTAKE_IN);
-        sIL.setPower(BotPositions.INTAKE_IN);
+
 
     }
     public void intakeOut(){
