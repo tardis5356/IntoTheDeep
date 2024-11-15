@@ -34,6 +34,7 @@ public class Intake extends SubsystemBase {
     private ColorSensor cI;
 
     public boolean IntakeStopped;
+    public boolean Passing;
 
     public Intake(HardwareMap hardwareMap){
         sIT = hardwareMap.get(Servo.class, "sIT");
@@ -52,10 +53,7 @@ public class Intake extends SubsystemBase {
         if(checkIntake()) {
 
             if (checkIntakeBlue()) {
-
                 intakeIn();
-
-
             }
 
 
@@ -64,6 +62,11 @@ public class Intake extends SubsystemBase {
                intakeIn();
 
             }
+
+        }
+
+
+        if(IntakeStopped && !checkIntake()){
 
         }
     }
@@ -77,6 +80,11 @@ public class Intake extends SubsystemBase {
         sIR.setPower(BotPositions.INTAKE_IN);
         sIL.setPower(BotPositions.INTAKE_IN);
         IntakeStopped = false;
+    }
+    public void intakePass(){
+        sIR.setPower(BotPositions.INTAKE_IN);
+        sIL.setPower(BotPositions.INTAKE_IN);
+
     }
     public void intakeOut(){
         sIR.setPower(BotPositions.INTAKE_OUT);
