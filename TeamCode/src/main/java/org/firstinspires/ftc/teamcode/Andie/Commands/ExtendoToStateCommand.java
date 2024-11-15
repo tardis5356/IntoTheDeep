@@ -13,17 +13,19 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 public class ExtendoToStateCommand extends ParallelCommandGroup {
-
+    private IntakeInCommand intakeInCommand;
 
     public ExtendoToStateCommand(Intake intake, Extendo extendo, String state) {
         switch (state) {
             case "extendoIn":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::intakeUp), new WaitCommand(300), new InstantCommand(extendo::extendoIn),
+                                new InstantCommand(intake::intakeUp), new WaitCommand(300), new InstantCommand(extendo::extendoIn), intakeInCommand
 
                         )
                 );
                 break;
 
+        }
+    }
 }
