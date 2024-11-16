@@ -154,6 +154,19 @@ public class TestTeleop extends CommandOpMode {
 //        }
 
 
+
+//            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
+//                    .whenActive(
+//                                    new InstantCommand(intake::intakeStop)
+//                            );
+//
+//        new Trigger(() -> !intake.IntakeStopped && intake.checkIntake())
+//                .whenActive(
+//                        new InstantCommand(intake::intakeStop)
+//                );
+//
+//
+//
 //
 //        //temporary wrist
 //
