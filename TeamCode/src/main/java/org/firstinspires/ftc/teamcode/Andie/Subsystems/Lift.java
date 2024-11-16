@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Lift extends SubsystemBase {
     DcMotorEx mLB, mLT;
     TouchSensor limitLift;
+    double AntiGrav = 0;
 
     PIDController controller;
 
@@ -44,14 +45,14 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         // runs every loop
         if (joystickPowerInput != 0) {
-            motorPower = joystickPowerInput - 0.09;
+            motorPower = joystickPowerInput - AntiGrav;
             targetPosition = -15;
         } else if (targetPosition == -10) {
             motorPower = 0;
         } else if (targetPosition != -15) {
-            motorPower = -0.09 + getCurrentPID();
+            motorPower = -AntiGrav + getCurrentPID();
         } else {
-            motorPower = -0.09;
+            motorPower = -AntiGrav;
         }
 
         mLB.setPower(motorPower);

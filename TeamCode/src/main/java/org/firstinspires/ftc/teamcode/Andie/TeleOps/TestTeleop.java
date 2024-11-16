@@ -98,7 +98,6 @@ public class TestTeleop extends CommandOpMode {
         RightTrigger = driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
 
-
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
@@ -141,12 +140,20 @@ public class TestTeleop extends CommandOpMode {
 //
 //        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN))
 //                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToSpecimen"));
-//
+////
 ////        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.1)
 ////                .whenActive();
 ////
-////        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.1)
-////                .whenActive();
+
+//            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
+//                    .whenActive(
+//                                    new InstantCommand(intake::intakeStop)
+//                            );
+//
+//        new Trigger(() -> !intake.IntakeStopped && intake.checkIntake())
+//                .whenActive(
+//                        new InstantCommand(intake::intakeStop)
+//                );
 //
 //
 //
@@ -165,12 +172,10 @@ public class TestTeleop extends CommandOpMode {
 //
 //        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new InstantCommand(extendo::extendoIn));
+                .whenActive(new SequentialCommandGroup( ));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
-
-
 
 
     }
@@ -178,7 +183,11 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        Trigger= LeftTrigger - RightTrigger;
+        if (extendo.extensionPosition < 0.7) {
+            new InstantCommand(intake::intakeUp);
+        }
+
+        Trigger = LeftTrigger - RightTrigger;
 
         lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
 
