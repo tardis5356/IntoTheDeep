@@ -14,19 +14,19 @@ public class Extendo extends SubsystemBase {
     public double extensionPosition;
     double stickInput;
 
-    public Extendo(HardwareMap hardwareMap, double stickPosition){
+    public Extendo(HardwareMap hardwareMap){
         sER = hardwareMap.get(Servo.class, "sER");
         sEL = hardwareMap.get(Servo.class, "sEL");
-        stickInput = stickPosition;
         extensionPosition = EXTENDO_IN;
     }
 
     @Override
 
     public void periodic(){
+
+//
         sER.setPosition(extensionPosition);
         sEL.setPosition(extensionPosition);
-        extensionPosition += stickInput;
 
     }
 
@@ -36,7 +36,17 @@ public class Extendo extends SubsystemBase {
     public void extendoOut(){
         extensionPosition = EXTENDO_OUT;
     }
-    public void extendoMiddle(){
-        extensionPosition = EXTENDO_MIDDLE;
+    public void extendoUdate(double stickPosition){
+        stickInput = stickPosition;
+
+        if(sER.getPosition() > .8){
+            extensionPosition = .8;
+        }
+        else if(sER.getPosition() < .5){
+            extensionPosition = .5;
+        }
+        else{
+            extensionPosition += stickInput;
+        }
     }
 }

@@ -10,10 +10,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @TeleOp(name = "indexTele")
@@ -35,7 +38,7 @@ public class IndexTeleop extends CommandOpMode {
     private Gripper gripper;
 
     //lift
-   // private Lift lift;
+    private Lift lift;
 
     //wrist
     private Wrist wrist;
@@ -78,7 +81,7 @@ public class IndexTeleop extends CommandOpMode {
         gripper = new Gripper(hardwareMap);
 
         //lift
-        //lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap);
 
         //wrist
         wrist = new Wrist(hardwareMap);
@@ -87,7 +90,7 @@ public class IndexTeleop extends CommandOpMode {
         intake = new Intake(hardwareMap);
 
         //extendo
-        extendo = new Extendo(hardwareMap, Trigger);
+        extendo = new Extendo(hardwareMap);
 
         //arm
         arm = new Arm(hardwareMap);
@@ -132,8 +135,8 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
 
-        //new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-        //        .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 1));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
                 .toggleWhenActive(new InstantCommand(gripper::closeGripper), new InstantCommand(gripper::openGripper));
