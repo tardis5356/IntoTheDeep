@@ -30,7 +30,7 @@ public class LiftTest extends CommandOpMode {
 
         telemetry.addData("LeftStick", aparatus.left_stick_y);
         telemetry.addData("RightStick", aparatus.right_stick_y);
-        telemetry.addData("liftPosition", lift.getCurrentPID());
+        telemetry.addData("liftPosition", lift.getCurrentPosition());
         telemetry.update();
 
     }
