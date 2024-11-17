@@ -205,7 +205,7 @@ public class TestTeleop extends CommandOpMode {
             Trigger = -.03;
         }
 
-        Trigger = LeftTrigger - RightTrigger;
+        extendo.extendoUdate(Trigger);
 
         lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
 
@@ -226,6 +226,9 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
+        telemetry.addData("IntakeState", intake.checkIntake());
+        telemetry.addData("AssignedExtensionPosition", Trigger);
+        telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkIntake());
         telemetry.addData("Red", intake.checkIntakeRed());
         telemetry.addData("Blue", intake.checkIntakeBlue());
