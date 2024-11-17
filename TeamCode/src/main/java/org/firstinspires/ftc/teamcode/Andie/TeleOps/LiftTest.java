@@ -33,7 +33,7 @@ public class LiftTest extends CommandOpMode {
         telemetry.addData("liftPosition", lift.getCurrentPosition());
         telemetry.update();
 
-        return 0;
+        //return 0;
     }
 //    private double cubicScaling(float joystickValue) {
 //        double v = 0.05 * joystickValue + 0.95 * Math.pow(joystickValue, 3);

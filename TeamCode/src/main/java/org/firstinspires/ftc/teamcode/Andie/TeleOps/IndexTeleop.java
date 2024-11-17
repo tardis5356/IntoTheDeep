@@ -179,7 +179,7 @@ public class IndexTeleop extends CommandOpMode {
         //telemetry.addData("GripperState", gripper.checkGripper());
         telemetry.addData("ArmPosition", arm.sAR.getPosition());
         telemetry.update();
-        return mFLPower;
+        //return mFLPower;
     }
 
     private double cubicScaling(float joystickValue) {
