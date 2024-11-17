@@ -93,9 +93,7 @@ public class TestTeleop extends CommandOpMode {
 
         intakeInCommand = new IntakeInCommand(intake);
 
-        LeftTrigger = driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
-        RightTrigger = driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
 
         //map motors
@@ -145,6 +143,18 @@ public class TestTeleop extends CommandOpMode {
 ////                .whenActive();
 ////
 
+
+//        if(okdnfoa){
+//            new Trigger(() -> intake.checkIntake() == false)
+//                    .whenActive(
+//                            new SequentialCommandGroup(
+//                                    new WaitCommand(300),
+//                                    new InstantCommand(intake::intakeStop)
+//                            ));
+//        }
+
+
+
 //            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
 //                    .whenActive(
 //                                    new InstantCommand(intake::intakeStop)
@@ -161,8 +171,14 @@ public class TestTeleop extends CommandOpMode {
 //        //temporary wrist
 //
 //
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
+        //if(extendo.sER.getPosition()<=.6) {
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .6)
+                    .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
+        //}
+
+            new Trigger(() -> extendo.sER.getPosition() >= .6)
+                    .whenActive(new InstantCommand(intake::intakeUp));
+
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(intakeInCommand);
@@ -172,7 +188,9 @@ public class TestTeleop extends CommandOpMode {
 //
 //        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new InstantCommand(extendo::extendoIn));
+                .whenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp),
+                        new WaitCommand(50),
+                        new InstantCommand(extendo::extendoIn)));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
@@ -183,61 +201,55 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        if (extendo.extensionPosition > 0.7) {
-
-            new InstantCommand(intake::intakeUp);
-            new WaitCommand(200);
-            new InstantCommand(extendo::extendoIn);
-            new WaitCommand(300);
-            new InstantCommand(intake::intakeOut);
 
 
             LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
             RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
-            Trigger = (LeftTrigger - RightTrigger) / 10;
+        Trigger = cubicScaling((float)LeftTrigger) - cubicScaling((float)RightTrigger)/10;
 
-            if (Trigger > .03) {
-                Trigger = .03;
-            } else if (Trigger < -.03) {
-                Trigger = -.03;
-            }
-
-            extendo.extendoUdate(Trigger);
-
-            lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
-
-            //applies stick values to motor variables with cubic scaling
-            Rotation = cubicScaling(-gamepad1.right_stick_x);
-            FB = cubicScaling(gamepad1.left_stick_y);
-            LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
-
-            //defines the powers for the motors (trust i've written this so many times)
-            double mFLPower = FB + LR + Rotation;
-            double mFRPower = FB - LR - Rotation;
-            double mBLPower = FB - LR + Rotation;
-            double mBRPower = FB + LR - Rotation;
-
-            mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
-            mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
-            mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
-            mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
-
-
-            telemetry.addData("IntakeState", intake.checkIntake());
-            telemetry.addData("AssignedExtensionPosition", Trigger);
-            telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
-            telemetry.addData("checkIntake", intake.checkIntake());
-            telemetry.addData("Red", intake.checkIntakeRed());
-            telemetry.addData("Blue", intake.checkIntakeBlue());
-            telemetry.addData("Yellow", intake.checkIntakeYellow());
-            telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
-            telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
-            telemetry.addData("ReadingIntake", cI.green());
-            telemetry.update();
+        if(Trigger > .03){
+            Trigger = .03;
         }
+        else if(Trigger < -.03){
+            Trigger = -.03;
+        }
+
+        extendo.extendoUdate(Trigger);
+
+        lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
+
+        //applies stick values to motor variables with cubic scaling
+        Rotation = cubicScaling(-gamepad1.right_stick_x);
+        FB = cubicScaling(gamepad1.left_stick_y);
+        LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
+
+        //defines the powers for the motors (trust i've written this so many times)
+        double mFLPower = FB + LR + Rotation;
+        double mFRPower = FB - LR - Rotation;
+        double mBLPower = FB - LR + Rotation;
+        double mBRPower = FB + LR - Rotation;
+
+        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
+        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
+        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
+        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+
+
+        telemetry.addData("IntakeState", intake.checkIntake());
+        telemetry.addData("AssignedExtensionPosition", Trigger);
+        telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
+        telemetry.addData("checkIntake", intake.checkIntake());
+        telemetry.addData("Red", intake.checkIntakeRed());
+        telemetry.addData("Blue", intake.checkIntakeBlue());
+        telemetry.addData("Yellow", intake.checkIntakeYellow());
+        telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
+        telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
+        telemetry.addData("ReadingIntake", cI.green());
+        telemetry.update();
     }
+
     //Super duper cewl cubic scaling function. if the stick is only +- 4%, nothing happens.
     //Anything greater is cubically scaled, very cool. Also possibly an anti drift measure with tweaking.
     private double cubicScaling(float joystickValue) {
@@ -249,5 +261,4 @@ public class TestTeleop extends CommandOpMode {
         else
             return 0;
     }
-
 }
