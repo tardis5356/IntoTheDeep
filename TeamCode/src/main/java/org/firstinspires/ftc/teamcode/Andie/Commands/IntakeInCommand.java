@@ -13,8 +13,22 @@ public class IntakeInCommand extends SequentialCommandGroup {
 
 
     public IntakeInCommand(Intake intake) {
+<<<<<<< HEAD
         addCommands(
                 new InstantCommand(intake::intakeIn)
         );
+=======
+        if(intake.checkIntake() == false){
+            addCommands(
+                    new InstantCommand(intake::intakeIn)
+            );
+        }
+        else if (intake.checkIntake() == true){
+            addCommands(
+                    new InstantCommand(intake::intakeStop)
+            );
+        }
+
+>>>>>>> origin/master
     }
 }

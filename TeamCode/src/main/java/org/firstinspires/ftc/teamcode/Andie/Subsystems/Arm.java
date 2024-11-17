@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Arm extends SubsystemBase {
     private Servo sAL;
-    private Servo sAR;
+    public Servo sAR;
 
     public Arm(HardwareMap hardwareMap){
         sAL = hardwareMap.get(Servo.class, "sAL");

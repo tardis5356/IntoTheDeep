@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Lift extends SubsystemBase {
-    DcMotorEx mLB, mLT;
+    DcMotorEx mLT, mLB;
     TouchSensor limitLift;
-    double AntiGrav = 0;
+
 
     PIDController controller;
 
@@ -20,51 +20,67 @@ public class Lift extends SubsystemBase {
     double motorPower = 0;
 
     public Lift(HardwareMap hardwareMap) {
-        mLB = hardwareMap.get(DcMotorEx.class, "mLB");
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
+        mLB = hardwareMap.get(DcMotorEx.class, "mLB");
 
         limitLift = hardwareMap.get(TouchSensor.class, "lL");
 
-        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        mLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mLB.setDirection(DcMotorSimple.Direction.REVERSE);
         mLT.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLB.setDirection(DcMotorSimple.Direction.REVERSE);
 
         controller = new PIDController(0.02, 0, 0);
     }
 
     public void ManualMode(double left, double right) {
         joystickPowerInput = left + right * 0.5;
+
     }
 
     public void periodic() {
         // runs every loop
-        if (joystickPowerInput != 0) {
-            motorPower = joystickPowerInput - AntiGrav;
-            targetPosition = -15;
-        } else if (targetPosition == -10) {
-            motorPower = 0;
-        } else if (targetPosition != -15) {
-            motorPower = -AntiGrav + getCurrentPID();
-        } else {
-            motorPower = -AntiGrav;
+        if(limitLift.isPressed()){
+            mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            targetPosition = -10;
         }
 
-        mLB.setPower(motorPower);
+        if (joystickPowerInput != 0 && !limitLift.isPressed()) {
+            motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+            targetPosition = -15;
+        }
+        else if(joystickPowerInput != 0 && limitLift.isPressed()){
+            if(joystickPowerInput > 0 ){
+                motorPower = 0;
+            }
+            else if(joystickPowerInput <= 0 ){
+                motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+                targetPosition = -15;
+            }
+        }
+        else if (targetPosition == -10) {
+            motorPower = 0;
+        } else if (targetPosition != -15) {
+            motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();
+        } else {
+            motorPower = -BotPositions.ANTI_GRAV;
+        }
+
         mLT.setPower(motorPower);
+        mLB.setPower(motorPower);
     }
 
     public double getCurrentPosition() {
-        return mLB.getCurrentPosition();
+        return mLT.getCurrentPosition();
     }
 
     public double getCurrentPID() {
-        return -controller.calculate(-mLB.getCurrentPosition(), targetPosition);
+        return -controller.calculate(-mLT.getCurrentPosition(), targetPosition);
     }
 
     public void setTargetPosition(double newTargetPosition){

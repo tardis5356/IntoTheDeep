@@ -73,7 +73,7 @@ public class TestTeleop extends CommandOpMode {
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
-        extendo = new Extendo(hardwareMap, Trigger);
+        extendo = new Extendo(hardwareMap);
         //gripper
         gripper = new Gripper(hardwareMap);
 
@@ -81,13 +81,13 @@ public class TestTeleop extends CommandOpMode {
         lift = new Lift(hardwareMap);
 
         //wrist
-        wrist = new Wrist(hardwareMap);
+        //wrist = new Wrist(hardwareMap);
 
         //intake
         intake = new Intake(hardwareMap);
 
         //intake
-        arm = new Arm(hardwareMap);
+        //arm = new Arm(hardwareMap);
 
         TeamColorRed = true;
 
@@ -190,6 +190,19 @@ public class TestTeleop extends CommandOpMode {
             new InstantCommand(extendo::extendoIn);
             new WaitCommand(300);
             new InstantCommand(intake::intakeOut);
+
+
+        LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+
+        RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+
+        Trigger = (LeftTrigger - RightTrigger)/10;
+
+        if(Trigger > .03){
+            Trigger = .03;
+        }
+        else if(Trigger < -.03){
+            Trigger = -.03;
         }
 
         Trigger = LeftTrigger - RightTrigger;
