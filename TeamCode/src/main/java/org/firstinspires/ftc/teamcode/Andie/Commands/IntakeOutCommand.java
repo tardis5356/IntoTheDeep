@@ -8,9 +8,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 public class IntakeOutCommand extends SequentialCommandGroup {
     public IntakeOutCommand(Intake intake) {
         addCommands(
-                new InstantCommand(intake::intakeOut),
-                new WaitCommand(2000),
-                new InstantCommand(intake::intakeStop)
+                new InstantCommand(intake::intakeOut)
         );
     }
 }
