@@ -12,10 +12,16 @@ public class IntakeInCommand extends SequentialCommandGroup {
 
 
     public IntakeInCommand(Intake intake) {
-        addCommands(
-                new InstantCommand(intake::intakeIn),
-                new WaitCommand(500),
-                new InstantCommand(intake::intakeStop)
-        );
+        if(intake.checkIntake() == false){
+            addCommands(
+                    new InstantCommand(intake::intakeIn)
+            );
+        }
+        else if (intake.checkIntake() == true){
+            addCommands(
+                    new InstantCommand(intake::intakeStop)
+            );
+        }
+
     }
 }

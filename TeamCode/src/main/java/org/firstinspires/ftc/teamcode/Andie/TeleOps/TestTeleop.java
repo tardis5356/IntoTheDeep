@@ -171,10 +171,10 @@ public class TestTeleop extends CommandOpMode {
 //        //temporary wrist
 //
 //
-        if(extendo.sER.getPosition()<=.6) {
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER))
+        //if(extendo.sER.getPosition()<=.6) {
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .6)
                     .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
-        }
+        //}
 
             new Trigger(() -> extendo.sER.getPosition() >= .6)
                     .whenActive(new InstantCommand(intake::intakeUp));
@@ -237,6 +237,7 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
+        telemetry.addData("IntakeState", intake.checkIntake());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkIntake());
