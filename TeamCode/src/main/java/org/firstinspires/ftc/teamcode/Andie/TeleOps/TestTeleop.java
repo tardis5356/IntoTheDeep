@@ -183,8 +183,13 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        if (extendo.extensionPosition < 0.7) {
+        if (extendo.extensionPosition > 0.7) {
+
             new InstantCommand(intake::intakeUp);
+            new WaitCommand(200);
+            new InstantCommand(extendo::extendoIn);
+            new WaitCommand(300);
+            new InstantCommand(intake::intakeOut);
         }
 
         Trigger = LeftTrigger - RightTrigger;
