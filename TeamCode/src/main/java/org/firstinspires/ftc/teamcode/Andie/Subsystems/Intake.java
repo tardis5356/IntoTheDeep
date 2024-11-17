@@ -12,9 +12,11 @@ import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.YELLO
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 
 public class Intake extends SubsystemBase {
@@ -101,7 +103,7 @@ public class Intake extends SubsystemBase {
         else return false;
     }
     public boolean checkIntake(){
-        if (checkIntakeYellow()||checkIntakeBlue()||checkIntakeRed()){
+        if (((DistanceSensor) cI).getDistance(DistanceUnit.CM) <= 2.5){
             return true;
         }
         else return false;

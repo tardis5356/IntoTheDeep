@@ -26,9 +26,9 @@ public class Gripper extends SubsystemBase {
 
     public void periodic(){
         //if(verifyGripper(gripperClosed, sensorClose) == true){
-        if( ((DistanceSensor)cG).getDistance(DistanceUnit.CM) <= 2.5 && !gripperClosed) {
-            closeGripper();
-        }
+        //if( ((DistanceSensor)cG).getDistance(DistanceUnit.CM) <= 2.5 && !gripperClosed) {
+        //    closeGripper();
+        //}
         //}
 
     }
@@ -45,8 +45,8 @@ public class Gripper extends SubsystemBase {
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
         gripperClosed = false;
     }
-    public boolean verifyGripper(boolean gripperState, boolean autoClose){
-        if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 2.5) && gripperState == false && autoClose == true){
+    public boolean verifyGripper(){
+        if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 2.5)){
             return true;
         }
         else return false;
