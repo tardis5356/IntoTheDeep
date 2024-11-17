@@ -190,6 +190,7 @@ public class TestTeleop extends CommandOpMode {
             new InstantCommand(extendo::extendoIn);
             new WaitCommand(300);
             new InstantCommand(intake::intakeOut);
+        }
 
 
             LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
@@ -237,7 +238,7 @@ public class TestTeleop extends CommandOpMode {
             telemetry.addData("ReadingIntake", cI.green());
             telemetry.update();
         }
-    }
+
     //Super duper cewl cubic scaling function. if the stick is only +- 4%, nothing happens.
     //Anything greater is cubically scaled, very cool. Also possibly an anti drift measure with tweaking.
     private double cubicScaling(float joystickValue) {
