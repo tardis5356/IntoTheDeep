@@ -93,9 +93,7 @@ public class TestTeleop extends CommandOpMode {
 
         intakeInCommand = new IntakeInCommand(intake);
 
-        LeftTrigger = driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
-        RightTrigger = driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
 
         //map motors
@@ -145,6 +143,18 @@ public class TestTeleop extends CommandOpMode {
 ////                .whenActive();
 ////
 
+
+//        if(okdnfoa){
+//            new Trigger(() -> intake.checkIntake() == false)
+//                    .whenActive(
+//                            new SequentialCommandGroup(
+//                                    new WaitCommand(300),
+//                                    new InstantCommand(intake::intakeStop)
+//                            ));
+//        }
+
+
+
 //            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
 //                    .whenActive(
 //                                    new InstantCommand(intake::intakeStop)
@@ -161,8 +171,14 @@ public class TestTeleop extends CommandOpMode {
 //        //temporary wrist
 //
 //
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
+        //if(extendo.sER.getPosition()<=.6) {
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .6)
+                    .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
+        //}
+
+            new Trigger(() -> extendo.sER.getPosition() >= .6)
+                    .whenActive(new InstantCommand(intake::intakeUp));
+
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(intakeInCommand);
@@ -172,7 +188,9 @@ public class TestTeleop extends CommandOpMode {
 //
 //        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new SequentialCommandGroup( ));
+                .whenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp),
+                        new WaitCommand(50),
+                        new InstantCommand(extendo::extendoIn)));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
@@ -183,13 +201,6 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        if (extendo.extensionPosition > 0.7) {
-
-            new InstantCommand(intake::intakeUp);
-            new WaitCommand(200);
-            new InstantCommand(extendo::extendoIn);
-            new WaitCommand(300);
-            new InstantCommand(intake::intakeOut);
 
 
         LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
@@ -205,7 +216,7 @@ public class TestTeleop extends CommandOpMode {
             Trigger = -.03;
         }
 
-        Trigger = LeftTrigger - RightTrigger;
+        extendo.extendoUdate(Trigger);
 
         lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
 
@@ -226,6 +237,9 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
+        telemetry.addData("IntakeState", intake.checkIntake());
+        telemetry.addData("AssignedExtensionPosition", Trigger);
+        telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkIntake());
         telemetry.addData("Red", intake.checkIntakeRed());
         telemetry.addData("Blue", intake.checkIntakeBlue());
