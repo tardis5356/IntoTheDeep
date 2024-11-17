@@ -172,7 +172,7 @@ public class TestTeleop extends CommandOpMode {
 //
 //        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new SequentialCommandGroup( ));
+                .whenActive(new InstantCommand(extendo::extendoIn));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::extendoOut));
@@ -247,4 +247,5 @@ public class TestTeleop extends CommandOpMode {
         else
             return 0;
     }
+}
 }
