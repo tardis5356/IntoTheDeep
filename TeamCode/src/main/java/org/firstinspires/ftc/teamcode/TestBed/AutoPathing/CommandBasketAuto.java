@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.TestBed;
+package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.RedBasketAuto;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.redSpec_StartPos;
-import static org.firstinspires.ftc.teamcode.TestBed.RedBasketAuto.redBasket_StartPos;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.RedBasketAuto;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedBasketAuto.redBasket_StartPos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -16,6 +15,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
+import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
 
 import java.util.Set;

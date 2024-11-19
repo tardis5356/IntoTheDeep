@@ -30,7 +30,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 @Config
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Autonomous", group = "Autonomous")
 
-public class Trajectory extends LinearOpMode{
+public class RedBasket extends LinearOpMode{
 
     //gripper
     private Gripper gripper;
@@ -181,11 +181,13 @@ public class Trajectory extends LinearOpMode{
         int visionOutputPosition = 1;
 
 
-        TrajectoryActionBuilder RedSpecimenAuto =
+        TrajectoryActionBuilder RunToSub =
                 drive.actionBuilder(redSpec_StartPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
-                        .waitSeconds(2) //Drop off Specimen at Submersible
+
+//                        .waitSeconds(2) //Drop off Specimen at Submersible
+
                         .setTangent(200)
                         .splineToLinearHeading(redSpec_LeftSampleZonePos, Math.toRadians(0))
                         .waitSeconds(2) //Retrieve Left Sample Zone and deposit in Obs Zone
@@ -293,3 +295,4 @@ public class Trajectory extends LinearOpMode{
         );
     }
 }
+

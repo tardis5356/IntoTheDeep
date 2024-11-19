@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TestBed;
+package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
 
 import com.acmerobotics.dashboard.config.Config;
