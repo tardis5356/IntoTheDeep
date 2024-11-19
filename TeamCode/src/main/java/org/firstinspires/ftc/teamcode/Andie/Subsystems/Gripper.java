@@ -18,15 +18,18 @@ public class Gripper extends SubsystemBase {
     public Gripper(HardwareMap hardwareMap){
         sG = hardwareMap.get(Servo.class, "sG");
         cG = hardwareMap.get(ColorSensor.class, "cG");
-        sensorClose = true;
+        //sensorClose = false;
+        sG.setPosition(BotPositions.GRIPPER_INTAKE);
     }
 
     @Override
 
     public void periodic(){
-        if(checkGripper(gripperClosed, sensorClose) == true){
+        //if(verifyGripper(gripperClosed, sensorClose) == true){
+        if( ((DistanceSensor)cG).getDistance(DistanceUnit.CM) <= 2.5 && !gripperClosed) {
             closeGripper();
         }
+        //}
 
     }
 
@@ -42,7 +45,7 @@ public class Gripper extends SubsystemBase {
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
         gripperClosed = false;
     }
-    public boolean checkGripper(boolean gripperState, boolean autoClose){
+    public boolean verifyGripper(boolean gripperState, boolean autoClose){
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 2.5) && gripperState == false && autoClose == true){
             return true;
         }

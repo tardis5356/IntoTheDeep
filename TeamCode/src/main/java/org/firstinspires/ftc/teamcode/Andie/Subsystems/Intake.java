@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MAX;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MIN;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_MAX;
@@ -10,18 +9,12 @@ import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_M
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.YELLOW_MAX;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.YELLOW_MIN;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 
 public class Intake extends SubsystemBase {
@@ -33,7 +26,7 @@ public class Intake extends SubsystemBase {
     private CRServo sIL;
     private ColorSensor cI;
 
-    public boolean IntakeStopped;
+    public boolean Intaking;
     public boolean Passing;
 
     public Intake(HardwareMap hardwareMap){
@@ -50,17 +43,19 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-            if (checkIntakeBlue()) {
-                intakeIn();
-                IntakeStopped = true;
+        if(checkIntake()&&Intaking) {
+            if (checkIntakeBlue()) {//Add team color conditionals later
+                intakeOut();
+            }else if (checkIntakeRed()) {//Add team color conditionals later
+                intakeOut();
+            }else {
+                intakeStop();
             }
 
-
-            if (checkIntakeRed() ) {
-
-               intakeIn();
-                IntakeStopped = true;
-            }
+        }
+        if(!checkIntake()&&!Intaking){
+            intakeStop();
+        }
     }
 
     public void intakeDown(){sIT.setPosition(BotPositions.INTAKE_DOWN);}
@@ -69,23 +64,22 @@ public class Intake extends SubsystemBase {
 
 
     public void intakeIn(){
+        Intaking = true;
         sIR.setPower(BotPositions.INTAKE_IN);
         sIL.setPower(BotPositions.INTAKE_IN);
-        IntakeStopped = false;
-    }
-    public void intakePass(){
-
 
     }
+
     public void intakeOut(){
+
         sIR.setPower(BotPositions.INTAKE_OUT);
         sIL.setPower(BotPositions.INTAKE_OUT);
-        IntakeStopped = false;
+        Intaking = false;
     }
     public void intakeStop(){
         sIR.setPower(BotPositions.INTAKE_STOP);
         sIL.setPower(BotPositions.INTAKE_STOP);
-        IntakeStopped = true;
+        Intaking = false;
     }
     public boolean checkIntakeRed(){
         if (cI.red() >= RED_MIN && cI.red() <= RED_MAX){
