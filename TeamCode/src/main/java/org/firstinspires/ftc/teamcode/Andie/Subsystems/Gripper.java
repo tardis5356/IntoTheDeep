@@ -33,22 +33,23 @@ public class Gripper extends SubsystemBase {
 
     }
 
-    public void openGripper(){
+    public void open(){
         sG.setPosition(BotPositions.GRIPPER_OPEN);
         gripperClosed = false;
     }
-    public void closeGripper(){
+    public void close(){
         sG.setPosition(BotPositions.GRIPPER_CLOSED);
         gripperClosed = true;
     }
-    public void intakeGripper(){
+    public void intake(){
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
         gripperClosed = false;
     }
-    public boolean verifyGripper(){
+    public boolean verify(){
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 2.5)){
             return true;
         }
         else return false;
     }
+
 }

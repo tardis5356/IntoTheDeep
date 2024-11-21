@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Andie.TeleOps;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -15,12 +13,11 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
@@ -33,6 +30,8 @@ public class TestTeleop extends CommandOpMode {
 
     //gamepads
     private GamepadEx driver1, driver2;
+
+
 
     private IntakeInCommand intakeInCommand;
 
@@ -61,9 +60,14 @@ public class TestTeleop extends CommandOpMode {
 
     private ColorSensor cI;
 
+    private TouchSensor limitLift;
+
     public Boolean TeamColorRed;
+
     double Trigger;
 
+
+    public DepositToStateCommand depositToStateCommand;
     double LeftTrigger;
     double RightTrigger;
 
@@ -96,6 +100,10 @@ public class TestTeleop extends CommandOpMode {
 
 
 
+
+
+
+
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
@@ -103,6 +111,7 @@ public class TestTeleop extends CommandOpMode {
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
 
         cI = hardwareMap.get(ColorSensor.class, "cI");
+        limitLift = hardwareMap.get(TouchSensor.class, "lL");
         //this motor physically runs opposite. For convenience, reverse direction.
         mBR.setDirection(DcMotorSimple.Direction.REVERSE);
         mFR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -124,10 +133,10 @@ public class TestTeleop extends CommandOpMode {
 //
 //        //gripper Command
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
-                .toggleWhenActive(new InstantCommand(gripper::openGripper), new InstantCommand(gripper::closeGripper));
+                .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-        new Trigger(()-> gripper.verifyGripper())
-                .whenActive(new InstantCommand(gripper::closeGripper));
+        new Trigger(()-> gripper.verify() && depositToStateCommand.depositCurrentState == "Intake" || depositToStateCommand.depositCurrentState == "Specimen")
+                .whenActive(new InstantCommand(gripper::close));
 //
 //        //lift presets
 ////        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
@@ -171,12 +180,15 @@ public class TestTeleop extends CommandOpMode {
                     .whenActive(new InstantCommand(intake::intakeUp));
 
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-        .toggleWhenActive(new InstantCommand(intake::intakeIn), new InstantCommand(intake::intakeStop));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)&&!intake.checkSample())
+        .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
+
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)&&intake.checkSample())
+                .whenActive(new InstantCommand(intake::out));
 
         //outake
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                .toggleWhenActive(new InstantCommand(intake::intakeIn), new InstantCommand(intake::intakeStop));
+                .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 //
 //        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
 //                .whenActive(new InstantCommand(intake::intakeStop));
@@ -185,30 +197,33 @@ public class TestTeleop extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
                 .whenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp),
                         new WaitCommand(50),
-                        new InstantCommand(extendo::extendoIn)));
+                        new InstantCommand(extendo::in)));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .whenActive(new InstantCommand(extendo::extendoOut));
+                .whenActive(new InstantCommand(extendo::out));
 
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.A))
-                .whenActive(new InstantCommand(intake::intakeOut));
+                .whenActive(new InstantCommand(intake::transfer));
+
+        new Trigger(()-> intake.checkSample()&&extendo.sER.getPosition() >= .75&& limitLift.isPressed()&& depositToStateCommand.depositCurrentState == "Intake")
+                .whenActive(new InstantCommand(intake::transfer));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(arm::armBasket),
-                        new InstantCommand(wrist::wristBasket)
+                        new InstantCommand(arm::basket),
+                        new InstantCommand(wrist::basket)
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(arm::armIntake),
-                        new InstantCommand(wrist::wristIntake)
+                        new InstantCommand(arm::intake),
+                        new InstantCommand(wrist::intake)
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && lift.getCurrentPosition() < -500)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(arm::armSpecimen),
-                        new InstantCommand(wrist::wristSpecimen)
+                        new InstantCommand(arm::specimen),
+                        new InstantCommand(wrist::specimen)
                 ));
 
     }
@@ -220,9 +235,9 @@ public class TestTeleop extends CommandOpMode {
 
                 new InstantCommand(intake::intakeUp);
                 new WaitCommand(200);
-                new InstantCommand(extendo::extendoIn);
+                new InstantCommand(extendo::in);
                 new WaitCommand(300);
-                new InstantCommand(intake::intakeOut);
+                new InstantCommand(intake::transfer);
 
         }
 
@@ -240,7 +255,7 @@ public class TestTeleop extends CommandOpMode {
             Trigger = -.03;
         }
 
-        extendo.extendoUdate(Trigger);
+        extendo.update(Trigger);
 
         lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
 
@@ -261,13 +276,13 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-        telemetry.addData("IntakeState", intake.checkIntake());
+        telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
-        telemetry.addData("checkIntake", intake.checkIntake());
-        telemetry.addData("Red", intake.checkIntakeRed());
-        telemetry.addData("Blue", intake.checkIntakeBlue());
-        telemetry.addData("Yellow", intake.checkIntakeYellow());
+        telemetry.addData("checkIntake", intake.checkSample());
+        telemetry.addData("Red", intake.checkRed());
+        telemetry.addData("Blue", intake.checkBlue());
+        telemetry.addData("Yellow", intake.checkYellow());
         telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
         telemetry.addData("ReadingIntake", cI.green());

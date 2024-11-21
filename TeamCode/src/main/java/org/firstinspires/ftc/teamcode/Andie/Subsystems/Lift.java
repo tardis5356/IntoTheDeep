@@ -18,6 +18,7 @@ public class Lift extends SubsystemBase {
     public static double targetPosition = 0;
     double joystickPowerInput = 0;
     double motorPower = 0;
+    boolean tooHigh;
 
     public Lift(HardwareMap hardwareMap) {
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
@@ -49,8 +50,11 @@ public class Lift extends SubsystemBase {
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             targetPosition = -10;
         }
+        if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){
+            tooHigh = true;
+        } else {tooHigh = false;}
 
-        if (joystickPowerInput != 0 && !limitLift.isPressed()) {
+        if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh) {
             motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
             targetPosition = -15;
         }
@@ -59,6 +63,15 @@ public class Lift extends SubsystemBase {
                 motorPower = 0;
             }
             else if(joystickPowerInput <= 0 ){
+                motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+                targetPosition = -15;
+            }
+        }
+        else if(joystickPowerInput != 0 && tooHigh){
+            if(joystickPowerInput < 0 ){
+                motorPower = 0;
+            }
+            else if(joystickPowerInput >= 0 ){
                 motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
                 targetPosition = -15;
             }
