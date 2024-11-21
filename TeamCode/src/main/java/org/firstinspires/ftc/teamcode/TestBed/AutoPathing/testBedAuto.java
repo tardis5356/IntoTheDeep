@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Andie.Auto;
+package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
@@ -6,56 +6,16 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
-
-import androidx.annotation.NonNull;
-
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 
 @Config
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Autonomous", group = "Autonomous")
-
-public class Trajectory extends LinearOpMode{
-
-    //gripper
-    private Gripper gripper;
-
-
-    //wrist
-    private Wrist wrist;
-
-    //intake
-    private Intake intake;
-
-    private Extendo extendo;
-
-    private Arm arm;
-
-    private ColorSensor cI;
-
-    private Lift lift;
-    private TouchSensor lL;
-
-    private Gamepad aparatus;
-
-    //    Basket Poses
-
-    //Red Basket
+@Autonomous(name = "BlueBasketAuto", group = "Autonomous")
+public class testBedAuto extends LinearOpMode{
+//    Basket Poses
     public static final Pose2d redBasket_StartPos = new Pose2d(-15, -64, Math.toRadians(270));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45));
     public static final Pose2d redBasket_SubDrop = new Pose2d(-10, -36, Math.toRadians(270));
@@ -64,12 +24,7 @@ public class Trajectory extends LinearOpMode{
     public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-53,-40, Math.toRadians(130));
     public static final Pose2d redBasket_AscentPos = new Pose2d(-28, -11, Math.toRadians(180));
 
-    //Bluebasket
-
-
     //Specimen Poses
-
-    //Red Specimen
     public static final Pose2d redSpec_StartPos = new Pose2d(15, -64, Math.toRadians(270));
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(10, -36, Math.toRadians(270));
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(33, -63, Math.toRadians(270));
@@ -77,93 +32,103 @@ public class Trajectory extends LinearOpMode{
     public static final Pose2d redSpec_MidSampleZonePos = new Pose2d(58, -45, Math.toRadians(90));
     public static final Pose2d redSpec_LeftSampleZonePos = new Pose2d(50, -45, Math.toRadians(90));
 
-    public class Lift {
-        private DcMotorEx lift;
+    public static Action RedSpecimenAuto;
+    public static Action RedBasketAuto;
+//    public static Set<Subsystem> Drive;
+//
+//
+//
+//    public static void generateTrajectories(MecanumDrive drive) {
+//        //red specimen auto sequence and red basket auto sequence
+//}
 
-        public Lift(HardwareMap hardwareMap) {
-            lift = hardwareMap.get(DcMotorEx.class, "liftMotor");
-            lift.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-            lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-
-        public class LiftUp implements Action {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!initialized) {
-                    lift.setPower(0.8);
-                    initialized = true;
-                }
-
-                double pos = lift.getCurrentPosition();
-                packet.put("liftPos", pos);
-                if (pos < 3000.0) {
-                    return true;
-                } else {
-                    lift.setPower(0);
-                    return false;
-                }
-            }
-        }
-        public Action liftUp() {
-            return new LiftUp();
-        }
-
-        public class LiftDown implements Action {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!initialized) {
-                    lift.setPower(-0.8);
-                    initialized = true;
-                }
-
-                double pos = lift.getCurrentPosition();
-                packet.put("liftPos", pos);
-                if (pos > 100.0) {
-                    return true;
-                } else {
-                    lift.setPower(0);
-                    return false;
-                }
-            }
-        }
-        public Action liftDown(){
-            return new LiftDown();
-        }
-    }
-
-    public class Gripper {
-        private Servo gripper;
-
-        public Gripper(HardwareMap hardwareMap) {
-            gripper = hardwareMap.get(Servo.class, "claw");
-        }
-
-        public class CloseGripper implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.55);
-                return false;
-            }
-        }
-        public Action closeGripper() {
-            return new CloseGripper();
-        }
-
-        public class OpenGripper implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(1.0);
-                return false;
-            }
-        }
-        public Action openGripper() {
-            return new OpenGripper();
-        }
-    }
+//    public class Lift {
+//        private DcMotorEx lift;
+//
+//        public Lift(HardwareMap hardwareMap) {
+//            lift = hardwareMap.get(DcMotorEx.class, "liftMotor");
+//            lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            lift.setDirection(DcMotorSimple.Direction.FORWARD);
+//        }
+//
+//        public class LiftUp implements Action {
+//            private boolean initialized = false;
+//
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                if (!initialized) {
+//                    lift.setPower(0.8);
+//                    initialized = true;
+//                }
+//
+//                double pos = lift.getCurrentPosition();
+//                packet.put("liftPos", pos);
+//                if (pos < 3000.0) {
+//                    return true;
+//                } else {
+//                    lift.setPower(0);
+//                    return false;
+//                }
+//            }
+//        }
+//        public Action liftUp() {
+//            return new LiftUp();
+//        }
+//
+//        public class LiftDown implements Action {
+//            private boolean initialized = false;
+//
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                if (!initialized) {
+//                    lift.setPower(-0.8);
+//                    initialized = true;
+//                }
+//
+//                double pos = lift.getCurrentPosition();
+//                packet.put("liftPos", pos);
+//                if (pos > 100.0) {
+//                    return true;
+//                } else {
+//                    lift.setPower(0);
+//                    return false;
+//                }
+//            }
+//        }
+//        public Action liftDown(){
+//            return new LiftDown();
+//        }
+//    }
+//
+//    public class Claw {
+//        private Servo claw;
+//
+//        public Claw(HardwareMap hardwareMap) {
+//            claw = hardwareMap.get(Servo.class, "claw");
+//        }
+//
+//        public class CloseClaw implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                claw.setPosition(0.55);
+//                return false;
+//            }
+//        }
+//        public Action closeClaw() {
+//            return new CloseClaw();
+//        }
+//
+//        public class OpenClaw implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                claw.setPosition(1.0);
+//                return false;
+//            }
+//        }
+//        public Action openClaw() {
+//            return new OpenClaw();
+//        }
+//    }
 
 
     public enum AutoProgram {
@@ -171,18 +136,18 @@ public class Trajectory extends LinearOpMode{
     }
     @Override
     public void runOpMode() {
-        AutoProgram myAuto = AutoProgram.RedSpecimenAuto;//change
-        Pose2d initialPose = new Pose2d(-15, -64, Math.toRadians(270)); //change
+        AutoProgram myAuto = AutoProgram.RedSpecimenAuto;
+        Pose2d initialPose = new Pose2d(-15, -64, Math.toRadians(270));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-
-        Lift lift = new Lift(hardwareMap);
+//        Claw claw = new Claw(hardwareMap);
+//        Lift lift = new Lift(hardwareMap);
 
         // vision here that outputs position
         int visionOutputPosition = 1;
 
 
-        TrajectoryActionBuilder RedSpecimenAuto =
-                drive.actionBuilder(redSpec_StartPos)
+           TrajectoryActionBuilder RedSpecimenAuto =
+                 drive.actionBuilder(redSpec_StartPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .waitSeconds(2) //Drop off Specimen at Submersible
@@ -246,6 +211,9 @@ public class Trajectory extends LinearOpMode{
 //                .strafeTo(new Vector2d(48, 12))
 //                .build();
 
+        // actions that need to happen on init; for instance, a claw tightening.
+//        Actions.runBlocking(claw.closeClaw());
+
 
         while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
@@ -280,15 +248,16 @@ public class Trajectory extends LinearOpMode{
             case RedSpecimenAuto:
                 trajectoryActionChosen = RedSpecimenAuto.build();
                 break;
-            default:
+           default:
                 break;
         }
 
         Actions.runBlocking(
                 new SequentialAction(
-                        trajectoryActionChosen,
-                        lift.liftUp(),
-                        lift.liftDown()
+                        trajectoryActionChosen
+//                        lift.liftUp(),
+//                        claw.openClaw(),
+//                        lift.liftDown(),
                 )
         );
     }

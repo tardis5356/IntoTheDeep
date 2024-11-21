@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.TestBed;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.RedSpecimenAuto;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoTrajectories.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.RedSpecimenAuto;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -17,7 +17,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
 
-import java.util.Collections;
 import java.util.Set;
 
 /*
