@@ -78,7 +78,7 @@ public class Lift extends SubsystemBase {
         }
         else if (targetPosition == -10) {
             motorPower = 0;
-        } else if (targetPosition != -15) {
+        } else if (targetPosition != -15 || targetPosition != -10) {
             motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();
         } else {
             motorPower = -BotPositions.ANTI_GRAV;
@@ -91,9 +91,10 @@ public class Lift extends SubsystemBase {
     public double getCurrentPosition() {
         return mLT.getCurrentPosition();
     }
+    public double getTargetPosition(){return targetPosition;}
 
     public double getCurrentPID() {
-        return -controller.calculate(-mLT.getCurrentPosition(), targetPosition);
+        return controller.calculate(mLT.getCurrentPosition(), targetPosition);
     }
 
     public void setTargetPosition(double newTargetPosition){
