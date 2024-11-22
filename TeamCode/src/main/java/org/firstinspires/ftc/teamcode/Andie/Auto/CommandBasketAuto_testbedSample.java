@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
+package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.RedBasketAuto;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
@@ -37,7 +37,7 @@ import java.util.Set;
 
 @Autonomous(name = "BasketAuto")
 
-public class CommandBasketAuto extends OpMode {
+public class CommandBasketAuto_testbedSample extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
