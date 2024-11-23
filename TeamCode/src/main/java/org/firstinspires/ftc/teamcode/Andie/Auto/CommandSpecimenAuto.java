@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.RedBasketAuto;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedBasketAuto.redBasket_StartPos;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.Trajectory.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
+
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -15,7 +16,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
+//import org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedSpecimenAuto;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
 
@@ -35,15 +44,15 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketAuto")
+@Autonomous(name = "SpecimenAuto")
 
-public class CommandBasketAuto_testbedSample extends OpMode {
+public class CommandSpecimenAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_StartPos;
+    Pose2d initialPose = redSpec_StartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -54,8 +63,26 @@ public class CommandBasketAuto_testbedSample extends OpMode {
     private DcMotorEx mFR;
     private DcMotorEx mBL;
     private DcMotorEx mBR;
+    private Intake intake;
+    private Arm arm;
+    private Gripper gripper;
+    private Extendo extendo;
+    private Lift lift;
+    private Wrist wrist;
     private Subsystem ExampleSubsystem;
-    private ActionCommand redBasketAuto;
+    private ActionCommand RedSpec_StartToSub;
+    private ActionCommand RedSpec_SubToLeftSpec;
+    private ActionCommand RedSpec_LeftSpecToObs;
+    private ActionCommand RedSpec_ObsToSub;
+    private ActionCommand RedSpec_SubToObs;
+    private ActionCommand RedSpec_ObsToRightSpec;
+    private ActionCommand RedSpec_RightSpecToObs;
+    private ActionCommand RedSpec_Park;
+
+    private DepositToStateCommand depositToStateCommand;
+
+
+
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
@@ -72,16 +99,25 @@ public class CommandBasketAuto_testbedSample extends OpMode {
      */
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, initialPose);
+        drive = new MecanumDrive(hardwareMap, redSpec_StartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
+        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos)); //
 //
 
+        intake = new Intake(hardwareMap);
+        arm = new Arm(hardwareMap);
+        gripper = new Gripper(hardwareMap);
+        lift = new Lift(hardwareMap);
+        extendo = new Extendo(hardwareMap);
+        wrist = new Wrist(hardwareMap);
         ExampleSubsystem = new ExampleSubsystem(hardwareMap);
+
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
 
-        CommandScheduler.getInstance().registerSubsystem(ExampleSubsystem);
+
+
+        CommandScheduler.getInstance().registerSubsystem(intake);//
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -103,14 +139,30 @@ public class CommandBasketAuto_testbedSample extends OpMode {
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
-       redBasketAuto = new ActionCommand(RedBasketAuto, requirements);
+        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
+
         time_since_start = new ElapsedTime();
 
 
 
 
         CommandScheduler.getInstance().schedule(
-                redBasketAuto
+                RedSpec_StartToSub,
+                new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
+                //hang the specimen
+                RedSpec_SubToLeftSpec,
+                RedSpec_LeftSpecToObs,//left + mid specimens pushed back to os zone
+                //pick up left specimen
+                RedSpec_ObsToSub,
+                //hang the specimen
+                RedSpec_SubToObs,
+                //pick second specimen
+                RedSpec_ObsToRightSpec,
+                RedSpec_RightSpecToObs,
+                //push back second specimen
+                RedSpec_ObsToSub,
+                //hang second specimen
+                RedSpec_SubToObs//park
 
 
         );

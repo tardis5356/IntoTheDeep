@@ -67,46 +67,46 @@ public class AutoTrajectories {
    //Red
 
     //Red Spec Actions
-    public static Action RedSpec_StartToSub;
-    public static Action RedSpec_SubToLeftSpec;
-    public static Action RedSpec_LeftSpecToObs;
-    public static Action RedSpec_ObsToSub;
-    public static Action RedSpec_SubToObs;
-    public static Action RedSpec_ObsToRightSpec;
-    public static Action RedSpec_RightSpecToObs;
-    public static Action RedSpec_Park;
+    public static Action redSpec_StartToSub;
+    public static Action redSpec_SubToLeftSpec;
+    public static Action redSpec_LeftSpecToObs;
+    public static Action redSpec_ObsToSub;
+    public static Action redSpec_SubToObs;
+    public static Action redSpec_ObsToRightSpec;
+    public static Action redSpec_RightSpecToObs;
+    public static Action redSpec_Park;
 
     //Red Basket Actions
-    public static Action RedBasket_StartToSub;
-    public static Action RedBasket_SubToRightSample;
-    public static Action RedBasket_RightSampleToBasket;
-    public static Action RedBasket_ToMidSample;
-    public static Action RedBasket_MidSampleToBasket;
-    public static Action RedBasket_BasketToLeftSample;
-    public static Action RedBasket_LeftSampleToBasket;
-    public static Action RedBasket_BasketToAscent;
+    public static Action redBasket_StartToSub;
+    public static Action redBasket_SubToRightSample;
+    public static Action redBasket_RightSampleToBasket;
+    public static Action redBasket_ToMidSample;
+    public static Action redBasket_MidSampleToBasket;
+    public static Action redBasket_BasketToLeftSample;
+    public static Action redBasket_LeftSampleToBasket;
+    public static Action redBasket_BasketToAscent;
 
-    //blue
-
-    //Blue Spec Action
-    public static Action BlueSpec_StartToSub;
-    public static Action BlueSpec_SubToLeftSpec;
-    public static Action BlueSpec_LeftSpecToObs;
-    public static Action BlueSpec_ObsToSub;
-    public static Action BlueSpec_SubToObs;
-    public static Action BlueSpec_ObsToRightSpec;
-    public static Action BlueSpec_RightSpecToObs;
-    public static Action BlueSpec_Park;
-
-    //Red Basket Actions
-    public static Action BlueBasket_StartToSub;
-    public static Action BlueBasket_SubToRightSample;
-    public static Action BlueBasket_RightSampleToBasket;
-    public static Action BlueBasket_BasketToMidSample;
-    public static Action BlueBasket_MidSampleToBasket;
-    public static Action BlueBasket_BasketToLeftSample;
-    public static Action BlueBasket_LeftSampleToBasket;
-    public static Action BlueBasket_BasketToAscent;
+//    //blue
+//
+//    //Blue Spec Action
+//    public static Action BlueSpec_StartToSub;
+//    public static Action BlueSpec_SubToLeftSpec;
+//    public static Action BlueSpec_LeftSpecToObs;
+//    public static Action BlueSpec_ObsToSub;
+//    public static Action BlueSpec_SubToObs;
+//    public static Action BlueSpec_ObsToRightSpec;
+//    public static Action BlueSpec_RightSpecToObs;
+//    public static Action BlueSpec_Park;
+//
+//    //Blue Basket Actions
+//    public static Action BlueBasket_StartToSub;
+//    public static Action BlueBasket_SubToRightSample;
+//    public static Action BlueBasket_RightSampleToBasket;
+//    public static Action BlueBasket_BasketToMidSample;
+//    public static Action BlueBasket_MidSampleToBasket;
+//    public static Action BlueBasket_BasketToLeftSample;
+//    public static Action BlueBasket_LeftSampleToBasket;
+//    public static Action BlueBasket_BasketToAscent;
 
 
 
@@ -114,248 +114,212 @@ public class AutoTrajectories {
 
         //red soecimen auto
 
-        RedSpec_StartToSub =
+        redSpec_StartToSub =
                 drive.actionBuilder(redSpec_StartPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .build();
 
 
-        RedSpec_SubToLeftSpec =
+        redSpec_SubToLeftSpec =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(200)
                         .splineToLinearHeading(redSpec_LeftMidSampleZonePos, Math.toRadians(0))
                         .build();
 
-        RedSpec_LeftSpecToObs =
+        redSpec_LeftSpecToObs =
                 drive.actionBuilder(redSpec_LeftMidSampleZonePos)
                         .setTangent(0)
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(0))
                         .build();
 
-        RedSpec_ObsToSub =
+        redSpec_ObsToSub =
                 drive.actionBuilder(redSpec_ObsSpecPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .build();
 
-        RedSpec_SubToObs =
+        redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(135)
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(180))
                         .build();
 
-        RedSpec_ObsToRightSpec =
+        redSpec_ObsToRightSpec =
                 drive.actionBuilder(redSpec_ObsSpecPos)
                         .setTangent(270)
                         .splineToLinearHeading(redSpec_RightSampleZonePos, Math.toRadians(0))
                         .build();
 
-        RedSpec_RightSpecToObs =
+        redSpec_RightSpecToObs =
                 drive.actionBuilder(redSpec_RightSampleZonePos)
                         .setTangent(180)
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
-        RedSpec_Park =
+        redSpec_Park =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .lineToX(40)
                         .setTangent(300)
                         .splineToLinearHeading(redSpec_ObsParkPos, Math.toRadians(270))
                         .build();
 
-
-
+//lower case
 
 
         //red basket auto
 
-        RedBasket_StartToSub =
+        redBasket_StartToSub =
                 drive.actionBuilder(redBasket_StartPos)
                         .setTangent(70)
                         .splineToLinearHeading(redBasket_SubDrop, Math.toRadians(90))
                         .build();
 
-        RedBasket_SubToRightSample =
+        redBasket_SubToRightSample =
                 drive.actionBuilder(redBasket_SubDrop)
                         .setTangent(180)
                         .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
                         .build();
 
-        RedBasket_RightSampleToBasket =
+        redBasket_RightSampleToBasket =
                 drive.actionBuilder(redBasket_RightSampleZonePos)
                         .setTangent(180)
                         .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                         .build();
 
-        RedBasket_ToMidSample =
+        redBasket_ToMidSample =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(45)
                         .splineToLinearHeading(redBasket_MidSampleZonePos, Math.toRadians(90))
                         .build();
 
-        RedBasket_MidSampleToBasket =
+        redBasket_MidSampleToBasket =
                 drive.actionBuilder(redBasket_MidSampleZonePos)
                         .setTangent(180)
                         .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                         .build();
 
-        RedBasket_BasketToLeftSample =
+        redBasket_BasketToLeftSample =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(45)
                         .splineToLinearHeading(redBasket_LeftSampleZonePos, Math.toRadians(90))
                         .build();
 
-        RedBasket_LeftSampleToBasket =
+        redBasket_LeftSampleToBasket =
                 drive.actionBuilder(redBasket_LeftSampleZonePos)
                         .setTangent(180)
                         .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                         .build();
 
-        RedBasket_BasketToAscent =
+        redBasket_BasketToAscent =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(0)
                         .splineToLinearHeading(redBasket_AscentPos, Math.toRadians(0))
                         .build();
 
-
-
-        //blue specimen Auto
-        BlueSpec_StartToSub =
-                drive.actionBuilder(blueSpec_StartPos)
-                        .setTangent(90)
-                        .splineToLinearHeading(blueSpec_SubDepoPos, Math.toRadians(90))
-                        .build();
-
-
-        BlueSpec_SubToLeftSpec =
-                drive.actionBuilder(blueSpec_SubDepoPos)
-                        .setTangent(200)
-                        .splineToLinearHeading(blueSpec_LeftMidSampleZonePos, Math.toRadians(0))
-                        .build();
-
-        BlueSpec_LeftSpecToObs =
-                drive.actionBuilder(blueSpec_LeftMidSampleZonePos)
-                        .setTangent(0)
-                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(0))
-                        .build();
-
-        BlueSpec_ObsToSub =
-                drive.actionBuilder(blueSpec_ObsSpecPos)
-                        .setTangent(90)
-                        .splineToLinearHeading(blueSpec_SubDepoPos, Math.toRadians(90))
-                        .build();
-
-        RedSpec_SubToObs =
-                drive.actionBuilder(blueSpec_SubDepoPos)
-                        .setTangent(135)
-                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(180))
-                        .build();
-
-        BlueSpec_ObsToRightSpec =
-                drive.actionBuilder(blueSpec_ObsSpecPos)
-                        .setTangent(270)
-                        .splineToLinearHeading(blueSpec_RightSampleZonePos, Math.toRadians(0))
-                        .build();
-
-        BlueSpec_RightSpecToObs =
-                drive.actionBuilder(blueSpec_RightSampleZonePos)
-                        .setTangent(180)
-                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(270))
-                        .build();
-
-        BlueSpec_Park =
-                drive.actionBuilder(blueSpec_SubDepoPos)
-                        .lineToX(40)
-                        .setTangent(300)
-                        .splineToLinearHeading(blueSpec_ObsParkPos, Math.toRadians(270))
-                        .build();
-
-
-
-        //blue basket auto
-
-        BlueBasket_StartToSub =
-                drive.actionBuilder(redBasket_StartPos)
-                        .setTangent(70)
-                        .splineToLinearHeading(redBasket_SubDrop, Math.toRadians(90))
-                        .build();
-
-        BlueBasket_SubToRightSample =
-                drive.actionBuilder(redBasket_SubDrop)
-                        .setTangent(180)
-                        .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
-                        .build();
-
-        BlueBasket_RightSampleToBasket =
-                drive.actionBuilder(redBasket_RightSampleZonePos)
-                        .setTangent(180)
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                        .build();
-
-        BlueBasket_BasketToMidSample =
-                drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(45)
-                        .splineToLinearHeading(redBasket_MidSampleZonePos, Math.toRadians(90))
-                        .build();
-
-        BlueBasket_MidSampleToBasket =
-                drive.actionBuilder(redBasket_MidSampleZonePos)
-                        .setTangent(180)
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                        .build();
-
-        BlueBasket_BasketToLeftSample =
-                drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(45)
-                        .splineToLinearHeading(redBasket_LeftSampleZonePos, Math.toRadians(90))
-                        .build();
-
-        BlueBasket_LeftSampleToBasket =
-                drive.actionBuilder(redBasket_LeftSampleZonePos)
-                        .setTangent(180)
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                        .build();
-
-        BlueBasket_BasketToAscent =
-                drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(0)
-                        .splineToLinearHeading(redBasket_AscentPos, Math.toRadians(0))
-                        .build();
-
-
-
-//        while (!isStopRequested() && !opModeIsActive()) {
-//            int position = visionOutputPosition;
-//            telemetry.addData("Position during Init", position);
-//            telemetry.update();
-//        }
+    }}
+//        //blue specimen Auto
+//        BlueSpec_StartToSub =
+//                drive.actionBuilder(blueSpec_StartPos)
+//                        .setTangent(90)
+//                        .splineToLinearHeading(blueSpec_SubDepoPos, Math.toRadians(90))
+//                        .build();
 //
-//        int startPosition = visionOutputPosition;
-//        telemetry.addData("Starting Position", startPosition);
-//        telemetry.update();
-//        waitForStart();
 //
-//        if (isStopRequested()) return;
+//        BlueSpec_SubToLeftSpec =
+//                drive.actionBuilder(blueSpec_SubDepoPos)
+//                        .setTangent(200)
+//                        .splineToLinearHeading(blueSpec_LeftMidSampleZonePos, Math.toRadians(0))
+//                        .build();
 //
-//        Action trajectoryActionChosen;
-//        if (startPosition == 1) {
-//            trajectoryActionChosen = tab1.build();
-//        } else if (startPosition == 2) {
-//            trajectoryActionChosen = tab2.build();
-//        } else {
-//            trajectoryActionChosen = tab3.build();
-//        }
+//        BlueSpec_LeftSpecToObs =
+//                drive.actionBuilder(blueSpec_LeftMidSampleZonePos)
+//                        .setTangent(0)
+//                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(0))
+//                        .build();
 //
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        trajectoryActionChosen,
-//                        lift.liftUp(),
-//                        claw.openClaw(),
-//                        lift.liftDown(),
-//                        trajectoryActionCloseOut
-//                )
-
-    }
-
-}
+//        BlueSpec_ObsToSub =
+//                drive.actionBuilder(blueSpec_ObsSpecPos)
+//                        .setTangent(90)
+//                        .splineToLinearHeading(blueSpec_SubDepoPos, Math.toRadians(90))
+//                        .build();
+//
+//        RedSpec_SubToObs =
+//                drive.actionBuilder(blueSpec_SubDepoPos)
+//                        .setTangent(135)
+//                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(180))
+//                        .build();
+//
+//        BlueSpec_ObsToRightSpec =
+//                drive.actionBuilder(blueSpec_ObsSpecPos)
+//                        .setTangent(270)
+//                        .splineToLinearHeading(blueSpec_RightSampleZonePos, Math.toRadians(0))
+//                        .build();
+//
+//        BlueSpec_RightSpecToObs =
+//                drive.actionBuilder(blueSpec_RightSampleZonePos)
+//                        .setTangent(180)
+//                        .splineToLinearHeading(blueSpec_ObsSpecPos, Math.toRadians(270))
+//                        .build();
+//
+//        BlueSpec_Park =
+//                drive.actionBuilder(blueSpec_SubDepoPos)
+//                        .lineToX(40)
+//                        .setTangent(300)
+//                        .splineToLinearHeading(blueSpec_ObsParkPos, Math.toRadians(270))
+//                        .build();
+//
+//
+//
+//        //blue basket auto
+//
+//        BlueBasket_StartToSub =
+//                drive.actionBuilder(redBasket_StartPos)
+//                        .setTangent(70)
+//                        .splineToLinearHeading(redBasket_SubDrop, Math.toRadians(90))
+//                        .build();
+//
+//        BlueBasket_SubToRightSample =
+//                drive.actionBuilder(redBasket_SubDrop)
+//                        .setTangent(180)
+//                        .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
+//                        .build();
+//
+//        BlueBasket_RightSampleToBasket =
+//                drive.actionBuilder(redBasket_RightSampleZonePos)
+//                        .setTangent(180)
+//                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+//                        .build();
+//
+//        BlueBasket_BasketToMidSample =
+//                drive.actionBuilder(redBasket_BasketDrop)
+//                        .setTangent(45)
+//                        .splineToLinearHeading(redBasket_MidSampleZonePos, Math.toRadians(90))
+//                        .build();
+//
+//        BlueBasket_MidSampleToBasket =
+//                drive.actionBuilder(redBasket_MidSampleZonePos)
+//                        .setTangent(180)
+//                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+//                        .build();
+//
+//        BlueBasket_BasketToLeftSample =
+//                drive.actionBuilder(redBasket_BasketDrop)
+//                        .setTangent(45)
+//                        .splineToLinearHeading(redBasket_LeftSampleZonePos, Math.toRadians(90))
+//                        .build();
+//
+//        BlueBasket_LeftSampleToBasket =
+//                drive.actionBuilder(redBasket_LeftSampleZonePos)
+//                        .setTangent(180)
+//                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+//                        .build();
+//
+//        BlueBasket_BasketToAscent =
+//                drive.actionBuilder(redBasket_BasketDrop)
+//                        .setTangent(0)
+//                        .splineToLinearHeading(redBasket_AscentPos, Math.toRadians(0))
+//                        .build();
+//
+//
+//
