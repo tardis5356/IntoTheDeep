@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
@@ -97,16 +96,16 @@ public class IndexTeleop extends CommandOpMode {
 
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
-                .whenActive(new InstantCommand(arm::armTransit));
+                .whenActive(new InstantCommand(arm::transit));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.Y))
-                .whenActive(new InstantCommand(arm::armSpecimen));
+                .whenActive(new InstantCommand(arm::specimen));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
-                .whenActive(new InstantCommand(arm::armIntake));
+                .whenActive(new InstantCommand(arm::intake));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
-                .whenActive(new InstantCommand(arm::armBasket));
+                .whenActive(new InstantCommand(arm::basket));
 
         //intake
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
@@ -117,16 +116,16 @@ public class IndexTeleop extends CommandOpMode {
 
         //wrist
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(new InstantCommand(wrist::wristTuck));
+                .whenActive(new InstantCommand(wrist::tuck));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whenActive(new InstantCommand(wrist::wristSpecimen));
+                .whenActive(new InstantCommand(wrist::specimen));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(new InstantCommand(wrist::wristIntake));
+                .whenActive(new InstantCommand(wrist::intake));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
-                .whenActive(new InstantCommand(wrist::wristBasket));
+                .whenActive(new InstantCommand(wrist::basket));
 
         //Extendo
         //new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
@@ -139,21 +138,21 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 1));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
-                .toggleWhenActive(new InstantCommand(gripper::closeGripper), new InstantCommand(gripper::openGripper));
+                .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::open));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
-                .whenActive(new InstantCommand(gripper::intakeGripper));
+                .whenActive(new InstantCommand(gripper::intake));
 
 
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
-                .whenActive(new InstantCommand(intake::intakeOut));
+                .whenActive(new InstantCommand(intake::transfer));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
-                .whenActive(new InstantCommand(intake::intakeIn));
+                .whenActive(new InstantCommand(intake::in));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(new InstantCommand(intake::intakeStop));
+                .whenActive(new InstantCommand(intake::stop));
     }
 
 
@@ -179,7 +178,6 @@ public class IndexTeleop extends CommandOpMode {
         //telemetry.addData("GripperState", gripper.checkGripper());
         telemetry.addData("ArmPosition", arm.sAR.getPosition());
         telemetry.update();
-        //return mFLPower;
     }
 
     private double cubicScaling(float joystickValue) {

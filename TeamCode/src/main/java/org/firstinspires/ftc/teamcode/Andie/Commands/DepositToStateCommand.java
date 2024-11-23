@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.LIFT_BASKET_LOW;
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.LIFT_WALL;
-
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -24,8 +21,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(arm::armIntake)
+                                new InstantCommand(wrist::intake),
+                                new InstantCommand(arm::intake)
 //                                new WaitCommand(400),
 //                                new InstantCommand(gripper::intakeGripper),
 //                                new LiftToStateCommand(lift, 0, 25)
@@ -39,12 +36,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 //                                new LiftToStateCommand(lift, 10, 25),
-                                new InstantCommand(wrist::wristTuck),
+                                new InstantCommand(wrist::tuck),
                                 new WaitCommand(10),
-                                new InstantCommand(arm::armIntake),
+                                new InstantCommand(arm::intake),
                                 new WaitCommand(400),
-                                new InstantCommand(wrist::wristIntake),
-                                new InstantCommand(gripper::intakeGripper),
+                                new InstantCommand(wrist::intake),
+                                new InstantCommand(gripper::intake),
                                 new LiftToStateCommand(lift, 0, 25)
 
                         )
@@ -57,9 +54,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 //                                new LiftToStateCommand(lift, 10, 25),
 //                                new InstantCommand(wrist::wristTuck),
 //                                new WaitCommand(100),
-                                new InstantCommand(arm::armSpecimen),
+                                new InstantCommand(arm::specimen),
 //                                new WaitCommand(100),
-                                new InstantCommand(wrist::wristSpecimen)
+                                new InstantCommand(wrist::specimen)
                         )
                 );
                 break;
@@ -67,14 +64,14 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 depositCurrentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(wrist::wristTuck),
+                                new InstantCommand(wrist::tuck),
                                 new WaitCommand(250),
-                                new InstantCommand(arm::armTransit),
+                                new InstantCommand(arm::transit),
                                 new LiftToStateCommand(lift, 10, 25),
                                 new WaitCommand(500),
-                                new InstantCommand(arm::armSpecimen),
+                                new InstantCommand(arm::specimen),
                                 new WaitCommand(100),
-                                new InstantCommand(wrist::wristSpecimen),
+                                new InstantCommand(wrist::specimen),
                                 new WaitCommand(100)
 
                         )
@@ -86,8 +83,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 //                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
 //                                new WaitCommand(250),
-                                new InstantCommand(wrist::wristBasket),
-                                new InstantCommand(arm::armBasket)
+                                new InstantCommand(wrist::basket),
+                                new InstantCommand(arm::basket)
                         )
                 );
                 break;

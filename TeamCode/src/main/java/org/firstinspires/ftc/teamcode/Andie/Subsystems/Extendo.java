@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_IN;
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_MIDDLE;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_OUT;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -30,20 +28,21 @@ public class Extendo extends SubsystemBase {
 
     }
 
-    public void extendoIn(){
+    public void in(){
         extensionPosition = EXTENDO_IN;
     }
-    public void extendoOut(){
+    public void out(){
         extensionPosition = EXTENDO_OUT;
     }
-    public void extendoUdate(double stickPosition){
+
+    public void update(double stickPosition){
         stickInput = stickPosition;
 
         if(sER.getPosition() > .8){
             extensionPosition = .8;
         }
-        else if(sER.getPosition() < .5){
-            extensionPosition = .5;
+        else if(sER.getPosition() < .4){
+            extensionPosition = .4;
         }
         else{
             extensionPosition += stickInput;

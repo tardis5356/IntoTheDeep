@@ -12,9 +12,11 @@ import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.YELLO
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 
 public class Intake extends SubsystemBase {
@@ -43,18 +45,18 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-        if(checkIntake()&&Intaking) {
-            if (checkIntakeBlue()) {//Add team color conditionals later
-                intakeOut();
-            }else if (checkIntakeRed()) {//Add team color conditionals later
-                intakeOut();
+        if(checkSample()&&Intaking) {
+            if (checkBlue()) {//Add team color conditionals later
+                transfer();
+            }else if (checkRed()) {//Add team color conditionals later
+                transfer();
             }else {
-                intakeStop();
+                stop();
             }
 
         }
-        if(!checkIntake()&&!Intaking){
-            intakeStop();
+        if(!checkSample()&&!Intaking){
+            stop();
         }
     }
 
@@ -63,45 +65,51 @@ public class Intake extends SubsystemBase {
 
 
 
-    public void intakeIn(){
+    public void in(){
         Intaking = true;
         sIR.setPower(BotPositions.INTAKE_IN);
         sIL.setPower(BotPositions.INTAKE_IN);
 
     }
-
-    public void intakeOut(){
+    public void out(){
 
         sIR.setPower(BotPositions.INTAKE_OUT);
         sIL.setPower(BotPositions.INTAKE_OUT);
         Intaking = false;
     }
-    public void intakeStop(){
+
+    public void transfer(){
+
+        sIR.setPower(BotPositions.INTAKE_IN);
+        sIL.setPower(BotPositions.INTAKE_IN);
+        Intaking = false;
+    }
+    public void stop(){
         sIR.setPower(BotPositions.INTAKE_STOP);
         sIL.setPower(BotPositions.INTAKE_STOP);
         Intaking = false;
     }
-    public boolean checkIntakeRed(){
+    public boolean checkRed(){
         if (cI.red() >= RED_MIN && cI.red() <= RED_MAX){
             return true;
         }
         else return false;
     }
-    public boolean checkIntakeYellow(){
+    public boolean checkYellow(){
         if (cI.red() >= YELLOW_MIN && cI.red() <= YELLOW_MAX){
             return true;
         }
         else return false;
     }
-    public boolean checkIntakeBlue(){
+    public boolean checkBlue(){
         if (cI.green() >= BLUE_MIN && cI.green() <= BLUE_MAX){
             return true;
 
         }
         else return false;
     }
-    public boolean checkIntake(){
-        if (checkIntakeYellow()||checkIntakeBlue()||checkIntakeRed()){
+    public boolean checkSample(){
+        if (((DistanceSensor) cI).getDistance(DistanceUnit.CM) <= 2.5){
             return true;
         }
         else return false;

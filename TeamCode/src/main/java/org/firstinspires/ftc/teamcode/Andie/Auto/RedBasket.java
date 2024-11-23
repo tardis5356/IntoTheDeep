@@ -280,7 +280,7 @@ public class RedBasket extends LinearOpMode{
                 trajectoryActionChosen = RedBasketAuto.build();
                 break;
             case RedSpecimenAuto:
-                trajectoryActionChosen = RedSpecimenAuto.build();
+               // trajectoryActionChosen = RedSpecimenAuto.build();
                 break;
             default:
                 break;

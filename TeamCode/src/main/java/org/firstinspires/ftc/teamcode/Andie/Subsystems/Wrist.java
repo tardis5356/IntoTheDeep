@@ -16,14 +16,14 @@ public class Wrist extends SubsystemBase {
 
     public void periodic(){}
 
-    public void wristTuck(){
+    public void tuck(){
         sW.setPosition(BotPositions.WRIST_TRANSIT);
     }
-    public void wristSpecimen(){
+    public void specimen(){
         sW.setPosition(BotPositions.WRIST_WALL);
     }
-    public void wristIntake(){
+    public void intake(){
         sW.setPosition(BotPositions.WRIST_INTAKE);
     }
-    public void wristBasket(){sW.setPosition(BotPositions.WRIST_BASKET);}
+    public void basket(){sW.setPosition(BotPositions.WRIST_BASKET);}
 }
