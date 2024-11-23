@@ -97,7 +97,7 @@ public class TestTeleop extends CommandOpMode {
 
         intakeInCommand = new IntakeInCommand(intake);
 
-
+        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
 
 
@@ -125,11 +125,10 @@ public class TestTeleop extends CommandOpMode {
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
-//        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
-//                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER)
-//                .whenActive(new InstantCommand());
-//        new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
-//                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)
+                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER);
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==FAST_SPEED_MULTIPLIER)
+                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
 //
 //        //gripper Command
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
