@@ -91,9 +91,10 @@ public class Lift extends SubsystemBase {
     public double getCurrentPosition() {
         return mLT.getCurrentPosition();
     }
+    public double getTargetPosition(){return targetPosition;}
 
     public double getCurrentPID() {
-        return -controller.calculate(-mLT.getCurrentPosition(), targetPosition);
+        return controller.calculate(mLT.getCurrentPosition(), targetPosition);
     }
 
     public void setTargetPosition(double newTargetPosition){

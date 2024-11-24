@@ -99,7 +99,7 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand(arm::transit));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.Y))
-                .whenActive(new InstantCommand(arm::specimen));
+                .whenActive(new InstantCommand(arm::wall));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new InstantCommand(arm::intake));
@@ -119,7 +119,7 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand(wrist::tuck));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whenActive(new InstantCommand(wrist::specimen));
+                .whenActive(new InstantCommand(wrist::wall));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
                 .whenActive(new InstantCommand(wrist::intake));

@@ -11,13 +11,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Gripper extends SubsystemBase {
     private Servo sG;
-    private ColorSensor cG;
+    private ColorSensor cG, cJ;
+
     boolean gripperClosed;
     boolean sensorClose;
 
     public Gripper(HardwareMap hardwareMap){
         sG = hardwareMap.get(Servo.class, "sG");
         cG = hardwareMap.get(ColorSensor.class, "cG");
+        cJ = hardwareMap.get(ColorSensor.class, "cJ");
         //sensorClose = false;
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
     }
@@ -45,8 +47,15 @@ public class Gripper extends SubsystemBase {
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
         gripperClosed = false;
     }
-    public boolean verify(){
+    public boolean verifyGripper(){
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 2.5)){
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean verifyJig(){
+        if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 1)){
             return true;
         }
         else return false;

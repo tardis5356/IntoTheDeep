@@ -31,7 +31,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         )
                 );
                 break;
-            case "specimenToIntake":
+            case "wallToIntake":
                 depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
@@ -47,21 +47,21 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         )
                 );
                 break;
-            case "intakeToSpecimen":
-                depositCurrentState = "specimen";
+            case "intakeToWall":
+                depositCurrentState = "wall";
                 addCommands(
                         new SequentialCommandGroup(
 //                                new LiftToStateCommand(lift, 10, 25),
 //                                new InstantCommand(wrist::wristTuck),
 //                                new WaitCommand(100),
-                                new InstantCommand(arm::specimen),
+                                new InstantCommand(arm::wall),
 //                                new WaitCommand(100),
-                                new InstantCommand(wrist::specimen)
+                                new InstantCommand(wrist::wall)
                         )
                 );
                 break;
-            case "basketToSpecimen":
-                depositCurrentState = "specimen";
+            case "basketToWall":
+                depositCurrentState = "wall";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::tuck),
@@ -69,9 +69,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::transit),
                                 new LiftToStateCommand(lift, 10, 25),
                                 new WaitCommand(500),
-                                new InstantCommand(arm::specimen),
+                                new InstantCommand(arm::wall),
                                 new WaitCommand(100),
-                                new InstantCommand(wrist::specimen),
+                                new InstantCommand(wrist::wall),
                                 new WaitCommand(100)
 
                         )
@@ -88,6 +88,76 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         )
                 );
                 break;
+
+            case "wallToBasket":
+                depositCurrentState = "basket";
+                addCommands(
+                        new SequentialCommandGroup(
+//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                                new WaitCommand(250),
+                                new InstantCommand(wrist::basket),
+                                new InstantCommand(arm::basket)
+                        )
+                );
+
+            case "intakeToSpecimen":
+                depositCurrentState = "specimen";
+                addCommands(
+                        new SequentialCommandGroup(
+//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                                new WaitCommand(250),
+                                new InstantCommand(wrist::specimen),
+                                new InstantCommand(arm::specimen)
+                        )
+                );
+
+            case "specimenToIntake":
+                depositCurrentState = "intake";
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(gripper::intake),
+                                new InstantCommand(wrist::intake),
+                                new InstantCommand(arm::intake)
+//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                                new WaitCommand(250),
+                        )
+
+                );
+
+            case "wallToSpecimen":
+                depositCurrentState = "specimen";
+                addCommands(
+//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                        new WaitCommand(250),
+                        new InstantCommand(arm::specimen),
+                        new InstantCommand(wrist::specimen),
+                        new InstantCommand(gripper::open)
+                );
+            case "specimenToWall":
+                depositCurrentState = "wall";
+                addCommands(
+//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                        new WaitCommand(250),
+                        new InstantCommand(arm::wall),
+                        new InstantCommand(wrist::wall)
+                );
+            case "specimenToBasket":
+                depositCurrentState = "basket";
+                addCommands(
+//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                        new WaitCommand(250),
+                        new InstantCommand(arm::basket),
+                        new InstantCommand(wrist::basket)
+                );
+            case "basketToSpecimen":
+                depositCurrentState = "specimen";
+                addCommands(
+//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
+//                        new WaitCommand(250),
+                        new InstantCommand(arm::specimen),
+                        new InstantCommand(wrist::specimen)
+                );
+
 //            case "transit":
 //                currentState = "transit";
 //                addCommands(
@@ -100,5 +170,14 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 //                break;
 
         }
+    }
+    public void setBasket(){
+        depositCurrentState = "basket";
+    }
+    public void setIntake(){
+        depositCurrentState = "intake";
+    }
+    public void setWall(){
+        depositCurrentState = "wall";
     }
 }
