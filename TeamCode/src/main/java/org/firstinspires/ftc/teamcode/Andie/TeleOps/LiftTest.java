@@ -27,17 +27,17 @@ public class LiftTest extends CommandOpMode {
         aparatus = new GamepadEx(gamepad1);
         lift = new Lift(hardwareMap);
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_WALL, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.A))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_LOW, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_LOW, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.B))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, 20));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE));
 //        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
 //                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, 1));
 //        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_LEFT))

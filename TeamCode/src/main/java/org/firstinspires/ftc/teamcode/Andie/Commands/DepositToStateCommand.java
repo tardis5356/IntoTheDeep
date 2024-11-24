@@ -101,4 +101,13 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
         }
     }
+    public void setBasket(){
+        depositCurrentState = "basket";
+    }
+    public void setIntake(){
+        depositCurrentState = "intake";
+    }
+    public void setSpecimin(){
+        depositCurrentState = "specimen";
+    }
 }

@@ -78,7 +78,7 @@ public class Lift extends SubsystemBase {
         }
         else if (targetPosition == -10) {
             motorPower = 0;
-        } else if (targetPosition != -15 || targetPosition != -10) {
+        } else if (targetPosition != -15) {
             motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();
         } else {
             motorPower = -BotPositions.ANTI_GRAV;
