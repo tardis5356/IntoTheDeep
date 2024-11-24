@@ -122,9 +122,8 @@ public class AutoTrajectories {
 
         redSpec_StartToSub =
                 drive.actionBuilder(redSpec_StartPos)
-                        .lineToY(-34)
-//                        .setTangent(90)
-//                        .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                        .setTangent(90)
+                        .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .build();
 
 
@@ -165,7 +164,6 @@ public class AutoTrajectories {
 
         redSpec_Park =
                 drive.actionBuilder(redSpec_SubDepoPos)
-                        .lineToX(40)
                         .setTangent(180)
                         .splineToLinearHeading(redSpec_ObsParkPos, Math.toRadians(270))
                         .build();
@@ -193,9 +191,8 @@ public class AutoTrajectories {
 
         redBasket_StartToSub =
                 drive.actionBuilder(redBasket_StartPos)
-                        .lineToY(-34)
-//                        .setTangent(70)
-//                        .splineToLinearHeading(redBasket_SubDepoPos, Math.toRadians(90))
+                        .setTangent(70)
+                        .splineToLinearHeading(redBasket_SubDepoPos, Math.toRadians(90))
                         .build();
 
         redBasket_SubToRightSample =
