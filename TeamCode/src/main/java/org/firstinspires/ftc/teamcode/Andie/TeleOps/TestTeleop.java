@@ -171,11 +171,11 @@ public class TestTeleop extends CommandOpMode {
 //
 //
         //if(extendo.sER.getPosition()<=.6) {
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .6)
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
                     .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
         //}
 
-            new Trigger(() -> extendo.sER.getPosition() >= .6)
+            new Trigger(() -> extendo.sER.getPosition() >= .72)
                     .whenActive(new InstantCommand(intake::intakeUp));
 
 
@@ -227,6 +227,12 @@ public class TestTeleop extends CommandOpMode {
                         new InstantCommand(depositToStateCommand::setWall),
                         new InstantCommand(arm::wall),
                         new InstantCommand(wrist::wall)
+                ));
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && lift.getCurrentPosition() < -500)
+                .whenActive(new SequentialCommandGroup(
+                        new InstantCommand(depositToStateCommand::setBasket),
+                        new InstantCommand(arm::specimen),
+                        new InstantCommand(wrist::specimen)
                 ));
 
     }
