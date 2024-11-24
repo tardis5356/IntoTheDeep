@@ -19,8 +19,11 @@ public class Wrist extends SubsystemBase {
     public void tuck(){
         sW.setPosition(BotPositions.WRIST_TRANSIT);
     }
-    public void specimen(){
+    public void wall(){
         sW.setPosition(BotPositions.WRIST_WALL);
+    }
+    public void specimen(){
+        sW.setPosition(BotPositions.WRIST_SPECIMEN);
     }
     public void intake(){
         sW.setPosition(BotPositions.WRIST_INTAKE);

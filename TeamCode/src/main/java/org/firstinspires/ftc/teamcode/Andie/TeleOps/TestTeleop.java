@@ -134,7 +134,7 @@ public class TestTeleop extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
                 .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-        new Trigger(()-> (gripper.verifyJig() && depositToStateCommand.depositCurrentState == "intake") || (depositToStateCommand.depositCurrentState == "specimen" && gripper.verifyGripper()))
+        new Trigger(()-> (gripper.verifyJig() && depositToStateCommand.depositCurrentState == "intake") || (depositToStateCommand.depositCurrentState == "wall" && gripper.verifyGripper()))
                 .whenActive(new InstantCommand(gripper::close));
 //
 //        //lift presets
@@ -224,9 +224,9 @@ public class TestTeleop extends CommandOpMode {
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && lift.getCurrentPosition() < -500)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setSpecimin),
-                        new InstantCommand(arm::specimen),
-                        new InstantCommand(wrist::specimen)
+                        new InstantCommand(depositToStateCommand::setWall),
+                        new InstantCommand(arm::wall),
+                        new InstantCommand(wrist::wall)
                 ));
 
     }
