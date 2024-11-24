@@ -181,7 +181,7 @@ public class RedBasket extends LinearOpMode{
         int visionOutputPosition = 1;
 
 
-        TrajectoryActionBuilder RunToSub =
+        TrajectoryActionBuilder RedSpecimenAuto =
                 drive.actionBuilder(redSpec_StartPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
