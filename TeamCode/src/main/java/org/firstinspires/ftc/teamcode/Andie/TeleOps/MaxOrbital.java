@@ -53,5 +53,8 @@ public class MaxOrbital extends CommandOpMode {
 
 
     }
+    public void run() {
+        super.run();
+    }
 
 }
