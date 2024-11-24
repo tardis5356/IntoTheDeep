@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Andie.Auto.Trajectory.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
 
 
@@ -71,12 +71,11 @@ public class CommandSpecimenAuto extends OpMode {
     private Wrist wrist;
     private Subsystem ExampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToLeftSpec;
-    private ActionCommand RedSpec_LeftSpecToObs;
+    private ActionCommand RedSpec_SubToLeftSpecToObs;
+    private ActionCommand RedSpec_SubToMidSpecToObs;
+    private ActionCommand RedSpec_SubToRightSpecToObs;
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
-    private ActionCommand RedSpec_ObsToRightSpec;
-    private ActionCommand RedSpec_RightSpecToObs;
     private ActionCommand RedSpec_Park;
 
     private DepositToStateCommand depositToStateCommand;
@@ -150,21 +149,24 @@ public class CommandSpecimenAuto extends OpMode {
                 RedSpec_StartToSub,
                 new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
                 //hang the specimen
-                RedSpec_SubToLeftSpec,
-                RedSpec_LeftSpecToObs,//left + mid specimens pushed back to os zone
-                //pick up left specimen
+                RedSpec_SubToLeftSpecToObs,
+                //pick and drop left spec
+                RedSpec_SubToMidSpecToObs,
+                //pick and drop mid spec
+                RedSpec_SubToRightSpecToObs,
+                //pick and drop right spec
                 RedSpec_ObsToSub,
                 //hang the specimen
                 RedSpec_SubToObs,
                 //pick second specimen
-                RedSpec_ObsToRightSpec,
-                RedSpec_RightSpecToObs,
-                //push back second specimen
+                RedSpec_ObsToSub,
+                //hang the specimen
+                RedSpec_SubToObs,
+                //pick second specimen
                 RedSpec_ObsToSub,
                 //hang second specimen
-                RedSpec_SubToObs//park
-
-
+                RedSpec_Park
+                //park
         );
     }
 
