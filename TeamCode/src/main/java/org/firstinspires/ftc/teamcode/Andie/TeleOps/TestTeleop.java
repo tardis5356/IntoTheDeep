@@ -204,27 +204,23 @@ public class TestTeleop extends CommandOpMode {
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new InstantCommand(intake::transfer));
 
-        new Trigger(()-> intake.checkSample()&&extendo.sER.getPosition() >= .75&& limitLift.isPressed()&& depositToStateCommand.depositCurrentState == "intake")
+        new Trigger(()-> intake.checkSample()&&extendo.sER.getPosition() >= .75&& limitLift.isPressed()&& depositToStateCommand.depositCurrentState == "Intake")
                 .whenActive(new InstantCommand(intake::transfer));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(
-                        new SequentialCommandGroup(
-                                new InstantCommand(depositToStateCommand::setBasket),
-                                new InstantCommand(arm::basket),
-                                new InstantCommand(wrist::basket)
+                .whenActive(new SequentialCommandGroup(
+                        new InstantCommand(arm::basket),
+                        new InstantCommand(wrist::basket)
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setIntake),
                         new InstantCommand(arm::intake),
                         new InstantCommand(wrist::intake)
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && lift.getCurrentPosition() < -500)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setSpecimin),
                         new InstantCommand(arm::specimen),
                         new InstantCommand(wrist::specimen)
                 ));
@@ -234,15 +230,15 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        if (extendo.extensionPosition > 0.7) {
-
-                new InstantCommand(intake::intakeUp);
-                new WaitCommand(200);
-                new InstantCommand(extendo::in);
-                new WaitCommand(300);
-                new InstantCommand(intake::transfer);
-
-        }
+//        if (extendo.extensionPosition > 0.7) {
+//
+//                new InstantCommand(intake::intakeUp);
+//                new WaitCommand(200);
+//                new InstantCommand(extendo::in);
+//                new WaitCommand(300);
+//                new InstantCommand(intake::transfer);
+//
+//        }
 
 
             LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
@@ -279,7 +275,6 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-        telemetry.addData("RobotState", depositToStateCommand.depositCurrentState);
         telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());

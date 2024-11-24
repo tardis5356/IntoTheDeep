@@ -54,9 +54,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 //                                new LiftToStateCommand(lift, 10, 25),
 //                                new InstantCommand(wrist::wristTuck),
 //                                new WaitCommand(100),
-                                new InstantCommand(arm::specimen),
+                                new InstantCommand(arm::wall),
 //                                new WaitCommand(100),
-                                new InstantCommand(wrist::specimen)
+                                new InstantCommand(wrist::wall)
                         )
                 );
                 break;
@@ -69,9 +69,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::transit),
                                 new LiftToStateCommand(lift, 10, 25),
                                 new WaitCommand(500),
-                                new InstantCommand(arm::specimen),
+                                new InstantCommand(arm::wall),
                                 new WaitCommand(100),
-                                new InstantCommand(wrist::specimen),
+                                new InstantCommand(wrist::wall),
                                 new WaitCommand(100)
 
                         )

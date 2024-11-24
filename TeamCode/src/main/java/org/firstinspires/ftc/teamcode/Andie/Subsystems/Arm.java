@@ -20,11 +20,11 @@ public class Arm extends SubsystemBase {
 
     public void periodic(){}
 
-    public void specimen(){
-        sAL.setPosition(BotPositions.ARM_SPECIMEN);
-        sAR.setPosition(BotPositions.ARM_SPECIMEN);
+    public void wall(){
+        sAL.setPosition(BotPositions.ARM_WALL);
+        sAR.setPosition(BotPositions.ARM_WALL);
     }
-    public void armWall(){
+    public void specimen(){
         sAL.setPosition(BotPositions.ARM_SPECIMEN);
         sAR.setPosition(BotPositions.ARM_SPECIMEN);
     }
