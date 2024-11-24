@@ -234,15 +234,15 @@ public class TestTeleop extends CommandOpMode {
     public void run() {
         super.run();
 
-        if (extendo.extensionPosition > 0.7) {
-
-                new InstantCommand(intake::intakeUp);
-                new WaitCommand(200);
-                new InstantCommand(extendo::in);
-                new WaitCommand(300);
-                new InstantCommand(intake::transfer);
-
-        }
+//        if (extendo.extensionPosition > 0.7) {
+//
+//                new InstantCommand(intake::intakeUp);
+//                new WaitCommand(200);
+//                new InstantCommand(extendo::in);
+//                new WaitCommand(300);
+//                new InstantCommand(intake::transfer);
+//
+//        }
 
 
             LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
