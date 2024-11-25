@@ -98,17 +98,17 @@ public class CommandSpecimenAuto extends OpMode {
      */
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, redSpec_StartPos); //
+        drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos)); //
-//
+        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
+
 
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
-        extendo = new Extendo(hardwareMap);
+        extendo = new Extendo(hardwareMap);//20 inches
         wrist = new Wrist(hardwareMap);
         ExampleSubsystem = new ExampleSubsystem(hardwareMap);
 
