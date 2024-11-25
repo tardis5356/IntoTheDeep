@@ -138,16 +138,15 @@ public class CommandSpecimenAuto extends OpMode {
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
-        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
+        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
         time_since_start = new ElapsedTime();
 
 
 
-
         CommandScheduler.getInstance().schedule(
                 RedSpec_StartToSub,
-                new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
+//                new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
                 //hang the specimen
                 RedSpec_SubToLeftSpecToObs,
                 //pick and drop left spec
@@ -165,7 +164,7 @@ public class CommandSpecimenAuto extends OpMode {
                 //pick second specimen
                 RedSpec_ObsToSub,
                 //hang second specimen
-                RedSpec_Park
+                 RedSpec_Park
                 //park
         );
     }
