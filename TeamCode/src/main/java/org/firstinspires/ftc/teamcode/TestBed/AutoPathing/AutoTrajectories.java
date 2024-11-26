@@ -1,18 +1,11 @@
 package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.Subsystem;
 
 
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
-
-import java.util.Set;
 
 
 public class AutoTrajectories {
@@ -22,18 +15,19 @@ public class AutoTrajectories {
 
     //Red Specimen Poses
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -62, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(4, -34, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -34, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(36, -61, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(60, -45, Math.toRadians(70));
-    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(48, -45, Math.toRadians(70));
-    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(40, -45, Math.toRadians(70));
+    public static final Pose2d redSpec_ObsDepoPos = new Pose2d(36, -52, Math.toRadians(330));
+    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(36, -52, Math.toRadians(30));
+    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(36, -52, Math.toRadians(45));
+    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(36, -52, Math.toRadians(60));
     public static final Pose2d redSpec_ObsParkPos = new Pose2d(36,-63,Math.toRadians(90));
 
 //    public static final Pose2d redSpec_ObsSlideParkPos = new Pose2d(40,-18,Math.toRadians(270)); // might not need this
 
     //Red Basket Poses
-    public static final Pose2d redBasket_StartPos = new Pose2d(-8, -62, Math.toRadians(270));
-    public static final Pose2d redBasket_SubDepoPos = new Pose2d(-4, -64, Math.toRadians(90));
+    public static final Pose2d redBasket_StartPos = new Pose2d(-8, -62, Math.toRadians(90));
+    public static final Pose2d redBasket_SubDepoPos = new Pose2d(-8, -34, Math.toRadians(90));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45));
     public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -48, Math.toRadians(90));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-60,-48, Math.toRadians(90));
@@ -131,22 +125,25 @@ public class AutoTrajectories {
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(300)
                         .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
-                        .turn(140)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+                        //.turn(140)
 //                        .stopAndAdd(lift.liftUp())
                         .build();
 
         redSpec_SubToMidSpecToObs =
-                drive.actionBuilder(redSpec_LeftSpecZonePos)
+                drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(0)
                         .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
-                        .turn(140)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+//                        .turn(140)
                         .build();
 
         redSpec_SubToRightSpecToObs =
-                drive.actionBuilder(redSpec_MidSpecZonePos)
+                drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(0)
                         .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
-                        .turn(140)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+//                        .turn(140)
                         .build();
 
 
