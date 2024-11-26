@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.Subsystem;
 
 
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
+
+import java.util.Set;
 
 
 public class AutoTrajectories {

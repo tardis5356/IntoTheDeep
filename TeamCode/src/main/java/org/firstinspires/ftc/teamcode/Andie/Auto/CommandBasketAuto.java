@@ -107,7 +107,7 @@ public class CommandBasketAuto extends OpMode {
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
-        extendo = new Extendo(hardwareMap);
+        extendo = new Extendo(hardwareMap);//20 inches
         wrist = new Wrist(hardwareMap);
         ExampleSubsystem = new ExampleSubsystem(hardwareMap);
 

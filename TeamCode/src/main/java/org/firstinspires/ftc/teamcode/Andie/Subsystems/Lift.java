@@ -36,7 +36,10 @@ public class Lift extends SubsystemBase {
         mLT.setDirection(DcMotorSimple.Direction.REVERSE);
         mLB.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        controller = new PIDController(0.02, 0, 0);
+        //IMPORTANT NOTES ON TUNING PID. The P value can be seen as how fast the lift moves to reach a position. Start very
+        //small and slowly increase it until the lift slightly occelates around the desired location. Then, increase the D value,
+        //also starting very small and slowly increasing. The D value determines how much the lift slows down as it approaches the desired value.
+        controller = new PIDController(BotPositions.LIFT_P, 0, BotPositions.LIFT_D);
     }
 
     public void ManualMode(double left, double right) {
