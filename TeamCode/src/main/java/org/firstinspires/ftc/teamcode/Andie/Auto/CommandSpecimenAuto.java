@@ -98,17 +98,17 @@ public class CommandSpecimenAuto extends OpMode {
      */
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, redSpec_StartPos); //
+        drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos)); //
-//
+        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
+
 
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
-        extendo = new Extendo(hardwareMap);
+        extendo = new Extendo(hardwareMap);//20 inches
         wrist = new Wrist(hardwareMap);
         ExampleSubsystem = new ExampleSubsystem(hardwareMap);
 
@@ -138,16 +138,15 @@ public class CommandSpecimenAuto extends OpMode {
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
-        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
+        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
         time_since_start = new ElapsedTime();
 
 
 
-
         CommandScheduler.getInstance().schedule(
                 RedSpec_StartToSub,
-                new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
+//                new DepositToStateCommand(arm, wrist, gripper, lift, "baskeToIntake"),// arm and wrist and gripper all go to intake position
                 //hang the specimen
                 RedSpec_SubToLeftSpecToObs,
                 //pick and drop left spec
@@ -165,7 +164,7 @@ public class CommandSpecimenAuto extends OpMode {
                 //pick second specimen
                 RedSpec_ObsToSub,
                 //hang second specimen
-                RedSpec_Park
+                 RedSpec_Park
                 //park
         );
     }
