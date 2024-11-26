@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_Park;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToRightSpecToObs;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -138,7 +144,14 @@ public class CommandSpecimenAuto extends OpMode {
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
+
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
+        RedSpec_SubToLeftSpecToObs = new ActionCommand(redSpec_SubToLeftSpecToObs, requirements);
+        RedSpec_SubToMidSpecToObs = new ActionCommand(redSpec_SubToMidSpecToObs, requirements);
+        RedSpec_SubToRightSpecToObs = new ActionCommand(redSpec_SubToRightSpecToObs, requirements);
+        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);
+        RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
+        RedSpec_Park = new ActionCommand(redSpec_Park, requirements);
 
         time_since_start = new ElapsedTime();
 
