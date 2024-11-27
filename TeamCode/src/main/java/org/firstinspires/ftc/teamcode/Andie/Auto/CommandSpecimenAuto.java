@@ -193,41 +193,42 @@ public class CommandSpecimenAuto extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(//REMEMBER TO ADD
-                        RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
+                         RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
 
                         //hang the specimen
                         RedSpec_SubToLeftSpec,
-                        extendoSpecLeft,
-                        intakeIn,
+//                        extendoSpecLeft,
+//                        intakeIn,
                         RedSpec_LeftSpecToObsDepo,
-                        intakeOut,
-                        //Pick up sample
+//                        intakeOut,
+//                        //Pick up sample
                         RedSpec_ObsDepoToMidSpec,
-                        extendoSpecMid,
-                        intakeIn,
-                        //drop off sample in Obs Zone
+//                        extendoSpecMid,
+//                        intakeIn,
+//                        //drop off sample in Obs Zone
                         RedSpec_MidSpecToObsDepo,
-                        intakeOut,
-                        //Pick up sample
+//                        intakeOut,
+//                        //Pick up sample
                         RedSpec_ObsDepoToRightSpec,
-                        extendoSpecRight,
-                        intakeIn,
-//                // drop off sample in Obs Zone
+//                        extendoSpecRight,
+//                        intakeIn,
+////                // drop off sample in Obs Zone
                         RedSpec_RightSpecToObsDepo,
-                        intakeOut
-//                //pick and drop right spec
-//                RedSpec_ObsToSub,
-//                //hang the specimen
-//                RedSpec_SubToObs,
-//                //pick second specimen
-//                RedSpec_ObsToSub,
-//                //hang the specimen
-//                RedSpec_SubToObs,
-//                //pick second specimen
-//                RedSpec_ObsToSub,
-//                //hang second specimen
+//                        intakeOut,
+////                //pick and drop right spec
+                RedSpec_ObsToSub,
+////                //hang the specimen
+                RedSpec_SubToObs,
+////                //pick second specimen
+                RedSpec_ObsToSub,
+////                //hang the specimen
+                RedSpec_SubToObs,
+////                //pick second specimen
+                RedSpec_ObsToSub,
+                RedSpec_SubToObs
+////                //hang second specimen
 //                RedSpec_Park
-//                //park
+////                //park
                 )
         );
     }
