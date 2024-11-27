@@ -208,6 +208,20 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 //setState = "specimen";
                 break;
 
+            case "basketLowToBasketHigh":
+                addCommands(
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+                );
+                //setState = "specimen";
+                break;
+
+            case "basketHighToBasketLow":
+                addCommands(
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
+                );
+                //setState = "specimen";
+                break;
+
 //            case "transit":
 //                currentState = "transit";
 //                addCommands(

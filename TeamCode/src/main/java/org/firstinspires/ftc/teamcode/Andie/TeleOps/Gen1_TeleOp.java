@@ -172,7 +172,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         //Deposit to state commands
 
         //ToIntakeCommands
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "basket")
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"basketToIntake"),
                         new InstantCommand(() -> DepositState = "intake")
@@ -191,7 +191,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 ));
 
         //ToWallCommands
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "basket")
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"basketToWall"),
                         new InstantCommand(() -> DepositState = "wall")
@@ -213,19 +213,19 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
-                        new InstantCommand(() -> DepositState = "basket")
+                        new InstantCommand(() -> DepositState = "basketHigh")
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
-                        new InstantCommand(() -> DepositState = "basket")
+                        new InstantCommand(() -> DepositState = "basketHigh")
                 ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
-                        new InstantCommand(() -> DepositState = "basket")
+                        new InstantCommand(() -> DepositState = "basketHigh")
                 ));
 
     }
