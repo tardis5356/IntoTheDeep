@@ -64,7 +64,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     double Trigger;
 
-    String DepositState = "intake";
+    static String DepositState;
 
 
     public DepositToStateCommand depositToStateCommand;
@@ -73,6 +73,8 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     @Override
     public void initialize(){
+        DepositState = "intake";
+
         //init controllers
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
@@ -97,7 +99,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         intakeInCommand = new IntakeInCommand(intake);
 
-        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake", "huh");
+        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -133,11 +135,11 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //intake tilting
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
-                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::intakeUp)), new InstantCommand(intake::intakeDown));
+                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::up)), new InstantCommand(intake::down));
 
 
         new Trigger(() -> extendo.sER.getPosition() >= .72)
-                .whenActive(new InstantCommand(intake::intakeUp));
+                .whenActive(new InstantCommand(intake::up));
 
         //intake inning and outing
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample())
@@ -160,7 +162,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
                 .whenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::intakeUp),
+                                new InstantCommand(intake::up),
                                 new WaitCommand(50),
                                 new InstantCommand(extendo::in)));
 
@@ -171,23 +173,60 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //ToIntakeCommands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "basket")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"basketToIntake", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
+                ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "wall")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"wallToIntake", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
+                ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "specimen")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToIntake", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
+                ));
 
         //ToWallCommands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "basket")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"basketToWall", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWall", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
-                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToWall", DepositState));
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
+
+        //ToHighBasket Commands
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "wall")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basket")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basket")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "specimen")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basket")
+                ));
 
     }
     public void run() {
@@ -195,7 +234,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         if (extendo.extensionPosition > 0.7) {
             new SequentialCommandGroup(
-                new InstantCommand(intake::intakeUp),
+                new InstantCommand(intake::up),
                 new WaitCommand(200),
                 new InstantCommand(extendo::in),
                 new WaitCommand(300),
@@ -238,7 +277,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-        telemetry.addData("RobotState", depositToStateCommand.depositCurrentState);
+        telemetry.addData("RobotState", DepositState);
         telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());

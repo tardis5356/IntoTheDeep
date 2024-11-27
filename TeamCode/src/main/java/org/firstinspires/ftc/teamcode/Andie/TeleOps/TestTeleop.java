@@ -95,7 +95,7 @@ public class TestTeleop extends CommandOpMode {
 
         intakeInCommand = new IntakeInCommand(intake);
 
-        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake", "huh");
+        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
 
 
