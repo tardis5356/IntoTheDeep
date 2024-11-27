@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
@@ -15,148 +16,211 @@ public class DepositToStateCommand extends ParallelCommandGroup {
     public String depositCurrentState = "";
 
 
-    public DepositToStateCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, String state) {
-        switch (state) {
+    public DepositToStateCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, String desiredState/*, String setState*/) {
+        switch (desiredState) {
             case "basketToIntake":
-                depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(wrist::intake),
-                                new InstantCommand(arm::intake)
-//                                new WaitCommand(400),
-//                                new InstantCommand(gripper::intakeGripper),
-//                                new LiftToStateCommand(lift, 0, 25)
+                                new InstantCommand(arm::intake),
+                                new WaitCommand(500),
+                                new InstantCommand(gripper::intake),
+                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
                                 //new InstantCommand(wrist::wristIntake)
 
                         )
                 );
+                //setState = "intake";
                 break;
+
             case "wallToIntake":
-                depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
-//                                new LiftToStateCommand(lift, 10, 25),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(wrist::tuck),
-                                new WaitCommand(10),
+                                new WaitCommand(500),
                                 new InstantCommand(arm::intake),
-                                new WaitCommand(400),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, 0, 25)
+                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
 
                         )
                 );
+                //setState = "intake";
                 break;
+
             case "intakeToWall":
-                depositCurrentState = "wall";
                 addCommands(
                         new SequentialCommandGroup(
-//                                new LiftToStateCommand(lift, 10, 25),
-//                                new InstantCommand(wrist::wristTuck),
-//                                new WaitCommand(100),
-                                new InstantCommand(arm::wall),
-//                                new WaitCommand(100),
-                                new InstantCommand(wrist::wall)
-                        )
-                );
-                break;
-            case "basketToWall":
-                depositCurrentState = "wall";
-                addCommands(
-                        new SequentialCommandGroup(
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(wrist::tuck),
-                                new WaitCommand(250),
-                                new InstantCommand(arm::transit),
-                                new LiftToStateCommand(lift, 10, 25),
                                 new WaitCommand(500),
                                 new InstantCommand(arm::wall),
-                                new WaitCommand(100),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::wall),
-                                new WaitCommand(100)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
+                        )
+                );
+                //setState = "wall";
+                break;
+
+            case "basketToWall":
+                addCommands(
+                        //maybe edit this one, needs to be tested
+                        new SequentialCommandGroup(
+                                new InstantCommand(wrist::tuck),
+                                new WaitCommand(500),
+                                new InstantCommand(arm::wall),
+                                new WaitCommand(500),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
+                                new InstantCommand(wrist::wall)
+
 
                         )
                 );
+                //setState = "wall";
                 break;
-            case "intakeToBasket":
-                depositCurrentState = "basket";
+
+            case "intakeToBasketHigh":
                 addCommands(
                         new SequentialCommandGroup(
-//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                                new WaitCommand(250),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::basket),
                                 new InstantCommand(arm::basket)
                         )
                 );
+                //setState = "basket";
                 break;
 
-            case "wallToBasket":
-                depositCurrentState = "basket";
+            case "intakeToBasketLow":
                 addCommands(
                         new SequentialCommandGroup(
-//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                                new WaitCommand(250),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::basket),
                                 new InstantCommand(arm::basket)
                         )
                 );
+                //setState = "basket";
+                break;
+
+            case "wallToBasketLow":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500),
+                                new InstantCommand(wrist::basket),
+                                new InstantCommand(arm::basket)
+                        )
+                );
+                //setState = "basket";
+                break;
+
+            case "wallToBasketHigh":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500),
+                                new InstantCommand(wrist::basket),
+                                new InstantCommand(arm::basket)
+                        )
+                );
+                //setState = "basket";
+                break;
 
             case "intakeToSpecimen":
-                depositCurrentState = "specimen";
                 addCommands(
                         new SequentialCommandGroup(
-//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                                new WaitCommand(250),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500),
                                 new InstantCommand(wrist::specimen),
                                 new InstantCommand(arm::specimen)
                         )
                 );
+                //setState = "specimen";
+                break;
 
             case "specimenToIntake":
-                depositCurrentState = "intake";
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::intake),
                                 new InstantCommand(wrist::intake),
-                                new InstantCommand(arm::intake)
-//                                new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                                new WaitCommand(250),
+                                new InstantCommand(arm::intake),
+                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500)
                         )
 
                 );
+                //setState = "intake";
+                break;
 
             case "wallToSpecimen":
-                depositCurrentState = "specimen";
                 addCommands(
-//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                        new WaitCommand(250),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
                         new InstantCommand(arm::specimen),
                         new InstantCommand(wrist::specimen),
-                        new InstantCommand(gripper::open)
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE)
                 );
+                //setState= "specimen";
+                break;
+
             case "specimenToWall":
-                depositCurrentState = "wall";
                 addCommands(
-//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                        new WaitCommand(250),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
                         new InstantCommand(arm::wall),
-                        new InstantCommand(wrist::wall)
+                        new InstantCommand(wrist::wall),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
                 );
-            case "specimenToBasket":
-                depositCurrentState = "basket";
+                //setState = "wall";
+                break;
+
+            case "specimenToBasketLow":
                 addCommands(
-//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                        new WaitCommand(250),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
                         new InstantCommand(arm::basket),
                         new InstantCommand(wrist::basket)
                 );
-            case "basketToSpecimen":
-                depositCurrentState = "specimen";
+                //setState = "basket";
+                break;
+
+            case "specimenToBasketHigh":
                 addCommands(
-//                        new LiftToStateCommand(lift, LIFT_BASKET_LOW, 25),
-//                        new WaitCommand(250),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
+                        new InstantCommand(arm::basket),
+                        new InstantCommand(wrist::basket)
+                );
+                //setState = "basket";
+                break;
+
+            case "basketToSpecimen":
+                addCommands(
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
                         new InstantCommand(arm::specimen),
                         new InstantCommand(wrist::specimen)
                 );
+                //setState = "specimen";
+                break;
+
+            case "basketLowToBasketHigh":
+                addCommands(
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+                );
+                //setState = "specimen";
+                break;
+
+            case "basketHighToBasketLow":
+                addCommands(
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
+                );
+                //setState = "specimen";
+                break;
 
 //            case "transit":
 //                currentState = "transit";

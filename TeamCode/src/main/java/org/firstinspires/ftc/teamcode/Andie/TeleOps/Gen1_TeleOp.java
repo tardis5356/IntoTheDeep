@@ -25,9 +25,9 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @Config
-@TeleOp(name = "Gen1_Test", group = "AGen1")
-public class TestTeleop extends CommandOpMode {
+@TeleOp(name = "Gen1_TeleOp", group = "AGen1")
 
+public class Gen1_TeleOp extends CommandOpMode {
     //gamepads
     private GamepadEx driver1, driver2;
 
@@ -56,13 +56,15 @@ public class TestTeleop extends CommandOpMode {
 
     private Arm arm;
 
-    private ColorSensor cI;
+    //private ColorSensor cI;
 
-    private TouchSensor limitLift;
+    //private TouchSensor limitLift;
 
     public Boolean TeamColorRed;
 
     double Trigger;
+
+    static String DepositState;
 
 
     public DepositToStateCommand depositToStateCommand;
@@ -70,7 +72,9 @@ public class TestTeleop extends CommandOpMode {
     double RightTrigger;
 
     @Override
-    public void initialize() {
+    public void initialize(){
+        DepositState = "intake";
+
         //init controllers
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
@@ -97,24 +101,17 @@ public class TestTeleop extends CommandOpMode {
 
         depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
-
-
-
-
-
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
 
-        cI = hardwareMap.get(ColorSensor.class, "cI");
-        limitLift = hardwareMap.get(TouchSensor.class, "lL");
+        //cI = hardwareMap.get(ColorSensor.class, "cI");
+        //limitLift = hardwareMap.get(TouchSensor.class, "lL");
         //this motor physically runs opposite. For convenience, reverse direction.
         mBR.setDirection(DcMotorSimple.Direction.REVERSE);
         mFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        //mBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        //mFL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //makes the motors brake when power = zero. Is better for driver precision
         mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -127,131 +124,128 @@ public class TestTeleop extends CommandOpMode {
                 .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER);
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==FAST_SPEED_MULTIPLIER)
                 .whenActive(() -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
-//
-//        //gripper Command
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
+
+
+        //gripper Commands
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
                 .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-        new Trigger(()-> (gripper.verifyJig() && depositToStateCommand.depositCurrentState == "intake") || (depositToStateCommand.depositCurrentState == "wall" && gripper.verifyGripper()))
+        new Trigger(()-> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
                 .whenActive(new InstantCommand(gripper::close));
-//
-//        //lift presets
-////        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-////                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 20));
-//
-//        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT))
-//                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake"));
-//        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
-//
-//                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasket"));
-//
-//        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN))
-//                .whenActive(new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToSpecimen"));
-////
-////        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.1)
-////                .whenActive();
-////
 
-//            new Trigger(() -> !intake.IntakeStopped && !intake.checkIntake())
-//                    .whenActive(
-//                                    new InstantCommand(intake::intakeStop)
-//                            );
-//
-//        new Trigger(() -> !intake.IntakeStopped && intake.checkIntake())
-//                .whenActive(
-//                        new InstantCommand(intake::intakeStop)
-//                );
-//
-//
-//
-//
-//        //temporary wrist
-//
-//
-        //if(extendo.sER.getPosition()<=.6) {
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
-                    .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::up)), new InstantCommand(intake::down));
-        //}
-
-            new Trigger(() -> extendo.sER.getPosition() >= .72)
-                    .whenActive(new InstantCommand(intake::up));
+        //intake tilting
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
+                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::up)), new InstantCommand(intake::down));
 
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)&&!intake.checkSample())
-        .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
+        new Trigger(() -> extendo.sER.getPosition() >= .72)
+                .whenActive(new InstantCommand(intake::up));
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)&&intake.checkSample())
+        //intake inning and outing
+        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample())
+                .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y))
                 .whenActive(new InstantCommand(intake::out));
 
-        //outake
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
-//
-//        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
-//                .whenActive(new InstantCommand(intake::intakeStop));
-//
-//        //Extendo
+
+
+        //transfer
+        new Trigger(()-> intake.checkSample() && DepositState == "intake")
+                .whenActive(new InstantCommand(intake::transfer));
+
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.X) || driver2.getButton(GamepadKeys.Button.X))
+                .whenActive(new InstantCommand(intake::transfer));
+
+
+        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new SequentialCommandGroup(new InstantCommand(intake::up),
-                        new WaitCommand(50),
-                        new InstantCommand(extendo::in)));
+                .whenActive(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::up),
+                                new WaitCommand(50),
+                                new InstantCommand(extendo::in)));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::out));
 
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A))
-                .whenActive(new InstantCommand(intake::transfer));
+        //Deposit to state commands
 
-        new Trigger(()-> intake.checkSample() && extendo.sER.getPosition() >= .75&& depositToStateCommand.depositCurrentState == "intake")
-                .whenActive(new InstantCommand(intake::transfer));
-
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(
-                        new SequentialCommandGroup(
-                                new InstantCommand(depositToStateCommand::setBasket),
-                                new InstantCommand(arm::basket),
-                                new InstantCommand(wrist::basket)
+        //ToIntakeCommands
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && (DepositState == "basketHigh" || DepositState == "basketLow"))
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
                 ));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN))
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setIntake),
-                        new InstantCommand(arm::intake),
-                        new InstantCommand(wrist::intake)
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
                 ));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && lift.getCurrentPosition() < -500)
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setWall),
-                        new InstantCommand(arm::wall),
-                        new InstantCommand(wrist::wall)
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToIntake"),
+                        new InstantCommand(() -> DepositState = "intake")
                 ));
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && lift.getCurrentPosition() < -500)
+
+        //ToWallCommands
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(depositToStateCommand::setBasket),
-                        new InstantCommand(arm::specimen),
-                        new InstantCommand(wrist::specimen)
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToWall"),
+                        new InstantCommand(() -> DepositState = "wall")
+                ));
+
+        //ToHighBasket Commands
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "wall")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basketHigh")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basketHigh")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "specimen")
+                .whenActive(new SequentialCommandGroup(
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
+                        new InstantCommand(() -> DepositState = "basketHigh")
                 ));
 
     }
-
     public void run() {
         super.run();
 
-//        if (extendo.extensionPosition > 0.7) {
-//
-//                new InstantCommand(intake::intakeUp);
-//                new WaitCommand(200);
-//                new InstantCommand(extendo::in);
-//                new WaitCommand(300);
-//                new InstantCommand(intake::transfer);
-//
-//        }
+        if (extendo.extensionPosition > 0.7) {
+            new SequentialCommandGroup(
+                new InstantCommand(intake::up),
+                new WaitCommand(200),
+                new InstantCommand(extendo::in),
+                new WaitCommand(300),
+                new InstantCommand(intake::transfer)
+                );
+        }
 
 
-            LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
-            RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+        RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         Trigger = (LeftTrigger - RightTrigger)/10;
 
@@ -283,7 +277,7 @@ public class TestTeleop extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-        telemetry.addData("RobotState", depositToStateCommand.depositCurrentState);
+        telemetry.addData("RobotState", DepositState);
         telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
@@ -291,14 +285,11 @@ public class TestTeleop extends CommandOpMode {
         telemetry.addData("Red", intake.checkRed());
         telemetry.addData("Blue", intake.checkBlue());
         telemetry.addData("Yellow", intake.checkYellow());
-        telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
-        telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
-        telemetry.addData("ReadingIntake", cI.green());
+        //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
+        //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
+        //telemetry.addData("ReadingIntake", cI.green());
         telemetry.update();
     }
-
-    //Super duper cewl cubic scaling function. if the stick is only +- 4%, nothing happens.
-    //Anything greater is cubically scaled, very cool. Also possibly an anti drift measure with tweaking.
     private double cubicScaling(float joystickValue) {
         double v = 0.05 * joystickValue + 0.95 * Math.pow(joystickValue, 3);
         if (joystickValue > 0.02)
@@ -308,5 +299,4 @@ public class TestTeleop extends CommandOpMode {
         else
             return 0;
     }
-
 }

@@ -55,7 +55,7 @@ public class Gripper extends SubsystemBase {
     }
 
     public boolean verifyJig(){
-        if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 1)){
+        if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 2)){
             return true;
         }
         else return false;

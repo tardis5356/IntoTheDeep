@@ -51,15 +51,16 @@ public class Lift extends SubsystemBase {
         // runs every loop
         if(limitLift.isPressed()){
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            targetPosition = -10;
+            //targetPosition = 10;
         }
+
         if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){
             tooHigh = true;
         } else {tooHigh = false;}
 
         if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh) {
             motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
-            targetPosition = -15;
+            targetPosition = 15;
         }
         else if(joystickPowerInput != 0 && limitLift.isPressed()){
             if(joystickPowerInput > 0 ){
@@ -67,7 +68,7 @@ public class Lift extends SubsystemBase {
             }
             else if(joystickPowerInput <= 0 ){
                 motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
-                targetPosition = -15;
+                targetPosition = 15;
             }
         }
         else if(joystickPowerInput != 0 && tooHigh){
@@ -76,14 +77,16 @@ public class Lift extends SubsystemBase {
             }
             else if(joystickPowerInput >= 0 ){
                 motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
-                targetPosition = -15;
+                targetPosition = 15;
             }
         }
-        else if (targetPosition == -10) {
-            motorPower = 0;
-        } else if (targetPosition != -15) {
+        else if (targetPosition != 15) {
             motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();
-        } else {
+        }
+        else if (targetPosition == 10) {
+            motorPower = 0;
+        }
+        else {
             motorPower = -BotPositions.ANTI_GRAV;
         }
 
