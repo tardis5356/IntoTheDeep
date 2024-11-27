@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObsDepo;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsDepoToMidSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsDepoToRightSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_Park;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToRightSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObsDepo;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -23,6 +27,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 //import org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedSpecimenAuto;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
@@ -64,7 +70,14 @@ public class CommandSpecimenAuto extends OpMode {
     int visionOutputPosition = 1;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
+    ExtendoToStateCommand extendoToStateCommand;
 
+    ExtendoToStateCommand extendoSpecLeft;
+    ExtendoToStateCommand extendoSpecMid;
+    ExtendoToStateCommand extendoSpecRight;
+
+    IntakeInCommand intakeIn;
+    IntakeInCommand intakeOut;
     private DcMotorEx mFL;
     private DcMotorEx mFR;
     private DcMotorEx mBL;
@@ -77,16 +90,17 @@ public class CommandSpecimenAuto extends OpMode {
     private Wrist wrist;
     private Subsystem ExampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToLeftSpecToObs;
-    private ActionCommand RedSpec_SubToMidSpecToObs;
-    private ActionCommand RedSpec_SubToRightSpecToObs;
+    private ActionCommand RedSpec_SubToLeftSpec;
+    private ActionCommand RedSpec_MidSpecToObsDepo;
+    private ActionCommand RedSpec_RightSpecToObsDepo;
+    private ActionCommand RedSpec_ObsDepoToMidSpec;
+    private ActionCommand RedSpec_ObsDepoToRightSpec;
+    private ActionCommand RedSpec_LeftSpecToObsDepo;
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
     private ActionCommand RedSpec_Park;
 
     private DepositToStateCommand depositToStateCommand;
-
-
 
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
@@ -121,7 +135,6 @@ public class CommandSpecimenAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
 
 
-
         CommandScheduler.getInstance().registerSubsystem(intake);//
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -141,39 +154,67 @@ public class CommandSpecimenAuto extends OpMode {
     public void start() {
 
 
+        intakeIn = new IntakeInCommand(intake);
+
+        intakeOut = new IntakeInCommand(intake);
+
+        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
+
+        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
+
+        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
+
         generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
 
-        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub
-                , requirements);//
+        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);//
 
         RedSpec_Park = new ActionCommand(redSpec_Park, requirements);//
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);//
 
-        RedSpec_SubToLeftSpecToObs = new ActionCommand(redSpec_SubToLeftSpecToObs, requirements);//
+        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);//
 
-        RedSpec_SubToMidSpecToObs= new ActionCommand(redSpec_SubToMidSpecToObs, requirements);//
+        RedSpec_MidSpecToObsDepo = new ActionCommand(redSpec_MidSpecToObs, requirements);//
 
-        RedSpec_SubToRightSpecToObs = new ActionCommand(redSpec_SubToRightSpecToObs, requirements);//
+        RedSpec_ObsDepoToMidSpec = new ActionCommand(redSpec_ObsDepoToMidSpec, requirements);
 
+        RedSpec_ObsDepoToRightSpec = new ActionCommand(redSpec_ObsDepoToRightSpec, requirements);
+
+        RedSpec_RightSpecToObsDepo = new ActionCommand(redSpec_RightSpecToObsDepo, requirements);//
+
+        RedSpec_LeftSpecToObsDepo = new ActionCommand(redSpec_LeftSpecToObsDepo, requirements);//
         time_since_start = new ElapsedTime();
 
 
-
-
         CommandScheduler.getInstance().schedule(
-                RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
-                //hang the specimen
-                RedSpec_SubToLeftSpecToObs
-                //pick and drop left spec
-//                RedSpec_SubToMidSpecToObs,
-//                //pick and drop mid spec
-//                RedSpec_SubToRightSpecToObs,
+                new SequentialCommandGroup(//REMEMBER TO ADD
+                        RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
+
+                        //hang the specimen
+                        RedSpec_SubToLeftSpec,
+                        extendoSpecLeft,
+                        intakeIn,
+                        RedSpec_LeftSpecToObsDepo,
+                        intakeOut,
+                        //Pick up sample
+                        RedSpec_ObsDepoToMidSpec,
+                        extendoSpecMid,
+                        intakeIn,
+                        //drop off sample in Obs Zone
+                        RedSpec_MidSpecToObsDepo,
+                        intakeOut,
+                        //Pick up sample
+                        RedSpec_ObsDepoToRightSpec,
+                        extendoSpecRight,
+                        intakeIn,
+//                // drop off sample in Obs Zone
+                        RedSpec_RightSpecToObsDepo,
+                        intakeOut
 //                //pick and drop right spec
 //                RedSpec_ObsToSub,
 //                //hang the specimen
@@ -187,6 +228,7 @@ public class CommandSpecimenAuto extends OpMode {
 //                //hang second specimen
 //                RedSpec_Park
 //                //park
+                )
         );
     }
 
@@ -197,8 +239,6 @@ public class CommandSpecimenAuto extends OpMode {
     public void loop() {
 
         CommandScheduler.getInstance().run();
-
-
 
 
         // Note: to access the drive position info, needed to declare a drive = mecanumDrive as private variable at top of this class
@@ -224,8 +264,6 @@ public class CommandSpecimenAuto extends OpMode {
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
-
 
 
     }

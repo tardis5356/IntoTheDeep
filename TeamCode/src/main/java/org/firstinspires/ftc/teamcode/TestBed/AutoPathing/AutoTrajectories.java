@@ -1,18 +1,11 @@
 package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.Subsystem;
 
 
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
-
-import java.util.Set;
 
 
 public class AutoTrajectories {
@@ -71,9 +64,12 @@ public class AutoTrajectories {
 
     //Red Spec Actions
     public static Action redSpec_StartToSub;
-    public static Action redSpec_SubToLeftSpecToObs;
-    public static Action redSpec_SubToMidSpecToObs;
-    public static Action redSpec_SubToRightSpecToObs;
+    public static Action redSpec_SubToLeftSpec;
+    public static Action redSpec_ObsDepoToMidSpec;
+    public static Action redSpec_LeftSpecToObsDepo;
+    public static Action redSpec_ObsDepoToRightSpec;
+    public static Action redSpec_MidSpecToObs;
+    public static Action redSpec_RightSpecToObsDepo;
     public static Action redSpec_ObsToSub;
     public static Action redSpec_SubToObs;
     public static Action redSpec_Park;
@@ -128,30 +124,53 @@ public class AutoTrajectories {
                         .build();
 
 
-        redSpec_SubToLeftSpecToObs =
+        redSpec_SubToLeftSpec =
                 drive.actionBuilder(redSpec_SubDepoPos)
+
                         .setTangent(300)
                         .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
-                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
-                        //.turn(140)
-//                        .stopAndAdd(lift.liftUp())
+
+
                         .build();
 
-        redSpec_SubToMidSpecToObs =
-                drive.actionBuilder(redSpec_SubDepoPos)
+        redSpec_LeftSpecToObsDepo =
+                drive.actionBuilder(redSpec_LeftSpecZonePos)
+
+                        .setTangent(0)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+
+                        .build();
+
+        redSpec_ObsDepoToMidSpec =
+                drive.actionBuilder(redSpec_ObsDepoPos)
+
                         .setTangent(0)
                         .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
+
+
+                        .build();
+
+        redSpec_ObsDepoToRightSpec =
+                drive.actionBuilder(redSpec_ObsDepoPos)
+
+                        .setTangent(0)
+                        .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
+                        .build();
+
+        redSpec_MidSpecToObs =
+                drive.actionBuilder(redSpec_MidSpecZonePos)
+                        .setTangent(0)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+
+                        .build();
+
+        redSpec_RightSpecToObsDepo =
+                drive.actionBuilder(redSpec_RightSpecZonePos)
+                        .setTangent(0)
                         .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
 //                        .turn(140)
                         .build();
 
-        redSpec_SubToRightSpecToObs =
-                drive.actionBuilder(redSpec_SubDepoPos)
-                        .setTangent(0)
-                        .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
-                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
-//                        .turn(140)
-                        .build();
 
 
         redSpec_ObsToSub =

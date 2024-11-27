@@ -3,16 +3,11 @@ package org.firstinspires.ftc.teamcode.Andie.TeleOps;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @TeleOp (name = "MaxOrbitalPosition")
@@ -42,7 +37,7 @@ public class MaxOrbital extends CommandOpMode {
         extendo = new Extendo(hardwareMap);
 
         new SequentialCommandGroup(
-                new InstantCommand(intake::intakeUp),
+                new InstantCommand(intake::up),
                 new InstantCommand(extendo::out),
                 //new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,200),
                 //new WaitCommand(1000),
