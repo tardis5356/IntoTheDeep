@@ -51,8 +51,9 @@ public class Lift extends SubsystemBase {
         // runs every loop
         if(limitLift.isPressed()){
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            targetPosition = 10;
+            //targetPosition = 10;
         }
+
         if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){
             tooHigh = true;
         } else {tooHigh = false;}

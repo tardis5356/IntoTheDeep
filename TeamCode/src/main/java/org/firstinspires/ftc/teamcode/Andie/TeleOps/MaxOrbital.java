@@ -50,10 +50,10 @@ public class MaxOrbital extends CommandOpMode {
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(intake::up),
                         new InstantCommand(extendo::out),
-                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,200),
-                        new WaitCommand(1000),
-                        new InstantCommand(arm::basket),
-                        new InstantCommand(wrist::basket))
+                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(500),
+                        new InstantCommand(arm::wall),
+                        new InstantCommand(wrist::wall))
         );
 
 
