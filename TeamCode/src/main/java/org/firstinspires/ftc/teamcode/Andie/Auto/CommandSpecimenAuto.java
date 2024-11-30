@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObsDepo;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsDepoToMidSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsDepoToRightSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftMidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftMidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_Park;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObsDepo;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -90,12 +89,10 @@ public class CommandSpecimenAuto extends OpMode {
     private Wrist wrist;
     private Subsystem ExampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToLeftSpec;
-    private ActionCommand RedSpec_MidSpecToObsDepo;
-    private ActionCommand RedSpec_RightSpecToObsDepo;
-    private ActionCommand RedSpec_ObsDepoToMidSpec;
-    private ActionCommand RedSpec_ObsDepoToRightSpec;
-    private ActionCommand RedSpec_LeftSpecToObsDepo;
+    private ActionCommand RedSpec_SubToLeftMidSpec;
+    private ActionCommand RedSpec_RightSpecToObs;
+    private ActionCommand RedSpec_ObsToRightSpec;
+    private ActionCommand RedSpec_LeftMidSpecToObs;
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
     private ActionCommand RedSpec_Park;
@@ -171,64 +168,53 @@ public class CommandSpecimenAuto extends OpMode {
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
 
-        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);//
+        RedSpec_SubToLeftMidSpec = new ActionCommand(redSpec_SubToLeftMidSpec, requirements);//
 
-        RedSpec_Park = new ActionCommand(redSpec_Park, requirements);//
+        RedSpec_LeftMidSpecToObs = new ActionCommand(redSpec_LeftMidSpecToObs, requirements);//
+
+        RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
+
+        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);//
+
+        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);//
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);//
 
-        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);//
+        RedSpec_Park = new ActionCommand(redSpec_Park, requirements);//
 
-        RedSpec_MidSpecToObsDepo = new ActionCommand(redSpec_MidSpecToObs, requirements);//
-
-        RedSpec_ObsDepoToMidSpec = new ActionCommand(redSpec_ObsDepoToMidSpec, requirements);
-
-        RedSpec_ObsDepoToRightSpec = new ActionCommand(redSpec_ObsDepoToRightSpec, requirements);
-
-        RedSpec_RightSpecToObsDepo = new ActionCommand(redSpec_RightSpecToObsDepo, requirements);//
-
-        RedSpec_LeftSpecToObsDepo = new ActionCommand(redSpec_LeftSpecToObsDepo, requirements);//
         time_since_start = new ElapsedTime();
 
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(//REMEMBER TO ADD
                          RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
-
                         //hang the specimen
-                        RedSpec_SubToLeftSpec,
-//                        extendoSpecLeft,
-//                        intakeIn,
-                        RedSpec_LeftSpecToObsDepo,
+                        RedSpec_SubToLeftMidSpec,
+                        RedSpec_LeftMidSpecToObs,
 //                        intakeOut,
 //                        //Pick up sample
-                        RedSpec_ObsDepoToMidSpec,
 //                        extendoSpecMid,
 //                        intakeIn,
 //                        //drop off sample in Obs Zone
-                        RedSpec_MidSpecToObsDepo,
 //                        intakeOut,
 //                        //Pick up sample
-                        RedSpec_ObsDepoToRightSpec,
+                        RedSpec_ObsToRightSpec,
 //                        extendoSpecRight,
 //                        intakeIn,
 ////                // drop off sample in Obs Zone
-                        RedSpec_RightSpecToObsDepo,
+                        RedSpec_RightSpecToObs,
 //                        intakeOut,
 ////                //pick and drop right spec
-                RedSpec_ObsToSub,
-////                //hang the specimen
-                RedSpec_SubToObs,
-////                //pick second specimen
-                RedSpec_ObsToSub,
-////                //hang the specimen
-                RedSpec_SubToObs,
-////                //pick second specimen
-                RedSpec_ObsToSub,
-                RedSpec_SubToObs
-////                //hang second specimen
-//                RedSpec_Park
-////                //park
+                        RedSpec_ObsToSub,
+        ////                //hang the specimen
+                        RedSpec_SubToObs,
+        ////                //pick second specimen
+                        RedSpec_ObsToSub,
+        ////                //hang the specimen
+                        RedSpec_SubToObs,
+        ////                //pick second specimen
+                        RedSpec_ObsToSub,
+                        RedSpec_SubToObs
                 )
         );
     }

@@ -16,14 +16,10 @@ public class AutoTrajectories {
     //Red Specimen Poses
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -62, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -34, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(36, -61, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsDepoPos = new Pose2d(36, -52, Math.toRadians(330));
-    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(60, -48, Math.toRadians(30));
-    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(48, -48, Math.toRadians(45));
-    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(36, -48, Math.toRadians(60));
-    public static final Pose2d redSpec_ObsParkPos = new Pose2d(36,-63,Math.toRadians(90));
-
-//    public static final Pose2d redSpec_ObsSlideParkPos = new Pose2d(40,-18,Math.toRadians(270)); // might not need this
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(36, -61, Math.toRadians(90)); //combine
+    public static final Pose2d redSpec_ObsDepoPos = new Pose2d(36, -52, Math.toRadians(90)); //combine
+    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
+    public static final Pose2d redSpec_LeftMidSpecZonePos = new Pose2d(60, -14, Math.toRadians(90));
 
     //Red Basket Poses
     public static final Pose2d redBasket_StartPos = new Pose2d(-8, -62, Math.toRadians(90));
@@ -64,19 +60,15 @@ public class AutoTrajectories {
 
     //Red Spec Actions
     public static Action redSpec_StartToSub;
-    public static Action redSpec_SubToLeftSpec;
-    public static Action redSpec_ObsDepoToMidSpec;
-    public static Action redSpec_LeftSpecToObsDepo;
-    public static Action redSpec_ObsDepoToRightSpec;
-    public static Action redSpec_MidSpecToObs;
-    public static Action redSpec_RightSpecToObsDepo;
+    public static Action redSpec_SubToLeftMidSpec;
+    public static Action redSpec_LeftMidSpecToObs;
+    public static Action redSpec_ObsToRightSpec;
+    public static Action redSpec_RightSpecToObs;
     public static Action redSpec_ObsToSub;
     public static Action redSpec_SubToObs;
     public static Action redSpec_Park;
 
-//    public static Action redSpec_LeftSpecToObs;
-//    public static Action redSpec_MidSpecToObs;
-//    public static Action redSpec_RightSpecToObs;
+
 
 
     //Red Basket Actions
@@ -121,47 +113,36 @@ public class AutoTrajectories {
                 drive.actionBuilder(redSpec_StartPos)
                         .setTangent(90)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
-                        .waitSeconds(2)
+                        .waitSeconds(1)
                         .build();
 
 
-        redSpec_SubToLeftSpec =
+        redSpec_SubToLeftMidSpec =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(300)
-                        .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
+                        .splineToLinearHeading(redSpec_LeftMidSpecZonePos, Math.toRadians(0))
+                        .waitSeconds(1)
                         .build();
 
-        redSpec_LeftSpecToObsDepo =
-                drive.actionBuilder(redSpec_LeftSpecZonePos)
-                        .setTangent(0)
-                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+        redSpec_LeftMidSpecToObs =
+                drive.actionBuilder(redSpec_LeftMidSpecZonePos)
+                        .setTangent(270)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(270))
+                        .waitSeconds(1)
                         .build();
 
-        redSpec_ObsDepoToMidSpec =
+        redSpec_ObsToRightSpec =
                 drive.actionBuilder(redSpec_ObsDepoPos)
-                        .setTangent(0)
-                        .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
-                        .build();
-
-        redSpec_MidSpecToObs =
-                drive.actionBuilder(redSpec_MidSpecZonePos)
-                        .setTangent(0)
-                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
-
-                        .build();
-
-        redSpec_ObsDepoToRightSpec =
-                drive.actionBuilder(redSpec_ObsDepoPos)
-
-                        .setTangent(0)
+                        .setTangent(60)
                         .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
+                        .waitSeconds(1)
                         .build();
 
-        redSpec_RightSpecToObsDepo =
+        redSpec_RightSpecToObs =
                 drive.actionBuilder(redSpec_RightSpecZonePos)
-                        .setTangent(0)
-                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
-//                        .turn(140)
+                        .setTangent(270)
+                        .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(270))
+                        .waitSeconds(1)
                         .build();
 
 
@@ -169,12 +150,14 @@ public class AutoTrajectories {
                 drive.actionBuilder(redSpec_ObsSpecPos)
                         .setTangent(150)
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                        .waitSeconds(1)
                         .build();
 
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(270)
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(0))
+                        .waitSeconds(1)
                         .build();
 
 
