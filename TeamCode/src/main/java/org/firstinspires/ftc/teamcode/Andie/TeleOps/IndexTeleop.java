@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @TeleOp(name = "indexTele")
@@ -35,6 +36,7 @@ public class IndexTeleop extends CommandOpMode {
 
     //gripper
     private Gripper gripper;
+    private Winch winch;
 
     //lift
     private Lift lift;
@@ -81,6 +83,7 @@ public class IndexTeleop extends CommandOpMode {
 
         //lift
         lift = new Lift(hardwareMap);
+        winch = new Winch(hardwareMap);
 
         //wrist
         wrist = new Wrist(hardwareMap);
@@ -153,6 +156,15 @@ public class IndexTeleop extends CommandOpMode {
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT))
                 .whenActive(new InstantCommand(intake::stop));
+
+        new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) !=0)
+                .whenActive(()-> winch.extend(driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+
+        new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) !=0)
+                .whenActive(()-> winch.extend(driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+
+        new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
+                .whenActive(new InstantCommand(winch::stop));
     }
 
 

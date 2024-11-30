@@ -29,6 +29,7 @@ public class Intake extends SubsystemBase {
     private ColorSensor cI;
 
     public boolean Intaking;
+    public boolean samplePresent;
     public boolean Passing;
 
     public Intake(HardwareMap hardwareMap){
@@ -45,17 +46,17 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-        if(checkSample()&&Intaking) {
-            if (checkBlue()) {//Add team color conditionals later
-                transfer();
-            }else if (checkRed()) {//Add team color conditionals later
-                transfer();
-            }else {
-                stop();
-            }
-
+        if(checkSample()) {
+            samplePresent = true;
+            //if (checkBlue()) {//Add team color conditionals later
+            //    transfer();
+            //}else if (checkRed()) {//Add team color conditionals later
+            //    transfer();
+            //}else {
+            //    stop();
+            //}
         }
-        if(!checkSample()&&!Intaking){
+        if(!samplePresent&&!Intaking){
             stop();
         }
     }
@@ -84,7 +85,7 @@ public class Intake extends SubsystemBase {
         sIL.setPower(BotPositions.INTAKE_IN);
         Intaking = false;
     }
-    public void stop(){
+    public void stop() {
         sIR.setPower(BotPositions.INTAKE_STOP);
         sIL.setPower(BotPositions.INTAKE_STOP);
         Intaking = false;
