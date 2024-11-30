@@ -14,7 +14,8 @@ public class AutoTrajectories {
 
 
     //Red Specimen Poses
-    public static final Pose2d redSpec_StartPos = new Pose2d(8, -62, Math.toRadians(90));
+//    public static final Pose2d redSpec_StartPos = new Pose2d(8, -62, Math.toRadians(90));
+    public static final Pose2d redSpec_StartPos = new Pose2d(40, -64, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -34, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(36, -61, Math.toRadians(90)); //combine
     public static final Pose2d redSpec_ObsDepoPos = new Pose2d(36, -52, Math.toRadians(90)); //combine
