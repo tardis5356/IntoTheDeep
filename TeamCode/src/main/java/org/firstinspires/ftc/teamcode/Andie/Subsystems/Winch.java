@@ -23,16 +23,16 @@ public class Winch extends SubsystemBase {
     public void periodic(){
 
     }
-    public void extend(){
-        mWR.setPower(1);
-        mWL.setPower(1);
+    public void extend(double lTrigger){
+        mWR.setPower(-lTrigger);
+        mWL.setPower(-lTrigger);
     }
-    public void retract(){
-        mWR.setPower(-1);
-        mWL.setPower(-1);
+    public void retract(double rTrigger){
+        mWR.setPower(rTrigger);
+        mWL.setPower(rTrigger);
     }
     public void stop(){
-        mWR.setPower(0);
-        mWL.setPower(0);
+        mWR.setPower(BotPositions.WHINCH_FF);
+        mWL.setPower(BotPositions.WHINCH_FF);
     }
 }

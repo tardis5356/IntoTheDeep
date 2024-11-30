@@ -17,11 +17,13 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.IntakePassCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @Config
@@ -55,6 +57,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     private Extendo extendo;
 
     private Arm arm;
+    private Winch winch;
 
     //private ColorSensor cI;
 
@@ -94,6 +97,8 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //intake
         arm = new Arm(hardwareMap);
+
+        winch = new Winch(hardwareMap);
 
         TeamColorRed = true;
 
@@ -136,25 +141,31 @@ public class Gen1_TeleOp extends CommandOpMode {
         //intake
         {//intake tilting
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
-                .toggleWhenActive(new SequentialCommandGroup(new InstantCommand(intake::up)), new InstantCommand(intake::down));
-
+                .toggleWhenActive(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::up),
+                                new InstantCommand(intake::stop)),
+                        new InstantCommand(intake::down));
 
         new Trigger(() -> extendo.sER.getPosition() >= .72)
                 .whenActive(new InstantCommand(intake::up));
 
         //intake inning and outing
-        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample())
+        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
+
+        new Trigger(()->intake.checkSample() && intake.samplePresent)
+                .whenActive(new InstantCommand(intake::stop));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y))
                 .whenActive(new InstantCommand(intake::out));}
 
         //transfer
-        {new Trigger(()-> intake.checkSample() && DepositState == "intake")
-                .whenActive(new InstantCommand(intake::transfer));
+        {//new Trigger(()-> intake.checkSample() && DepositState == "intake")
+         //       .whenActive(new InstantCommand(intake::transfer));
 
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.X) || driver2.getButton(GamepadKeys.Button.X))
-                .whenActive(new InstantCommand(intake::transfer));}
+                .whenActive(new IntakePassCommand(intake));}
 
         //Extendo
         {new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
@@ -162,7 +173,9 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::up),
                                 new WaitCommand(50),
-                                new InstantCommand(extendo::in)));
+                                new InstantCommand(extendo::in)
+                        )
+                );
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::out));}
@@ -276,6 +289,15 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
                         new InstantCommand(() -> DepositState = "specimen")
                 ));}
+
+        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) !=0)
+                .whenActive(()-> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+
+        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) !=0)
+                .whenActive(()-> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+
+        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
+                .whenActive(new InstantCommand(winch::stop));
     }
     public void run() {
         super.run();

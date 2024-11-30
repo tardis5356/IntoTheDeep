@@ -158,10 +158,10 @@ public class IndexTeleop extends CommandOpMode {
                 .whenActive(new InstantCommand(intake::stop));
 
         new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) !=0)
-                .whenActive(new InstantCommand(winch::extend));
+                .whenActive(()-> winch.extend(driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
 
         new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) !=0)
-                .whenActive(new InstantCommand(winch::retract));
+                .whenActive(()-> winch.extend(driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
 
         new Trigger(() -> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
                 .whenActive(new InstantCommand(winch::stop));
