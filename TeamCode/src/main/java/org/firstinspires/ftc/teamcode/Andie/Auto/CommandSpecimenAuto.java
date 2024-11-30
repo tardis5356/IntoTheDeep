@@ -29,7 +29,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 //import org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedSpecimenAuto;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
@@ -78,7 +77,7 @@ public class CommandSpecimenAuto extends OpMode {
     ExtendoToStateCommand extendoSpecRight;
 
     IntakeInCommand intakeIn;
-    IntakeOutCommand intakeOut;
+    IntakeInCommand intakeOut;
     private DcMotorEx mFL;
     private DcMotorEx mFR;
     private DcMotorEx mBL;
@@ -157,7 +156,7 @@ public class CommandSpecimenAuto extends OpMode {
 
         intakeIn = new IntakeInCommand(intake);
 
-        intakeOut = new IntakeOutCommand(intake);
+        intakeOut = new IntakeInCommand(intake);
 
         extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
 
@@ -215,20 +214,21 @@ public class CommandSpecimenAuto extends OpMode {
 //                        intakeIn,
 ////                // drop off sample in Obs Zone
                         RedSpec_RightSpecToObsDepo,
-                        intakeOut,
-//                //pick and drop right spec
+//                        intakeOut,
+////                //pick and drop right spec
                 RedSpec_ObsToSub,
-//                //hang the specimen
+////                //hang the specimen
                 RedSpec_SubToObs,
-//                //pick second specimen
+////                //pick second specimen
                 RedSpec_ObsToSub,
-//                //hang the specimen
-               RedSpec_SubToObs,
-//                //pick second specimen
+////                //hang the specimen
+                RedSpec_SubToObs,
+////                //pick second specimen
                 RedSpec_ObsToSub,
-//                //hang second specimen
-                RedSpec_Park
-//                //park
+                RedSpec_SubToObs
+////                //hang second specimen
+//                RedSpec_Park
+////                //park
                 )
         );
     }
