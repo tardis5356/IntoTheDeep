@@ -32,8 +32,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
@@ -77,14 +75,7 @@ public class CommandSpecimenAuto extends OpMode {
     int visionOutputPosition = 1;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
-    ExtendoToStateCommand extendoToStateCommand;
 
-    ExtendoToStateCommand extendoSpecLeft;
-    ExtendoToStateCommand extendoSpecMid;
-    ExtendoToStateCommand extendoSpecRight;
-
-    IntakeInCommand intakeIn;
-    IntakeInCommand intakeOut;
     private DcMotorEx mFL;
     private DcMotorEx mFR;
     private DcMotorEx mBL;
@@ -166,16 +157,6 @@ public class CommandSpecimenAuto extends OpMode {
     public void start() {
         DepositState = "specimen";
 
-        intakeIn = new IntakeInCommand(intake);
-
-        intakeOut = new IntakeInCommand(intake);
-
-        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
-
-        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
-
-        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
-
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
 
@@ -216,7 +197,7 @@ public class CommandSpecimenAuto extends OpMode {
 
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,50),
                         new InstantCommand(gripper::open),
                         new WaitCommand(1000),
                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
@@ -228,16 +209,57 @@ public class CommandSpecimenAuto extends OpMode {
                                         new WaitCommand(1000),
                                         new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
                                 new InstantCommand(() -> DepositState = "wall")
-
                         ),
                         RedSpec_LeftSpecToMidWay,
                         RedSpec_LeftSpecToObs,
+                        RedSpec_ObsToMidSpec,
+                        RedSpec_MidSpecToObs,
+                        RedSpec_ObsToRightSpec,
+                        RedSpec_RightSpecToObs,
+                        RedSpec_SpecDepoToObs,
+                        RedSpec_ObsSpecCheck,
+                        new WaitCommand(1500),
+                        new ParallelCommandGroup(
+                                RedSpec_ObsToSub,
+                                new InstantCommand(arm::specimen),
+                                new InstantCommand(wrist::specimen)
+                        ),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(750),
+                        new InstantCommand(gripper::open),
+                        new ParallelCommandGroup(
+                                RedSpec_SubToObs,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(arm::wall),
+                                        new InstantCommand(wrist::wall),
+                                        new WaitCommand(1000),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+                                new InstantCommand(() -> DepositState = "wall")
+                        ),
+                        RedSpec_ObsSpecCheck,
+                        new WaitCommand(2000),
+                        new ParallelCommandGroup(
+                        RedSpec_ObsToSub,
+                        new InstantCommand(arm::specimen),
+                        new InstantCommand(wrist::specimen)
+                        ),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(750),
+                        new InstantCommand(gripper::open),
+                        RedSpec_SubToObs,
+                        RedSpec_ObsSpecCheck,
+                        new WaitCommand(2000),
+                        new ParallelCommandGroup(
+                                RedSpec_ObsToSub,
+                                new InstantCommand(arm::specimen),
+                                new InstantCommand(wrist::specimen)
+                        ),                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new WaitCommand(750),
+                        new InstantCommand(gripper::open),
+                        RedSpec_SubToObs
 
-//                        RedSpec_ObsToMidSpec,
-//                        RedSpec_MidSpecToObs,
-//                        RedSpec_ObsToRightSpec,
-//                        RedSpec_RightSpecToObs,
-//                        RedSpec_ObsSpecCheck,
+        ));
+    }
 
 //                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
 //                        RedSpec_ObsToMidSpec,
@@ -259,26 +281,11 @@ public class CommandSpecimenAuto extends OpMode {
 //                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
 //                        new WaitCommand(2000),
 //                        new InstantCommand(gripper::close),
-                        RedSpec_ObsToSub,
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-                        new InstantCommand(gripper::open),
-                        RedSpec_SubToObs
-
-        ));
-    }
-
     //                        intakeOut,
-//                        //Pick up sample
 //                        extendoSpecMid,
 //                        intakeIn,
-//                        //drop off sample in Obs Zone
 //                        intakeOut,
-//                        //Pick up sample
-    // RedSpec_ObsToRightSpec,
 //                        extendoSpecRight,
-//                        intakeIn,
-////                // drop off sample in Obs Zone
-    //  RedSpec_RightSpecToObs,
 //                        intakeOut,
 
     /*

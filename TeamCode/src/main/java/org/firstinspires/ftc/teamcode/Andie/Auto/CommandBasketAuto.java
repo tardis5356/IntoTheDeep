@@ -16,6 +16,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
@@ -56,6 +58,15 @@ public class CommandBasketAuto extends OpMode {
     int visionOutputPosition = 1;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    ExtendoToStateCommand extendoToStateCommand;
+
+    ExtendoToStateCommand extendoSpecLeft;
+    ExtendoToStateCommand extendoSpecMid;
+    ExtendoToStateCommand extendoSpecRight;
+
+    IntakeInCommand intakeIn;
+    IntakeInCommand intakeOut;
 
     private DcMotorEx mFL;
     private DcMotorEx mFR;
@@ -133,7 +144,15 @@ public class CommandBasketAuto extends OpMode {
     @Override
     public void start() {
 
+        intakeIn = new IntakeInCommand(intake);
 
+        intakeOut = new IntakeInCommand(intake);
+
+        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
+
+        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
+
+        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
@@ -149,7 +168,8 @@ public class CommandBasketAuto extends OpMode {
                 RedBasket_StartToSub,
                 //hang the specimen
                 RedBasket_SubToRightSample,
-                //pick up right sample
+                intakeIn,
+
                 RedBasket_RightSampleToBasket,
                 //score right sample
                 RedBasket_ToMidSample,
