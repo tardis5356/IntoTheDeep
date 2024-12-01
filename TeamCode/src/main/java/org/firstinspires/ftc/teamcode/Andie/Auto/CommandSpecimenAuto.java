@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToMidWay;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_Park;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToMidWay;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -21,6 +21,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -98,6 +99,7 @@ public class CommandSpecimenAuto extends OpMode {
     private ActionCommand RedSpec_StartToSub;
     private ActionCommand RedSpec_SubToLeftSpec;
     private ActionCommand RedSpec_RightSpecToObs;
+    private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToRightSpec;
     private ActionCommand RedSpec_LeftSpecToObs;
     private ActionCommand RedSpec_LeftSpecToMidWay;
@@ -120,7 +122,7 @@ public class CommandSpecimenAuto extends OpMode {
     private double loop;
 
     private MecanumDrive drive;
-
+    static String DepositState;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -162,7 +164,7 @@ public class CommandSpecimenAuto extends OpMode {
      */
     @Override
     public void start() {
-
+        DepositState = "specimen";
 
         intakeIn = new IntakeInCommand(intake);
 
@@ -179,29 +181,29 @@ public class CommandSpecimenAuto extends OpMode {
 
         generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
 
-        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
+        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
-        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);//
+        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);
 
-        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);//
+        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
 
         RedSpec_LeftSpecToMidWay = new ActionCommand(redSpec_LeftSpecToMidWay,requirements);
 
-        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);//
+        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
 
         RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec,requirements);
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
-        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);//
+        RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
 
-        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);//
+        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);
 
-        RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);//
+        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);
+
+        RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
 
         RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck,requirements);
-
-        RedSpec_Park = new ActionCommand(redSpec_Park, requirements);//
 
         time_since_start = new ElapsedTime();
 
@@ -215,33 +217,54 @@ public class CommandSpecimenAuto extends OpMode {
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-                        new InstantCommand(gripper::open)),
-                        RedSpec_SubToLeftSpec,
+                        new InstantCommand(gripper::open),
+                        new WaitCommand(1000),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
+                        new ParallelCommandGroup(
+                                RedSpec_SubToLeftSpec,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(arm::wall),
+                                        new InstantCommand(wrist::wall),
+                                        new WaitCommand(1000),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+                                new InstantCommand(() -> DepositState = "wall")
+
+                        ),
                         RedSpec_LeftSpecToMidWay,
                         RedSpec_LeftSpecToObs,
-                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                        new WaitCommand(2000),
-                        new InstantCommand(gripper::close),
-                        RedSpec_ObsToRightSpec,
-                        RedSpec_RightSpecToObs,
-                        RedSpec_ObsToSub,
-//                        new DepositToStateCommand(arm, wrist, gripper, lift, "WallToSpecimen"),
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-//                        new InstantCommand(gripper::open),
 
-//                        RedSpec_SubToObs,
+//                        RedSpec_ObsToMidSpec,
+//                        RedSpec_MidSpecToObs,
+//                        RedSpec_ObsToRightSpec,
+//                        RedSpec_RightSpecToObs,
+//                        RedSpec_ObsSpecCheck,
+
 //                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+//                        RedSpec_ObsToMidSpec,
+//                        RedSpec_MidSpecToObs,
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(500),
+//                        new InstantCommand(arm::wall),
+//                        new InstantCommand(wrist::wall),
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
 //                        new WaitCommand(2000),
 //                        new InstantCommand(gripper::close),
-//
-//                        RedSpec_ObsToSub,
-//                        new DepositToStateCommand(arm, wrist, gripper, lift, "WallToSpecimen"),
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-//                        new InstantCommand(gripper::open),
-
+//                        RedSpec_ObsToRightSpec,
+//                          RedSpec_SpecDepoToObs
+//                        RedSpec_RightSpecToObs,
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(500),
+//                        new InstantCommand(arm::wall),
+//                        new InstantCommand(wrist::wall),
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(2000),
+//                        new InstantCommand(gripper::close),
+                        RedSpec_ObsToSub,
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new InstantCommand(gripper::open),
                         RedSpec_SubToObs
 
-        );
+        ));
     }
 
     //                        intakeOut,
