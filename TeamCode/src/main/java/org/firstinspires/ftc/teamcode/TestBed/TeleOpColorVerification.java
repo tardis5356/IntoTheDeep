@@ -17,7 +17,8 @@ public class TeleOpColorVerification extends CommandOpMode {
     public void run() {
         super.run();
         telemetry.addData("AllianceColor", AllianceColor.aColor);
-        telemetry.addData("detectedColor", gripper.cG.blue());
+        telemetry.addData("detectedBlue", gripper.cG.blue());
+        //telemetry.addData("detectedRed", gripper.cG.red());
         telemetry.update();
     }
 }

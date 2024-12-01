@@ -61,7 +61,7 @@ public class Gripper extends SubsystemBase {
     }
 
     public void checkColor(){
-        if(cG.green() >= BLUE_MIN && cG.green() <= BLUE_MAX){
+        if(cG.blue() >= BLUE_MIN){
             AllianceColor.aColor = "blue";
         }
         else if(cG.red() >= RED_MIN && cG.red() <= RED_MAX){

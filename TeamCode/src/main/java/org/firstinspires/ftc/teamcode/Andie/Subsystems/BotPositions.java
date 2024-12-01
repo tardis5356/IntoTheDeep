@@ -10,7 +10,7 @@ public class BotPositions {
     public static double INTAKE_UP = 0.11, INTAKE_DOWN = 0.45, INTAKE_IN = 1, INTAKE_OUT = -1, INTAKE_STOP = 0;
     public static double EXTENDO_IN = 0.795, EXTENDO_OUT = .4, EXTENDO_SPECLEFT =.65, EXTENDO_SPECMID =.53, EXTENDO_SPECRIGHT = .4;
     public static int LIFT_WALL = -235, LIFT_SPECIMEN_HIGH = -720, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -2990, LIFT_BASKET_LOW = -280, LIFT_TRANSIT = -500, LIFT_LIMIT = -3000, LIFT_TOLERANCE = 10;
-    public static double RED_MAX = 400, RED_MIN = 300, BLUE_MAX = 150, BLUE_MIN = 110, YELLOW_MAX = 650, YELLOW_MIN = 620;
+    public static double RED_MAX = 750, RED_MIN = 500, BLUE_MAX = 750, BLUE_MIN = 500, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double ANTI_GRAV = 0.1, WHINCH_FF = 0;
     public static double LIFT_P = 0.009, LIFT_D = 0.0003;
 }
