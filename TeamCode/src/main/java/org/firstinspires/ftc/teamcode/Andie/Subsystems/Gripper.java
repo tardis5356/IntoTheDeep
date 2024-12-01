@@ -16,7 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Gripper extends SubsystemBase {
     private Servo sG;
-    private ColorSensor cG, cJ;
+    public ColorSensor cG;
+    private ColorSensor cJ;
 
     boolean gripperClosed;
     boolean sensorClose;
@@ -65,6 +66,9 @@ public class Gripper extends SubsystemBase {
         }
         else if(cG.red() >= RED_MIN && cG.red() <= RED_MAX){
             AllianceColor.aColor = "red";
+        }
+        else{
+            AllianceColor.aColor = "huh";
         }
     }
 

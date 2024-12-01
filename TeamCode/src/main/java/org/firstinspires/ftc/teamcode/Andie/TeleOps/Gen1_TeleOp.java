@@ -338,7 +338,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         extendo.update(Trigger);
 
-        lift.ManualMode(cubicScaling(gamepad2.left_stick_y), gamepad2.right_stick_y);
+        lift.ManualMode(gamepad2.left_stick_y, gamepad2.right_stick_y);
 
         //applies stick values to motor variables with cubic scaling
         Rotation = cubicScaling(-gamepad1.right_stick_x);
