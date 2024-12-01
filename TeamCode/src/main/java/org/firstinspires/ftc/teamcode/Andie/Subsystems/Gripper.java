@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MAX;
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MIN;
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_MAX;
+import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_MIN;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -52,6 +57,15 @@ public class Gripper extends SubsystemBase {
             return true;
         }
         else return false;
+    }
+
+    public void checkColor(){
+        if(cG.green() >= BLUE_MIN && cG.green() <= BLUE_MAX){
+            AllianceColor.aColor = "blue";
+        }
+        else if(cG.red() >= RED_MIN && cG.red() <= RED_MAX){
+            AllianceColor.aColor = "red";
+        }
     }
 
     public boolean verifyJig(){
