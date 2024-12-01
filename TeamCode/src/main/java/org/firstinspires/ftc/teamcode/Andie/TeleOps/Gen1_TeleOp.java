@@ -364,7 +364,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("checkIntake", intake.checkSample());
         telemetry.addData("Red", intake.checkRed());
         telemetry.addData("Blue", intake.checkBlue());
-        telemetry.addData("Yellow", intake.checkYellow());
+        //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
         //telemetry.addData("ReadingIntake", cI.green());
