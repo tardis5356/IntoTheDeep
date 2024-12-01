@@ -113,6 +113,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new WaitCommand(500),
                                 new InstantCommand(wrist::basket),
                                 new InstantCommand(arm::basket),
+                                new WaitCommand(600),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
                         )
                 );
