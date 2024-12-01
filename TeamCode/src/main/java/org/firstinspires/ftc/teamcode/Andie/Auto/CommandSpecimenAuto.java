@@ -1,23 +1,29 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftMidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToMidWay;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_Park;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftMidSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,6 +33,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 //import org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedSpecimenAuto;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
@@ -88,12 +96,17 @@ public class CommandSpecimenAuto extends OpMode {
     private Wrist wrist;
     private Subsystem ExampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToLeftMidSpec;
+    private ActionCommand RedSpec_SubToLeftSpec;
     private ActionCommand RedSpec_RightSpecToObs;
     private ActionCommand RedSpec_ObsToRightSpec;
-    private ActionCommand RedSpec_LeftMidSpecToObs;
+    private ActionCommand RedSpec_LeftSpecToObs;
+    private ActionCommand RedSpec_LeftSpecToMidWay;
+    private ActionCommand RedSpec_MidSpecToObs;
+    private ActionCommand RedSpec_ObsToMidSpec;
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
+
+    private ActionCommand RedSpec_ObsSpecCheck;
     private ActionCommand RedSpec_Park;
 
     private DepositToStateCommand depositToStateCommand;
@@ -116,6 +129,7 @@ public class CommandSpecimenAuto extends OpMode {
     public void init() {
         drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
+        //add initial position
 // this line is needed or you get a Dashboard preview error
         generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
 
@@ -167,9 +181,15 @@ public class CommandSpecimenAuto extends OpMode {
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);//
 
-        RedSpec_SubToLeftMidSpec = new ActionCommand(redSpec_SubToLeftMidSpec, requirements);//
+        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);//
 
-        RedSpec_LeftMidSpecToObs = new ActionCommand(redSpec_LeftMidSpecToObs, requirements);//
+        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);//
+
+        RedSpec_LeftSpecToMidWay = new ActionCommand(redSpec_LeftSpecToMidWay,requirements);
+
+        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);//
+
+        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec,requirements);
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
@@ -179,44 +199,64 @@ public class CommandSpecimenAuto extends OpMode {
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);//
 
+        RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck,requirements);
+
         RedSpec_Park = new ActionCommand(redSpec_Park, requirements);//
 
         time_since_start = new ElapsedTime();
 
 
         CommandScheduler.getInstance().schedule(
-                new SequentialCommandGroup(//REMEMBER TO ADD
-                         RedSpec_StartToSub,// arm and wrist and gripper all go to intake position
-                        //hang the specimen
-                        RedSpec_SubToLeftMidSpec,
-                        RedSpec_LeftMidSpecToObs,
-//                        intakeOut,
+
+                new InstantCommand(arm::specimen),
+                new InstantCommand(wrist::specimen),
+                new InstantCommand(gripper::close),
+
+                new SequentialCommandGroup(
+                        RedSpec_StartToSub,
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+                        new InstantCommand(gripper::open)),
+                        RedSpec_SubToLeftSpec,
+                        RedSpec_LeftSpecToMidWay,
+                        RedSpec_LeftSpecToObs,
+                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+                        new WaitCommand(2000),
+                        new InstantCommand(gripper::close),
+                        RedSpec_ObsToRightSpec,
+                        RedSpec_RightSpecToObs,
+                        RedSpec_ObsToSub,
+//                        new DepositToStateCommand(arm, wrist, gripper, lift, "WallToSpecimen"),
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+//                        new InstantCommand(gripper::open),
+
+//                        RedSpec_SubToObs,
+//                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+//                        new WaitCommand(2000),
+//                        new InstantCommand(gripper::close),
+//
+//                        RedSpec_ObsToSub,
+//                        new DepositToStateCommand(arm, wrist, gripper, lift, "WallToSpecimen"),
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
+//                        new InstantCommand(gripper::open),
+
+                        RedSpec_SubToObs
+
+        );
+    }
+
+    //                        intakeOut,
 //                        //Pick up sample
 //                        extendoSpecMid,
 //                        intakeIn,
 //                        //drop off sample in Obs Zone
 //                        intakeOut,
 //                        //Pick up sample
-                        RedSpec_ObsToRightSpec,
+    // RedSpec_ObsToRightSpec,
 //                        extendoSpecRight,
 //                        intakeIn,
 ////                // drop off sample in Obs Zone
-                        RedSpec_RightSpecToObs,
+    //  RedSpec_RightSpecToObs,
 //                        intakeOut,
-////                //pick and drop right spec
-                        RedSpec_ObsToSub,
-        ////                //hang the specimen
-                        RedSpec_SubToObs,
-        ////                //pick second specimen
-                        RedSpec_ObsToSub,
-        ////                //hang the specimen
-                        RedSpec_SubToObs,
-        ////                //pick second specimen
-                        RedSpec_ObsToSub,
-                        RedSpec_SubToObs
-                )
-        );
-    }
 
     /*
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP

@@ -12,8 +12,8 @@ public class Arm extends SubsystemBase {
         sAL = hardwareMap.get(Servo.class, "sAL");
         sAR = hardwareMap.get(Servo.class, "sAR");
 
-        sAL.setPosition(BotPositions.ARM_INTAKE);
-        sAR.setPosition(BotPositions.ARM_INTAKE);
+        //sAL.setPosition(BotPositions.ARM_INTAKE);
+        //sAR.setPosition(BotPositions.ARM_INTAKE);
     }
 
     @Override

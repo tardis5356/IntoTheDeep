@@ -9,7 +9,7 @@ public class Wrist extends SubsystemBase {
 
     public Wrist(HardwareMap hardwareMap){
         sW = hardwareMap.get(Servo.class, "sW");
-        sW.setPosition(BotPositions.WRIST_INTAKE);
+        //sW.setPosition(BotPositions.WRIST_INTAKE);
     }
 
     @Override
