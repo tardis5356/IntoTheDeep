@@ -105,7 +105,6 @@ public class Intake extends SubsystemBase {
     public boolean checkBlue(){
         if (cI.green() >= BLUE_MIN && cI.green() <= BLUE_MAX){
             return true;
-
         }
         else return false;
     }

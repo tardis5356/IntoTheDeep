@@ -17,7 +17,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
@@ -139,7 +141,11 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(new InstantCommand(gripper::close));}
 
         //intake
-        {//intake tilting
+        {
+//            new Trigger (() -> AllianceColor.aColor == "blue")
+//                    .whenActive(new InstantCommand(intake::checkBlue));
+
+            //intake tilting
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
@@ -310,6 +316,10 @@ public class Gen1_TeleOp extends CommandOpMode {
                 new WaitCommand(300),
                 new InstantCommand(intake::transfer)
                 );
+        }
+
+        if ((AllianceColor.aColor == "blue" && intake.checkBlue()) || (AllianceColor.aColor == "red" && intake.checkRed())){
+                new IntakeOutCommand(intake);
         }
 
 
