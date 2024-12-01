@@ -17,15 +17,15 @@ public class AutoTrajectories {
    public static final Pose2d redSpec_StartPos = new Pose2d(16, -62, Math.toRadians(90));
  //   public static final Pose2d redSpec_StartPos = new Pose2d(40, -64, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(4, -30, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(42, -60, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecCheckPos = new Pose2d(44,-60,Math.toRadians(90));
-    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(48, -14, Math.toRadians(90));
-    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(48, -53, Math.toRadians(90));
-    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(52, -14, Math.toRadians(90));
-    public static final Pose2d redSpec_MidSpecDepoPos = new Pose2d(40, -52, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(42, -56.5, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecCheckPos = new Pose2d(44,-56.5,Math.toRadians(90));
+    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(50, -15, Math.toRadians(90));
+    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(50, -56, Math.toRadians(90));
+    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(54, -14, Math.toRadians(90));
+    public static final Pose2d redSpec_MidSpecDepoPos = new Pose2d(54, -52, Math.toRadians(90));
     public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(60, -52, Math.toRadians(90));
-    public static final Pose2d redSpec_MidWayPos = new Pose2d(36,-40,Math.toRadians(90));
+    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -52, Math.toRadians(90));
+    public static final Pose2d redSpec_MidWayPos = new Pose2d(38,-40,Math.toRadians(90));
 
     //Red Basket Poses
     public static final Pose2d redBasket_StartPos = new Pose2d(-8, -62, Math.toRadians(90));
@@ -136,22 +136,22 @@ public class AutoTrajectories {
 
         redSpec_LeftSpecToMidWay =
                 drive.actionBuilder(redSpec_MidWayPos)
-                        .setTangent(-90)
+                        .setTangent(90)
                         .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
                         .waitSeconds(1)
                         .build();
 
         redSpec_LeftSpecToObs =
                 drive.actionBuilder(redSpec_LeftSpecZonePos)
-                        .setTangent(180)
-                        .splineToLinearHeading(redSpec_LeftSpecDepoPos, Math.toRadians(-90))
+                        .setTangent(270)
+                        .splineToLinearHeading(redSpec_LeftSpecDepoPos, Math.toRadians(270))
                         .waitSeconds(1)
                         .build();
 
         redSpec_ObsToMidSpec =
                 drive.actionBuilder(redSpec_LeftSpecDepoPos)
-                        .setTangent(270)
-                        .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(270))
+                        .setTangent(90)
+                        .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
                         .waitSeconds(1)
                         .build();
 
@@ -164,7 +164,7 @@ public class AutoTrajectories {
 
         redSpec_ObsToRightSpec =
                 drive.actionBuilder(redSpec_MidSpecDepoPos)
-                        .setTangent(60)
+                        .setTangent(90)
                         .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
                         .waitSeconds(1)
                         .build();
@@ -199,8 +199,8 @@ public class AutoTrajectories {
 
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
-                        .setTangent(270)
-                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(0))
+                        .setTangent(180)
+                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(180))
                         .waitSeconds(1)
                         .build();
 
