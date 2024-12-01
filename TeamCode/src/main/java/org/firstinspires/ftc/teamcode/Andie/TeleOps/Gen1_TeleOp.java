@@ -178,7 +178,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::up),
-                                new WaitCommand(50),
+                                new WaitCommand(500),
                                 new InstantCommand(extendo::in)
                         )
                 );
