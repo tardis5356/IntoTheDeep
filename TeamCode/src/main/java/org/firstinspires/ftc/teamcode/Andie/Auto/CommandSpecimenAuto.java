@@ -102,6 +102,16 @@ public class CommandSpecimenAuto extends OpMode {
     private ActionCommand RedSpec_ObsSpecCheck;
     private ActionCommand RedSpec_Park;
 
+    private InstantCommand OpenGripper;
+
+    private InstantCommand CloseGripper;
+
+    private InstantCommand WristSpecimen;
+
+    private InstantCommand ArmSpecimen;
+
+private InstantCommand GripperCheck;
+
     private DepositToStateCommand depositToStateCommand;
 
 
@@ -168,11 +178,11 @@ public class CommandSpecimenAuto extends OpMode {
 
         RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
 
-        RedSpec_LeftSpecToMidWay = new ActionCommand(redSpec_LeftSpecToMidWay,requirements);
+        RedSpec_LeftSpecToMidWay = new ActionCommand(redSpec_LeftSpecToMidWay, requirements);
 
         RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
 
-        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec,requirements);
+        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec, requirements);
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
@@ -184,81 +194,121 @@ public class CommandSpecimenAuto extends OpMode {
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
 
-        RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck,requirements);
+        RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck, requirements);
+
+        OpenGripper = new InstantCommand(gripper::open);
+
+        CloseGripper = new InstantCommand(gripper::close);
+
+        WristSpecimen =  new InstantCommand(wrist::specimen);
+
+        ArmSpecimen =  new InstantCommand(arm::specimen);
+
+        GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
 
 
         CommandScheduler.getInstance().schedule(
 
-                new InstantCommand(arm::specimen),
-                new InstantCommand(wrist::specimen),
-                new InstantCommand(gripper::close),
+                ArmSpecimen,
+                WristSpecimen,
+                CloseGripper,
+                GripperCheck,
 
                 new SequentialCommandGroup(
+
                         RedSpec_StartToSub,
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,50),
-                        new InstantCommand(gripper::open),
+
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
+
+                        OpenGripper,
+
                         new WaitCommand(1000),
-                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+//
                         new ParallelCommandGroup(
                                 RedSpec_SubToLeftSpec,
-                                new SequentialCommandGroup(
-                                        new InstantCommand(arm::wall),
-                                        new InstantCommand(wrist::wall),
-                                        new WaitCommand(1000),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                 new InstantCommand(() -> DepositState = "wall")
-                        ),
-                        RedSpec_LeftSpecToMidWay,
-                        RedSpec_LeftSpecToObs,
-                        RedSpec_ObsToMidSpec,
-                        RedSpec_MidSpecToObs,
-                        RedSpec_ObsToRightSpec,
-                        RedSpec_RightSpecToObs,
-                        RedSpec_SpecDepoToObs,
-                        RedSpec_ObsSpecCheck,
-                        new WaitCommand(1500),
-                        new ParallelCommandGroup(
-                                RedSpec_ObsToSub,
-                                new InstantCommand(arm::specimen),
-                                new InstantCommand(wrist::specimen)
-                        ),
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-                        new WaitCommand(750),
-                        new InstantCommand(gripper::open),
-                        new ParallelCommandGroup(
-                                RedSpec_SubToObs,
-                                new SequentialCommandGroup(
-                                        new InstantCommand(arm::wall),
-                                        new InstantCommand(wrist::wall),
-                                        new WaitCommand(1000),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
-                                new InstantCommand(() -> DepositState = "wall")
-                        ),
-                        RedSpec_ObsSpecCheck,
-                        new WaitCommand(2000),
-                        new ParallelCommandGroup(
-                        RedSpec_ObsToSub,
-                        new InstantCommand(arm::specimen),
-                        new InstantCommand(wrist::specimen)
-                        ),
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-                        new WaitCommand(750),
-                        new InstantCommand(gripper::open),
-                        RedSpec_SubToObs,
-                        RedSpec_ObsSpecCheck,
-                        new WaitCommand(2000),
-                        new ParallelCommandGroup(
-                                RedSpec_ObsToSub,
-                                new InstantCommand(arm::specimen),
-                                new InstantCommand(wrist::specimen)
-                        ),                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH -1000,BotPositions.LIFT_TOLERANCE),
-                        new WaitCommand(750),
-                        new InstantCommand(gripper::open),
-                        RedSpec_SubToObs
+                        )
+//
+//                        RedSpec_LeftSpecToMidWay,
+//
+//                        RedSpec_LeftSpecToObs,
+//
+//                        RedSpec_ObsToMidSpec,
+//
+//                        RedSpec_MidSpecToObs,
+//
+//                        RedSpec_ObsToRightSpec,
+//
+//                        RedSpec_RightSpecToObs,
+//
+//                        RedSpec_SpecDepoToObs,
+//
+//                        RedSpec_ObsSpecCheck,
+//
+//                        new WaitCommand(1500),
+//
+//                        CloseGripper,
+//
+//                        new ParallelCommandGroup(
+//                                RedSpec_ObsToSub,
+//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
+//                                new InstantCommand(() -> DepositState = "specimen")
+//                        ),
+//
+//
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(750),
+//                        OpenGripper,
+//
+//                        new ParallelCommandGroup(
+//                                RedSpec_SubToObs,
+//                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+//                                new InstantCommand(() -> DepositState = "wall")
+//                        ),
+//
+//                        RedSpec_ObsSpecCheck,
+//
+//                        new WaitCommand(1500),
+//                        CloseGripper,
+//
+//                        new ParallelCommandGroup(
+//                                RedSpec_ObsToSub,
+//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
+//                                new InstantCommand(() -> DepositState = "specimen")),
+//
+//
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(750),
+//                        OpenGripper,
+//
+//                        new ParallelCommandGroup(
+//                                RedSpec_SubToObs,
+//                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+//                                new InstantCommand(() -> DepositState = "wall")
+//                        ),
+//
+//                        RedSpec_ObsSpecCheck,
+//
+//                        new WaitCommand(1500),
+//                        CloseGripper,
+//
+//                        new ParallelCommandGroup(
+//                                RedSpec_ObsToSub,
+//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
+//                                new InstantCommand(() -> DepositState = "specimen")),
+//
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
+//                        new WaitCommand(750),
+//                        OpenGripper,
+//
+//                        RedSpec_SubToObs
 
-        ));
+                )
+        );
     }
 
 //                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
