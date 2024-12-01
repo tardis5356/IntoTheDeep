@@ -110,7 +110,7 @@ public class CommandSpecimenAuto extends OpMode {
 
     private InstantCommand ArmSpecimen;
 
-private InstantCommand GripperCheck;
+    private InstantCommand GripperCheck;
 
     private DepositToStateCommand depositToStateCommand;
 
