@@ -109,10 +109,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "wallToBasketLow":
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new WaitCommand(500),
                                 new InstantCommand(wrist::basket),
-                                new InstantCommand(arm::basket)
+                                new InstantCommand(arm::basket),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
                         )
                 );
                 //setState = "basket";
