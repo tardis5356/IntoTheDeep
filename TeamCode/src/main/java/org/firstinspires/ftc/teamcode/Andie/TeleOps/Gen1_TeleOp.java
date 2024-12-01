@@ -318,7 +318,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
         }
 
-        if ((AllianceColor.aColor == "blue" && intake.checkBlue()) || (AllianceColor.aColor == "red" && intake.checkRed())){
+        if ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())){
                 new IntakeOutCommand(intake);
         }
 
