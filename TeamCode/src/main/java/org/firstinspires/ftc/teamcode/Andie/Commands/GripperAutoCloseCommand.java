@@ -13,13 +13,7 @@ public class GripperAutoCloseCommand extends SequentialCommandGroup { ;
     @SuppressLint("NotConstructor")
 
     public GripperAutoCloseCommand (Gripper gripper, String botState){
-        if (botState == "wall" && gripper.verifyGripper()){
-            new SequentialCommandGroup(
-                    new InstantCommand(gripper::close),
-                    new WaitCommand(500),
-                    new InstantCommand(this::isFinished)
-            );
-        }
+       new SequentialCommandGroup(new InstantCommand(gripper::close));
 
     }
 }

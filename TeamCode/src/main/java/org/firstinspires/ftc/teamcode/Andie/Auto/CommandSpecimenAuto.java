@@ -29,9 +29,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
@@ -112,7 +114,9 @@ public class CommandSpecimenAuto extends OpMode {
 
     private InstantCommand GripperCheck;
 
-    private DepositToStateCommand depositToStateCommand;
+    private DepositToStateCommand Wall;
+
+    private GripperAutoCloseCommand gripperAutoCloseCommand;
 
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
@@ -123,7 +127,7 @@ public class CommandSpecimenAuto extends OpMode {
     private double loop;
 
     private MecanumDrive drive;
-    static String DepositState;
+    static String botState;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -165,7 +169,7 @@ public class CommandSpecimenAuto extends OpMode {
      */
     @Override
     public void start() {
-        DepositState = "specimen";
+        botState = "specimen";
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();
@@ -206,6 +210,10 @@ public class CommandSpecimenAuto extends OpMode {
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
+        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper, "wall");
+
+        Wall =  new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
+
         time_since_start = new ElapsedTime();
 
 
@@ -224,45 +232,44 @@ public class CommandSpecimenAuto extends OpMode {
 
                         OpenGripper,
 
-                        new WaitCommand(1000),
+                        new WaitCommand(2000),
                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
 //
                         new ParallelCommandGroup(
                                 RedSpec_SubToLeftSpec,
-                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                new InstantCommand(() -> DepositState = "wall")
-                        )
+                                Wall,
+                                new InstantCommand(() -> botState = "wall")
+                        ),
 //
-//                        RedSpec_LeftSpecToMidWay,
-//
-//                        RedSpec_LeftSpecToObs,
-//
-//                        RedSpec_ObsToMidSpec,
-//
-//                        RedSpec_MidSpecToObs,
-//
-//                        RedSpec_ObsToRightSpec,
-//
-//                        RedSpec_RightSpecToObs,
+                        RedSpec_LeftSpecToMidWay,
+
+                        RedSpec_LeftSpecToObs,
+
+                        RedSpec_ObsToMidSpec,
+
+                        RedSpec_MidSpecToObs,
+
+                        RedSpec_ObsToRightSpec,
+
+                        new ParallelCommandGroup(RedSpec_RightSpecToObs,  new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+
+                       gripperAutoCloseCommand
+//                        new WaitCommand(2000),
 //
 //                        RedSpec_SpecDepoToObs,
 //
-//                        RedSpec_ObsSpecCheck,
-//
-//                        new WaitCommand(1500),
-//
-//                        CloseGripper,
-//
+////
+////
+////
 //                        new ParallelCommandGroup(
 //                                RedSpec_ObsToSub,
-//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
-//                                new InstantCommand(() -> DepositState = "specimen")
+//                               Wall
 //                        ),
-//
-//
+////
+////
 //                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
 //                        new WaitCommand(750),
-//                        OpenGripper,
+//                        OpenGripper
 //
 //                        new ParallelCommandGroup(
 //                                RedSpec_SubToObs,
@@ -351,6 +358,8 @@ public class CommandSpecimenAuto extends OpMode {
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
+        telemetry.addData("Gripper", gripper.verifyGripper());
+        telemetry.addData("BotState", botState);
 
         drive.updatePoseEstimate();
         telemetry.update();

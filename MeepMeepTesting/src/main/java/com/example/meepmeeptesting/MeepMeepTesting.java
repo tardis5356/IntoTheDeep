@@ -7,14 +7,14 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
-    public static final Pose2d redBasket_StartPos = new Pose2d(-15, -64, Math.toRadians(270));
-    public static final Pose2d redBasket_BasketDrop = new Pose2d(-53,-56, Math.toRadians(45));
-    public static final Pose2d redBasket_SubDrop = new Pose2d(-10, -36, Math.toRadians(270));
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -40, Math.toRadians(90));
-    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-57,-40, Math.toRadians(90));
-    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-57,-40, Math.toRadians(135));
-    public static final Pose2d redBasket_AscentPos = new Pose2d(-28, -11, Math.toRadians(180));
-    public static final Pose2d redBasket_ObsSampPos = new Pose2d(33, -63, Math.toRadians(270));
+    public static final Pose2d redSpec_StartPos = new Pose2d(8, -62, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(36, -34, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(36, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsDepoPos = new Pose2d(36, -52, Math.toRadians(330));
+    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(36, -48, Math.toRadians(30));
+    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(36, -48, Math.toRadians(45));
+    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(36, -48, Math.toRadians(60));
+    public static final Pose2d redSpec_ObsParkPos = new Pose2d(36,-63,Math.toRadians(90));
 
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
@@ -24,33 +24,24 @@ public class MeepMeepTesting {
                 .setConstraints(70, 70, Math.toRadians(360), Math.toRadians(360), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-15, -64, Math.toRadians(270)))
-                .setTangent(70)
-                .splineToLinearHeading(redBasket_SubDrop, Math.toRadians(90))
-                .setTangent(180)
-                .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
-                .waitSeconds(1)
-                .setTangent(180)
-                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                .waitSeconds(2)
-                .setTangent(45)
-                .splineToLinearHeading(redBasket_MidSampleZonePos, Math.toRadians(90))
-                .waitSeconds(1)
-                .setTangent(180)
-                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                .waitSeconds(2)
-                .setTangent(45)
-                .splineToLinearHeading(redBasket_LeftSampleZonePos, Math.toRadians(90))
-                .waitSeconds(1)
-                .setTangent(180)
-                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
-                .waitSeconds(2)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(8, -62, Math.toRadians(90)))
                 .setTangent(90)
-                .splineToLinearHeading(redBasket_ObsSampPos, Math.toRadians(270))
-                .setTangent(270)
-                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(90))
-                .setTangent(180)
-                .splineToLinearHeading(redBasket_AscentPos, Math.toRadians(180))
+                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                .waitSeconds(2)
+                .setTangent(300)
+                .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
+                .setTangent(0)
+                .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+                .setTangent(0)
+                .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
+                .setTangent(0)
+                .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+                .setTangent(0)
+                .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
+                .setTangent(0)
+                .splineToLinearHeading(redSpec_ObsDepoPos, Math.toRadians(0))
+
+
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)

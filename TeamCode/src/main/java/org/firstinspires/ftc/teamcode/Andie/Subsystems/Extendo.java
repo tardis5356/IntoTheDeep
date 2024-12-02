@@ -2,9 +2,6 @@ package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_IN;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_OUT;
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_SPECLEFT;
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_SPECMID;
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.EXTENDO_SPECRIGHT;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -38,15 +35,6 @@ public class Extendo extends SubsystemBase {
         extensionPosition = EXTENDO_OUT;
     }
 
-    public void leftSpec(){
-        extensionPosition = EXTENDO_SPECLEFT;
-    }
-    public void midSpec(){
-        extensionPosition = EXTENDO_SPECMID;
-    }
-    public void rightSpec(){
-        extensionPosition = EXTENDO_SPECRIGHT;
-    }
     public void update(double stickPosition){
         stickInput = stickPosition;
 
