@@ -16,48 +16,8 @@ public class ExtendoToStateCommand extends ParallelCommandGroup {
             case "extendoIn":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::up),
-                                new WaitCommand(300),
-                                new InstantCommand(extendo::in)
+                                new InstantCommand(intake::up), new WaitCommand(300), new InstantCommand(extendo::in), intakeInCommand
 
-                        )
-                );
-                break;
-
-            case "extendoOut":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new InstantCommand(extendo::out),
-                                new WaitCommand(750)
-                        )
-                );
-                break;
-
-            case "RightSpec":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new InstantCommand(extendo::rightSpec),
-                                new WaitCommand(200)
-                        )
-                );
-                break;
-
-            case "MidSpec":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new InstantCommand(extendo::midSpec),
-                                new WaitCommand(200)
-                        )
-                );
-                break;
-
-            case "LeftSpec":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new InstantCommand(extendo::leftSpec),
-                                new WaitCommand(200),
-                                new InstantCommand(intake::down),
-                                new WaitCommand(200)
                         )
                 );
                 break;
