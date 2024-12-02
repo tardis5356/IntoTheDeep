@@ -47,11 +47,12 @@ public class Extendo extends SubsystemBase {
     public void rightSpec(){
         extensionPosition = EXTENDO_SPECRIGHT;
     }
+
     public void update(double stickPosition){
         stickInput = stickPosition;
 
-        if(sER.getPosition() > .8){
-            extensionPosition = .8;
+        if(sER.getPosition() > .785){
+            extensionPosition = EXTENDO_IN;
         }
         else if(sER.getPosition() < .4){
             extensionPosition = .4;
