@@ -297,6 +297,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "specimen")
                 ));}
 
+
+
         new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) !=0)
                 .whenActive(()-> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
 
@@ -308,6 +310,8 @@ public class Gen1_TeleOp extends CommandOpMode {
     }
     public void run() {
         super.run();
+
+        lift.hanging(driver2.getButton(GamepadKeys.Button.START));
 
         if (extendo.extensionPosition > 0.7) {
             new SequentialCommandGroup(
@@ -371,6 +375,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("Blue", intake.checkBlue());
         telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
+        telemetry.addData("isHanging?", lift.liftHanging);
+        telemetry.addData("LiftPower", lift.mLT.getPower());
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue

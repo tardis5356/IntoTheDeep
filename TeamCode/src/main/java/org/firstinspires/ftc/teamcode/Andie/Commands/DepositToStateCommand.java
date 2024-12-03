@@ -161,6 +161,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "wallToSpecimen":
                 addCommands(
                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                        new InstantCommand(wrist::tuck),
                         new WaitCommand(500),
                         new InstantCommand(arm::specimen),
                         new InstantCommand(wrist::specimen),

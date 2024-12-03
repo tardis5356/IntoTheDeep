@@ -9,7 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Lift extends SubsystemBase {
-    DcMotorEx mLT, mLB;
+    public DcMotorEx mLT;
+    DcMotorEx mLB;
     TouchSensor limitLift;
 
 
@@ -19,6 +20,8 @@ public class Lift extends SubsystemBase {
     double joystickPowerInput = 0;
     double motorPower = 0;
     boolean tooHigh;
+    public boolean liftHanging;
+
 
     public Lift(HardwareMap hardwareMap) {
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
@@ -47,6 +50,15 @@ public class Lift extends SubsystemBase {
 
     }
 
+    public void hanging(boolean amHanging){
+        if (amHanging){
+            liftHanging = true;
+        }
+        else{
+            liftHanging = false;
+        }
+    }
+
     public void periodic() {
         // runs every loop
         if(limitLift.isPressed()){
@@ -58,11 +70,11 @@ public class Lift extends SubsystemBase {
             tooHigh = true;
         } else {tooHigh = false;}
 
-        if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh) {
+        if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
             motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
             targetPosition = 15;
         }
-        else if(joystickPowerInput != 0 && limitLift.isPressed()){
+        else if(joystickPowerInput != 0 && limitLift.isPressed() && !liftHanging){
             if(joystickPowerInput > 0 ){
                 motorPower = 0;
             }
@@ -71,7 +83,7 @@ public class Lift extends SubsystemBase {
                 targetPosition = 15;
             }
         }
-        else if(joystickPowerInput != 0 && tooHigh){
+        else if(joystickPowerInput != 0 && tooHigh && !liftHanging){
             if(joystickPowerInput < 0 ){
                 motorPower = 0;
             }
@@ -79,6 +91,10 @@ public class Lift extends SubsystemBase {
                 motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
                 targetPosition = 15;
             }
+        }
+        else if(liftHanging){
+            motorPower = joystickPowerInput;
+            targetPosition = 15;
         }
         else if (targetPosition != 15) {
             motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();

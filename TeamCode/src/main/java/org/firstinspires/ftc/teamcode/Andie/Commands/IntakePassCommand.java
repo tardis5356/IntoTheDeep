@@ -10,7 +10,9 @@ public class IntakePassCommand extends SequentialCommandGroup {
     public IntakePassCommand (Intake intake) {
         addCommands(
                 new InstantCommand(()->intake.samplePresent = false),
-                new InstantCommand(intake::in)
+                new InstantCommand(intake::in),
+                new WaitCommand(750),
+                new InstantCommand(intake::stop)
         );
     }
 }
