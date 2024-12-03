@@ -31,7 +31,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
@@ -203,14 +203,13 @@ public class CommandSpecimenAuto extends OpMode {
         OpenGripper = new InstantCommand(gripper::open);
 
         CloseGripper = new InstantCommand(gripper::close);
-
         WristSpecimen =  new InstantCommand(wrist::specimen);
 
         ArmSpecimen =  new InstantCommand(arm::specimen);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
-        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper, "wall");
+        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper);
 
         Wall =  new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
 
@@ -225,22 +224,12 @@ public class CommandSpecimenAuto extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "redSpec_StartToSub"),
 
-                        RedSpec_StartToSub,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "scoreSpecimen"),
 
-                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "redSpec_SubToLeftSpec"),
 
-                        OpenGripper,
-
-                        new WaitCommand(2000),
-                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-//
-                        new ParallelCommandGroup(
-                                RedSpec_SubToLeftSpec,
-                                Wall,
-                                new InstantCommand(() -> botState = "wall")
-                        ),
-//
                         RedSpec_LeftSpecToMidWay,
 
                         RedSpec_LeftSpecToObs,
@@ -251,20 +240,48 @@ public class CommandSpecimenAuto extends OpMode {
 
                         RedSpec_ObsToRightSpec,
 
-                        new ParallelCommandGroup(RedSpec_RightSpecToObs,  new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "RightSpecPickUpSpecimen"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs")
 
-                       gripperAutoCloseCommand
+
+//                        RedSpec_StartToSub,//done
+//
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),//done
+//
+//                        OpenGripper,//done
+//
+//                        new WaitCommand(2000),
+//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),//done
+////
+//                        new ParallelCommandGroup(
+//                                RedSpec_SubToLeftSpec,
+//                                Wall,
+//                                new InstantCommand(() -> botState = "wall")
+//                        ),
+////
+//                        RedSpec_LeftSpecToMidWay,
+//
+//                        RedSpec_LeftSpecToObs,
+//
+//                        RedSpec_ObsToMidSpec,
+//
+//                        RedSpec_MidSpecToObs,
+//
+//                        RedSpec_ObsToRightSpec,
+//
+//                        new ParallelCommandGroup(RedSpec_RightSpecToObs,  new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+//
+//                       gripperAutoCloseCommand
 //                        new WaitCommand(2000),
 //
 //                        RedSpec_SpecDepoToObs,
 //
-////
-////
-////
-//                        new ParallelCommandGroup(
-//                                RedSpec_ObsToSub,
-//                               Wall
-//                        ),
 ////
 ////
 //                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
@@ -317,33 +334,6 @@ public class CommandSpecimenAuto extends OpMode {
                 )
         );
     }
-
-//                        new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-//                        RedSpec_ObsToMidSpec,
-//                        RedSpec_MidSpecToObs,
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(500),
-//                        new InstantCommand(arm::wall),
-//                        new InstantCommand(wrist::wall),
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(2000),
-//                        new InstantCommand(gripper::close),
-//                        RedSpec_ObsToRightSpec,
-//                          RedSpec_SpecDepoToObs
-//                        RedSpec_RightSpecToObs,
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(500),
-//                        new InstantCommand(arm::wall),
-//                        new InstantCommand(wrist::wall),
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(2000),
-//                        new InstantCommand(gripper::close),
-    //                        intakeOut,
-//                        extendoSpecMid,
-//                        intakeIn,
-//                        intakeOut,
-//                        extendoSpecRight,
-//                        intakeOut,
 
     /*
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
