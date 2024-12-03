@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectorie
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 //import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
@@ -49,6 +50,8 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
 
+    private ActionCommand RedSpec_RightSpecToObs;
+
     private ActionCommand RedSpec_ObsSpecCheck;
     static String DepositState;
 
@@ -69,6 +72,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec, requirements);
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
+        RedSpec_RightSpecToObs =  new ActionCommand(redSpec_RightSpecToObs, requirements);
 
         RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
 
@@ -117,7 +121,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
-                                        RedSpec_ObsToRightSpec,
+                                        RedSpec_RightSpecToObs,
                                         new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
                                 ),
                                 new InstantCommand(gripper::close),

@@ -241,8 +241,8 @@ public class CommandSpecimenAuto extends OpMode {
                         RedSpec_ObsToRightSpec,
 
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecPickUpSpecimen"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub")
+                       new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
+ //                       new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub")
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),

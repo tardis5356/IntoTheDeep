@@ -166,7 +166,7 @@ public class AutoTrajectories {
         redSpec_ObsToRightSpec =
                 drive.actionBuilder(redSpec_MidSpecDepoPos)
                         .setTangent(90)
-                        .splineToLinearHeading(redSpec_RightSpecDepoPos, Math.toRadians(0))
+                        .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
                         .build();
 
         redSpec_RightSpecToObs =
