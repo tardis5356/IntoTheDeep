@@ -31,6 +31,8 @@ public class AutoColorCheck extends OpMode {
     @Override
     public void loop() {
         telemetry.addData("detectedColor", AllianceColor.aColor);
+        telemetry.addData("Blue", gripper.cG.blue());
+        telemetry.addData("Red", gripper.cG.red());
         telemetry.update();
     }
 

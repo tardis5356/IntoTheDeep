@@ -34,6 +34,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 public class Gen1_TeleOp extends CommandOpMode {
     //gamepads
     private GamepadEx driver1, driver2;
+    boolean wrongColorIntaked = false;
 
     private IntakeInCommand intakeInCommand;
 
@@ -163,7 +164,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(()->intake.checkSample() && intake.samplePresent)
                 .whenActive(new InstantCommand(intake::stop));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y))
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
                 .whenActive(new InstantCommand(intake::out));}
 
         //transfer
@@ -319,7 +320,11 @@ public class Gen1_TeleOp extends CommandOpMode {
         }
 
         if ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())){
-                new IntakeOutCommand(intake);
+            new SequentialCommandGroup(
+                    new IntakeOutCommand(intake)
+            );
+
+                wrongColorIntaked = true;
         }
 
 
@@ -364,6 +369,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("checkIntake", intake.checkSample());
         telemetry.addData("Red", intake.checkRed());
         telemetry.addData("Blue", intake.checkBlue());
+        telemetry.addData("Alliance Color", AllianceColor.aColor);
+        telemetry.addData("wrongColorDetected", wrongColorIntaked);
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
