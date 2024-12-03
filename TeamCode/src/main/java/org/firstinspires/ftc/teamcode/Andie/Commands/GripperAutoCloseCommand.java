@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
+
+
 import android.annotation.SuppressLint;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -12,8 +14,17 @@ public class GripperAutoCloseCommand extends SequentialCommandGroup { ;
 
     @SuppressLint("NotConstructor")
 
-    public GripperAutoCloseCommand (Gripper gripper, String botState){
-       new SequentialCommandGroup(new InstantCommand(gripper::close));
+    private String botState;
+
+    public GripperAutoCloseCommand (Gripper gripper){
+        if (botState == "wall" && gripper.verifyGripper()){
+            addCommands(
+            new SequentialCommandGroup(
+                    new InstantCommand(gripper::close),
+                    new WaitCommand(500),
+                    new InstantCommand(this::isFinished)
+            ));
+        }
 
     }
 }

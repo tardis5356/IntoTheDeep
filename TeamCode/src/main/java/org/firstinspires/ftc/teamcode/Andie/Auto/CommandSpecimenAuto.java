@@ -210,7 +210,7 @@ public class CommandSpecimenAuto extends OpMode {
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
-        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper, "wall");
+        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper);
 
         Wall =  new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
 
