@@ -130,14 +130,14 @@ public class AutoTrajectories {
 
         redSpec_SubToMidWayLeftSpec =
                 drive.actionBuilder(redSpec_SubDepoPos)
-                        .setTangent(270)
-                        .splineToLinearHeading(redSpec_MidWayPos,Math.toRadians(0))
+                        .setTangent(180)
+                        .splineToLinearHeading(redSpec_MidWayPos,Math.toRadians(90))
                         .build();
 
         redSpec_MidWayToLeftSpec =
                 drive.actionBuilder(redSpec_MidWayPos)
-                        .setTangent(270)
-                        .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(90)) //0 angle
+                        .setTangent(180)
+                        .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(270))
                         .build();
 
         redSpec_LeftSpecToObs =
@@ -154,7 +154,7 @@ public class AutoTrajectories {
 
         redSpec_MidSpecToObs =
                 drive.actionBuilder(redSpec_MidSpecZonePos)
-                        .setTangent(270)
+                        .setTangent(180)
                         .splineToLinearHeading(redSpec_MidSpecDepoPos, Math.toRadians(270))
                         .build();
 
