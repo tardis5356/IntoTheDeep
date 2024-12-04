@@ -21,7 +21,6 @@ public class GripperAutoCloseCommand extends SequentialCommandGroup { ;
             addCommands(
             new SequentialCommandGroup(
                     new InstantCommand(gripper::close),
-                    new WaitCommand(500),
                     new InstantCommand(this::isFinished)
             ));
         }

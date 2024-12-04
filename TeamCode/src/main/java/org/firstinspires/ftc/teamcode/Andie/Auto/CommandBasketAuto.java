@@ -168,6 +168,7 @@ public class CommandBasketAuto extends OpMode {
                 RedBasket_StartToSub,
                 //hang the specimen
                 RedBasket_SubToRightSample,
+                extendoSpecRight,
                 intakeIn,
 
                 RedBasket_RightSampleToBasket,

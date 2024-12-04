@@ -1,16 +1,17 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToMidWay;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
+//import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToLeftSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
@@ -88,14 +89,14 @@ public class CommandSpecimenAuto extends OpMode {
     private Extendo extendo;
     private Lift lift;
     private Wrist wrist;
-    private Subsystem ExampleSubsystem;
+    private ExampleSubsystem exampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToLeftSpec;
+    private ActionCommand RedSpec_SubToMidWayLeftSpec;
+    private ActionCommand RedSpec_MidWayToLeftSpec;
     private ActionCommand RedSpec_RightSpecToObs;
     private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToRightSpec;
     private ActionCommand RedSpec_LeftSpecToObs;
-    private ActionCommand RedSpec_LeftSpecToMidWay;
     private ActionCommand RedSpec_MidSpecToObs;
     private ActionCommand RedSpec_ObsToMidSpec;
     private ActionCommand RedSpec_ObsToSub;
@@ -147,9 +148,9 @@ public class CommandSpecimenAuto extends OpMode {
         lift = new Lift(hardwareMap);
         extendo = new Extendo(hardwareMap);//20 inches
         wrist = new Wrist(hardwareMap);
-        ExampleSubsystem = new ExampleSubsystem(hardwareMap);
+        exampleSubsystem = new ExampleSubsystem(hardwareMap);
 
-        Set<Subsystem> requirements = Set.of(ExampleSubsystem);
+        Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
 
         CommandScheduler.getInstance().registerSubsystem(intake);//
@@ -171,18 +172,18 @@ public class CommandSpecimenAuto extends OpMode {
     public void start() {
         botState = "specimen";
 
-        Set<Subsystem> requirements = Set.of(ExampleSubsystem);
+        Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
         generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
-        RedSpec_SubToLeftSpec = new ActionCommand(redSpec_SubToLeftSpec, requirements);
+        RedSpec_SubToMidWayLeftSpec = new ActionCommand(redSpec_SubToMidWayLeftSpec, requirements);
 
         RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
 
-        RedSpec_LeftSpecToMidWay = new ActionCommand(redSpec_LeftSpecToMidWay, requirements);
+        RedSpec_MidWayToLeftSpec = new ActionCommand(redSpec_MidWayToLeftSpec, requirements);
 
         RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
 
@@ -203,6 +204,7 @@ public class CommandSpecimenAuto extends OpMode {
         OpenGripper = new InstantCommand(gripper::open);
 
         CloseGripper = new InstantCommand(gripper::close);
+
         WristSpecimen =  new InstantCommand(wrist::specimen);
 
         ArmSpecimen =  new InstantCommand(arm::specimen);
@@ -224,13 +226,11 @@ public class CommandSpecimenAuto extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "redSpec_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "scoreSpecimen"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "redSpec_SubToLeftSpec"),
-
-                        RedSpec_LeftSpecToMidWay,
+                        RedSpec_MidWayToLeftSpec,
 
                         RedSpec_LeftSpecToObs,
 
@@ -240,14 +240,30 @@ public class CommandSpecimenAuto extends OpMode {
 
                         RedSpec_ObsToRightSpec,
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "RightSpecPickUpSpecimen"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "ObsToSub"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, "specDepoToObs")
+                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecPickUpSpecimen")
+
+//                       new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecDepoToSub")
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //                        RedSpec_StartToSub,//done

@@ -13,10 +13,23 @@ public class ExtendoToStateCommand extends ParallelCommandGroup {
 
     public ExtendoToStateCommand(Intake intake, Extendo extendo, String state) {
         switch (state) {
+            case "extendoOut":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(extendo::out),
+                                new InstantCommand(intake::down),
+                                new InstantCommand(intake::in),
+                                intakeInCommand
+                        )
+                );
+
             case "extendoIn":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::up), new WaitCommand(300), new InstantCommand(extendo::in), intakeInCommand
+                                new InstantCommand(intake::up),
+                                new WaitCommand(300),
+                                new InstantCommand(extendo::in),
+                                intakeInCommand
 
                         )
                 );
