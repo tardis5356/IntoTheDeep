@@ -2,12 +2,15 @@ package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.Andie.Auto.Trajectory.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToAscent;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -17,7 +20,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
@@ -78,7 +83,7 @@ public class CommandBasketAuto extends OpMode {
     private Extendo extendo;
     private Lift lift;
     private Wrist wrist;
-    private Subsystem ExampleSubsystem;
+    private ExampleSubsystem exampleSubsystem;
     private ActionCommand RedBasket_StartToSub;
     private ActionCommand RedBasket_SubToRightSample;
     private ActionCommand RedBasket_RightSampleToBasket;
@@ -87,6 +92,16 @@ public class CommandBasketAuto extends OpMode {
     private ActionCommand RedBasket_BasketToLeftSample;
     private ActionCommand RedBasket_LeftSampleToBasket;
     private ActionCommand RedBasket_BasketToAscent;
+
+    private InstantCommand OpenGripper;
+
+    private InstantCommand CloseGripper;
+
+    private InstantCommand WristSpecimen;
+
+    private InstantCommand ArmSpecimen;
+
+    private InstantCommand GripperCheck;
 
     private DepositToStateCommand depositToStateCommand;
 
@@ -120,9 +135,9 @@ public class CommandBasketAuto extends OpMode {
         lift = new Lift(hardwareMap);
         extendo = new Extendo(hardwareMap);//20 inches
         wrist = new Wrist(hardwareMap);
-        ExampleSubsystem = new ExampleSubsystem(hardwareMap);
+        exampleSubsystem = new ExampleSubsystem(hardwareMap);
 
-        Set<Subsystem> requirements = Set.of(ExampleSubsystem);
+        Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
 
 
@@ -143,6 +158,8 @@ public class CommandBasketAuto extends OpMode {
      */
     @Override
     public void start() {
+        Set<Subsystem> requirements = Set.of(exampleSubsystem);
+        runtime.reset();
 
         intakeIn = new IntakeInCommand(intake);
 
@@ -154,36 +171,50 @@ public class CommandBasketAuto extends OpMode {
 
         extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
-        Set<Subsystem> requirements = Set.of(ExampleSubsystem);
-        runtime.reset();
         RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);//
+
+        OpenGripper = new InstantCommand(gripper::open);
+
+        CloseGripper = new InstantCommand(gripper::close);
+
+        WristSpecimen =  new InstantCommand(wrist::specimen);
+
+        ArmSpecimen =  new InstantCommand(arm::specimen);
+
+        GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
 
 
 
-
         CommandScheduler.getInstance().schedule(
+                ArmSpecimen,
+                WristSpecimen,
+                CloseGripper,
+                GripperCheck,
 
-                RedBasket_StartToSub,
-                //hang the specimen
-                RedBasket_SubToRightSample,
-                extendoSpecRight,
-                intakeIn,
+                new SequentialCommandGroup(
 
-                RedBasket_RightSampleToBasket,
-                //score right sample
-                RedBasket_ToMidSample,
-                //pick up mid sample
-                RedBasket_MidSampleToBasket,
-                //score mid sample
-                RedBasket_BasketToLeftSample,
-                //pick up left sample
-                RedBasket_LeftSampleToBasket,
+                new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
+
+
+//                RedBasket_SubToRightSample,
+//                extendoSpecRight,
+//                intakeIn,
+//
+//                RedBasket_RightSampleToBasket,
+//                //score right sample
+//                RedBasket_ToMidSample,
+//                //pick up mid sample
+//                RedBasket_MidSampleToBasket,
+//                //score mid sample
+//                RedBasket_BasketToLeftSample,
+//                //pick up left sample
+//                RedBasket_LeftSampleToBasket,
                 //score left sample
                 RedBasket_BasketToAscent //park
 
-        );
+        ));
     }
 
     /*

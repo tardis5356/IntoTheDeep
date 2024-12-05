@@ -19,8 +19,8 @@ public class AutoTrajectories {
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(3, -32, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(42, -61, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecCheckPos = new Pose2d(48,-61,Math.toRadians(90));
-    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(42, -17, Math.toRadians(90));
-    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(42, -56, Math.toRadians(90));
+    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(44, -17, Math.toRadians(90));
+    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(44, -56, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(52, -14, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecDepoPos = new Pose2d(52, -56, Math.toRadians(90));
     public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(62, -14, Math.toRadians(90));
@@ -28,8 +28,8 @@ public class AutoTrajectories {
     public static final Pose2d redSpec_MidWayPos = new Pose2d(34,-42,Math.toRadians(90));
 
     //Red Basket Poses
-    public static final Pose2d redBasket_StartPos = new Pose2d(-8, -62, Math.toRadians(90));
-    public static final Pose2d redBasket_SubDepoPos = new Pose2d(-8, -34, Math.toRadians(90));
+    public static final Pose2d redBasket_StartPos = new Pose2d(-16, -62, Math.toRadians(90));
+    public static final Pose2d redBasket_SubDepoPos = new Pose2d(-4, -32, Math.toRadians(90));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45));
     public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -48, Math.toRadians(90));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-60,-48, Math.toRadians(90));
@@ -232,7 +232,7 @@ public class AutoTrajectories {
 
         redBasket_StartToSub =
                 drive.actionBuilder(redBasket_StartPos)
-                        .setTangent(70)
+                        .setTangent(90)
                         .splineToLinearHeading(redBasket_SubDepoPos, Math.toRadians(90))
                         .build();
 
