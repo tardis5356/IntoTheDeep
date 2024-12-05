@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
@@ -127,6 +128,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
+
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)
                 .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER);
@@ -154,8 +157,13 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(intake::stop)),
                         new InstantCommand(intake::down));
 
-        new Trigger(() -> extendo.sER.getPosition() >= .72)
-                .whenActive(new InstantCommand(intake::up));
+        new Trigger(() -> extendo.sER.getPosition() >= .62 || driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)!=0)
+                .whenActive(new SequentialCommandGroup(
+                        new InstantCommand(intake::up)
+                        //new WaitCommand(200),
+                        //new InstantCommand(extendo::in),
+                        //new WaitCommand(300),
+                        /*new InstantCommand(intake::transfer)*/));
 
         //intake inning and outing
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
@@ -206,6 +214,12 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToIntake"),
                         new InstantCommand(() -> DepositState = "intake")
+                ));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "intake")
+                .whenActive(new SequentialCommandGroup(
+                   new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToIntake"),
+                   new InstantCommand(() -> DepositState = "intake")
                 ));
 
         //ToWallCommands
@@ -313,15 +327,15 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         lift.hanging(driver2.getButton(GamepadKeys.Button.START));
 
-        if (extendo.extensionPosition > 0.7) {
-            new SequentialCommandGroup(
-                new InstantCommand(intake::up),
-                new WaitCommand(200),
-                new InstantCommand(extendo::in),
-                new WaitCommand(300),
-                new InstantCommand(intake::transfer)
-                );
-        }
+//        if (extendo.extensionPosition > 0.6) {
+//            new SequentialCommandGroup(
+//                new InstantCommand(intake::up),
+//                new WaitCommand(200),
+//                new InstantCommand(extendo::in),
+//                new WaitCommand(300),
+//                new InstantCommand(intake::transfer)
+//                );
+//        }
 
         if ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())){
             new SequentialCommandGroup(

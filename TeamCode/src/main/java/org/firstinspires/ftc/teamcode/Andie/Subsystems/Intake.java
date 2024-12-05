@@ -62,7 +62,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void down(){sIT.setPosition(BotPositions.INTAKE_DOWN);}
-    public void up                                                                                                                                  (){sIT.setPosition(BotPositions.INTAKE_UP);}
+    public void up(){sIT.setPosition(BotPositions.INTAKE_UP);}
 
 
 
