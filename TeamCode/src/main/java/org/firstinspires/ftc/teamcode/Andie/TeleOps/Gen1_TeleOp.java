@@ -161,7 +161,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
-        new Trigger(()->intake.checkSample() && intake.samplePresent)
+        new Trigger(()->(intake.checkSample() && intake.samplePresent)||gripper.verifyJig())
                 .whenActive(new InstantCommand(intake::stop));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
@@ -377,6 +377,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
+        telemetry.addData("I Changed The Code", DepositState);
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
