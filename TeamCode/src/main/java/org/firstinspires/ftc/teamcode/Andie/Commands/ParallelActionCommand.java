@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
+//RedSpec
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
@@ -15,6 +15,17 @@ import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectorie
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
+
+//RedBasket
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_SubToRightSample;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_ToMidSample;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToAscent;
+
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -39,6 +50,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
     public String depositCurrentState = "";
 
+   //RedSpecimen
     private ActionCommand RedSpec_StartToSub;
     private ActionCommand RedSpec_MidWayToLeftSpec;
     private ActionCommand RedSpec_RightSpecToSub;
@@ -54,12 +66,26 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedSpec_RightSpecToObs;
 
     private ActionCommand RedSpec_ObsSpecCheck;
+
+
+    //RedBasket
+    private ActionCommand RedBasket_StartToSub;
+    private ActionCommand RedBasket_SubToRightSample;
+    private ActionCommand RedBasket_RightSampleToBasket;
+    private ActionCommand RedBasket_ToMidSample;
+    private ActionCommand RedBasket_MidSampleToBasket;
+    private ActionCommand RedBasket_BasketToLeftSample;
+    private ActionCommand RedBasket_LeftSampleToBasket;
+    private ActionCommand RedBasket_BasketToAscent;
+
+
     static String DepositState;
 
 
     public ParallelActionCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, ExampleSubsystem exampleSubsystem, String desiredState/*, String setState*/) {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
+        //RedSpecimen
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
         RedSpec_MidWayToLeftSpec = new ActionCommand(redSpec_MidWayToLeftSpec, requirements);
@@ -86,6 +112,18 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
         RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck, requirements);
 
+        //RedBasket
+        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);
+        RedBasket_SubToRightSample = new ActionCommand(redBasket_SubToRightSample, requirements);
+        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
+        RedBasket_ToMidSample = new ActionCommand(redBasket_ToMidSample, requirements);
+        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
+        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
+        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket,requirements);
+        RedBasket_BasketToAscent = new ActionCommand(redBasket_BasketToAscent,requirements);
+
+
+        //redSpecimen
         switch (desiredState) {
             case "redSpec_StartToSub":
                 addCommands(
@@ -186,8 +224,26 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                 );
                 break;
 
-        }
-    }
+            case "redBasket_StartToSub":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new InstantCommand(gripper::close),
+                                        new InstantCommand(wrist::specimen),
+                                        new InstantCommand(arm::specimen),
+                                        RedBasket_StartToSub
+
+                                ),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
+                                new InstantCommand(gripper::open),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new WaitCommand(500)
+                        )
+
+                );
+
+                break;
+    }}
 
     public void setBasket() {
         depositCurrentState = "basket";
@@ -201,3 +257,4 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         depositCurrentState = "wall";
     }
 }
+
