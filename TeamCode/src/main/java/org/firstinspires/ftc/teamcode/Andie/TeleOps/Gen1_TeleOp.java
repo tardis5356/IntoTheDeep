@@ -391,7 +391,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
-        telemetry.addData("I Changed The Code", DepositState);
+        telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue

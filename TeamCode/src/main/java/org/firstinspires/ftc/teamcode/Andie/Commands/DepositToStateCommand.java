@@ -25,7 +25,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::intake),
                                 new WaitCommand(500),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                                 //new InstantCommand(wrist::wristIntake)
 
                         )
@@ -43,7 +43,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new WaitCommand(500),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
 
                         )
                 );
@@ -152,7 +152,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(arm::intake),
                                 new WaitCommand(500),
-                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                         )
 
                 );
@@ -256,7 +256,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 //currentState = "transit";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift,0, 25),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_INTAKE, 25),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::open)

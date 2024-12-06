@@ -51,7 +51,7 @@ public class Extendo extends SubsystemBase {
     public void update(double stickPosition){
         stickInput = stickPosition;
 
-        if(sER.getPosition() > .785){
+        if(sER.getPosition() > .78){
             extensionPosition = EXTENDO_IN;
         }
         else if(sER.getPosition() < .4){
