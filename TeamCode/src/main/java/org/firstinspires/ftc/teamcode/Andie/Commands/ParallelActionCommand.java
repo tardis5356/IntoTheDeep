@@ -153,8 +153,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 RedSpec_SubToMidWayLeftSpec,
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
-                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                new InstantCommand(() -> DepositState = "wall"))
+                                //new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+                                new InstantCommand(() -> DepositState = "wall")
+                                )
                         )
                 );
                 break;
