@@ -1,21 +1,19 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
-//import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
-
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -30,21 +28,20 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
+
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
-import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
-//import org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedSpecimenAuto;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
+import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import org.firstinspires.ftc.teamcode.TestBed.Tuning.MecanumDrive;
 
@@ -64,9 +61,9 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "WaitSpecimenAuto")
 
-public class CommandSpecimenAuto extends OpMode {
+public class CommandSpecimenAutoDelayed extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -226,6 +223,7 @@ public class CommandSpecimenAuto extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
+                        new WaitCommand(15000),
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
 
                         new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),

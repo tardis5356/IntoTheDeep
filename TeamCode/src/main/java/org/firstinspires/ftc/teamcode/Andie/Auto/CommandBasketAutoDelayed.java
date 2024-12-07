@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToAscent;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_SubToMidWayLeftSpec;
 
@@ -13,6 +12,7 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,7 +21,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
@@ -51,9 +50,9 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketAuto")
+@Autonomous(name = "WaitBasketAuto")
 
-public class CommandBasketAuto extends OpMode {
+public class CommandBasketAutoDelayed extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -196,6 +195,7 @@ public class CommandBasketAuto extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
+                        new WaitCommand(15000),
 
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
 

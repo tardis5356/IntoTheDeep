@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
 //RedSpec
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_MidWayToPark;
+import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_ParkToHang;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
@@ -236,12 +238,29 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
-                                new InstantCommand(gripper::open),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(500)
+                                new InstantCommand(gripper::open)
                         )
 
                 );
+
+                break;
+            case "redBasket_MidWayToPark":
+                addCommands(
+                        new SequentialCommandGroup(
+
+
+                                   new ActionCommand(redBasket_MidWayToPark, requirements),
+                                new InstantCommand(()->Lift.targetPosition=10),
+                                new ParallelCommandGroup(
+                                        new ActionCommand(redBasket_ParkToHang, requirements),
+                                new InstantCommand(lift::cutPower)
+                                )
+
+
+
+
+
+                ));
 
                 break;
     }}

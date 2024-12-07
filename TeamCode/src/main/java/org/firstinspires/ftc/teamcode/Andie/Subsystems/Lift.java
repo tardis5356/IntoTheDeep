@@ -126,4 +126,11 @@ public class Lift extends SubsystemBase {
     public double getCurrentMotorPower() {
         return motorPower;
     }
+
+    public void cutPower(){
+       mLT.setMotorDisable();
+        mLB.setMotorDisable();
+        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    }
 }
