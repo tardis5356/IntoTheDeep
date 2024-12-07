@@ -228,19 +228,19 @@ public class CommandSpecimenAuto extends OpMode {
                 new SequentialCommandGroup(
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec")
 
-                        RedSpec_MidWayToLeftSpec,
-
-                        RedSpec_LeftSpecToObs,
-
-                        RedSpec_ObsToMidSpec,
-
-                        RedSpec_MidSpecToObs,
-
-                        RedSpec_ObsToRightSpec,
-
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecPickUpSpecimen")
+//                        RedSpec_MidWayToLeftSpec,
+//
+//                        RedSpec_LeftSpecToObs,
+//
+//                        RedSpec_ObsToMidSpec,
+//
+//                        RedSpec_MidSpecToObs,
+//
+//                        RedSpec_ObsToRightSpec,
+//
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecPickUpSpecimen")
 
 //                       new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecDepoToSub")

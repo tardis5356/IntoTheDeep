@@ -195,10 +195,11 @@ public class CommandBasketAuto extends OpMode {
 
                 new SequentialCommandGroup(
 
-                new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
+                new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub")
 
 
 //                RedBasket_SubToRightSample,
+//               // new InstantCommand(intake::)
 //                extendoSpecRight,
 //                intakeIn,
 //
@@ -211,8 +212,8 @@ public class CommandBasketAuto extends OpMode {
 //                RedBasket_BasketToLeftSample,
 //                //pick up left sample
 //                RedBasket_LeftSampleToBasket,
-                //score left sample
-                RedBasket_BasketToAscent //park
+//                //score left sample
+//                RedBasket_BasketToAscent //park
 
         ));
     }
