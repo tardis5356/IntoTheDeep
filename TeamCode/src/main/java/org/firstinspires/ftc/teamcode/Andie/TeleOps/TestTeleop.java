@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 
 @Config
+@Disabled
 @TeleOp(name = "Gen1_Test", group = "AGen1")
 public class TestTeleop extends CommandOpMode {
 

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Andie.Subsystems;
 
-import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MAX;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.BLUE_MIN;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_MAX;
 import static org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions.RED_MIN;

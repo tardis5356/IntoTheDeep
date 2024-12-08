@@ -9,17 +9,14 @@ import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakePassCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;

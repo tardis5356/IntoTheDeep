@@ -256,10 +256,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 //currentState = "transit";
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift,BotPositions.LIFT_INTAKE, 25),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, 25),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
-                                new InstantCommand(gripper::open)
+                                new InstantCommand(gripper::open),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, 25)
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
 

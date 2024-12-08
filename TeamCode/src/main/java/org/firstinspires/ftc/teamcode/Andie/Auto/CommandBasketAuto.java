@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Andie.Auto;
 
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToAscent;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
 import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_SubToMidWayLeftSpec;
 
@@ -21,7 +20,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ExtendoToStateCommand;
-import org.firstinspires.ftc.teamcode.Andie.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;

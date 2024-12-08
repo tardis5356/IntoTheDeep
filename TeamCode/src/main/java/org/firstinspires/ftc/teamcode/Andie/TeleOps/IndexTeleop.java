@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
-
+@Disabled
 @TeleOp(name = "indexTele")
 //@Disabled
 public class IndexTeleop extends CommandOpMode {
