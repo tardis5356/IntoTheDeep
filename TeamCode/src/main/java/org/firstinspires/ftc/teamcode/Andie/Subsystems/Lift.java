@@ -18,7 +18,7 @@ public class Lift extends SubsystemBase {
 
     public static double targetPosition = 0;
     double joystickPowerInput = 0;
-    double motorPower = 0;
+    public static double motorPower = 0;
     boolean tooHigh;
     public boolean liftHanging;
 
