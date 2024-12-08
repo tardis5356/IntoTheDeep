@@ -128,7 +128,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
+        //new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
 
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)

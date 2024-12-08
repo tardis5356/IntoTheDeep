@@ -62,10 +62,10 @@ public class HubTest extends LinearOpMode {
                 s5.setPosition(0);
             }
 
-            telemetry.addData("MotorEncoder_0", m0.getPowerFloat());
-            telemetry.addData("MotorEncoder_1", m1.getPowerFloat());
-            telemetry.addData("MotorEncoder_2", m2.getPowerFloat());
-            telemetry.addData("MotorEncoder_3", m3.getPowerFloat());
+            telemetry.addData("MotorEncoder_0", m0.getCurrentPosition());
+            telemetry.addData("MotorEncoder_1", m1.getCurrentPosition());
+            telemetry.addData("MotorEncoder_2", m2.getCurrentPosition());
+            telemetry.addData("MotorEncoder_3", m3.getCurrentPosition());
             telemetry.addData("Digital_0", t0.isPressed());
             telemetry.addData("Digital_1", t1.isPressed());
             telemetry.addData("Digital_2", t2.isPressed());
