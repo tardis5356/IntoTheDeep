@@ -250,11 +250,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
 
                                    new ActionCommand(redBasket_MidWayToPark, requirements),
-                                new InstantCommand(()->Lift.targetPosition=10),
-                                new InstantCommand(()->Lift.motorPower=0),
                                 new ParallelCommandGroup(
                                         new ActionCommand(redBasket_ParkToHang, requirements),
-                                new InstantCommand(lift::cutPower)
+                                        new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH - 730,50)
                                 )
 
 

@@ -119,7 +119,7 @@ public class Lift extends SubsystemBase {
         return controller.calculate(mLT.getCurrentPosition(), targetPosition);
     }
 
-    public void setTargetPosition(double newTargetPosition){
+    public static void setTargetPosition(double newTargetPosition){
         targetPosition = newTargetPosition;
     }
 
