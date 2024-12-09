@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_LeftSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_MidWayToLeftSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsSpecCheck;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToMidSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToRightSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SpecDepoToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_StartToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SubToObs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;

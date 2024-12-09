@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.TestBed;
 
-//import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.RedSpecimenAuto;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartPos;
+//import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.RedSpecimenAuto;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_StartPos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;

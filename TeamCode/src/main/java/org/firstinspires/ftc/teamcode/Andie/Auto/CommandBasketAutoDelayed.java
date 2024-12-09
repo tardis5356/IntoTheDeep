@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.Andie.Auto;
 
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartPos;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_SubToMidWayLeftSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_StartPos;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_SubToMidWayLeftSpec;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;

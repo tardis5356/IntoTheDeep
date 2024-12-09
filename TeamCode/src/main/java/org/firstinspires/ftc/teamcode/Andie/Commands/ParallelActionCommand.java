@@ -1,32 +1,32 @@
 package org.firstinspires.ftc.teamcode.Andie.Commands;
 
 //RedSpec
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_MidWayToPark;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_ParkToHang;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidWayToLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_LeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsSpecCheck;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToMidSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToRightSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_ObsToSub;
-//import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_RightSpecToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SpecDepoToObs;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redSpec_SubToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_MidWayToPark;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_ParkToHang;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_MidWayToLeftSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_LeftSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_MidSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsSpecCheck;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToMidSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToRightSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_ObsToSub;
+//import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_RightSpecToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SpecDepoToObs;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_StartToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SubToMidWayLeftSpec;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redSpec_SubToObs;
 
 //RedBasket
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_SubToRightSample;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_RightSampleToBasket;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_ToMidSample;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToLeftSample;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.redBasket_BasketToAscent;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_SubToRightSample;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_ToMidSample;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.redBasket_BasketToAscent;
 
 
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -37,9 +37,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.BotPositions;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Andie.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;

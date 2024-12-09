@@ -1,6 +1,6 @@
 //package org.firstinspires.ftc.teamcode.TestBed.AutoPathing;
 //
-//import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.AutoTrajectories.generateTrajectories;
+//import static org.firstinspires.ftc.teamcode.Andie.Auto.AutoTrajectories.generateTrajectories;
 //import static org.firstinspires.ftc.teamcode.TestBed.AutoPathing.RedBasketAuto.redBasket_StartPos;
 //
 //import com.acmerobotics.dashboard.FtcDashboard;
