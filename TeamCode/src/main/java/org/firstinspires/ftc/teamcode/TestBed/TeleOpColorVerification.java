@@ -4,8 +4,8 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 @Disabled
 @TeleOp (name = "TeleOpColorVerification")
 public class TeleOpColorVerification extends CommandOpMode {
