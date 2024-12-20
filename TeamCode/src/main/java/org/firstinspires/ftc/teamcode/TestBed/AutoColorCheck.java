@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.TestBed;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.AllianceColor;
-import org.firstinspires.ftc.teamcode.Andie.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 
 @Autonomous(name = "AutoColorCheck")
 public class AutoColorCheck extends OpMode {
