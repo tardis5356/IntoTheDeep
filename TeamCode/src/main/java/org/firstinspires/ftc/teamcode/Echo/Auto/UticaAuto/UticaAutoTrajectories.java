@@ -49,7 +49,7 @@ public class UticaAutoTrajectories {
     public static Action redSpec_ObsToRightSpec;
     public static Action redSpec_SpecDepoToObs;
     public static Action redSpec_RightSpecToObs;
-    public static Action redSpec_RightSpecToSub;
+    public static Action redSpec_RightSpecObsPickUpToSub;
     public static Action redSpec_ObsToSub;
     public static Action redSpec_SubToObs;
 
@@ -120,7 +120,7 @@ public class UticaAutoTrajectories {
                         .splineToLinearHeading(redSpec_RightSpecDepoPos, Math.toRadians(270))
                         .build();
 
-        redSpec_RightSpecToSub =
+        redSpec_RightSpecObsPickUpToSub =
                 drive.actionBuilder(redSpec_RightSpecDepoPos)
                         .setTangent(Math.toRadians(90))
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))

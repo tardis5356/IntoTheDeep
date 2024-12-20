@@ -18,6 +18,7 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -213,6 +214,8 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
+
+                        new WaitCommand(15000),
 
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
 

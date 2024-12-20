@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajec
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToRightSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecToObs;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecObsPickUpToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_StartToSub;
@@ -60,7 +61,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "WaitSpecimenAuto")
+@Autonomous(name = "SpecimenAuto")
 
 public class UticaCommandSpecimenAutoDelayed extends OpMode {
     // Declare OpMode members.
@@ -92,6 +93,7 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
     private ActionCommand RedSpec_RightSpecToObs;
     private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToRightSpec;
+    private ActionCommand RedSpec_RightSpecObsPickUpToSub;
     private ActionCommand RedSpec_LeftSpecToObs;
     private ActionCommand RedSpec_MidSpecToObs;
     private ActionCommand RedSpec_ObsToMidSpec;
@@ -184,6 +186,8 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
+        RedSpec_RightSpecObsPickUpToSub = new ActionCommand (redSpec_RightSpecObsPickUpToSub, requirements);
+
         RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
 
         RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);
@@ -218,9 +222,11 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
 
                 new SequentialCommandGroup(
                         new WaitCommand(15000),
+
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
 
                         new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
+
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
 
                         new ActionCommand(redSpec_MidPointToLeftSpec, requirements)
@@ -244,6 +250,7 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
+
 
                 )
         );
