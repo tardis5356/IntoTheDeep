@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Andie.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Andie.Commands.IntakeOutCommand;
@@ -376,7 +377,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
-
+        /*
         telemetry.addData("RobotState", DepositState);
         telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
@@ -388,7 +389,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
+
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+         */
+        telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
+        telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
+        telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
+        telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue

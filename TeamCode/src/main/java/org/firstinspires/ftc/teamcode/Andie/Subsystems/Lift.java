@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Lift extends SubsystemBase {
     public DcMotorEx mLT;
-    DcMotorEx mLB;
+    public DcMotorEx mLB;
     TouchSensor limitLift;
 
 
@@ -32,6 +32,11 @@ public class Lift extends SubsystemBase {
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        /*
+        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        */
+
         mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -46,8 +51,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void ManualMode(double left, double right) {
-        joystickPowerInput = left + right * 0.5;
-
+        // joystickPowerInput = left + right * 0.5;
+        joystickPowerInput = left;
     }
 
     public void hanging(boolean amHanging){
@@ -61,6 +66,7 @@ public class Lift extends SubsystemBase {
 
     public void periodic() {
         // runs every loop
+
         if(limitLift.isPressed()){
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             //targetPosition = 10;
