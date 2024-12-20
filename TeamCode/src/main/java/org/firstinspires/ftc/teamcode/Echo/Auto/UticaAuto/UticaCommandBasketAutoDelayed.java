@@ -3,7 +3,13 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToMidWayLeftSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToMidSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToAscentPark;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -12,7 +18,6 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,7 +55,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "WaitBasketAuto")
+@Autonomous(name = "BasketAuto")
 
 public class UticaCommandBasketAutoDelayed extends OpMode {
     // Declare OpMode members.
@@ -88,11 +93,11 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
     private ActionCommand RedBasket_StartToSub;
     private ActionCommand RedBasket_SubToRightSample;
     private ActionCommand RedBasket_RightSampleToBasket;
-    private ActionCommand RedBasket_ToMidSample;
+    private ActionCommand RedBasket_BasketToMidSample;
     private ActionCommand RedBasket_MidSampleToBasket;
     private ActionCommand RedBasket_BasketToLeftSample;
     private ActionCommand RedBasket_LeftSampleToBasket;
-    private ActionCommand RedBasket_BasketToAscent;
+    private ActionCommand RedBasket_BasketToAscentPark;
 
     private InstantCommand OpenGripper;
 
@@ -172,8 +177,6 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
 
         extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
-        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);//
-
         OpenGripper = new InstantCommand(gripper::open);
 
         CloseGripper = new InstantCommand(gripper::close);
@@ -186,6 +189,21 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
 
         time_since_start = new ElapsedTime();
 
+        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);
+
+        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample, requirements);
+
+        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+
+        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
+
+        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
+
+        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
+
+        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
+
+        RedBasket_BasketToAscentPark = new ActionCommand (redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
@@ -195,12 +213,10 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
-                        new WaitCommand(15000),
 
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
 
-new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_MidWayToPark")
+                        new ActionCommand(redBasket_SubToRightSample, requirements)
 
 
 
@@ -221,7 +237,7 @@ new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
 //                //score left sample
 //                RedBasket_BasketToAscent //park
 
-        ));
+                ));
     }
 
     /*

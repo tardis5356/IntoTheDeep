@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidWayToLeftSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsSpecCheck;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToMidSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToRightSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub;
@@ -12,7 +11,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajec
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToMidWay;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToMidPoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToObs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -87,8 +86,8 @@ public class UticaCommandSpecimenAuto extends OpMode {
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
     private ActionCommand RedSpec_StartToSub;
-    private ActionCommand RedSpec_SubToMidWay;
-    private ActionCommand RedSpec_MidWayToLeftSpec;
+    private ActionCommand RedSpec_SubToMidPoint;
+    private ActionCommand RedSpec_MidPointToLeftSpec;
     private ActionCommand RedSpec_RightSpecToObs;
     private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToRightSpec;
@@ -99,7 +98,6 @@ public class UticaCommandSpecimenAuto extends OpMode {
     private ActionCommand RedSpec_SubToObs;
 
     private ActionCommand RedSpec_ObsSpecCheck;
-    private ActionCommand RedSpec_Park;
 
     private InstantCommand OpenGripper;
 
@@ -175,11 +173,11 @@ public class UticaCommandSpecimenAuto extends OpMode {
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
-        RedSpec_SubToMidWay = new ActionCommand(redSpec_SubToMidWay, requirements);
+        RedSpec_SubToMidPoint = new ActionCommand(redSpec_SubToMidPoint, requirements);
 
         RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
 
-        RedSpec_MidWayToLeftSpec = new ActionCommand(redSpec_MidWayToLeftSpec, requirements);
+        RedSpec_MidPointToLeftSpec = new ActionCommand(redSpec_MidPointToLeftSpec, requirements);
 
         RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
 
@@ -194,8 +192,6 @@ public class UticaCommandSpecimenAuto extends OpMode {
         RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
-
-        RedSpec_ObsSpecCheck = new ActionCommand(redSpec_ObsSpecCheck, requirements);
 
         OpenGripper = new InstantCommand(gripper::open);
 
@@ -225,9 +221,10 @@ public class UticaCommandSpecimenAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
 
                         new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
+
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
 
-new ActionCommand(redSpec_MidWayToLeftSpec, requirements)
+                        new ActionCommand(redSpec_MidPointToLeftSpec, requirements)
 
 //                        RedSpec_MidWayToLeftSpec,
 //
@@ -249,102 +246,6 @@ new ActionCommand(redSpec_MidWayToLeftSpec, requirements)
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                        RedSpec_StartToSub,//done
-//
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),//done
-//
-//                        OpenGripper,//done
-//
-//                        new WaitCommand(2000),
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),//done
-////
-//                        new ParallelCommandGroup(
-//                                RedSpec_SubToLeftSpec,
-//                                Wall,
-//                                new InstantCommand(() -> botState = "wall")
-//                        ),
-////
-//                        RedSpec_LeftSpecToMidWay,
-//
-//                        RedSpec_LeftSpecToObs,
-//
-//                        RedSpec_ObsToMidSpec,
-//
-//                        RedSpec_MidSpecToObs,
-//
-//                        RedSpec_ObsToRightSpec,
-//
-//                        new ParallelCommandGroup(RedSpec_RightSpecToObs,  new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
-//
-//                       gripperAutoCloseCommand
-//                        new WaitCommand(2000),
-//
-//                        RedSpec_SpecDepoToObs,
-//
-////
-////
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(750),
-//                        OpenGripper
-//
-//                        new ParallelCommandGroup(
-//                                RedSpec_SubToObs,
-//                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-//                                new InstantCommand(() -> DepositState = "wall")
-//                        ),
-//
-//                        RedSpec_ObsSpecCheck,
-//
-//                        new WaitCommand(1500),
-//                        CloseGripper,
-//
-//                        new ParallelCommandGroup(
-//                                RedSpec_ObsToSub,
-//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
-//                                new InstantCommand(() -> DepositState = "specimen")),
-//
-//
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(750),
-//                        OpenGripper,
-//
-//                        new ParallelCommandGroup(
-//                                RedSpec_SubToObs,
-//                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-//                                new InstantCommand(() -> DepositState = "wall")
-//                        ),
-//
-//                        RedSpec_ObsSpecCheck,
-//
-//                        new WaitCommand(1500),
-//                        CloseGripper,
-//
-//                        new ParallelCommandGroup(
-//                                RedSpec_ObsToSub,
-//                                new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
-//                                new InstantCommand(() -> DepositState = "specimen")),
-//
-//                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1000, BotPositions.LIFT_TOLERANCE),
-//                        new WaitCommand(750),
-//                        OpenGripper,
-//
-//                        RedSpec_SubToObs
 
                 )
         );
