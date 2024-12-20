@@ -224,9 +224,9 @@ public class PenfieldCommandSpecimenAuto extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpec_StartToSub"),
 
-                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
+                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToLeftSpec"),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
 
 new ActionCommand(redSpec_MidWayToLeftSpec, requirements)

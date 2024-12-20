@@ -36,6 +36,8 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 
@@ -76,7 +78,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     static String DepositState;
 
 
-    public ParallelActionCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, ExampleSubsystem exampleSubsystem, String desiredState/*, String setState*/) {
+    public ParallelActionCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, Extendo extendo, Intake intake, ExampleSubsystem exampleSubsystem, String desiredState/*, String setState*/) {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
         //RedSpecimen
@@ -125,7 +127,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
         switch (desiredState) {
 
-            //redSpecimen
+//RedSpecimen Commands
 
             case "redSpec_StartToSub":
                 addCommands(
@@ -135,14 +137,12 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::specimen),
                                 new InstantCommand(arm::specimen),
                                 RedSpec_StartToSub
-
                         ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
                         new InstantCommand(gripper::open),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new WaitCommand(500)
                         )
-
                 );
 
                 break;
@@ -184,7 +184,6 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::specimen),
                                 new InstantCommand(arm::specimen),
                                 RedSpec_RightSpecObsPickUpToSub
-
                         ),
                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
                         new InstantCommand(gripper::open),
@@ -227,6 +226,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                 );
                 break;
 
+
+
+//RedBasket Commands
+
             case "redBasket_StartToSub":
                 addCommands(
                         new SequentialCommandGroup(
@@ -235,14 +238,25 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimen),
                                         RedBasket_StartToSub
-
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 1030, 50),
                                 new InstantCommand(gripper::open)
                         )
-
                 );
 
+                break;
+
+            case "redBasket_PickUpRightSpecimen":
+                addCommands(
+                        new SequentialCommandGroup(
+                                RedBasket_SubToRightSample,
+                                new ParallelCommandGroup(
+                                        new InstantCommand(extendo::out),
+                                        new InstantCommand(intake::down),
+                                        new InstantCommand(intake::in)
+                                )
+                        )
+                );
                 break;
     }}
 

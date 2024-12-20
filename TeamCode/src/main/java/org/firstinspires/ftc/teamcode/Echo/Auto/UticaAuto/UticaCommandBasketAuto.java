@@ -214,7 +214,7 @@ public class UticaCommandBasketAuto extends OpMode {
 
                 new SequentialCommandGroup(
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
 
                         new ActionCommand(redBasket_SubToRightSample, requirements)
 

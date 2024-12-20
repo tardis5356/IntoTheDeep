@@ -195,10 +195,10 @@ public class PenfieldCommandBasketAuto extends OpMode {
 
                 new SequentialCommandGroup(
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
 
 new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_MidWayToPark")
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_MidWayToPark")
 
 
 
