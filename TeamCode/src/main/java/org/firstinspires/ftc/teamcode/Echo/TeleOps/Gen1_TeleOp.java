@@ -389,6 +389,11 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+         */
+        telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
+        telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
+        telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
+        telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
