@@ -23,9 +23,9 @@ public class Intake extends SubsystemBase {
 
     private IntakeOutCommand intakeOutCommand;
 
+    private Servo sIG;
     private Servo sIT;
-    private CRServo sIR;
-    private CRServo sIL;
+    private CRServo sIW, sIO;
     private ColorSensor cI;
 
     public boolean Intaking;
@@ -33,12 +33,13 @@ public class Intake extends SubsystemBase {
     public boolean Passing;
 
     public Intake(HardwareMap hardwareMap){
+        sIG = hardwareMap.get(Servo.class, "sIG");
         sIT = hardwareMap.get(Servo.class, "sIT");
-        sIR = hardwareMap.get(CRServo.class, "sIR");
-        sIL = hardwareMap.get(CRServo.class, "sIL");
+        sIW = hardwareMap.get(CRServo.class, "sIW");
+        sIO = hardwareMap.get(CRServo.class, "sIO");
         cI = hardwareMap.get(ColorSensor.class, "cI");
-        sIL.setDirection(REVERSE);
-        sIT.setPosition(BotPositions.INTAKE_UP);
+        sIW.setDirection(REVERSE);
+        //sIT.setPosition(BotPositions.INTAKE_UP);
 
 
     }
@@ -61,33 +62,52 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public void down(){sIT.setPosition(BotPositions.INTAKE_DOWN);}
-    public void up(){sIT.setPosition(BotPositions.INTAKE_UP);}
+    public void downPosition(){
+        //drives the intake arm and wrist to the ground for intaking
+        //sIT.setPosition(BotPositions.INTAKE_DOWN);
+        sIG.setPosition(BotPositions.INTAKE_ARM_DOWN);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
+    }
+    public void neutralPosition(){
+        //drives the arm and wrist of the intake to a neutral position to go into the robot and hopefully not scratch the deck plate more
+        //sIT.setPosition(BotPositions.INTAKE_UP);
+        sIG.setPosition(BotPositions.INTAKE_ARM_NEUTRAL);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_NEUTRAL);
+    }
+    public void transferPosition(){
+        //specifically moves the intake arm and wrist to the transfer position
+        sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
+    }
 
-
+    public void outakePosition(){
+        //specifically moves the intake arm and wrist to the back of the robot so samples can be spit out the back
+        sIG.setPosition(BotPositions.INTAKE_ARM_OUTAKE);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_OUTAKE);
+    }
 
     public void in(){
         Intaking = true;
-        sIR.setPower(BotPositions.INTAKE_IN);
-        sIL.setPower(BotPositions.INTAKE_IN);
+        sIW.setPower(BotPositions.INTAKE_IN);
+        sIO.setPower(BotPositions.INTAKE_IN);
 
     }
     public void out(){
 
-        sIR.setPower(BotPositions.INTAKE_OUT);
-        sIL.setPower(BotPositions.INTAKE_OUT);
+        sIW.setPower(BotPositions.INTAKE_OUT);
+        sIO.setPower(BotPositions.INTAKE_OUT);
 
     }
 
     public void transfer(){
 
-        sIR.setPower(BotPositions.INTAKE_IN);
-        sIL.setPower(BotPositions.INTAKE_IN);
+        sIW.setPower(BotPositions.INTAKE_IN);
+//        sIL.setPower(BotPositions.INTAKE_IN);
         Intaking = false;
     }
     public void stop() {
-        sIR.setPower(BotPositions.INTAKE_STOP);
-        sIL.setPower(BotPositions.INTAKE_STOP);
+        sIW.setPower(BotPositions.INTAKE_STOP);
+        sIO.setPower(BotPositions.INTAKE_STOP);
         Intaking = false;
     }
     public boolean checkRed(){

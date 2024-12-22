@@ -14,17 +14,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 public class Gripper extends SubsystemBase {
-    private Servo sG;
-    public ColorSensor cG;
-    private ColorSensor cJ;
+    private Servo sG; //the servo of the gripper. opens and closes it
+    public ColorSensor cG; // this is a color sensor in the gripper that checks if a sample is inside of it
+    //private ColorSensor cJ;
 
-    boolean gripperClosed;
-    boolean sensorClose;
+    //boolean gripperClosed;
+    boolean gripperClear; // this is a variable to store if a sample is inside the gripper or not.
 
     public Gripper(HardwareMap hardwareMap){
+        //hardware map the objects to the configuration
+
         sG = hardwareMap.get(Servo.class, "sG");
         cG = hardwareMap.get(ColorSensor.class, "cG");
-        cJ = hardwareMap.get(ColorSensor.class, "cJ");
+        //cJ = hardwareMap.get(ColorSensor.class, "cJ");
         //sensorClose = false;
         //sG.setPosition(BotPositions.GRIPPER_INTAKE);
     }
@@ -32,31 +34,39 @@ public class Gripper extends SubsystemBase {
     @Override
 
     public void periodic(){
-        //if(verifyGripper(gripperClosed, sensorClose) == true){
-        //if( ((DistanceSensor)cG).getDistance(DistanceUnit.CM) <= 2.5 && !gripperClosed) {
-        //    closeGripper();
-        //}
-        //}
+        //runs constantly in the background
+
+        //if the gripper was clear and something is detected inside it, the gripper will close.
+        if(gripperClear && verifyGripper()){
+            close();
+        }
 
     }
 
+    //the following methods set the gripper fingers to different positions. They are triggered either by manual inputs or automated sequences
     public void open(){
+        //gripperClear = false;
         sG.setPosition(BotPositions.GRIPPER_OPEN);
-        gripperClosed = false;
     }
     public void close(){
         sG.setPosition(BotPositions.GRIPPER_CLOSED);
-        gripperClosed = true;
+        //really the gripper should only be closed if there is a sample inside.
+        //We set gripperClear to false, that way it disables the if statement in the periodic loop
+        //This is done so when the driver tries to open the gripper, the color sensor still detecting the sample wont trigger the gripper to close again
+        gripperClear = false;
     }
     public void intake(){
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
-        gripperClosed = false;
+        //gripperClosed = false;
     }
     public boolean verifyGripper(){
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 4)){
             return true;
         }
-        else return false;
+        else {
+            gripperClear = true;
+            return false;
+        }
     }
 
     public void checkColor(){
@@ -67,15 +77,15 @@ public class Gripper extends SubsystemBase {
             AllianceColor.aColor = "red";
         }
         else{
-            AllianceColor.aColor = "huh";
+            AllianceColor.aColor = "FailedToDetectColor";
         }
     }
 
-    public boolean verifyJig(){
-        if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 2)){
-            return true;
-        }
-        else return false;
-    }
+    //public boolean verifyJig(){
+    //    if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 2)){
+     //       return true;
+     //   }
+     //   else return false;
+   // }
 
 }

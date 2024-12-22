@@ -17,7 +17,7 @@ public class ExtendoToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
                                 new InstantCommand(extendo::out),
-                                new InstantCommand(intake::down),
+                                new InstantCommand(intake::downPosition),
                                 new InstantCommand(intake::in),
                                 intakeInCommand
                         )
@@ -26,7 +26,7 @@ public class ExtendoToStateCommand extends ParallelCommandGroup {
             case "extendoIn":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::up),
+                                new InstantCommand(intake::neutralPosition),
                                 new WaitCommand(300),
                                 new InstantCommand(extendo::in),
                                 intakeInCommand

@@ -135,12 +135,13 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 
         //gripper Commands
-        {new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
-                .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
+        {
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
+                    .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-        new Trigger(()-> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
-                .whenActive(new InstantCommand(gripper::close));}
-
+         //   new Trigger(() -> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
+         //           .whenActive(new InstantCommand(gripper::close));
+        }
         //intake
         {
 //            new Trigger (() -> AllianceColor.aColor == "blue")
@@ -150,13 +151,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::up),
+                                new InstantCommand(intake::neutralPosition),
                                 new InstantCommand(intake::stop)),
-                        new InstantCommand(intake::down));
+                        new InstantCommand(intake::downPosition));
 
         new Trigger(() -> extendo.sER.getPosition() >= .62 || driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)!=0)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::up)
+                        new InstantCommand(intake::neutralPosition)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
@@ -166,7 +167,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
-        new Trigger(()->(intake.checkSample() && intake.samplePresent)||gripper.verifyJig())
+        new Trigger(()->(intake.checkSample() && intake.samplePresent))
                 .whenActive(new InstantCommand(intake::stop));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
@@ -183,7 +184,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         {new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
                 .whenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::up),
+                                new InstantCommand(intake::neutralPosition),
                                 new WaitCommand(500),
                                 new InstantCommand(extendo::in)
                         )
@@ -389,11 +390,11 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
-         */
+
         telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
         telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
-        telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
-        telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
+        //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
+        //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
         //telemetry.addData("Yellow", intake.checkYellow());
         //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
