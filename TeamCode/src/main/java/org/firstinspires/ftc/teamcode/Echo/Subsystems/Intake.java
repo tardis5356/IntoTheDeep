@@ -68,16 +68,16 @@ public class Intake extends SubsystemBase {
         sIG.setPosition(BotPositions.INTAKE_ARM_DOWN);
         sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
     }
-    public void neutralPosition(){
+    public void transferPosition(){
         //drives the arm and wrist of the intake to a neutral position to go into the robot and hopefully not scratch the deck plate more
         //sIT.setPosition(BotPositions.INTAKE_UP);
-        sIG.setPosition(BotPositions.INTAKE_ARM_NEUTRAL);
-        sIT.setPosition(BotPositions.INTAKE_WRIST_NEUTRAL);
-    }
-    public void transferPosition(){
-        //specifically moves the intake arm and wrist to the transfer position
         sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
         sIT.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
+    }
+    public void upPosition(){
+        //specifically moves the intake arm and wrist to the transfer position
+        sIG.setPosition(BotPositions.INTAKE_ARM_UP);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_UP);
     }
 
     public void outakePosition(){
@@ -88,13 +88,13 @@ public class Intake extends SubsystemBase {
 
     public void armNeutral(){
         //specifically moves the intake arm and wrist to the back of the robot so samples can be spit out the back
-        sIG.setPosition(BotPositions.INTAKE_ARM_NEUTRAL);
+        sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
 
     }
 
     public void wristNeutral(){
         //specifically moves the intake arm and wrist to the back of the robot so samples can be spit out the back
-        sIT.setPosition(BotPositions.INTAKE_WRIST_NEUTRAL);
+        sIT.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
     }
 
 

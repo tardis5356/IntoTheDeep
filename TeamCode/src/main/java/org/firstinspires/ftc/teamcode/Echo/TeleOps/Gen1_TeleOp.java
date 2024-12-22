@@ -151,13 +151,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::neutralPosition),
+                                new InstantCommand(intake::transferPosition),
                                 new InstantCommand(intake::stop)),
                         new InstantCommand(intake::downPosition));
 
         new Trigger(() -> extendo.sER.getPosition() >= .62 || driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)!=0)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::neutralPosition)
+                        new InstantCommand(intake::transferPosition)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
@@ -184,7 +184,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         {new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
                 .whenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::neutralPosition),
+                                new InstantCommand(intake::transferPosition),
                                 new WaitCommand(500),
                                 new InstantCommand(extendo::in)
                         )

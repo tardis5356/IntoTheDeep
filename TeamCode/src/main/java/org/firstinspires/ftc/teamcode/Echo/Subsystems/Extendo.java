@@ -24,7 +24,7 @@ public class Extendo extends SubsystemBase {
         sEL = hardwareMap.get(Servo.class, "sEL");
 
 //the hardware mapping method also serves as an initialization for the subsystem, so you can reverse servos, motors, and set variables and positions in here
-        extensionPosition = .5;
+        extensionPosition = EXTENDO_IN;
     }
 
     @Override
@@ -68,8 +68,8 @@ public class Extendo extends SubsystemBase {
         if(sER.getPosition() > .78){
             extensionPosition = EXTENDO_IN;
         }
-        else if(sER.getPosition() < .4){
-            extensionPosition = .4;
+        else if(sER.getPosition() < .5){
+            extensionPosition = .5;
         }
         else{
             //if the actual extendo position is within its limits, we add the stickInput value too the extensionPosition variable

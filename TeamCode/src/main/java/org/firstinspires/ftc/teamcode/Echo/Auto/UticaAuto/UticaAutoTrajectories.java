@@ -29,7 +29,7 @@ public class UticaAutoTrajectories {
     public static final Pose2d redBasket_StartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45)); //?
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -48, Math.toRadians(90));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-52, -48, Math.toRadians(90));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-60,-48, Math.toRadians(90));
     public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-62,-48, Math.toRadians(130));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-22, -8, Math.toRadians(180));

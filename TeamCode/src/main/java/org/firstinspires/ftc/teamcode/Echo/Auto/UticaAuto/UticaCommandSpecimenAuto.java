@@ -60,7 +60,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "UticaSpecimenAuto")
 
 public class UticaCommandSpecimenAuto extends OpMode {
     // Declare OpMode members.
@@ -214,16 +214,12 @@ public class UticaCommandSpecimenAuto extends OpMode {
 
         CommandScheduler.getInstance().schedule(
 
-                ArmSpecimen,
-                WristSpecimen,
-                CloseGripper,
-                GripperCheck,
 
                 new SequentialCommandGroup(
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redSpec_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift,extendo, intake, exampleSubsystem,"redSpec_StartToSub"),
 
-                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "redSpec_SubToLeftSpec"),
+                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake,exampleSubsystem, "redSpec_SubToLeftSpec"),
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
 

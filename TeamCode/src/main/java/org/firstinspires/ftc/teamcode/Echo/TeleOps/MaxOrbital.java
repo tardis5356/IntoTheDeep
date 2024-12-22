@@ -48,7 +48,7 @@ public class MaxOrbital extends CommandOpMode {
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::neutralPosition),
+                        new InstantCommand(intake::transferPosition),
                         new InstantCommand(extendo::out),
                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
                         new WaitCommand(500),

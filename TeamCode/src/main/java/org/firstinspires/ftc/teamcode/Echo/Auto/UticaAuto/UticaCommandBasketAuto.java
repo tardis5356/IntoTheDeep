@@ -55,7 +55,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketAuto")
+@Autonomous(name = "UticaBasketAuto")
 
 public class UticaCommandBasketAuto extends OpMode {
     // Declare OpMode members.
@@ -207,17 +207,19 @@ public class UticaCommandBasketAuto extends OpMode {
 
 
         CommandScheduler.getInstance().schedule(
-                ArmSpecimen,
-                WristSpecimen,
-                CloseGripper,
-                GripperCheck,
+
 
                 new SequentialCommandGroup(
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
+                        new ActionCommand(redBasket_StartToSub, requirements),
 
-                        new ActionCommand(redBasket_SubToRightSample, requirements)
-
+                        new ActionCommand(redBasket_SubToRightSample, requirements),
+                        new ActionCommand(redBasket_RightSampleToBasket, requirements)
+//        new ActionCommand(redBasket_BasketToMidSample, requirements),
+//                        new ActionCommand(redBasket_MidSampleToBasket, requirements),
+//                        new ActionCommand(redBasket_BasketToLeftSample, requirements),
+//                        new ActionCommand(redBasket_LeftSampleToBasket, requirements),
+//                        new ActionCommand(redBasket_BasketToAscentPark, requirements)
 
 
 //                RedBasket_SubToRightSample,

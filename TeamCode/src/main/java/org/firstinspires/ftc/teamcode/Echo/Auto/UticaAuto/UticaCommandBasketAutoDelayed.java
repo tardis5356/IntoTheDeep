@@ -217,7 +217,7 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
 
                         new WaitCommand(15000),
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem,"redBasket_StartToSub"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
 
                         new ActionCommand(redBasket_SubToRightSample, requirements)
 

@@ -252,7 +252,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 RedBasket_SubToRightSample,
                                 new ParallelCommandGroup(
                                         new InstantCommand(extendo::out),
-                                        new InstantCommand(intake::down),
+                                        new InstantCommand(intake::downPosition),
                                         new InstantCommand(intake::in)
                                 )
                         )
