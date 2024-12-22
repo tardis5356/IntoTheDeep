@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 //@Disabled
 @TeleOp(name = "indexTele")
@@ -27,7 +28,7 @@ public class IndexTeleop extends CommandOpMode {
     private GamepadEx driver1, driver2;
 
     //drivetrain motors and variables
-
+    private Lift lift;
     private ColorSensor cI;
 
     private DcMotorEx mFL, mFR, mBL, mBR;
@@ -85,7 +86,7 @@ public class IndexTeleop extends CommandOpMode {
         gripper = new Gripper(hardwareMap);
 //
 //        //lift
-//        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap);
 //        winch = new Winch(hardwareMap);
 //
 //        //wrist
@@ -101,11 +102,13 @@ public class IndexTeleop extends CommandOpMode {
         arm = new Arm(hardwareMap);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
-                .whenActive(new InstantCommand(intake::armNeutral));
+                .whenActive(new SequentialCommandGroup(new InstantCommand(arm::intake), new InstantCommand(wrist::intake)));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
-                .whenActive(new InstantCommand(intake::wristNeutral));
+                .whenActive(new SequentialCommandGroup(new InstantCommand(arm::basket), new InstantCommand(wrist::basket)));
 
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
+                .whenActive(new InstantCommand(intake::transfer));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
                 .whenActive(new InstantCommand(intake::in));
@@ -113,7 +116,7 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.Y))
                 .whenActive(new InstantCommand(intake::out));
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.A) || intake.samplePresent)
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new InstantCommand(intake::stop));
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
@@ -182,6 +185,8 @@ public class IndexTeleop extends CommandOpMode {
 
     public void run() {
         super.run();
+        lift.ManualMode(gamepad1.left_stick_y, gamepad1.right_stick_y);
+
         //Trigger= driver2.gamepad.left_trigger - driver2.gamepad.right_trigger;
 
         Rotation = cubicScaling(-gamepad2.right_stick_x);

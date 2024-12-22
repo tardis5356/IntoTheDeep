@@ -114,7 +114,7 @@ public class Intake extends SubsystemBase {
 
     public void transfer(){
 
-        sIW.setPower(BotPositions.INTAKE_IN);
+        sIW.setPower(BotPositions.INTAKE_TRANSFER);
 //        sIL.setPower(BotPositions.INTAKE_IN);
         Intaking = false;
     }
