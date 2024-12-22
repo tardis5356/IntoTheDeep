@@ -86,6 +86,19 @@ public class Intake extends SubsystemBase {
         sIT.setPosition(BotPositions.INTAKE_WRIST_OUTAKE);
     }
 
+    public void armNeutral(){
+        //specifically moves the intake arm and wrist to the back of the robot so samples can be spit out the back
+        sIG.setPosition(BotPositions.INTAKE_ARM_NEUTRAL);
+
+    }
+
+    public void wristNeutral(){
+        //specifically moves the intake arm and wrist to the back of the robot so samples can be spit out the back
+        sIT.setPosition(BotPositions.INTAKE_WRIST_NEUTRAL);
+    }
+
+
+
     public void in(){
         Intaking = true;
         sIW.setPower(BotPositions.INTAKE_IN);

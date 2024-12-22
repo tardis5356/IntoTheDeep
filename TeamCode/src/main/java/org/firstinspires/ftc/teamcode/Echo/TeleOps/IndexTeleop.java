@@ -8,11 +8,13 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
@@ -31,11 +33,13 @@ public class IndexTeleop extends CommandOpMode {
 
     //drivetrain motors and variables
 
-    //private DcMotorEx mFL, mFR, mBL, mBR;
-    //double FB, LR, Rotation;
-    //double FAST_SPEED_MULTIPLIER = 1;
-    //double SLOW_SPEED_MULTIPLIER = 0.5;
-//    double CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
+    private ColorSensor cI;
+
+    private DcMotorEx mFL, mFR, mBL, mBR;
+    double FB, LR, Rotation;
+    double FAST_SPEED_MULTIPLIER = 1;
+    double SLOW_SPEED_MULTIPLIER = 0.5;
+    double CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
 //
 //    //gripper
     private Gripper gripper;
@@ -65,6 +69,7 @@ public class IndexTeleop extends CommandOpMode {
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
+        cI = hardwareMap.get(ColorSensor.class, "cI");
 //        mFL = hardwareMap.get(DcMotorEx.class, "mFL");
 //        mFR = hardwareMap.get(DcMotorEx.class, "mFR");
 //        mBR = hardwareMap.get(DcMotorEx.class, "mBR");
@@ -99,6 +104,12 @@ public class IndexTeleop extends CommandOpMode {
 //
 //        //arm
         arm = new Arm(hardwareMap);
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
+                .whenActive(new InstantCommand(intake::armNeutral));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
+                .whenActive(new InstantCommand(intake::wristNeutral));
 
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
@@ -137,9 +148,11 @@ public class IndexTeleop extends CommandOpMode {
 //        //Extendo
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::out));
+
+
 //
-//        //new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-//        //        .whenActive(new InstantCommand(extendo::extendoOut));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+                .whenActive(new InstantCommand(extendo::in));
 //
 //        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
 //                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 1));
@@ -176,24 +189,32 @@ public class IndexTeleop extends CommandOpMode {
         super.run();
         //Trigger= driver2.gamepad.left_trigger - driver2.gamepad.right_trigger;
 
-        //Rotation = cubicScaling(-gamepad1.right_stick_x);
-        //FB = cubicScaling(gamepad1.left_stick_y);
-        //LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
+        Rotation = cubicScaling(-gamepad2.right_stick_x);
+        FB = cubicScaling(gamepad2.left_stick_y);
+        LR = cubicScaling(-gamepad2.left_stick_x) * 1.2;
 
         //defines the powers for the motors (trust i've written this so many times)
-        //double mFLPower = FB + LR + Rotation;
-        //double mFRPower = FB - LR - Rotation;
-        //double mBLPower = FB - LR + Rotation;
-        //double mBRPower = FB + LR - Rotation;
-//
-//        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
-//        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
-//        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
-//        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
-//
-//        //telemetry.addData("GripperState", gripper.checkGripper());
-//        telemetry.addData("ArmPosition", arm.sAR.getPosition());
-//        telemetry.update();
+        double mFLPower = FB + LR + Rotation;
+        double mFRPower = FB - LR - Rotation;
+        double mBLPower = FB - LR + Rotation;
+        double mBRPower = FB + LR - Rotation;
+
+        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
+        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
+        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
+        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+
+        telemetry.addData("GripperState", gripper.verifyGripper());
+        telemetry.addData("ArmPosition", arm.sAR.getPosition());
+
+        telemetry.addData("checkIntake", intake.checkSample());
+        telemetry.addData("Red", intake.checkRed());
+        telemetry.addData("Blue", intake.checkBlue());
+        telemetry.addData("Alliance Color", AllianceColor.aColor);
+        telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
+        telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
+        telemetry.addData("ReadingIntake", cI.green());
+        telemetry.update();
     }
 
     private double cubicScaling(float joystickValue) {
