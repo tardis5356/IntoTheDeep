@@ -13,6 +13,10 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 
 public class DepositToStateCommand extends ParallelCommandGroup {
 
+    //This beefy program is a file that holds a bunch of sequences for the lift, wrist, gripper, and arm
+    //each sequence is its own case. they are all contained in a switch statement, that takes in the string 'desiredState', and then runs the case with the matching name
+    //format is: case "name": addCommands(new Sequential/ParallelCommandGroup(new _Command, ... , _Command)); break;
+    //in here the naming scheme of the cases is the currentRobotState To desiredRobotState. That pretty much describes what each case does
     public String depositCurrentState = "";
 
 
@@ -85,11 +89,16 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
             case "intakeToBasketHigh":
                 addCommands(
-                        new SequentialCommandGroup(
+                        //Here, in order to have the arm swing as the lift rises, but after a certain amount of time, we use a ParallelCommandGroup
+                        //Everything in the ParallelCommandGroup is started at the same time, so what we do is start the LiftToStateCommand, then start
+                        //a SequentialCommandGroup that makes the arm and wrist wait before starting to swing up, while the lift is still traveling up
+                        new ParallelCommandGroup(
                                 new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(100),
-                                new InstantCommand(wrist::basket),
-                                new InstantCommand(arm::basket)
+                                new SequentialCommandGroup(
+                                        new WaitCommand(700),
+                                        new InstantCommand(wrist::basket),
+                                        new InstantCommand(arm::basket))
+
                         )
                 );
                 //setState = "basket";
@@ -97,11 +106,14 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
             case "intakeToBasketLow":
                 addCommands(
-                        new SequentialCommandGroup(
+                        new ParallelCommandGroup(
                                 new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(500),
-                                new InstantCommand(wrist::basket),
-                                new InstantCommand(arm::basket)
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new InstantCommand(wrist::basket),
+                                        new InstantCommand(arm::basket)
+                                )
+
                         )
                 );
                 //setState = "basket";
@@ -192,8 +204,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
             case "specimenToBasketLow":
                 addCommands(
-                        new SequentialCommandGroup(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(arm::basket),
                                 new InstantCommand(wrist::basket))
 
@@ -203,8 +215,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
             case "specimenToBasketHigh":
                 addCommands(
-                        new SequentialCommandGroup(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(100),
+                        new ParallelCommandGroup(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(arm::basket),
                                 new InstantCommand(wrist::basket))
 
@@ -270,6 +281,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
         }
     }
+
+    //These are no longer used.
+    //They set the depositCurrentState to a value that is then used as a condition to select which case is ran
     public void setBasket(){
         depositCurrentState = "basket";
     }
