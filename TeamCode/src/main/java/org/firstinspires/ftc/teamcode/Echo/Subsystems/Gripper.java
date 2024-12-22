@@ -59,7 +59,11 @@ public class Gripper extends SubsystemBase {
         sG.setPosition(BotPositions.GRIPPER_INTAKE);
         //gripperClosed = false;
     }
+
+    //this is the method that actually checks if a sample is within the grip area of the gripper
     public boolean verifyGripper(){
+        //brief thing: type casting. the color censor is temporarily type casted as a distance sensor
+        //format is: ((class) object)
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 4)){
             return true;
         }
@@ -69,6 +73,9 @@ public class Gripper extends SubsystemBase {
         }
     }
 
+    //this method is run during auto
+    //it checks the color of the preloaded sample and stores that color to the global alliance color variable
+    //this is for some intake logic during teleop
     public void checkColor(){
         if(cG.blue() >= BLUE_MIN){
             AllianceColor.aColor = "blue";
@@ -81,6 +88,7 @@ public class Gripper extends SubsystemBase {
         }
     }
 
+    //old method from when we had a jig
     //public boolean verifyJig(){
     //    if ((((DistanceSensor) cJ).getDistance(DistanceUnit.CM) <= 2)){
      //       return true;
