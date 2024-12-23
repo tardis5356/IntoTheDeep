@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
@@ -216,14 +219,10 @@ public class UticaCommandSpecimenAuto extends OpMode {
 
 
                 new SequentialCommandGroup(
-
-                        new ParallelActionCommand(arm, wrist, gripper, lift,extendo, intake, exampleSubsystem,"redSpec_StartToSub"),
-
-                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake,exampleSubsystem, "redSpec_SubToLeftSpec"),
-
-                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
-
-                        new ActionCommand(redSpec_MidPointToLeftSpec, requirements)
+                        new ActionCommand(redSpec_StartToSub, requirements),
+                        new ActionCommand(redSpec_SubToMidPoint, requirements),
+                        new ActionCommand(redSpec_MidPointToLeftSpec, requirements),
+                        new ActionCommand(redSpec_LeftSpecToObs, requirements)
 
 //                        RedSpec_MidWayToLeftSpec,
 //
