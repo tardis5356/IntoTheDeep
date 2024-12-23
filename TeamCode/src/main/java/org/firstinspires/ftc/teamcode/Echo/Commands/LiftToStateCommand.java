@@ -30,7 +30,7 @@ public class LiftToStateCommand extends CommandBase {
 
     @Override
     public boolean isFinished() { // returns true when finished
-        if (targetPosition == -10)
+        if (targetPosition == 10)
             return true;
         else
             return Math.abs(lift.getCurrentPosition() - targetPosition) < tolerance;
