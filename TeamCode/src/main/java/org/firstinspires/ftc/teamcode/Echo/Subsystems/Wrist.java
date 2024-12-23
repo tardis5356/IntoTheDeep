@@ -5,9 +5,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Wrist extends SubsystemBase {
-    private Servo sW;
+    //okay so really this could have been in the arm or gripper subsystem rather than its own separate file
+    //its good practice for subsystem base ig
+    //going forward, this should probably just be included in the arm should 2025-2026 season be a similar bot
+    private Servo sW; //the servo on the wrist
 
-    public Wrist(HardwareMap hardwareMap){
+    public Wrist(HardwareMap hardwareMap){ //hardware map
         sW = hardwareMap.get(Servo.class, "sW");
         //sW.setPosition(BotPositions.WRIST_INTAKE);
     }
@@ -16,6 +19,7 @@ public class Wrist extends SubsystemBase {
 
     public void periodic(){}
 
+    //bunch of methods to set the wrist to a position.
     public void tuck(){
         sW.setPosition(BotPositions.WRIST_TRANSIT);
     }
