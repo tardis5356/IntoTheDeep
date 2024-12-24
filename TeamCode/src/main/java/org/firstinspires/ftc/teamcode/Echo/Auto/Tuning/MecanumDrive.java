@@ -68,9 +68,9 @@ public class MecanumDrive {
         public double trackWidthTicks = 6071.5325859181885; //24180.892621514482
 
         // feedforward parameters (in tick units)
-        public double kS = 1.931054719977388 ; //0.8306274788948262
-        public double kV = 0.0000947123946162542; //0.00010597696143860526
-        public double kA = 0.00014;
+        public double kS = 0.315 ; //0.8306274788948262
+        public double kV = 0.00023; //0.00010597696143860526
+        public double kA =0.0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -299,8 +299,12 @@ public class MecanumDrive {
             Pose2d error = txWorldTarget.value().minusExp(pose);
             // It only exits the trajectory once within a certain angle or one second after the trajectory finishes.
             //TODO fix the second timer
-//            if ((t >= timeTrajectory.duration && Math.toDegrees(error.heading.toDouble()) < 3) || (t>= timeTrajectory.duration + 10)) {
-            if (t>= timeTrajectory.duration + 2) {
+             double headingToleranceDeg = 1;
+            double positionToleranceIn = 1;
+            double timeoutSec = 1;
+            if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
+                    Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
+           // if (t>= timeTrajectory.duration + 2) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);
