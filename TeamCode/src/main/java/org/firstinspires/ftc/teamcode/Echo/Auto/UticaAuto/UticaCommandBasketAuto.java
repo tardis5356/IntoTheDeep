@@ -215,7 +215,7 @@ public class UticaCommandBasketAuto extends OpMode {
 
                         new ActionCommand(redBasket_SubToRightSample, requirements),
                         new ActionCommand(redBasket_RightSampleToBasket, requirements)
-//        new ActionCommand(redBasket_BasketToMidSample, requirements),
+//       new ActionCommand(redBasket_BasketToMidSample, requirements)
 //                        new ActionCommand(redBasket_MidSampleToBasket, requirements),
 //                        new ActionCommand(redBasket_BasketToLeftSample, requirements),
 //                        new ActionCommand(redBasket_LeftSampleToBasket, requirements),
@@ -257,6 +257,7 @@ public class UticaCommandBasketAuto extends OpMode {
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
+
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 
         drive.updatePoseEstimate();
