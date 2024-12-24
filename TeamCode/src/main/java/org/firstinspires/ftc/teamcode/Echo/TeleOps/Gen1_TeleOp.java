@@ -14,9 +14,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeInCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeOutCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
@@ -148,20 +148,24 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                    .whenActive(new InstantCommand(intake::checkBlue));
 
             //intake tilting
+            //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::transferPosition),
-                                new InstantCommand(intake::stop)),
+                                new InstantCommand(intake::upPosition),
+                                new InstantCommand(intake::stop)
+                        ),
                         new InstantCommand(intake::downPosition));
 
-        new Trigger(() -> extendo.sER.getPosition() >= .62 || driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)!=0)
+        //This trigger is if the extension is close to the robot, the intake needs to be in the up position
+        new Trigger(() -> extendo.sER.getPosition() >= .62)
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::transferPosition)
+                        new InstantCommand(intake::upPosition)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
-                        /*new InstantCommand(intake::transfer)*/));
+                        /*new InstantCommand(intake::transfer)*/)
+                );
 
         //intake inning and outing
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
