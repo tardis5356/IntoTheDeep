@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
     private Servo sIG;
     private Servo sIT;
     private CRServo sIW, sIO;
-    private ColorSensor cI;
+    public ColorSensor cI;
 
     public boolean Intaking;
     public boolean samplePresent;
