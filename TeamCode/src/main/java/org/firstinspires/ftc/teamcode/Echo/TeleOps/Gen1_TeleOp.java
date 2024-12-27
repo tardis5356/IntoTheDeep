@@ -421,6 +421,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+        telemetry.addData("GripperState", gripper.verifyGripper());
 
         telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
         telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
