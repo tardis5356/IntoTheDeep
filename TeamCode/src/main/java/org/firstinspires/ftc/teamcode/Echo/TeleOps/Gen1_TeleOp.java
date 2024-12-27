@@ -31,18 +31,32 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 
 public class Gen1_TeleOp extends CommandOpMode {
     //gamepads
+    //GamepadEx is an extended object version of gamepads that has more organized input checks that we use in triggers.
     private GamepadEx driver1, driver2;
+
+    //This is just a boolean used for telemetry to see if we took in the incorrect sample color
     boolean wrongColorIntaked = false;
 
     private IntakeInCommand intakeInCommand;
 
     //drivetrain motors and variables
+    //DcMotorEx is an expanded version of the DcMotor variable that gives us more methods.
+    //For example, stop and reset encoder.
     private DcMotorEx mFL, mFR, mBL, mBR;
+
+    //Forward and back power, Left and right power, rotation power.
+    //All are then added and subtracted in different ways for each drive motor
     double FB, LR, Rotation;
+
+    //multipliers applied to the sum of the above variables to evenly change the speed of the drivetrain
     double FAST_SPEED_MULTIPLIER = 1;
     double SLOW_SPEED_MULTIPLIER = 0.5;
+
+    //CURRENT_SPEED_MULTIPLIER is the actual multiplier applied to the drive train power. It is set to either the fast or slow multipliers
     double CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
 
+
+    //below we create a new object instance of all the subsystem classes
     //gripper
     private Gripper gripper;
 
@@ -64,13 +78,17 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //private TouchSensor limitLift;
 
-    public Boolean TeamColorRed;
+    //public Boolean TeamColorRed;
 
+    //This is the sum of the two driver1 trigger values that is then added to the position of the extension servos
     double Trigger;
 
+    //stores the current configuration of the deposit half of the robot.
+    //This is then used to determine which DepositToStateCommand should be called.
     static String DepositState;
 
 
+    //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand depositToStateCommand;
     double LeftTrigger;
     double RightTrigger;
@@ -101,7 +119,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         winch = new Winch(hardwareMap);
 
-        TeamColorRed = true;
+        //TeamColorRed = true;
 
         intakeInCommand = new IntakeInCommand(intake);
 
