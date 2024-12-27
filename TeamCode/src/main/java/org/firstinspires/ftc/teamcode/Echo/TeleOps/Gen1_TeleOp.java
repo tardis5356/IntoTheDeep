@@ -159,8 +159,8 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //This trigger is if the extension is close to the robot, the intake needs to be in the up position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
-                .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::upPosition)
+                .whileActiveOnce(new SequentialCommandGroup(
+                        new InstantCommand(intake::transferPosition)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
@@ -168,12 +168,19 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
 
         //intake inning and outing
+            //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's right bumper or driver1's y button are down
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
         new Trigger(()->(intake.checkSample() && intake.samplePresent))
-                .whenActive(new InstantCommand(intake::stop));
+                .whenActive(
+                        new SequentialCommandGroup(
+                                new WaitCommand(500),
+                                new InstantCommand(intake::stop)
+                        )
+                );
 
+        //TODO: Maybe change this one if we do the pass through
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
                 .whenActive(new InstantCommand(intake::out));}
 
@@ -181,21 +188,23 @@ public class Gen1_TeleOp extends CommandOpMode {
         {//new Trigger(()-> intake.checkSample() && DepositState == "intake")
          //       .whenActive(new InstantCommand(intake::transfer));
 
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.X) || driver2.getButton(GamepadKeys.Button.X))
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.X))
                 .whenActive(new IntakePassCommand(intake));}
 
         //Extendo
-        {new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(
+        {new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+                .toggleWhenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::transferPosition),
                                 new WaitCommand(500),
                                 new InstantCommand(extendo::in)
-                        )
+                        ),
+                        new InstantCommand(extendo::out)
                 );
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .whenActive(new InstantCommand(extendo::out));}
+        //new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+        //        .whenActive(new InstantCommand(extendo::out));
+        }
 
         //Deposit to state commands
         {
@@ -321,7 +330,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) !=0)
                 .whenActive(()-> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
 
-        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
+        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
                 .whenActive(new InstantCommand(winch::stop));
     }
     public void run() {
