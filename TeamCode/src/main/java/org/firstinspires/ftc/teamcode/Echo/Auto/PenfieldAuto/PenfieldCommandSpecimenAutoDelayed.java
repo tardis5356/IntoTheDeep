@@ -25,6 +25,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -61,8 +62,8 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "WaitSpecimenAuto")
-
+@Autonomous(name = "PenfieldSpecimenAutoDelayed")
+@Disabled
 public class PenfieldCommandSpecimenAutoDelayed extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -132,6 +133,8 @@ public class PenfieldCommandSpecimenAutoDelayed extends OpMode {
      */
     @Override
     public void init() {
+        //Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
         drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position

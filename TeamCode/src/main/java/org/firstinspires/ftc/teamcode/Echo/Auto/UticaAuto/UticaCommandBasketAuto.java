@@ -128,6 +128,9 @@ public class UticaCommandBasketAuto extends OpMode {
      */
     @Override
     public void init() {
+//Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
+
         drive = new MecanumDrive(hardwareMap, redBasket_StartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error

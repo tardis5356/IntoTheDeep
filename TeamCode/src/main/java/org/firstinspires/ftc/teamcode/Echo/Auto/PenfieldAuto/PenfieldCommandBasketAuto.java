@@ -13,6 +13,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -49,8 +50,8 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketAuto")
-
+@Autonomous(name = "PenfieldBasketAuto")
+@Disabled
 public class PenfieldCommandBasketAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -123,6 +124,8 @@ public class PenfieldCommandBasketAuto extends OpMode {
      */
     @Override
     public void init() {
+        //Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
         drive = new MecanumDrive(hardwareMap, redBasket_StartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error

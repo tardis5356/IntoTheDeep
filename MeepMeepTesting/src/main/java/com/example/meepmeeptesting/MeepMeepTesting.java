@@ -23,8 +23,8 @@ public class MeepMeepTesting {
     public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(46, -56, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(53, -10, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecDepoPos = new Pose2d(53, -56, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(60, -14, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(60, -66, Math.toRadians(90));
+    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
+    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36,-40,Math.toRadians(90));
 
     public static void main(String[] args) {

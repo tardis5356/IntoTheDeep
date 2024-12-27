@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.Horizontal;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
@@ -56,7 +57,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketAuto")
+@Autonomous(name = "UticaBasketAutoDelayed")
 
 public class UticaCommandBasketAutoDelayed extends OpMode {
     // Declare OpMode members.
@@ -130,10 +131,12 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
      */
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, redBasket_StartPos); //
+        //Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,Math.toRadians(90))); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redBasket_StartPos)); //
+        generateTrajectories(new MecanumDrive(hardwareMap, new Pose2d(0,0,Math.toRadians(90)))); //
 //
 
         intake = new Intake(hardwareMap);
@@ -208,12 +211,13 @@ public class UticaCommandBasketAutoDelayed extends OpMode {
 
 
         CommandScheduler.getInstance().schedule(
-                ArmSpecimen,
-                WristSpecimen,
-                CloseGripper,
-                GripperCheck,
+//                ArmSpecimen,
+//                WristSpecimen,
+//                CloseGripper,
+//                GripperCheck,
 
                 new SequentialCommandGroup(
+
 
                         new WaitCommand(15000),
 

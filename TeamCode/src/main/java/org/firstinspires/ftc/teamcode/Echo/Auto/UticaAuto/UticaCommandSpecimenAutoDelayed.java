@@ -61,7 +61,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "UticaSpecimenAutoDelayed")
 
 public class UticaCommandSpecimenAutoDelayed extends OpMode {
     // Declare OpMode members.
@@ -130,6 +130,8 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
      */
     @Override
     public void init() {
+        //Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
         drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position

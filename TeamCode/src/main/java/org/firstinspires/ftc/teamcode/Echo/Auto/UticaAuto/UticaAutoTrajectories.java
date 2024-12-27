@@ -21,8 +21,8 @@ public class UticaAutoTrajectories {
     public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(46, -56, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(53, -10, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecDepoPos = new Pose2d(53, -56, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(60, -14, Math.toRadians(90));
-    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(60, -66, Math.toRadians(90));
+    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
+    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36,-40,Math.toRadians(90));
 
     //Red Basket Poses
@@ -36,7 +36,7 @@ public class UticaAutoTrajectories {
 
 
 //Actions
-
+public static Action Horizontal;
    //Red
 
     //Red Spec Actions
@@ -68,6 +68,12 @@ public class UticaAutoTrajectories {
 
     public static void generateTrajectories(MecanumDrive drive) {
 
+
+        Horizontal =
+                drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(90)))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(16, 0, Math.toRadians(90)), Math.toRadians(180))
+                        .build();
         //red specimen auto
 
         redSpec_StartToSub =

@@ -66,6 +66,9 @@ import java.util.Set;
 @Autonomous(name = "UticaSpecimenAuto")
 
 public class UticaCommandSpecimenAuto extends OpMode {
+
+
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -132,6 +135,9 @@ public class UticaCommandSpecimenAuto extends OpMode {
      */
     @Override
     public void init() {
+        //Removes previous Commands from scheduler
+        CommandScheduler.getInstance().reset();
+
         drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position
