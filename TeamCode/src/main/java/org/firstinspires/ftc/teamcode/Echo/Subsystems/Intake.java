@@ -9,6 +9,8 @@ import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MI
 import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.YELLOW_MAX;
 import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.YELLOW_MIN;
 
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -65,8 +67,11 @@ public class Intake extends SubsystemBase {
     public void downPosition(){
         //drives the intake arm and wrist to the ground for intaking
         //sIT.setPosition(BotPositions.INTAKE_DOWN);
-        sIG.setPosition(BotPositions.INTAKE_ARM_DOWN);
-        sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
+        new ParallelCommandGroup(
+                new InstantCommand(()->sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                new InstantCommand(()->sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))
+        );
+
     }
     public void transferPosition(){
         //drives the arm and wrist of the intake to a neutral position to go into the robot and hopefully not scratch the deck plate more
@@ -142,7 +147,7 @@ public class Intake extends SubsystemBase {
         else return false;
     }
     public boolean checkSample(){
-        if (((DistanceSensor) cI).getDistance(DistanceUnit.CM) <= 3.5){
+        if (((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 3.5){
             return true;
         }
         else return false;
