@@ -374,6 +374,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                );
 
     }
+
     public void run() {
         super.run();
 
@@ -445,6 +446,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+        telemetry.addData("PIDEnabled?", lift.PIDEnabled);
+        telemetry.addData("JoystickPowerInput", lift.joystickPowerInput);
         telemetry.addData("liftPosition", lift.getCurrentPosition());
 
         //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called

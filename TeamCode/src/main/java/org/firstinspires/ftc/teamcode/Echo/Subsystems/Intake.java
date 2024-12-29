@@ -78,8 +78,8 @@ public class Intake extends SubsystemBase {
     }
     public void upPosition(){
         //specifically moves the intake arm and wrist to the transfer position
-        sIG.setPosition(BotPositions.INTAKE_ARM_UP);
         sIT.setPosition(BotPositions.INTAKE_WRIST_UP);
+        sIG.setPosition(BotPositions.INTAKE_ARM_UP);
     }
 
     public void outakePosition(){

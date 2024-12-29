@@ -21,10 +21,12 @@ public class Lift extends SubsystemBase {
     //it will continuously change this value based on its tuned P I and D variables
 
     public static double targetPosition = 0;// stores the desired position of the lift in motor ticks
-    double joystickPowerInput = 0;//like the extendo, it stores the stick input, this time as a motor power
+    public double joystickPowerInput = 0;//like the extendo, it stores the stick input, this time as a motor power
     public static double motorPower = 0;//stores the final desired motor power, which is then fed into the motors
     boolean tooHigh; //Boolean to check if the lift is to high
     public boolean liftHanging;
+
+    public boolean PIDEnabled;
 
     //hardwaremap virtual components to configuration
     public Lift(HardwareMap hardwareMap) {
@@ -78,38 +80,55 @@ public class Lift extends SubsystemBase {
             //targetPosition = 10;
         }
 
-        if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){//if the lift reaches its digital hight limit, set tooHigh to true
+        if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){
+            //if the lift reaches its digital height limit, set tooHigh to true
             tooHigh = true;
         } else {tooHigh = false;}
 //TODO: Redo this so it doesn't suck to think through
         {
-            if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
-                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-                targetPosition = 15;
-            } else if (joystickPowerInput != 0 && limitLift.isPressed() && !liftHanging) {
-                if (joystickPowerInput > 0) {
-                    motorPower = 0;
-                } else if (joystickPowerInput <= 0) {
-                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-                    targetPosition = 15;
+//            if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
+//                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
+//                targetPosition = 15;
+//            } else if (joystickPowerInput != 0 && limitLift.isPressed() && !liftHanging) {
+//                if (joystickPowerInput > 0) {
+//                    motorPower = 0;
+//                } else if (joystickPowerInput <= 0) {
+//                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
+//                    targetPosition = 15;
+//                }
+//            } else if (joystickPowerInput != 0 && tooHigh && !liftHanging) {
+//                if (joystickPowerInput < 0) {
+//                    motorPower = 0;
+//                } else if (joystickPowerInput >= 0) {
+//                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
+//                    targetPosition = 15;
+//                }
+//            } else if (liftHanging) {
+//                motorPower = joystickPowerInput;
+//                targetPosition = 15;
+//            } else if (targetPosition != 15) {
+//                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
+//            } else if (targetPosition == 10) {
+//                motorPower = 0;
+//            } else {
+//                motorPower = -BotPositions.LIFT_FF;
+//            }
+            if(joystickPowerInput != 0){
+                PIDEnabled = false;
+                if((getCurrentPosition()>10 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)){
+                    motorPower = 0 - BotPositions.LIFT_FF;
                 }
-            } else if (joystickPowerInput != 0 && tooHigh && !liftHanging) {
-                if (joystickPowerInput < 0) {
-                    motorPower = 0;
-                } else if (joystickPowerInput >= 0) {
+                else{
                     motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-                    targetPosition = 15;
                 }
-            } else if (liftHanging) {
-                motorPower = joystickPowerInput;
-                targetPosition = 15;
-            } else if (targetPosition != 15) {
-                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
-            } else if (targetPosition == 10) {
-                motorPower = 0;
-            } else {
-                motorPower = -BotPositions.LIFT_FF;
             }
+            else if (PIDEnabled == true){
+                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
+            }
+            else{
+                motorPower = 0 - BotPositions.LIFT_FF;
+            }
+
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
         mLT.setPower(motorPower);//like the extendo we change a variable that is then constantly assigned to the hardware
         mLB.setPower(motorPower);
@@ -117,12 +136,12 @@ public class Lift extends SubsystemBase {
 
     //these are a few telemetry methods for trouble shooting
     public double getCurrentPosition() {
-        return mLT.getCurrentPosition();
+        return mLT.getCurrentPosition()-470;
     }
     public double getTargetPosition(){return targetPosition;}
 
     public double getCurrentPID() {// this is the method that takes the current position and desired position and returns a motor power
-        return controller.calculate(mLT.getCurrentPosition(), targetPosition);
+        return controller.calculate(mLT.getCurrentPosition()-470, targetPosition);
     }
 
     public static void setTargetPosition(double newTargetPosition){// updates the target position to whatever its set as by the LiftToStateCommand
