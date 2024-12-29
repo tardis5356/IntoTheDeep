@@ -47,19 +47,19 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-        if(checkSample()) {
-            samplePresent = true;
-            //if (checkBlue()) {//Add team color conditionals later
-            //    transfer();
-            //}else if (checkRed()) {//Add team color conditionals later
-            //    transfer();
-            //}else {
-            //    stop();
-            //}
-        }
-        if(!samplePresent&&!Intaking){
-            stop();
-        }
+//        if(checkSample()) {
+//            samplePresent = true;
+//            //if (checkBlue()) {//Add team color conditionals later
+//            //    transfer();
+//            //}else if (checkRed()) {//Add team color conditionals later
+//            //    transfer();
+//            //}else {
+//            //    stop();
+//            //}
+//        }
+//        if(!samplePresent&&!Intaking){
+//            stop();
+//        }
     }
 
     public void downPosition(){
