@@ -198,7 +198,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         )
                 );
 
-        //TODO: Maybe change this one if we do the pass through
+        //TODO: Change this one if we do the pass through
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
                 .whenActive(new InstantCommand(intake::out));}
 
@@ -338,7 +338,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(new SequentialCommandGroup(
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
                         new InstantCommand(() -> DepositState = "specimen")
-                ));}
+                ));
+        }
 
 
 
@@ -409,6 +410,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
+        //the following is all telemetry for debugging and verifying things in the teleop
         telemetry.addData("RobotState", DepositState);
         telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
@@ -421,6 +423,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+
+        //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called
+        //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't
         telemetry.addData("GripperState", gripper.verifyGripper());
 
         telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());

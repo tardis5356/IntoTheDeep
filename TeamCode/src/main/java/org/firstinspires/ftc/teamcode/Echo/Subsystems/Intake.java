@@ -142,7 +142,7 @@ public class Intake extends SubsystemBase {
         else return false;
     }
     public boolean checkSample(){
-        if (((DistanceSensor) cI).getDistance(DistanceUnit.CM) <= 2.5){
+        if (((DistanceSensor) cI).getDistance(DistanceUnit.CM) <= 3.5){
             return true;
         }
         else return false;
