@@ -211,8 +211,8 @@ public class IndexTeleop extends CommandOpMode {
         telemetry.addData("ArmPosition", arm.sAR.getPosition());
 
         telemetry.addData("checkIntake", intake.checkSample());
-        telemetry.addData("Red", intake.checkRed());
-        telemetry.addData("Blue", intake.checkBlue());
+        //telemetry.addData("Red", intake.checkRed());
+        //telemetry.addData("Blue", intake.checkBlue());
         telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue

@@ -2,15 +2,12 @@ package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.BLUE_MAX;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.BLUE_MIN;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.YELLOW_MAX;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.YELLOW_MIN;
+//import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.BLUE_MAX;
+import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_BLUE_MIN;
+import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_RED_MIN;
+//import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
+//import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -27,7 +24,7 @@ public class Intake extends SubsystemBase {
 
     private Servo sIG;
     private Servo sIT;
-    private CRServo sIW, sIO;
+    public CRServo sIW, sIO;
     public ColorSensor cI;
 
     public boolean Intaking;
@@ -49,8 +46,8 @@ public class Intake extends SubsystemBase {
     @Override
 
     public void periodic(){
-//        if(checkSample()) {
-//            samplePresent = true;
+        if(checkSample()) {
+            samplePresent = true;
 //            //if (checkBlue()) {//Add team color conditionals later
 //            //    transfer();
 //            //}else if (checkRed()) {//Add team color conditionals later
@@ -58,19 +55,19 @@ public class Intake extends SubsystemBase {
 //            //}else {
 //            //    stop();
 //            //}
-//        }
-//        if(!samplePresent&&!Intaking){
-//            stop();
-//        }
+        }
+        if(!samplePresent&&!Intaking){
+            stop();
+            }
     }
 
     public void downPosition(){
         //drives the intake arm and wrist to the ground for intaking
         //sIT.setPosition(BotPositions.INTAKE_DOWN);
-        new ParallelCommandGroup(
-                new InstantCommand(()->sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                new InstantCommand(()->sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))
-        );
+
+                sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
+                sIG.setPosition(BotPositions.INTAKE_ARM_DOWN);
+
 
     }
     public void transferPosition(){
@@ -128,23 +125,38 @@ public class Intake extends SubsystemBase {
         sIO.setPower(BotPositions.INTAKE_STOP);
         Intaking = false;
     }
-    public boolean checkRed(){
-        if (cI.red() >= RED_MIN && cI.red() <= RED_MAX){
-            return true;
+//    public boolean checkRed(){
+//        if (cI.red() >= RED_MIN && cI.red() <= RED_MAX){
+//            return true;
+//        }
+//        else return false;
+//    }
+//    //public boolean checkYellow(){
+//    //    if (cI.red() >= YELLOW_MIN && cI.red() <= YELLOW_MAX){
+//    //        return true;
+//    //    }
+//    //    else return false;
+//    //}
+//    public boolean checkBlue(){
+//        if (cI.blue() >= INTAKE_BLUE_MIN && cI.blue() <= BLUE_MAX){
+//            return true;
+//        }
+//        else return false;
+//    }
+    public String checkColor(){
+        if (cI.red() >= INTAKE_RED_MIN && cI.blue() <= INTAKE_BLUE_MIN){
+            return "red";
         }
-        else return false;
-    }
-    public boolean checkYellow(){
-        if (cI.red() >= YELLOW_MIN && cI.red() <= YELLOW_MAX){
-            return true;
+        else if (cI.blue() >= INTAKE_BLUE_MIN && cI.red() <= INTAKE_RED_MIN){
+            return "blue";
         }
-        else return false;
-    }
-    public boolean checkBlue(){
-        if (cI.blue() >= BLUE_MIN && cI.blue() <= BLUE_MAX){
-            return true;
+        else if(cI.blue() >= INTAKE_BLUE_MIN && cI.red() >= INTAKE_RED_MIN){
+            return "yellow";
         }
-        else return false;
+        else {
+            return "unknown";
+        }
+
     }
     public boolean checkSample(){
         if (((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 3.5){

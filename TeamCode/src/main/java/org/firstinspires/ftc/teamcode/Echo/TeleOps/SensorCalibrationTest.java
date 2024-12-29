@@ -33,8 +33,8 @@ public class SensorCalibrationTest extends CommandOpMode {
         telemetry.addData("Gripper_Blue_Recording", gripper.cG.blue());
         telemetry.addData("Gripper_Red_Recording", gripper.cG.red());
 
-        telemetry.addData("Intake_detected_red?", intake.checkRed());
-        telemetry.addData("Intake_detected_blue?", intake.checkBlue());
+        telemetry.addData("Intake_detected:", intake.checkColor());
+        //telemetry.addData("Intake_detected_blue?", intake.checkBlue());
         telemetry.addData("Intake_Blue_Recording", intake.cI.blue());
         telemetry.addData("Intake_Red_Recording", intake.cI.red());
 

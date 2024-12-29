@@ -84,31 +84,31 @@ public class Lift extends SubsystemBase {
 //TODO: Redo this so it doesn't suck to think through
         {
             if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
-                motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
                 targetPosition = 15;
             } else if (joystickPowerInput != 0 && limitLift.isPressed() && !liftHanging) {
                 if (joystickPowerInput > 0) {
                     motorPower = 0;
                 } else if (joystickPowerInput <= 0) {
-                    motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
                     targetPosition = 15;
                 }
             } else if (joystickPowerInput != 0 && tooHigh && !liftHanging) {
                 if (joystickPowerInput < 0) {
                     motorPower = 0;
                 } else if (joystickPowerInput >= 0) {
-                    motorPower = joystickPowerInput - BotPositions.ANTI_GRAV;
+                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
                     targetPosition = 15;
                 }
             } else if (liftHanging) {
                 motorPower = joystickPowerInput;
                 targetPosition = 15;
             } else if (targetPosition != 15) {
-                motorPower = -BotPositions.ANTI_GRAV + getCurrentPID();
+                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
             } else if (targetPosition == 10) {
                 motorPower = 0;
             } else {
-                motorPower = -BotPositions.ANTI_GRAV;
+                motorPower = -BotPositions.LIFT_FF;
             }
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
         mLT.setPower(motorPower);//like the extendo we change a variable that is then constantly assigned to the hardware

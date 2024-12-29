@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.BLUE_MIN;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
-import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
+import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_BLUE_MIN;
+import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_RED_MIN;
+//import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
+//import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -70,10 +71,10 @@ public class Gripper extends SubsystemBase {
     }
 
     public void checkColor(){
-        if(cG.blue() >= BLUE_MIN){
+        if(cG.blue() >= INTAKE_BLUE_MIN){
             AllianceColor.aColor = "blue";
         }
-        else if(cG.red() >= RED_MIN && cG.red() <= RED_MAX){
+        else if(cG.red() >= INTAKE_RED_MIN){
             AllianceColor.aColor = "red";
         }
         else{

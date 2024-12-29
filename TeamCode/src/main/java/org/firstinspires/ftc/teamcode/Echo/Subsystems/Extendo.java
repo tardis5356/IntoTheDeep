@@ -65,7 +65,7 @@ public class Extendo extends SubsystemBase {
 
         //Should the actual position of the extendo be outside the in and out limits of the extendo, set extensionPosition to be the limit
         //its like a mini super simple PID, you can learn more about those in the lift subsystem file.
-        if(sER.getPosition() > .78){
+        if(sER.getPosition() > .8){
             extensionPosition = EXTENDO_IN;
         }
         else if(sER.getPosition() < .5){

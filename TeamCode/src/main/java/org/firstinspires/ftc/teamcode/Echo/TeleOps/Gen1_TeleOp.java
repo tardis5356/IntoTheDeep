@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutComm
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -167,13 +169,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 
             //intake tilting
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72)
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::upPosition),
                                 new InstantCommand(intake::stop)
                         ),
-                        new InstantCommand(intake::downPosition));
+                        new InstantCommand(intake::downPosition)
+                );
 
         //This trigger is if the extension is close to the robot, the intake needs to be in the up position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
@@ -191,15 +194,18 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
         new Trigger(()->(intake.checkSample() && intake.samplePresent))
-                .whenActive(
+                .whileActiveOnce(
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
+                                new InstantCommand(intake::stop),
+                                new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
+                                new WaitCommand(1000),
                                 new InstantCommand(intake::stop)
                         )
                 );
 
         //TODO: Change this one if we do the pass through
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())))
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkColor() == "red") || (AllianceColor.aColor == "red" && intake.checkColor() == "blue")))
                 .whenActive(new InstantCommand(intake::out));}
 
         //transfer
@@ -215,13 +221,22 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::transferPosition),
                                 new WaitCommand(500),
+                                new InstantCommand(intake::stop),
                                 new InstantCommand(extendo::in)
                         ),
                         new InstantCommand(extendo::out)
                 );
 
-        //new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-        //        .whenActive(new InstantCommand(extendo::out));
+        new Trigger(() -> intake.checkSample() && (AllianceColor.aColor == intake.checkColor() || intake.checkColor() == "yellow"))
+                .whenActive(
+                        new SequentialCommandGroup(
+                            new InstantCommand(intake::transferPosition),
+                            new InstantCommand(()->intake.sIW.setPower(.15)),
+                            new WaitCommand(500),
+                            new InstantCommand(intake::stop),
+                            new InstantCommand(extendo::in)
+                        )
+                );
         }
 
         //Deposit to state commands
@@ -351,6 +366,13 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
                 .whenActive(new InstantCommand(winch::stop));
+
+//        new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
+//                .toggleWhenActive(
+//                        new InstantCommand(()->AllianceColor.aColor = "red"),
+//                        new InstantCommand(()->AllianceColor.aColor = "blue")
+//                );
+
     }
     public void run() {
         super.run();
@@ -367,7 +389,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                );
 //        }
 
-        if ((AllianceColor.aColor == "blue" && intake.checkRed()) || (AllianceColor.aColor == "red" && intake.checkBlue())){
+        if ((AllianceColor.aColor == "blue" && intake.checkColor() == "red") || (AllianceColor.aColor == "red" && intake.checkColor() == "blue")){
             new SequentialCommandGroup(
                     new IntakeOutCommand(intake)
             );
@@ -412,20 +434,22 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //the following is all telemetry for debugging and verifying things in the teleop
         telemetry.addData("RobotState", DepositState);
-        telemetry.addData("IntakeState", intake.checkSample());
+        //telemetry.addData("IntakeState", intake.checkSample());
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkSample());
-        telemetry.addData("Red", intake.checkRed());
-        telemetry.addData("Blue", intake.checkBlue());
+        telemetry.addData("DetectedColor", intake.checkColor());
+        //telemetry.addData("Blue", intake.checkBlue());
         telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
         telemetry.addData("isHanging?", lift.liftHanging);
         telemetry.addData("LiftPower", lift.mLT.getPower());
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+        telemetry.addData("liftPosition", lift.getCurrentPosition());
 
         //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called
-        //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't
+        //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't get it to run continuously
+        //thus it needs to be called in the run loop in some way, in this case as telemetry
         telemetry.addData("GripperState", gripper.verifyGripper());
 
         telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
@@ -433,8 +457,10 @@ public class Gen1_TeleOp extends CommandOpMode {
         //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
         //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
         //telemetry.addData("Yellow", intake.checkYellow());
-        //telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
-        //telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue
+        telemetry.addData("ReadingIntakeRED", intake.cI.red());//620-650 Yellow 300-400 Red
+        telemetry.addData("ReadingIntakeBLUE", intake.cI.blue());//120-250 Blue
+        telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
+        telemetry.addData("ReadingGripperBLUE", gripper.cG.blue());//120-250 Blue
         //telemetry.addData("ReadingIntake", cI.green());
         telemetry.update();
     }

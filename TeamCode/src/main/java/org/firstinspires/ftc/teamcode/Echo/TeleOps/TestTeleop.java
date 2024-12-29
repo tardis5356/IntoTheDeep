@@ -235,6 +235,7 @@ public class TestTeleop extends CommandOpMode {
                         new InstantCommand(wrist::specimen)
                 ));
 
+
     }
 
     public void run() {
@@ -290,8 +291,8 @@ public class TestTeleop extends CommandOpMode {
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkSample());
-        telemetry.addData("Red", intake.checkRed());
-        telemetry.addData("Blue", intake.checkBlue());
+        //telemetry.addData("Red", intake.checkRed());
+        //telemetry.addData("Blue", intake.checkBlue());
         //telemetry.addData("Yellow", intake.checkYellow());
         telemetry.addData("ReadingIntake", cI.red());//620-650 Yellow 300-400 Red
         telemetry.addData("ReadingIntake", cI.blue());//120-250 Blue

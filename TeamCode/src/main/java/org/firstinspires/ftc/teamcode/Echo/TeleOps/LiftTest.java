@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "LiftTest")
 public class LiftTest extends CommandOpMode {
     private GamepadEx aparatus;
@@ -31,7 +31,7 @@ public class LiftTest extends CommandOpMode {
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_RIGHT))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.A))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_LOW, BotPositions.LIFT_TOLERANCE));
+                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.B))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE));
 //        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
