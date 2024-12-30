@@ -26,6 +26,7 @@ public class Lift extends SubsystemBase {
     boolean tooHigh; //Boolean to check if the lift is to high
     public boolean liftHanging;
 
+    public boolean localized;
     public boolean PIDEnabled;
 
     //hardwaremap virtual components to configuration
@@ -34,6 +35,8 @@ public class Lift extends SubsystemBase {
         mLB = hardwareMap.get(DcMotorEx.class, "mLB");
 
         limitLift = hardwareMap.get(TouchSensor.class, "lL");
+
+        localized = false;
 
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//this is an example of using the hardwaremap method as an init
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//sets the lift motors to sag and not resist anything when they have a power of 0
@@ -79,6 +82,7 @@ public class Lift extends SubsystemBase {
 
         if(limitLift.isPressed()){//localizes the lift if its limit is pressed
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            localized = true;
             //targetPosition = 10;
         }
 
@@ -117,7 +121,7 @@ public class Lift extends SubsystemBase {
 //            }
             if(joystickPowerInput != 0){
                 PIDEnabled = false;
-                if((getCurrentPosition()>10 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)){
+                if(((getCurrentPosition()>10 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
                     motorPower = 0 - BotPositions.LIFT_FF;
                 }
                 else{
