@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class BotPositions {
-    public static double GRIPPER_OPEN = .7, GRIPPER_CLOSED = 0.36, GRIPPER_INTAKE = .475;
+    public static double GRIPPER_OPEN = .6, GRIPPER_CLOSED = 0.36, GRIPPER_INTAKE = .475;
     public static double WRIST_TRANSIT = 0.87, WRIST_WALL = .92, WRIST_INTAKE = .39, WRIST_BASKET = .5, WRIST_SPECIMEN = .4;
     public static double ARM_BASKET = .85, ARM_INTAKE = .37, ARM_WALL = .2, ARM_TRANSIT = .5, ARM_SPECIMEN =.43;
     public static double INTAKE_ARM_DOWN = 0.94, INTAKE_ARM_TRANSFER = 0.38, INTAKE_ARM_UP = .77, INTAKE_ARM_OUTAKE = .16,

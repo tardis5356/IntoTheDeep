@@ -147,6 +147,10 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
 
+        arm.intake();
+        wrist.intake();
+        gripper.open();
+
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)
                 .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER);
