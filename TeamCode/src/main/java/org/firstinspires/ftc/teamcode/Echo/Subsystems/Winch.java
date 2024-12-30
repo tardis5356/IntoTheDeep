@@ -32,7 +32,7 @@ public class Winch extends SubsystemBase {
         mWL.setPower(rTrigger);
     }
     public void stop(){
-        mWR.setPower(BotPositions.WHINCH_FF);
-        mWL.setPower(BotPositions.WHINCH_FF);
+        mWR.setPower(BotPositions.WINCH_FF);
+        mWL.setPower(BotPositions.WINCH_FF);
     }
 }
