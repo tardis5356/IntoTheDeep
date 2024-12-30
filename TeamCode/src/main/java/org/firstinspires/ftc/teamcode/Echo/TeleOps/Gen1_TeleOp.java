@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToFloorCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
@@ -93,7 +91,6 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand depositToStateCommand;
-    public IntakeToFloorCommand intakeToFloorCommand;
     double LeftTrigger;
     double RightTrigger;
 
@@ -128,8 +125,6 @@ public class Gen1_TeleOp extends CommandOpMode {
         intakeInCommand = new IntakeInCommand(intake);
 
         depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
-
-        intakeToFloorCommand = new IntakeToFloorCommand(intake);
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -180,10 +175,15 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72)
                 .toggleWhenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::upPosition),
-                                new InstantCommand(intake::stop)
+                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_UP)),
+                                new WaitCommand(250),
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP))
                         ),
-                        new IntakeToFloorCommand(intake)
+                        new SequentialCommandGroup(
+                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                new WaitCommand(250),
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))
+                        )
                 );
 
         //This trigger is if the extension is close to the robot, the intake needs to be in the up position
