@@ -27,6 +27,13 @@ public class MeepMeepTesting {
     public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36,-40,Math.toRadians(90));
 
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(26,-40,Math.toRadians(45));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(26,-41,Math.toRadians(315));
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32,-40,Math.toRadians(45));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32,-41,Math.toRadians(315));
+    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(38,-40,Math.toRadians(45));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(38,-41,Math.toRadians(315));
+
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
 
@@ -40,25 +47,44 @@ public class MeepMeepTesting {
                 .setTangent(Math.toRadians(90))
                 .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                 .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_MidPointPos,Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_LeftSpecZonePos,Math.toRadians(0))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_LeftSpecDepoPos,Math.toRadians(0))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_MidSpecZonePos,Math.toRadians(270))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_MidSpecDepoPos,Math.toRadians(270))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_RightSpecZonePos,Math.toRadians(270))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redSpecEx_RightSpecDepoPos,Math.toRadians(270))
                 .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_LeftSpecDepoPos, Math.toRadians(270))
-                .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_MidSpecDepoPos, Math.toRadians(270))
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_RightSpecDepoPos, Math.toRadians(270))
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(180))
-                .setTangent(Math.toRadians(180))
-                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(270))
+
+
+                //Spec auto w/o extendo
+//                .setTangent(Math.toRadians(90))
+//                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+//                .setTangent(Math.toRadians(270))
+//                .splineToLinearHeading(redSpec_MidPointPos,Math.toRadians(90))
+//                .setTangent(Math.toRadians(90))
+//                .splineToLinearHeading(redSpec_LeftSpecZonePos, Math.toRadians(0))
+//                .setTangent(Math.toRadians(270))
+//                .splineToLinearHeading(redSpec_LeftSpecDepoPos, Math.toRadians(270))
+//                .setTangent(Math.toRadians(180))
+//                .splineToLinearHeading(redSpec_MidSpecZonePos, Math.toRadians(0))
+//                .setTangent(Math.toRadians(270))
+//                .splineToLinearHeading(redSpec_MidSpecDepoPos, Math.toRadians(270))
+//                .setTangent(Math.toRadians(90))
+//                .splineToLinearHeading(redSpec_RightSpecZonePos, Math.toRadians(0))
+//                .setTangent(Math.toRadians(270))
+//                .splineToLinearHeading(redSpec_RightSpecDepoPos, Math.toRadians(270))
+//                .setTangent(Math.toRadians(90))
+//                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+//                .setTangent(Math.toRadians(270))
+//                .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(180))
+//                .setTangent(Math.toRadians(180))
+//                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                 //Basket Auto
 //                .setTangent(Math.toRadians(90))
 //                .splineToLinearHeading(redBasket_SubDepoPos, Math.toRadians(90))

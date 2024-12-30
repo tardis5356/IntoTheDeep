@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.Echo.Commands;
 
 //RedSpec
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_LeftDepoToMidSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_LeftSpecToLeftDepo;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_MidDepoToRightSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_MidSpecToMidDepo;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_RightSpecToRightDepo;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
@@ -25,6 +30,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajec
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToAscentPark;
 
 
+import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -62,6 +68,13 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
+
+    private ActionCommand RedSpecEx_SubToLeftSpecZone;
+    private ActionCommand RedSpecEx_LeftSpecToLeftDepo;
+    private ActionCommand RedSpecEx_LeftDepoToMidSpec;
+    private ActionCommand RedSpecEx_MidSpecToMidDepo;
+    private ActionCommand RedSpecEx_MidDepoToRightSpec;
+    private ActionCommand RedSpecEx_RightSpecToRightDepo;
 
 
     //RedBasket
@@ -105,6 +118,18 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);
 
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
+
+        RedSpecEx_LeftSpecToLeftDepo = new ActionCommand(redSpecEx_LeftSpecToLeftDepo, requirements);
+
+        RedSpecEx_LeftDepoToMidSpec = new ActionCommand(redSpecEx_LeftDepoToMidSpec, requirements);
+
+        RedSpecEx_MidSpecToMidDepo = new ActionCommand(redSpecEx_MidSpecToMidDepo, requirements);
+
+        RedSpecEx_MidDepoToRightSpec = new ActionCommand(redSpecEx_MidDepoToRightSpec, requirements);
+
+        RedSpecEx_RightSpecToRightDepo= new ActionCommand(redSpecEx_RightSpecToRightDepo, requirements);
+
+
 
 
         //RedBasket
@@ -222,6 +247,45 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
                                 RedSpec_SubToObs
+                        )
+                );
+                break;
+
+
+
+            case "redSpecEx_LeftSpecDepo":
+                addCommands(
+                        new SequentialCommandGroup(
+                               new InstantCommand(extendo::out),
+                                new InstantCommand(intake::downPosition),
+                                new WaitCommand(2000),
+                                RedSpecEx_LeftSpecToLeftDepo
+                        )
+                );
+                break;
+
+            case "redSpecEx_MidSpecDepo":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::upPosition),
+                                new WaitCommand(1000),
+                                RedSpecEx_LeftDepoToMidSpec,
+                                new InstantCommand(intake::downPosition),
+                                new WaitCommand(1000),
+                                RedSpecEx_MidSpecToMidDepo
+                        )
+                );
+                break;
+
+            case "redSpecEx_RightSpecDepo":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::upPosition),
+                                new WaitCommand(1000),
+                                RedSpecEx_MidDepoToRightSpec,
+                                new InstantCommand(intake::downPosition),
+                                new WaitCommand(1000),
+                                RedSpecEx_RightSpecToRightDepo
                         )
                 );
                 break;
