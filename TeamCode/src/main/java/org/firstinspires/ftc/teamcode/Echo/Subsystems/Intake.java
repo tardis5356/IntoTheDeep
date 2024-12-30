@@ -17,15 +17,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToFloorCommand;
 
 public class Intake extends SubsystemBase {
 
     private IntakeOutCommand intakeOutCommand;
 
-    private Servo sIG;
-    private Servo sIT;
+    public Servo sIG;
+    public Servo sIT;
     public CRServo sIW, sIO;
     public ColorSensor cI;
+    //IntakeToFloorCommand intakeToFloorCommand;
 
     public boolean Intaking;
     public boolean samplePresent;

@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToFloorCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
@@ -92,6 +93,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand depositToStateCommand;
+    public IntakeToFloorCommand intakeToFloorCommand;
     double LeftTrigger;
     double RightTrigger;
 
@@ -126,6 +128,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         intakeInCommand = new IntakeInCommand(intake);
 
         depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
+
+        intakeToFloorCommand = new IntakeToFloorCommand(intake);
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -179,7 +183,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(intake::upPosition),
                                 new InstantCommand(intake::stop)
                         ),
-                        new InstantCommand(intake::downPosition)
+                        new IntakeToFloorCommand(intake)
                 );
 
         //This trigger is if the extension is close to the robot, the intake needs to be in the up position
