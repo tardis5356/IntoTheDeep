@@ -68,8 +68,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(500),
                                 new InstantCommand(wrist::wall),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(gripper::open)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
+                                //new InstantCommand(gripper::open)
                         )
                 );
                 //setState = "wall";
@@ -86,8 +86,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(500),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::wall),
-                                new InstantCommand(gripper::open)
+                                new InstantCommand(wrist::wall)
+                                //new InstantCommand(gripper::open)
 
 
                         )
@@ -213,8 +213,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(400),
                                 new InstantCommand(wrist::wall),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
-                        new InstantCommand(gripper::open)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE))
+                        //new InstantCommand(gripper::open)
 
                 );
                 //setState = "wall";
@@ -301,6 +301,22 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, 25)
+                                //new WaitCommand(700),
+                                //new LiftToStateCommand(lift, 0, 10)
+
+                        )
+                );
+                break;
+
+            case "initHang":
+                //currentState = "transit";
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(()->lift.PIDEnabled= true),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, 25),
+                                new InstantCommand(arm::hang),
+                                new InstantCommand(wrist::tuck)
+
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
 

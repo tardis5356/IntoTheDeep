@@ -64,8 +64,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void ManualMode(double left, double right) {
-        // joystickPowerInput = left + right * 0.5;
-        joystickPowerInput = left;
+        joystickPowerInput = left + right * 0.5;
+        //joystickPowerInput = left;
     }
 
     public void hanging(boolean amHanging){
@@ -119,6 +119,8 @@ public class Lift extends SubsystemBase {
 //            } else {
 //                motorPower = -BotPositions.LIFT_FF;
 //            }
+
+
             if(joystickPowerInput != 0){
                 PIDEnabled = false;
                 if(((getCurrentPosition()>10 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){

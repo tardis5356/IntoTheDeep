@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Echo.TeleOps;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
@@ -38,7 +39,9 @@ public class Gen1_TeleOp extends CommandOpMode {
     //This is just a boolean used for telemetry to see if we took in the incorrect sample color
     boolean wrongColorIntaked = false;
 
-    private IntakeInCommand intakeInCommand;
+    String notAColor;
+
+    //private IntakeInCommand intakeInCommand;
 
     //drivetrain motors and variables
     //DcMotorEx is an expanded version of the DcMotor variable that gives us more methods.
@@ -91,18 +94,24 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand depositToStateCommand;
+
+    //stores the values of the left and right triggers for calculating the trigger value for the extendo
     double LeftTrigger;
     double RightTrigger;
 
     @Override
+    //stuff that is ran when you click init at the start of teleop.
     public void initialize(){
+        //sets the digital position of the robot to intake for the deposit to state command
         DepositState = "intake";
 
         //init controllers
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
+        //call the hardware map for all the subsystems
         extendo = new Extendo(hardwareMap);
+
         //gripper
         gripper = new Gripper(hardwareMap);
 
@@ -122,8 +131,8 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //TeamColorRed = true;
 
-        intakeInCommand = new IntakeInCommand(intake);
-
+        //intakeInCommand = new IntakeInCommand(intake);
+        //also hardware map the depositToStateCommand. Although we do create new instances in the triggers so I don't think that's needed
         depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
         //map motors
@@ -146,9 +155,11 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
 
+        //This will drive the arm, wrist, and gripper, to the intake position for the start of teleop
         arm.intake();
         wrist.intake();
-        gripper.open();
+        gripper.intake();
+        intake.transferPosition();
 
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)
@@ -159,12 +170,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //gripper Commands
         {
+            //if driver 2 presses b, toggle between open and closed
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
                     .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
          //   new Trigger(() -> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
          //           .whenActive(new InstantCommand(gripper::close));
         }
+
         //intake
         {
 //            new Trigger (() -> AllianceColor.aColor == "blue")
@@ -174,6 +187,8 @@ public class Gen1_TeleOp extends CommandOpMode {
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72)
                 .toggleWhenActive(
+                        //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
+                        //that's done so we don't the intake pinned against the ground
                         new SequentialCommandGroup(
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_UP)),
                                 new WaitCommand(250),
@@ -186,7 +201,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         )
                 );
 
-        //This trigger is if the extension is close to the robot, the intake needs to be in the up position
+        //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
                 .whileActiveOnce(new SequentialCommandGroup(
                         new InstantCommand(intake::transferPosition)
@@ -197,10 +212,14 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
 
         //intake inning and outing
-            //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's right bumper or driver1's y button are down
+            //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
+            //toggle between running the intake and not
+
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() &&(!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
+        //if the intake detects a sample and we haven't disabled the samplePresent variable for transferring
+        //stop intaking and outake just the spokes to make sure we don't accidentally nab 2 samples
         new Trigger(()->(intake.checkSample() && intake.samplePresent))
                 .whileActiveOnce(
                         new SequentialCommandGroup(
@@ -213,19 +232,46 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
 
         //TODO: Change this one if we do the pass through
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((AllianceColor.aColor == "blue" && intake.checkColor() == "red") || (AllianceColor.aColor == "red" && intake.checkColor() == "blue")))
-                .whenActive(new InstantCommand(intake::out));}
+            //if the drivers manually hit outake or the wrong alliance color is detected, outake
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || intake.checkColor() == notAColor)
+                .whenActive(
+                        new SequentialCommandGroup(
+                                new InstantCommand(()-> intake.samplePresent = false),
+                                new InstantCommand(intake::out),
+                                new WaitCommand(2000),
+                                new InstantCommand(intake::stop)
+                        )
+                );
+        }
 
         //transfer
-        {//new Trigger(()-> intake.checkSample() && DepositState == "intake")
-         //       .whenActive(new InstantCommand(intake::transfer));
+        {
+            //new Trigger(()-> intake.checkSample() && DepositState == "intake")
+            //       .whenActive(new InstantCommand(intake::transfer));
 
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.X))
-                .whenActive(new IntakePassCommand(intake));}
+        //If driver1 hits a or driver2 hits x, run the intake pass or transfer command
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A))
+                .whenActive(new IntakePassCommand(intake));
+
+            //if the gripper detects a sample while the depositing system is in the intake configuration, the intake should
+            //transfer the sample.
+//            new Trigger(()-> gripper.verifyGripper() && DepositState == "intake")
+//                    .whenActive(
+//                            new SequentialCommandGroup(
+//                                    new WaitCommand(250),
+//                                    new InstantCommand(intake::transfer)
+//                            )
+//                    );
+
+        }
 
         //Extendo
-        {new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+        {
+        //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .toggleWhenActive(
+                        //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
+                        //and to make sure any samples don't get spat out.
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::transferPosition),
                                 new WaitCommand(500),
@@ -235,7 +281,9 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(extendo::out)
                 );
 
-        new Trigger(() -> intake.checkSample() && (AllianceColor.aColor == intake.checkColor() || intake.checkColor() == "yellow"))
+        //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
+        //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
+        new Trigger(() -> intake.checkSample() && (intake.checkColor() == AllianceColor.aColor || intake.checkColor() == "yellow"))
                 .whenActive(
                         new SequentialCommandGroup(
                             new InstantCommand(intake::transferPosition),
@@ -249,6 +297,9 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //Deposit to state commands
         {
+        //each starting position to end position command needs its own trigger.
+        //all the triggers check the driver input and the current state of the robot to tell if they should be called.
+
         //ToIntakeCommands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
@@ -362,30 +413,48 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
                         new InstantCommand(() -> DepositState = "specimen")
                 ));
+
+        //To hang
+
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
+                    .whenActive(new SequentialCommandGroup(
+                            new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),
+                            new InstantCommand(() -> DepositState = "specimen")
+                    ));
+
         }
 
 
+        //winch code
+        {
+            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0)
+                    .whenActive(() -> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
 
-        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) !=0)
-                .whenActive(()-> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) != 0)
+                    .whenActive(() -> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
 
-        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) !=0)
-                .whenActive(()-> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
+                    .whenActive(new InstantCommand(winch::stop));
+        }
 
-        new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
-                .whenActive(new InstantCommand(winch::stop));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
+                .whenActive(
+                        new InstantCommand(()->AllianceColor.aColor = "blue")
+                );
 
-//        new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-//                .toggleWhenActive(
-//                        new InstantCommand(()->AllianceColor.aColor = "red"),
-//                        new InstantCommand(()->AllianceColor.aColor = "blue")
-//                );
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whenActive(
+                        new InstantCommand(()->AllianceColor.aColor = "red")
+                );
 
     }
 
+    //this is the main run loop
     public void run() {
+        //super.run() actually runs the triggers in the loop
         super.run();
 
+        //if driver2 is holding down the start button, the hanging state of the lift is triggered
         lift.hanging(driver2.getButton(GamepadKeys.Button.START));
 
 //        if (extendo.extensionPosition > 0.6) {
@@ -398,21 +467,33 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                );
 //        }
 
-        if ((AllianceColor.aColor == "blue" && intake.checkColor() == "red") || (AllianceColor.aColor == "red" && intake.checkColor() == "blue")){
-            new SequentialCommandGroup(
-                    new IntakeOutCommand(intake)
-            );
-
-                wrongColorIntaked = true;
+        if(AllianceColor.aColor == "blue"){
+            notAColor = "red";
+        }
+        else if(AllianceColor.aColor == "red"){
+            notAColor = "blue";
         }
 
+        //This is kinda redundant as the trigger for the drivers to run the intakeOutCommand also has this as a condition.
+        //if the detected color of the intake doesn't match the alliance color, spit out the sample and set the wrongColorIntaked bool to true
+//        if (intake.checkColor() == notAColor){
+//            new ParallelCommandGroup(
+//                    new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_OUT)),
+//                    new InstantCommand(()->intake.sIO.setPower(BotPositions.INTAKE_OUT))
+//            );
+//
+//                wrongColorIntaked = true;
+//        }
 
+        //these define the left and right trigger values as the real triggers and takes there difference divided by ten
+        //as the input of the extendo.update method.
         LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
         RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         Trigger = (LeftTrigger - RightTrigger)/10;
 
+        //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
         if(Trigger > .03){
             Trigger = .03;
         }
@@ -422,19 +503,21 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         extendo.update(Trigger);
 
-        lift.ManualMode(gamepad2.left_stick_y, gamepad2.right_stick_y);
+        //this is just so the manual driving of the lift is based off of the right stick values of gamepad2
+        lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
 
         //applies stick values to motor variables with cubic scaling
         Rotation = cubicScaling(-gamepad1.right_stick_x);
         FB = cubicScaling(gamepad1.left_stick_y);
         LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
 
-        //defines the powers for the motors (trust i've written this so many times)
+        //defines the powers for the motors based on the stick inputs (trust i've written this so many times)
         double mFLPower = FB + LR + Rotation;
         double mFRPower = FB - LR - Rotation;
         double mBLPower = FB - LR + Rotation;
         double mBRPower = FB + LR - Rotation;
 
+        //actually sets the motor powers
         mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
         mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
         mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
@@ -447,6 +530,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", intake.checkSample());
+        telemetry.addData("check sample present", intake.samplePresent);
         telemetry.addData("DetectedColor", intake.checkColor());
         //telemetry.addData("Blue", intake.checkBlue());
         telemetry.addData("Alliance Color", AllianceColor.aColor);
@@ -475,13 +559,27 @@ public class Gen1_TeleOp extends CommandOpMode {
         //telemetry.addData("ReadingIntake", cI.green());
         telemetry.update();
     }
+    //supa cewl cubic scaling method
+    //new methods need to be written outside of the run loop since the run loop is a method and there should be no new methods in methods.
     private double cubicScaling(float joystickValue) {
+        //store 5% of the joystick value + 95% of the joystick value to the 3rd power
         double v = 0.05 * joystickValue + 0.95 * Math.pow(joystickValue, 3);
         if (joystickValue > 0.02)
+            //if the joystick is positive, return positive .1 + the stored value
             return 0.1 + v;
         else if (joystickValue < -0.02)
+            //if the joystick is negative, return -.1 plus the stored value
             return -0.1 + v;
+        // theres a range where this won't do either, which is a good counter against stick drift (because you can never escape stick drift)
         else
             return 0;
+    }
+    private double driftLock(float stickValue){
+        if(stickValue > 0.02 || stickValue < -.02){
+            return stickValue;
+        }
+        else {
+            return  0;
+        }
     }
 }
