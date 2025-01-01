@@ -154,6 +154,11 @@ public class IndexTeleop extends CommandOpMode {
 //
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::in));
+
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
+                .whenActive(new InstantCommand(extendo::rightBasket));
+
+
 //
 //        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP))
 //                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, 1));

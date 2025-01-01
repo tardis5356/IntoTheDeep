@@ -18,6 +18,8 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,9 +29,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeGetSampleCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -209,14 +214,17 @@ public class UticaCommandBasketAuto extends OpMode {
 
 
         CommandScheduler.getInstance().schedule(
-
+                new InstantCommand(extendo::in),
+                new InstantCommand(intake::transferPosition),
 
                 new SequentialCommandGroup(
 
                         new ActionCommand(redBasket_StartToSub, requirements),
 
                         new ActionCommand(redBasket_SubToRightSample, requirements),
-                        new ActionCommand(redBasket_RightSampleToBasket, requirements)
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_IntakeRightSample")
+
+                     //   new ActionCommand(redBasket_RightSampleToBasket, requirements)
 //       new ActionCommand(redBasket_BasketToMidSample, requirements)
 //                        new ActionCommand(redBasket_MidSampleToBasket, requirements),
 //                        new ActionCommand(redBasket_BasketToLeftSample, requirements),
@@ -252,13 +260,40 @@ public class UticaCommandBasketAuto extends OpMode {
 
         CommandScheduler.getInstance().run();
 
+//        if(intake.checkSample()== true){
+//            intake.sIW.setPower(BotPositions.INTAKE_STOP);
+//            intake.sIO.setPower(BotPositions.INTAKE_STOP);
+//            intake.Intaking = false;
+//            CommandScheduler.getInstance().cancelAll();
+//            telemetry.addData("confirmed sample", "yes");
+//        }
 
+
+//        new Trigger(() -> intake.checkSample())
+//                .whenActive(
+//                        new SequentialCommandGroup(
+//
+//                                new InstantCommand(intake::stop)
+//                        )
+//                );
+
+//        new Trigger(() -> intake.checkSample() && (AllianceColor.aColor == intake.checkColor() || intake.checkColor() == "yellow"))
+//                .whenActive(
+//                        new SequentialCommandGroup(
+//                                new InstantCommand(intake::transferPosition),
+//                                new InstantCommand(()->intake.sIW.setPower(.15)),
+//                                new WaitCommand(500),
+//                                new InstantCommand(intake::stop),
+//                                new InstantCommand(extendo::in)
+//                        )
+//                );
 
 
         // Note: to access the drive position info, needed to declare a drive = mecanumDrive as private variable at top of this class
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
+        telemetry.addData("Sample acquired", intake.checkSample());
 
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 

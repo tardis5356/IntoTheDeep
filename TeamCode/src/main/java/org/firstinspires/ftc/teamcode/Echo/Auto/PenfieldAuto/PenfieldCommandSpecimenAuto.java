@@ -212,7 +212,7 @@ public class PenfieldCommandSpecimenAuto extends OpMode {
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
-        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper);
+
 
         Wall =  new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
 

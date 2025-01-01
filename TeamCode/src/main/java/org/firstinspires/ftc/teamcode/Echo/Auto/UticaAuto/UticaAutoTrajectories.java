@@ -15,8 +15,8 @@ public class UticaAutoTrajectories {
     //Red Specimen Poses
     public static final Pose2d redSpec_StartPos = new Pose2d(16, -64, Math.toRadians(90));
     //   public static final Pose2d redSpec_StartPos = new Pose2d(40, -64, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(0, -32, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(42, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(0, -31, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(42, -67, Math.toRadians(90));
     public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(46, -10, Math.toRadians(90));
     public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(46, -56, Math.toRadians(90));
     public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(53, -10, Math.toRadians(90));
@@ -24,22 +24,25 @@ public class UticaAutoTrajectories {
     public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
     public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36,-40,Math.toRadians(90));
-
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(3, -31, Math.toRadians(90));
     //Red Basket Poses
     public static final Pose2d redBasket_StartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45)); //?
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-52, -48, Math.toRadians(90));
+    //Right is Mid for basket samples
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-59, -62, Math.toRadians(90));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-59, -57, Math.toRadians(90));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-60,-48, Math.toRadians(90));
     public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-62,-48, Math.toRadians(130));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-22, -8, Math.toRadians(180));
 
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(26,-40,Math.toRadians(45));
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(26,-41,Math.toRadians(315));
-    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32,-40,Math.toRadians(45));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32,-41,Math.toRadians(315));
-    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(38,-40,Math.toRadians(45));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(38,-41,Math.toRadians(315));
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28,-45,Math.toRadians(45));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(28.1,-45,Math.toRadians(340));
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(37,-45,Math.toRadians(45));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(37.1,-45,Math.toRadians(340));
+    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(40,-30,Math.toRadians(10));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(41.1,-66,Math.toRadians(0));
+    public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(42,-60,Math.toRadians(90));
 
 
 
@@ -59,6 +62,7 @@ public static Action Horizontal;
     public static Action redSpec_RightSpecToObs;
     public static Action redSpec_RightSpecObsPickUpToSub;
     public static Action redSpec_ObsToSub;
+    public static Action redSpec_ObsToSub1;
     public static Action redSpec_SubToObs;
 
     public static Action redSpecEx_SubToLeftSpecZone;
@@ -67,13 +71,15 @@ public static Action Horizontal;
     public static Action redSpecEx_MidSpecToMidDepo;
     public static Action redSpecEx_MidDepoToRightSpec;
     public static Action redSpecEx_RightSpecToRightDepo;
-    public static Action redSpecEx_RightDepoToObs;
+    public static Action redSpecEx_RightDepoToObsPrep;
+    public static Action redSpecEx_ObsPrepToObsSpec;
 
 
     //Red Basket Actions
     public static Action redBasket_StartToSub;
     public static Action redBasket_SubToRightSample;
     public static Action redBasket_RightSampleToBasket;
+    public static Action redBasket_RightSampleIntake;
     public static Action redBasket_BasketToMidSample;
     public static Action redBasket_MidSampleToBasket;
     public static Action redBasket_BasketToLeftSample;
@@ -151,13 +157,19 @@ public static Action Horizontal;
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(180))
+                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
         redSpec_ObsToSub =
                 drive.actionBuilder(redSpec_ObsSpecPos)
                         .setTangent(Math.toRadians(180))
                         .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                        .build();
+
+        redSpec_ObsToSub1 =
+                drive.actionBuilder(redSpec_ObsSpecPos)
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(redSpec_SubDepoPos1, Math.toRadians(90))
                         .build();
 
 
@@ -204,6 +216,25 @@ public static Action Horizontal;
                         .splineToLinearHeading(redSpecEx_RightSpecDepoPos,Math.toRadians(270))
                         .build();
 
+        redSpecEx_RightDepoToObsPrep =
+                drive.actionBuilder(redSpecEx_RightSpecDepoPos)
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(90))
+                        .build();
+
+        redSpecEx_RightDepoToObsPrep =
+                drive.actionBuilder(redSpecEx_RightSpecDepoPos)
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(redSpecEx_ObsPrepPos,Math.toRadians(90))
+                        .build();
+
+        redSpecEx_ObsPrepToObsSpec =
+                drive.actionBuilder(redSpecEx_ObsPrepPos)
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(90))
+                        .build();
+
+
 
 
 
@@ -220,6 +251,12 @@ public static Action Horizontal;
                 drive.actionBuilder(redBasket_SubDepoPos)
                         .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redBasket_RightSampleZonePos, Math.toRadians(180))
+                        .build();
+
+        redBasket_RightSampleIntake =
+                drive.actionBuilder(redBasket_RightSampleZonePos)
+                        .setTangent(Math.toRadians(90))
+                        .splineToLinearHeading(redBasket_RightSampleIntakePos, Math.toRadians(270))
                         .build();
 
         redBasket_RightSampleToBasket =

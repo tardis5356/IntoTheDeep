@@ -47,13 +47,11 @@ public class Extendo extends SubsystemBase {
         extensionPosition = EXTENDO_OUT;
     }
 
-    public void leftSpec(){
+    public void leftBasket(){
         extensionPosition = EXTENDO_SPECLEFT;
     }
-    public void midSpec(){
-        extensionPosition = EXTENDO_SPECMID;
-    }
-    public void rightSpec(){
+    public void midBasket(){extensionPosition = EXTENDO_SPECMID;}
+    public void rightBasket(){
         extensionPosition = EXTENDO_SPECRIGHT;
     }
 

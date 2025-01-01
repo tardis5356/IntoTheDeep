@@ -21,6 +21,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -33,6 +34,7 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
@@ -61,7 +63,6 @@ import java.util.Set;
 @Autonomous(name = "UticaSpecimenExAuto")
 
 public class UticaCommandSpecimenExAuto extends OpMode {
-
 
 
     // Declare OpMode members.
@@ -161,6 +162,12 @@ public class UticaCommandSpecimenExAuto extends OpMode {
      */
     @Override
     public void init_loop() {
+        if (gamepad1.a) {
+            AllianceColor.aColor = "blue";
+        }
+        if (gamepad1.b) {
+            AllianceColor.aColor = "red";
+        }
     }
 
     /*
@@ -189,7 +196,7 @@ public class UticaCommandSpecimenExAuto extends OpMode {
 
         RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
-        RedSpec_RightSpecObsPickUpToSub = new ActionCommand (redSpec_RightSpecObsPickUpToSub, requirements);
+        RedSpec_RightSpecObsPickUpToSub = new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements);
 
         RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
 
@@ -203,31 +210,44 @@ public class UticaCommandSpecimenExAuto extends OpMode {
 
         CloseGripper = new InstantCommand(gripper::close);
 
-        WristSpecimen =  new InstantCommand(wrist::specimen);
+        WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen =  new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimen);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper);
 
-        Wall =  new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
+        Wall = new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
 
         time_since_start = new ElapsedTime();
 
 
         CommandScheduler.getInstance().schedule(
-
+                new InstantCommand(extendo::in),
+                new InstantCommand(intake::transferPosition),
+                new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ActionCommand(redSpec_StartToSub, requirements),
-                        new ActionCommand(redSpecEx_SubToLeftSpecZone, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpecEx_LeftSpecDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpecEx_MidSpecDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpecEx_RightSpecDepo")
 
 
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_StartToSub"),
+                        new ParallelCommandGroup(
+                                new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+                                new ActionCommand(redSpecEx_SubToLeftSpecZone, requirements)
+                        ),
 
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_LeftSpecDepo"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_MidSpecDepo"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_RightSpecDepo"),
+new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub1"),
+        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs")
+//                        new ActionCommand(redSpecEx_LeftSpecToLeftDepo, requirements),
+//                        new ActionCommand(redSpecEx_LeftDepoToMidSpec, requirements),
+//                        new ActionCommand(redSpecEx_MidSpecToMidDepo, requirements),
+//                        new ActionCommand(redSpecEx_MidDepoToRightSpec, requirements),
+//                        new ActionCommand(redSpecEx_RightSpecToRightDepo, requirements)
 
 
 //                        RedSpec_MidWayToLeftSpec,
@@ -270,6 +290,9 @@ public class UticaCommandSpecimenExAuto extends OpMode {
         telemetry.addData("Y", drive.pose.position.y);
         telemetry.addData("Gripper", gripper.verifyGripper());
         telemetry.addData("BotState", botState);
+        telemetry.addData("Lift Position", lift.getCurrentPosition());
+        telemetry.addData("Lift Position", lift.getTargetPosition());
+        telemetry.addData("Lift localized", lift.localized);
 
         drive.updatePoseEstimate();
         telemetry.update();

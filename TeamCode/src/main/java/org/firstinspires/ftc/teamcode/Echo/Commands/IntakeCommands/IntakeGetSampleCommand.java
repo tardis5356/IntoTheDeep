@@ -1,37 +1,32 @@
-package org.firstinspires.ftc.teamcode.Echo.Commands;
-
-
+package org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-import android.annotation.SuppressLint;
-
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 
-public class GripperAutoCloseCommand extends CommandBase { ;
-
-    private Gripper gripper;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
+public class IntakeGetSampleCommand extends CommandBase {//This is a separate command used to actually set the target position of the lift for the PID
+    private Intake intake;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
     private ElapsedTime runtime = new ElapsedTime();
     private Double timeout = 3.0;
-    public GripperAutoCloseCommand(Gripper gripper) {
+    public IntakeGetSampleCommand(Intake intake) {
         // this is the actual method itself. It takes a lift as an input to associate with its own, that way it can change the target position value of the lift.
         // Does the same thing with the target position, taking a double in as an input
         // and same thing with the tolerance
 
-        this.gripper = gripper;
+        this.intake = intake;
 
     }
 
     @Override
     public void initialize() { // runs once
 
-
+        //TODO Test run this
+        new InstantCommand(intake::in);
         runtime.reset();
 //        lift.setTargetPosition(targetPosition);
 
@@ -44,12 +39,12 @@ public class GripperAutoCloseCommand extends CommandBase { ;
         // here we finally set the lift target position to the target position
 
         //  lift.updatePIDValues();
-
+        telemetry.addData("Intake Command Called", "True");
     }
 
     @Override
     public boolean isFinished() { // returns true when finished
-        if ( gripper.verifyGripper()||runtime.seconds()>timeout){
+        if ( intake.checkSample()||runtime.seconds()>timeout){
             return true;
         }
 
@@ -59,9 +54,7 @@ public class GripperAutoCloseCommand extends CommandBase { ;
 
     @Override
     public void end(boolean interrupted) {
-        new InstantCommand(gripper::close);
+        new InstantCommand(intake::stop);
     }
 
 }
-
-
