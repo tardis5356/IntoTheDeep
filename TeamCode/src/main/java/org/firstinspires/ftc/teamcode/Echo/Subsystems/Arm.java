@@ -48,6 +48,6 @@ public class Arm extends SubsystemBase {
     }
     public void hang(){
         sAL.setPosition(BotPositions.ARM_HANG);
-        sAL.setPosition(BotPositions.ARM_HANG);
+        sAR.setPosition(BotPositions.ARM_HANG);
     }
 }

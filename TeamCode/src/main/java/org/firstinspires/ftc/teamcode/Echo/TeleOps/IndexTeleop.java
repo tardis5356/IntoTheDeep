@@ -102,7 +102,7 @@ public class IndexTeleop extends CommandOpMode {
         arm = new Arm(hardwareMap);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
-                .whenActive(new SequentialCommandGroup(new InstantCommand(arm::intake), new InstantCommand(wrist::intake)));
+                .whenActive(new SequentialCommandGroup(new InstantCommand(arm::hang), new InstantCommand(wrist::intake)));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y))
                 .whenActive(new SequentialCommandGroup(new InstantCommand(arm::basket), new InstantCommand(wrist::basket)));

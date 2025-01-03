@@ -29,6 +29,8 @@ public class Lift extends SubsystemBase {
     public boolean localized;
     public boolean PIDEnabled;
 
+    public static double liftOffset = -200;
+
     //hardwaremap virtual components to configuration
     public Lift(HardwareMap hardwareMap) {
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
@@ -82,6 +84,7 @@ public class Lift extends SubsystemBase {
 
         if(limitLift.isPressed()){//localizes the lift if its limit is pressed
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            liftOffset = 470;
             localized = true;
             //targetPosition = 10;
         }
@@ -123,7 +126,7 @@ public class Lift extends SubsystemBase {
 
             if(joystickPowerInput != 0){
                 PIDEnabled = false;
-                if(((getCurrentPosition()>10 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
+                if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
                     motorPower = 0 - BotPositions.LIFT_FF;
                 }
                 else{
@@ -144,12 +147,12 @@ public class Lift extends SubsystemBase {
 
     //these are a few telemetry methods for trouble shooting
     public double getCurrentPosition() {
-        return mLT.getCurrentPosition()-470;
+        return mLT.getCurrentPosition()-liftOffset;
     }
     public double getTargetPosition(){return targetPosition;}
 
     public double getCurrentPID() {// this is the method that takes the current position and desired position and returns a motor power
-        return controller.calculate(mLT.getCurrentPosition()-470, targetPosition);
+        return controller.calculate(mLT.getCurrentPosition()-liftOffset, targetPosition);
     }
 
     public static void setTargetPosition(double newTargetPosition){// updates the target position to whatever its set as by the LiftToStateCommand
