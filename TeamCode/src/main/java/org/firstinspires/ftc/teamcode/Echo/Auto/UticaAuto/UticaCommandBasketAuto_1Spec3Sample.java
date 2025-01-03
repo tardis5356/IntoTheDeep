@@ -2,24 +2,23 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToMidSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_MidSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToLeftSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_LeftSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,8 +28,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeGetSampleCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
@@ -61,7 +60,7 @@ import java.util.Set;
 
 @Autonomous(name = "UticaBasketAuto")
 
-public class UticaCommandBasketAuto extends OpMode {
+public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -196,9 +195,9 @@ public class UticaCommandBasketAuto extends OpMode {
 
         time_since_start = new ElapsedTime();
 
-        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);
+        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
 
-        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample, requirements);
+        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample,requirements);
 
         RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
 
@@ -218,38 +217,22 @@ public class UticaCommandBasketAuto extends OpMode {
                 new InstantCommand(intake::transferPosition),
 
                 new SequentialCommandGroup(
-
-                        new ActionCommand(redBasket_StartToSub, requirements),
-
-                        new ActionCommand(redBasket_SubToRightSample, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_IntakeRightSample")
-
-                     //   new ActionCommand(redBasket_RightSampleToBasket, requirements)
-//       new ActionCommand(redBasket_BasketToMidSample, requirements)
-//                        new ActionCommand(redBasket_MidSampleToBasket, requirements),
-//                        new ActionCommand(redBasket_BasketToLeftSample, requirements),
-//                        new ActionCommand(redBasket_LeftSampleToBasket, requirements),
-//                        new ActionCommand(redBasket_BasketToAscentPark, requirements)
-
-
-//                RedBasket_SubToRightSample,
-//               // new InstantCommand(intake::)
-//                extendoSpecRight,
-//                intakeIn,
-//
-//                RedBasket_RightSampleToBasket,
-//                //score right sample
-//                RedBasket_ToMidSample,
-//                //pick up mid sample
-//                RedBasket_MidSampleToBasket,
-//                //score mid sample
-//                RedBasket_BasketToLeftSample,
-//                //pick up left sample
-//                RedBasket_LeftSampleToBasket,
-//                //score left sample
-//                RedBasket_BasketToAscent //park
-
-        ));
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
+                        RedBasket_SubToRightSample,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        new ParallelCommandGroup(
+                        new InstantCommand(wrist::tuck),
+                        new InstantCommand(arm::transit) ),
+                        RedBasket_BasketToAscentPark,
+                        new InstantCommand(()->lift.PIDEnabled= true),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH + 500, 25)
+                )
+        );
     }
 
     /*

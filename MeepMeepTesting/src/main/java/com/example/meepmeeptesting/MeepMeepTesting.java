@@ -7,12 +7,14 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
-    public static final Pose2d redBasket_StartPos = new Pose2d(-16, -64, Math.toRadians(90));
+    public static final Pose2d redBasket_StartPos = new Pose2d(-40, -64, Math.toRadians(0));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
-    public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-53, Math.toRadians(45)); //?
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -48, Math.toRadians(90));
-    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-60,-48, Math.toRadians(90));
-    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-62,-48, Math.toRadians(130));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-56,-48, Math.toRadians(45));
+    //Right is Mid for basket samples
+//    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-59, -62, Math.toRadians(90));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-60, -40, Math.toRadians(60));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-60,-40, Math.toRadians(90));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-60,-40, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-22, -8, Math.toRadians(180));
 
     public static final Pose2d redSpec_StartPos = new Pose2d(16, -64, Math.toRadians(90));
@@ -43,23 +45,21 @@ public class MeepMeepTesting {
                 .build();
 
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(16, -64, Math.toRadians(90)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-40, -64, Math.toRadians(0)))
+                .setTangent(Math.toRadians(180))
+                .splineToLinearHeading(redBasket_RightSampleIntakePos,Math.toRadians(90))
+                .setTangent(Math.toRadians(270))
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(300))
                 .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+                .splineToLinearHeading(redBasket_MidSampleIntakePos, Math.toRadians(90))
                 .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpecEx_LeftSpecZonePos,Math.toRadians(0))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redSpecEx_LeftSpecDepoPos,Math.toRadians(0))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redSpecEx_MidSpecZonePos,Math.toRadians(270))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redSpecEx_MidSpecDepoPos,Math.toRadians(270))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redSpecEx_RightSpecZonePos,Math.toRadians(270))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redSpecEx_RightSpecDepoPos,Math.toRadians(270))
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(300))
+                .setTangent(Math.toRadians(90))
+                .splineToLinearHeading(redBasket_LeftSampleIntakePos, Math.toRadians(90))
                 .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(270))
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(300))
+                .setTangent(Math.toRadians(90))
+                .splineToLinearHeading(redBasket_AscentParkPos, Math.toRadians(0))
 
 
                 //Spec auto w/o extendo
