@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SpecimenStartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToMidSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_MidSampleToBasket;
@@ -66,7 +66,7 @@ public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_StartPos;
+    Pose2d initialPose = redBasket_SpecimenStartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -135,10 +135,10 @@ public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
 //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDrive(hardwareMap, redBasket_StartPos); //
+        drive = new MecanumDrive(hardwareMap, redBasket_SpecimenStartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redBasket_StartPos)); //
+        generateTrajectories(new MecanumDrive(hardwareMap, redBasket_SpecimenStartPos)); //
 //
 
         intake = new Intake(hardwareMap);

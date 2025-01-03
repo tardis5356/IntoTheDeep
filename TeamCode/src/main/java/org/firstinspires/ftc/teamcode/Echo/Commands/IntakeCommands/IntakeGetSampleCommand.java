@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 
@@ -26,7 +27,9 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
     public void initialize() { // runs once
 
         //TODO Test run this
-        new InstantCommand(intake::in);
+        intake.Intaking = true;
+        intake.sIW.setPower(BotPositions.INTAKE_IN);
+        intake.sIO.setPower(BotPositions.INTAKE_IN);
         runtime.reset();
 //        lift.setTargetPosition(targetPosition);
 
@@ -54,7 +57,9 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public void end(boolean interrupted) {
-        new InstantCommand(intake::stop);
+        intake.sIW.setPower(BotPositions.INTAKE_STOP);
+        intake.sIO.setPower(BotPositions.INTAKE_STOP);
+        intake.Intaking = false;;
     }
 
 }
