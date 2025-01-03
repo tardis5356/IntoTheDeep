@@ -58,7 +58,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "UticaBasketAuto")
+@Autonomous(name = "UticaSpecimenBasketAuto")
 
 public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
     // Declare OpMode members.

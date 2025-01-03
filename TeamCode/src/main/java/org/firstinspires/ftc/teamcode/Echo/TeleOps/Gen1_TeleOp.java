@@ -447,7 +447,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(()->lift.PIDEnabled= true),
                             new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),
-                            new InstantCommand(() -> DepositState = "specimen")
+                            new InstantCommand(() -> DepositState = "specimen"),
+                            new InstantCommand(extendo::in)
                     ));
 
             new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
@@ -573,7 +574,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
         telemetry.addData("isHanging?", lift.liftHanging);
-        telemetry.addData("LiftPower", lift.mLT.getPower());
+        telemetry.addData("LiftAssignedPower", lift.motorPower);
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
         telemetry.addData("PIDEnabled?", lift.PIDEnabled);
         telemetry.addData("JoystickPowerInput", lift.joystickPowerInput);

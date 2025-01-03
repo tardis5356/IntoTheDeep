@@ -30,7 +30,7 @@ public class Lift extends SubsystemBase {
     public boolean localized;
     public boolean PIDEnabled;
 
-    public static double liftOffset = -200;
+    public static double liftOffset = 100;
 
     //hardwaremap virtual components to configuration
     public Lift(HardwareMap hardwareMap) {
