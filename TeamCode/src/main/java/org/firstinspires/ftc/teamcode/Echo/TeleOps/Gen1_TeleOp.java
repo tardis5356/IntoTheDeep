@@ -450,6 +450,15 @@ public class Gen1_TeleOp extends CommandOpMode {
                             new InstantCommand(() -> DepositState = "specimen")
                     ));
 
+            new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
+                    .whenActive(new SequentialCommandGroup(
+                            new InstantCommand(()-> lift.liftFF = 0),
+                            new InstantCommand(() -> mBL.setMotorDisable()),
+                            new InstantCommand(() -> mBR.setMotorDisable()),
+                            new InstantCommand(() -> mFL.setMotorDisable()),
+                            new InstantCommand(() -> mFR.setMotorDisable())
+                    ));
+
         }
 
 

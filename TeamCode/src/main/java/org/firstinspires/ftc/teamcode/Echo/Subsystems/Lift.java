@@ -26,6 +26,7 @@ public class Lift extends SubsystemBase {
     boolean tooHigh; //Boolean to check if the lift is to high
     public boolean liftHanging;
 
+    public double liftFF;
     public boolean localized;
     public boolean PIDEnabled;
 
@@ -39,6 +40,8 @@ public class Lift extends SubsystemBase {
         limitLift = hardwareMap.get(TouchSensor.class, "lL");
 
         localized = false;
+
+        liftFF = .1;
 
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//this is an example of using the hardwaremap method as an init
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//sets the lift motors to sag and not resist anything when they have a power of 0
@@ -127,17 +130,17 @@ public class Lift extends SubsystemBase {
             if(joystickPowerInput != 0){
                 PIDEnabled = false;
                 if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
-                    motorPower = 0 - BotPositions.LIFT_FF;
+                    motorPower = 0 - liftFF;
                 }
                 else{
-                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
+                    motorPower = joystickPowerInput - liftFF;
                 }
             }
             else if (PIDEnabled == true){
-                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
+                motorPower = -liftFF + getCurrentPID();
             }
             else{
-                motorPower = 0 - BotPositions.LIFT_FF;
+                motorPower = 0 - liftFF;
             }
 
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
