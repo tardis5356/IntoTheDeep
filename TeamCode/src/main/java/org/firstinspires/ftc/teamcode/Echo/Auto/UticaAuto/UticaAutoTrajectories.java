@@ -237,22 +237,17 @@ public static Action Horizontal;
                         .splineToLinearHeading(redSpecEx_RightSpecDepoPos,Math.toRadians(270))
                         .build();
 
-        redSpecEx_RightDepoToObsPrep =
-                drive.actionBuilder(redSpecEx_RightSpecDepoPos)
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(90))
-                        .build();
 
         redSpecEx_RightDepoToObsPrep =
                 drive.actionBuilder(redSpecEx_RightSpecDepoPos)
-                        .setTangent(Math.toRadians(45))
+                        .setTangent(Math.toRadians(90))
                         .splineToLinearHeading(redSpecEx_ObsPrepPos,Math.toRadians(90))
                         .build();
 
         redSpecEx_ObsPrepToObsSpec =
                 drive.actionBuilder(redSpecEx_ObsPrepPos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(270))
+                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(90))
                         .build();
 
 

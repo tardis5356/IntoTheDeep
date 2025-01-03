@@ -290,7 +290,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(300),
                                         new InstantCommand(gripper::open)
+                                        )
                                 ),
                                 new GripperAutoCloseCommand(gripper)
                         )
@@ -303,7 +306,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs2,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                        new InstantCommand(gripper::open)
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(300),
+                                                new InstantCommand(gripper::open)
+                                        )
                                 ),
                                 new GripperAutoCloseCommand(gripper)
                         )
