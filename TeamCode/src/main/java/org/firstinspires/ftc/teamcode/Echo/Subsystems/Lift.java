@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -30,7 +31,7 @@ public class Lift extends SubsystemBase {
     public boolean localized;
     public boolean PIDEnabled;
 
-    public static double liftOffset = 100;
+    public static double liftOffset = -50;
 
     //hardwaremap virtual components to configuration
     public Lift(HardwareMap hardwareMap) {
@@ -129,6 +130,7 @@ public class Lift extends SubsystemBase {
 
             if(joystickPowerInput != 0){
                 PIDEnabled = false;
+                //CommandScheduler.getInstance().reset();
                 if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
                     motorPower = 0 - liftFF;
                 }

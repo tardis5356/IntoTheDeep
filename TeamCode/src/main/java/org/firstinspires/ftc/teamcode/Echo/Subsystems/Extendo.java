@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Extendo extends SubsystemBase {
     public Servo sER, sEL; //the left and right extension servos. when you are making multiple objects of the same class, it can be done in one line
     //just make sure you separate each instance with a comma
-    public double extensionPosition; //this is the variable that the servos will be set to. Instead of changing the servos in each method, we change this instead
+    public double extensionPosition = EXTENDO_IN; //this is the variable that the servos will be set to. Instead of changing the servos in each method, we change this instead
     //using a separate variable also makes it easier to base logic off of it, rather than having to call a getPosition method of the servos
     //there is another reason for using a separate variable which we'll get to shortly
     double stickInput; //this will store a calculated value that's based off of the stick values of the gamepad

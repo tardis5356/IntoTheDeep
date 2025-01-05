@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Echo.Commands;
 
 //RedSpec
+
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_LeftDepoToMidSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_LeftSpecToLeftDepo;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_MidDepoToRightSpec;
@@ -149,7 +150,6 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedSpec_SubToObs2 = new ActionCommand(redSpec_SubToObs2, requirements);
 
 
-
         RedSpecEx_LeftSpecToLeftDepo = new ActionCommand(redSpecEx_LeftSpecToLeftDepo, requirements);
 
         RedSpecEx_LeftDepoToMidSpec = new ActionCommand(redSpecEx_LeftDepoToMidSpec, requirements);
@@ -163,27 +163,27 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
         //RedBasket
 
-        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
+        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);
 
-        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket,requirements);
+        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
 
-        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample,requirements);
+        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
 
         RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
 
-        RedBasket_RightSampleIntake = new ActionCommand (redBasket_RightSampleIntake,requirements);
+        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
 
         RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
 
         RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
 
-        RedBasket_MidSampleIntake = new ActionCommand (redBasket_MidSampleIntake,requirements);
+        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
 
         RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
 
         RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
 
-        RedBasket_LeftSampleIntake = new ActionCommand (redBasket_LeftSampleIntake,requirements);
+        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
 
         RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
@@ -309,7 +309,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(300),
-                                        new InstantCommand(gripper::open)
+                                                new InstantCommand(gripper::open)
                                         )
                                 ),
                                 new GripperAutoCloseCommand(gripper)
@@ -399,12 +399,14 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redBasket_StartToBasketDepo":
                 addCommands(
                         new SequentialCommandGroup(
-                                RedBasket_StartToBasket,
                                 new ParallelCommandGroup(
+                                        RedBasket_StartToBasket,
                                         new InstantCommand(gripper::close),
-                                        new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketHigh")
-                                ),
-                                //new WaitCommand(500),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(500),
+                                                new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh")
+                                        )),
+                                new WaitCommand(300),
                                 new InstantCommand(gripper::open)
                         )
                 );
@@ -421,10 +423,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         RedBasket_StartToSub,
                                         new SequentialCommandGroup(
-                                        new WaitCommand(1800),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 850, 70),
-                                        new InstantCommand(gripper::open)
-                                )
+                                                new WaitCommand(1800),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH - 850, 70),
+                                                new InstantCommand(gripper::open)
+                                        )
                                 )
 
 
@@ -435,52 +437,87 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redBasket_IntakeRightSample":
                 addCommands(
                         new SequentialCommandGroup(
-                                //new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
                                 //aware if the gripper will hit the basket
-                                RedBasket_BasketToRightSample,
                                 new ParallelCommandGroup(
-                                        new InstantCommand(extendo::out),
-
+                                        RedBasket_BasketToRightSample,
                                         new SequentialCommandGroup(
-                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                        new WaitCommand(100),
-                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))),
+                                                new WaitCommand(1000),
+                                                new ParallelCommandGroup(
+                                                        new InstantCommand(extendo::out),
+                                                        new SequentialCommandGroup(
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new WaitCommand(100),
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                ),
 
-                                     new InstantCommand(intake::in)
-                                ),
-                                new WaitCommand(1000),
-                                RedBasket_RightSampleIntake
-                                     //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
+                                                new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
+                                        )),
+
+                                new ParallelCommandGroup(
+                                        new IntakeGetSampleCommand(intake),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                RedBasket_RightSampleIntake))
+
+                                //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
                         )
                 );
                 break;
 
             case "redBasket_ScoreRightSample":
                 addCommands(
-                       new SequentialCommandGroup(
-                               new InstantCommand(intake::upPosition),
-                               new WaitCommand(500),
-                               new InstantCommand(extendo::in),
-                               new WaitCommand(500),
-                               new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketHigh"),
-                               RedBasket_BasketToRightSample,
-                               new InstantCommand(gripper::open)
-                       )
+                        new SequentialCommandGroup(
+                                new SequentialCommandGroup(
+                                        new InstantCommand(intake::transferPosition),
+                                        new InstantCommand(() -> intake.sIW.setPower(.17)),
+                                        new InstantCommand(() -> intake.sIO.setPower(.17)),
+                                        new WaitCommand(500),
+                                        new InstantCommand(intake::stop),
+                                        new InstantCommand(extendo::in)
+                                ),
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new InstantCommand(intake::transfer)),
+                                        new GripperAutoCloseCommand(gripper)),
+                                new WaitCommand(500),
+                                new InstantCommand(intake::stop),
+                                new ParallelCommandGroup(
+                                        new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(500),
+                                                RedBasket_RightSampleToBasket)),
+                                new InstantCommand(gripper::open)
+                        )
                 );
                 break;
 
             case "redBasket_IntakeMidSample":
                 addCommands(
                         new SequentialCommandGroup(
-                                new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
                                 //aware if the gripper will hit the basket
-                                new InstantCommand(extendo::rightBasket),
-                                new WaitCommand(500),
-                                new InstantCommand(intake::downPosition),
-                                new WaitCommand(1000),
                                 new ParallelCommandGroup(
                                         RedBasket_BasketToMidSample,
-                                        new IntakeGetSampleCommand(intake))//runs until sample is acquired
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1000),
+                                                new ParallelCommandGroup(
+                                                        new InstantCommand(extendo::out),
+                                                        new SequentialCommandGroup(
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new WaitCommand(100),
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                ),
+
+                                                new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
+                                        )),
+
+                                new ParallelCommandGroup(
+                                        new IntakeGetSampleCommand(intake),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                RedBasket_MidSampleIntake))
+
+                                //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
                         )
                 );
                 break;
@@ -488,13 +525,26 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redBasket_ScoreMidSample":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::upPosition),
-                                new InstantCommand(extendo::in),
-                                new ParallelCommandGroup(
-                                        new InstantCommand(gripper::close),
-                                        new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketHigh")
+                                new SequentialCommandGroup(
+                                        new InstantCommand(intake::transferPosition),
+                                        new InstantCommand(() -> intake.sIW.setPower(.17)),
+                                        new InstantCommand(() -> intake.sIO.setPower(.17)),
+                                        new WaitCommand(500),
+                                        new InstantCommand(intake::stop),
+                                        new InstantCommand(extendo::in)
                                 ),
-                                RedBasket_BasketToMidSample,
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new InstantCommand(intake::transfer)),
+                                        new GripperAutoCloseCommand(gripper)),
+                                new WaitCommand(500),
+                                new InstantCommand(intake::stop),
+                                new ParallelCommandGroup(
+                                        new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(400),
+                                                RedBasket_MidSampleToBasket)),
                                 new InstantCommand(gripper::open)
                         )
                 );
@@ -503,15 +553,29 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redBasket_IntakeLeftSample":
                 addCommands(
                         new SequentialCommandGroup(
-                                new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
                                 //aware if the gripper will hit the basket
-                                new InstantCommand(extendo::rightBasket),
-                                new WaitCommand(500),
-                                new InstantCommand(intake::downPosition),
-                                new WaitCommand(1000),
                                 new ParallelCommandGroup(
                                         RedBasket_BasketToLeftSample,
-                                        new IntakeGetSampleCommand(intake))//runs until sample is acquired
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1000),
+                                                new ParallelCommandGroup(
+                                                        new InstantCommand(extendo::out),
+                                                        new SequentialCommandGroup(
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new WaitCommand(100),
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                ),
+
+                                                new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
+                                        )),
+
+                                new ParallelCommandGroup(
+                                        new IntakeGetSampleCommand(intake),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                RedBasket_LeftSampleIntake))
+
+                                //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
                         )
                 );
                 break;
@@ -519,13 +583,26 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redBasket_ScoreLeftSample":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::upPosition),
-                                new InstantCommand(extendo::in),
-                                new ParallelCommandGroup(
-                                        new InstantCommand(gripper::close),
-                                        new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketHigh")
+                                new SequentialCommandGroup(
+                                        new InstantCommand(intake::transferPosition),
+                                        new InstantCommand(() -> intake.sIW.setPower(.17)),
+                                        new InstantCommand(() -> intake.sIO.setPower(.17)),
+                                        new WaitCommand(500),
+                                        new InstantCommand(intake::stop),
+                                        new InstantCommand(extendo::in)
                                 ),
-                                RedBasket_BasketToLeftSample,
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new InstantCommand(intake::transfer)),
+                                        new GripperAutoCloseCommand(gripper)),
+                                new WaitCommand(500),
+                                new InstantCommand(intake::stop),
+                                new ParallelCommandGroup(
+                                        new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(500),
+                                                RedBasket_LeftSampleToBasket)),
                                 new InstantCommand(gripper::open)
                         )
                 );

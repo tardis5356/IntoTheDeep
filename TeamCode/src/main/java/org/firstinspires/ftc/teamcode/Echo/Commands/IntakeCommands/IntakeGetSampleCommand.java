@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 public class IntakeGetSampleCommand extends CommandBase {//This is a separate command used to actually set the target position of the lift for the PID
     private Intake intake;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
     private ElapsedTime runtime = new ElapsedTime();
-    private Double timeout = 3.0;
+    private Double timeout = 10.0;
     public IntakeGetSampleCommand(Intake intake) {
         // this is the actual method itself. It takes a lift as an input to associate with its own, that way it can change the target position value of the lift.
         // Does the same thing with the target position, taking a double in as an input
@@ -42,7 +42,7 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
         // here we finally set the lift target position to the target position
 
         //  lift.updatePIDValues();
-        telemetry.addData("Intake Command Called", "True");
+
     }
 
     @Override

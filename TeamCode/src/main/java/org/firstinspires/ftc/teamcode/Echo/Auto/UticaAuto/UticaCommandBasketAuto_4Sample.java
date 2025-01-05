@@ -19,6 +19,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -32,9 +33,11 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -119,8 +122,6 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
     private DepositToStateCommand depositToStateCommand;
 
 
-
-
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
 
@@ -154,7 +155,6 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
         exampleSubsystem = new ExampleSubsystem(hardwareMap);
 
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
-
 
 
         CommandScheduler.getInstance().registerSubsystem(intake);//
@@ -191,79 +191,65 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
 
         CloseGripper = new InstantCommand(gripper::close);
 
-        WristSpecimen =  new InstantCommand(wrist::specimen);
+        WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen =  new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimen);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
 
-        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket,requirements);
+        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
 
-        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample,requirements);
+        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
 
-        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
 
-        RedBasket_RightSampleIntake = new ActionCommand (redBasket_RightSampleIntake,requirements);
+        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
 
-        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
+        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
 
-        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
+        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
 
-        RedBasket_MidSampleIntake = new ActionCommand (redBasket_MidSampleIntake,requirements);
+        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
 
         RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
 
-        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
+        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
 
-        RedBasket_LeftSampleIntake = new ActionCommand (redBasket_LeftSampleIntake,requirements);
+        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
 
-        RedBasket_BasketToAscentPark = new ActionCommand (redBasket_BasketToAscentPark, requirements);
+        RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
-                new InstantCommand(arm::start),
+                new InstantCommand(arm::specimen),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToBasketDepo")
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToBasketDepo"),
 //                        new WaitCommand(800),
 //                        new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
 //                        new WaitCommand(800),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample")
-//
-//
-//
-//                        new WaitCommand(1000),
-//                        RedBasket_RightSampleToBasket,
-//                        new WaitCommand(1000),
-//                        RedBasket_BasketToMidSample,
-//                        new WaitCommand(1000),
-//                        RedBasket_MidSampleToBasket,
-//                        new WaitCommand(1000),
-//                        RedBasket_BasketToLeftSample,
-//                        new WaitCommand(1000),
-//                        RedBasket_LeftSampleToBasket,
-//                        new WaitCommand(1000),
-//                        RedBasket_BasketToAscentPark
-
-
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
 //                        new ParallelCommandGroup(
 //                        new InstantCommand(wrist::tuck),
 //                        new InstantCommand(arm::transit) ),
-//                        RedBasket_BasketToAscentPark,
+                        new ParallelCommandGroup(
+                                RedBasket_BasketToAscentPark,
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new LiftToStateCommand(lift, 0, 25)))
 //                        new InstantCommand(()->lift.PIDEnabled= true),
 //                        new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH + 500, 25)
-                        )
+                )
         );
     }
 
@@ -330,8 +316,6 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
-
 
 
     }

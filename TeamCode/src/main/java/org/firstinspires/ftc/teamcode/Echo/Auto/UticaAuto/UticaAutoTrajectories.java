@@ -42,14 +42,13 @@ public class UticaAutoTrajectories {
     public static final Pose2d redBasket_SampleStartPos = new Pose2d(-40, -66, Math.toRadians(0));
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
-    public static final Pose2d redBasket_BasketDrop = new Pose2d(-53,-56, Math.toRadians(45)); //needed to be changed, -x-y
-    //Right is Mid for basket samples
-    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-48, -63, Math.toRadians(93));
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -56, Math.toRadians(93));
-    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-51,-63, Math.toRadians(90));
-    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-51,-56, Math.toRadians(90));
-    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-63, Math.toRadians(95));
-    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-56,-56, Math.toRadians(90));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-57,-60, Math.toRadians(45));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47.5, -65, Math.toRadians(93));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-47.5, -56, Math.toRadians(93));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-51.5,-65, Math.toRadians(105));
+    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-51.5,-56, Math.toRadians(105));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-55,-65, Math.toRadians(120));
+    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-55,-56, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-22, -8, Math.toRadians(180));
 
 
@@ -286,8 +285,8 @@ public static Action Horizontal;
 
         redBasket_BasketToRightSample =
                 drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(Math.toRadians(180))
-                        .splineToLinearHeading(redBasket_RightSampleIntakePos,Math.toRadians(90))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(redBasket_RightSampleIntakePos,Math.toRadians(270))
                         .build();
 
         redBasket_RightSampleIntake =
@@ -299,13 +298,13 @@ public static Action Horizontal;
         redBasket_RightSampleToBasket =
                 drive.actionBuilder(redBasket_RightSampleZonePos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(300))
+                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(220))
                         .build();
 
         redBasket_BasketToMidSample =
                 drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(redBasket_MidSampleIntakePos, Math.toRadians(90))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(redBasket_MidSampleIntakePos, Math.toRadians(270))
                         .build();
 
         redBasket_MidSampleIntake =
@@ -317,13 +316,13 @@ public static Action Horizontal;
         redBasket_MidSampleToBasket =
                 drive.actionBuilder(redBasket_MidSampleZonePos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(300))
+                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                         .build();
 
         redBasket_BasketToLeftSample =
                 drive.actionBuilder(redBasket_BasketDrop)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(redBasket_LeftSampleIntakePos, Math.toRadians(90))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(redBasket_LeftSampleIntakePos, Math.toRadians(270))
                         .build();
 
         redBasket_LeftSampleIntake =
@@ -331,7 +330,6 @@ public static Action Horizontal;
                         .setTangent(90)
                         .splineToLinearHeading(redBasket_LeftSampleZonePos,Math.toRadians(90))
                         .build();
-
         redBasket_LeftSampleToBasket =
                 drive.actionBuilder(redBasket_LeftSampleZonePos)
                         .setTangent(Math.toRadians(270))
