@@ -85,12 +85,12 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         // runs every loop
 
-        if(limitLift.isPressed()){//localizes the lift if its limit is pressed
-            mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            liftOffset = 470;
-            localized = true;
-            //targetPosition = 10;
-        }
+//        if(limitLift.isPressed()){//localizes the lift if its limit is pressed
+//            mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            liftOffset = 470;
+//            localized = true;
+//            //targetPosition = 10;
+//        }
 
         if(getCurrentPosition() < BotPositions.LIFT_LIMIT ){
             //if the lift reaches its digital height limit, set tooHigh to true
@@ -127,21 +127,21 @@ public class Lift extends SubsystemBase {
 //            }
 
 
-            if(joystickPowerInput != 0){
-                PIDEnabled = false;
-                if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
-                    motorPower = 0 - liftFF;
-                }
-                else{
-                    motorPower = joystickPowerInput - liftFF;
-                }
-            }
-            else if (PIDEnabled == true){
-                motorPower = -liftFF + getCurrentPID();
-            }
-            else{
-                motorPower = 0 - liftFF;
-            }
+//            if(joystickPowerInput != 0){
+//                PIDEnabled = false;
+//                if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
+//                    motorPower = 0;
+//                }
+//                else{
+                    motorPower = joystickPowerInput;
+//                }
+//            }
+//            else if (PIDEnabled == true){
+//                motorPower = -liftFF + getCurrentPID();
+//            }
+//            else{
+//                motorPower = 0;
+//            }
 
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
         mLT.setPower(motorPower);//like the extendo we change a variable that is then constantly assigned to the hardware

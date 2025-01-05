@@ -25,13 +25,13 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "basketToIntake":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE),
-                                new SequentialCommandGroup(
-                                        //new WaitCommand(500),
-                                        new InstantCommand(wrist::intake),
-                                        new InstantCommand(arm::intake),
-                                        new InstantCommand(gripper::intake)
-                                )
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+//                                new SequentialCommandGroup(
+//                                        //new WaitCommand(500),
+//                                        new InstantCommand(wrist::intake),
+//                                        new InstantCommand(arm::intake),
+//                                        new InstantCommand(gripper::intake)
+//                                )
                                 //new InstantCommand(wrist::wristIntake)
                         )
                 );
@@ -43,13 +43,13 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::intake),
-                                new WaitCommand(250),
-                                new InstantCommand(wrist::intake),
-                                new InstantCommand(gripper::intake),
-                                new WaitCommand(400),
+//                                new InstantCommand(wrist::tuck),
+//                                new WaitCommand(500),
+//                                new InstantCommand(arm::intake),
+//                                new WaitCommand(250),
+//                                new InstantCommand(wrist::intake),
+//                                new InstantCommand(gripper::intake),
+//                                new WaitCommand(400),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
 
                         )
@@ -62,11 +62,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::wall),
-                                new WaitCommand(500),
-                                new InstantCommand(wrist::wall),
+//                                new InstantCommand(wrist::tuck),
+//                                new WaitCommand(500),
+//                                new InstantCommand(arm::wall),
+//                                new WaitCommand(500),
+//                                new InstantCommand(wrist::wall),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
                                 //new InstantCommand(gripper::open)
                         )
@@ -80,12 +80,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::wall),
-                                new WaitCommand(500),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::wall)
+//                                new InstantCommand(wrist::tuck),
+//                                new WaitCommand(500),
+//                                new InstantCommand(arm::wall),
+//                                new WaitCommand(500),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
+//                                new InstantCommand(wrist::wall)
                                 //new InstantCommand(gripper::open)
 
 
@@ -101,11 +101,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         //a SequentialCommandGroup that makes the arm and wrist wait before starting to swing up, while the lift is still traveling up
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(700),
-                                        new InstantCommand(wrist::basket),
-                                        new InstantCommand(arm::basket))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(700),
+//                                        new InstantCommand(wrist::basket),
+//                                        new InstantCommand(arm::basket))
 
                         )
                 );
@@ -116,12 +116,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
-                                new SequentialCommandGroup(
-                                        //new WaitCommand(500),
-                                        new InstantCommand(wrist::basket),
-                                        new InstantCommand(arm::basket)
-                                )
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
+//                                new SequentialCommandGroup(
+//                                        //new WaitCommand(500),
+//                                        new InstantCommand(wrist::basket),
+//                                        new InstantCommand(arm::basket)
+//                                )
                         )
                 );
                 //setState = "basket";
@@ -132,10 +132,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(500),
-                                new InstantCommand(wrist::basket),
-                                new InstantCommand(arm::basket),
-                                new WaitCommand(600),
+//                                new WaitCommand(500),
+//                                new InstantCommand(wrist::basket),
+//                                new InstantCommand(arm::basket),
+//                                new WaitCommand(600),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
                         )
                 );
@@ -146,10 +146,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
-                                new SequentialCommandGroup(new WaitCommand(1000),
-                                        new InstantCommand(wrist::basket),
-                                        new InstantCommand(arm::basket))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+//                                new SequentialCommandGroup(new WaitCommand(1000),
+//                                        new InstantCommand(wrist::basket),
+//                                        new InstantCommand(arm::basket))
 
                         )
                 );
@@ -160,10 +160,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
-                                //new WaitCommand(200),
-                                new InstantCommand(wrist::specimen),
-                                new InstantCommand(arm::specimen)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE)
+//                                //new WaitCommand(200),
+//                                new InstantCommand(wrist::specimen),
+//                                new InstantCommand(arm::specimen)
                         )
                 );
                 //setState = "specimen";
@@ -173,10 +173,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new InstantCommand(gripper::intake),
-                                new InstantCommand(wrist::intake),
-                                new InstantCommand(arm::intake),
-                                new WaitCommand(500),
+//                                new InstantCommand(gripper::intake),
+//                                new InstantCommand(wrist::intake),
+//                                new InstantCommand(arm::intake),
+//                                new WaitCommand(500),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                         )
 
@@ -189,11 +189,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::specimen),
-                                new WaitCommand(400),
-                                new InstantCommand(wrist::specimen),
+//                                new InstantCommand(wrist::tuck),
+//                                new WaitCommand(500),
+//                                new InstantCommand(arm::specimen),
+//                                new WaitCommand(400),
+//                                new InstantCommand(wrist::specimen),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE)
                         )
 
@@ -206,12 +206,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                //new WaitCommand(700),
-                                new InstantCommand(wrist::tuck),
-                                new WaitCommand(400),
-                                new InstantCommand(arm::wall),
-                                new WaitCommand(400),
-                                new InstantCommand(wrist::wall),
+//                                //new WaitCommand(700),
+//                                new InstantCommand(wrist::tuck),
+//                                new WaitCommand(400),
+//                                new InstantCommand(arm::wall),
+//                                new WaitCommand(400),
+//                                new InstantCommand(wrist::wall),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE))
                         //new InstantCommand(gripper::open)
 
@@ -223,10 +223,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE),
-                                //new WaitCommand(500),
-                                new InstantCommand(arm::basket),
-                                new InstantCommand(wrist::basket))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE)
+//                                //new WaitCommand(500),
+//                                new InstantCommand(arm::basket),
+//                                new InstantCommand(wrist::basket)
+                                )
 
                 );
                 //setState = "basket";
@@ -236,10 +237,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE),
-                               // new WaitCommand(100),
-                                new InstantCommand(arm::basket),
-                                new InstantCommand(wrist::basket))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+//                               // new WaitCommand(100),
+//                                new InstantCommand(arm::basket),
+//                                new InstantCommand(wrist::basket)
+                                )
 
                 );
                 //setState = "basket";
@@ -249,10 +251,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::specimen),
-                                new InstantCommand(wrist::specimen))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE)
+//                                new WaitCommand(500),
+//                                new InstantCommand(arm::specimen),
+//                                new InstantCommand(wrist::specimen)
+                                )
 
                 );
                 //setState = "specimen";
@@ -279,12 +282,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, 25),
-                                new InstantCommand(arm::intake),
-                                new InstantCommand(wrist::intake),
-                                new InstantCommand(gripper::open),
-                                new WaitCommand(700),
-                                new LiftToStateCommand(lift, 0, 10)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, 25)
+//                                new InstantCommand(arm::intake),
+//                                new InstantCommand(wrist::intake),
+//                                new InstantCommand(gripper::open),
+//                                new WaitCommand(700),
+//                                new LiftToStateCommand(lift, 0, 10)
 
                         )
                 );
@@ -296,9 +299,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, 25),
-                                new InstantCommand(arm::intake),
-                                new InstantCommand(wrist::intake),
-                                new InstantCommand(gripper::intake),
+//                                new InstantCommand(arm::intake),
+//                                new InstantCommand(wrist::intake),
+//                                new InstantCommand(gripper::intake),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, 25)
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
@@ -312,9 +315,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, 25),
-                                new InstantCommand(arm::hang),
-                                new InstantCommand(wrist::tuck)
+                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, 25)
+//                                new InstantCommand(arm::hang),
+//                                new InstantCommand(wrist::tuck)
 
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
