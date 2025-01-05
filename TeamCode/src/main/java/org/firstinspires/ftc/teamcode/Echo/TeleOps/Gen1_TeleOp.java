@@ -102,6 +102,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     double LeftTrigger;
     double RightTrigger;
 
+
     @Override
     //stuff that is ran when you click init at the start of teleop.
     public void initialize(){

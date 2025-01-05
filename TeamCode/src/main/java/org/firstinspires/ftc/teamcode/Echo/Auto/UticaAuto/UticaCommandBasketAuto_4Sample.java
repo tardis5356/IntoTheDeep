@@ -144,7 +144,7 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
         generateTrajectories(new MecanumDrive(hardwareMap, redBasket_SampleStartPos)); //
-//
+
 
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap);
