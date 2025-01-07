@@ -439,9 +439,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 //aware if the gripper will hit the basket
                                 new ParallelCommandGroup(
-                                        RedBasket_BasketToRightSample,
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
+                                                new WaitCommand(200),
+                                                RedBasket_BasketToRightSample),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(800), // was 1000
                                                 new ParallelCommandGroup(
                                                         new InstantCommand(extendo::out),
                                                         new SequentialCommandGroup(
@@ -497,9 +499,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 //aware if the gripper will hit the basket
                                 new ParallelCommandGroup(
-                                        RedBasket_BasketToMidSample,
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
+                                                new WaitCommand(200),
+                                                RedBasket_BasketToMidSample),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(800),
                                                 new ParallelCommandGroup(
                                                         new InstantCommand(extendo::out),
                                                         new SequentialCommandGroup(
@@ -555,19 +559,20 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 //aware if the gripper will hit the basket
                                 new ParallelCommandGroup(
-                                        RedBasket_BasketToLeftSample,
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
-                                                new ParallelCommandGroup(
-                                                        new InstantCommand(extendo::out),
-                                                        new SequentialCommandGroup(
-                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                                                new WaitCommand(100),
-                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
-                                                ),
-
-                                                new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
-                                        )),
+                                                new WaitCommand(200),
+                                                RedBasket_BasketToLeftSample),
+                                        new SequentialCommandGroup(
+                                        new WaitCommand(800),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(extendo::out),
+                                                new SequentialCommandGroup(
+                                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                        new WaitCommand(100),
+                                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                        ),
+                                        new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
+                                )),
 
                                 new ParallelCommandGroup(
                                         new IntakeGetSampleCommand(intake),
