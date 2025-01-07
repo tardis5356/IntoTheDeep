@@ -31,7 +31,7 @@ public class Lift extends SubsystemBase {
     public boolean localized;
     public boolean PIDEnabled;
 
-    public static double liftOffset = -50;
+    public static double liftOffset = 0;
 
     //hardwaremap virtual components to configuration
     public Lift(HardwareMap hardwareMap) {
@@ -52,7 +52,7 @@ public class Lift extends SubsystemBase {
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         */
 
-        mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//at the start of teleop reset the encoder value to 0 (localize it)
+        //mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//at the start of teleop reset the encoder value to 0 (localize it)
         mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -88,7 +88,7 @@ public class Lift extends SubsystemBase {
 
         if(limitLift.isPressed()){//localizes the lift if its limit is pressed
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            liftOffset = 470;
+            liftOffset = 0;
             localized = true;
             //targetPosition = 10;
         }

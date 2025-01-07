@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 
 @TeleOp (name = "InspectionTeleOp")
@@ -26,6 +27,7 @@ public class MaxOrbital extends CommandOpMode {
     Extendo extendo;
     Intake intake;
     Wrist wrist;
+    Winch winch;
 
     @Override
     public void initialize() {
@@ -46,14 +48,19 @@ public class MaxOrbital extends CommandOpMode {
 
         extendo = new Extendo(hardwareMap);
 
+        winch = new Winch(hardwareMap);
+
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(intake::transferPosition),
                         new InstantCommand(extendo::out),
+                        new WaitCommand(700),
+                        new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT,BotPositions.LIFT_TOLERANCE),
                         new WaitCommand(500),
-                        new InstantCommand(arm::wall),
-                        new InstantCommand(wrist::wall))
+                        new InstantCommand(arm::basket),
+                        new InstantCommand(wrist::basket)
+                        //new InstantCommand(winch::extend)
+                )
         );
 
 
