@@ -239,16 +239,13 @@ public class UticaCommandBasketAuto_4Sample extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
-//                        new ParallelCommandGroup(
-//                        new InstantCommand(wrist::tuck),
-//                        new InstantCommand(arm::transit) ),
                         new ParallelCommandGroup(
-                                RedBasket_BasketToAscentPark,
+                                new SequentialCommandGroup(
+                                        new WaitCommand(300),
+                                RedBasket_BasketToAscentPark),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
                                         new LiftToStateCommand(lift, 0, 25)))
-//                        new InstantCommand(()->lift.PIDEnabled= true),
-//                        new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH + 500, 25)
                 )
         );
     }

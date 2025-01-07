@@ -215,6 +215,7 @@ public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
+                new InstantCommand(()->lift.PIDEnabled= true),
 
                 new SequentialCommandGroup(
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
@@ -229,7 +230,6 @@ public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
                         new InstantCommand(wrist::tuck),
                         new InstantCommand(arm::transit) ),
                         RedBasket_BasketToAscentPark,
-                        new InstantCommand(()->lift.PIDEnabled= true),
                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH + 500, 25)
                 )
         );
