@@ -498,8 +498,8 @@ public class Gen1_TeleOp extends CommandOpMode {
             new Trigger(()-> driver2.getButton(GamepadKeys.Button.START) && killSwitchActive)
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(()-> killSwitchPressed =true),
-                            new InstantCommand(()->CommandScheduler.getInstance().reset()),
                             new InstantCommand(()-> lift.liftFF = 0),
+                            new InstantCommand(()->CommandScheduler.getInstance().reset()),
                             new InstantCommand(() -> mBL.setMotorDisable()),
                             new InstantCommand(() -> mBR.setMotorDisable()),
                             new InstantCommand(() -> mFL.setMotorDisable()),
