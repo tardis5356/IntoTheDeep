@@ -163,6 +163,12 @@ public class UticaCommandBasketAuto_1Spec3Sample extends OpMode {
      */
     @Override
     public void init_loop() {
+        if (gamepad1.a) {
+            AllianceColor.aColor = "blue";
+        }
+        if (gamepad1.b) {
+            AllianceColor.aColor = "red";
+        }
     }
 
     /*
