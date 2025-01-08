@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -146,7 +147,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //intakeInCommand = new IntakeInCommand(intake);
         //also hardware map the depositToStateCommand. Although we do create new instances in the triggers so I don't think that's needed
-        depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
+        //depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -328,8 +329,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                         )
                 );
         }
-
-        //Deposit to state commands
+//
+//        //Deposit to state commands
         {
         //each starting position to end position command needs its own trigger.
         //all the triggers check the driver input and the current state of the robot to tell if they should be called.
@@ -495,16 +496,19 @@ public class Gen1_TeleOp extends CommandOpMode {
                             new InstantCommand(extendo::in)
                     ));
 
-            new Trigger(()-> driver2.getButton(GamepadKeys.Button.START) && killSwitchActive)
-                    .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(()-> killSwitchPressed =true),
-                            new InstantCommand(()-> lift.liftFF = 0),
-                            new InstantCommand(()->CommandScheduler.getInstance().reset()),
-                            new InstantCommand(() -> mBL.setMotorDisable()),
-                            new InstantCommand(() -> mBR.setMotorDisable()),
-                            new InstantCommand(() -> mFL.setMotorDisable()),
-                            new InstantCommand(() -> mFR.setMotorDisable())
-                    ));
+//            new Trigger(()-> driver2.getButton(GamepadKeys.Button.START) && killSwitchActive)
+//                    .whenActive(new SequentialCommandGroup(
+//                            new InstantCommand(()-> killSwitchPressed =true),
+//                            //new InstantCommand(()-> lift.liftFF = 0),
+//                            new InstantCommand(()->CommandScheduler.getInstance().reset()),
+//                            //new InstantCommand(()->CommandScheduler.getInstance().disable()),
+//                            //new InstantCommand(()->CommandScheduler.getInstance().unregisterSubsystem(lift)),
+//
+//                            new InstantCommand(() -> mBL.setMotorDisable()),
+//                            new InstantCommand(() -> mBR.setMotorDisable()),
+//                            new InstantCommand(() -> mFL.setMotorDisable()),
+//                            new InstantCommand(() -> mFR.setMotorDisable())
+//                    ));
 
         }
 
@@ -535,19 +539,20 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //this is the main run loop
     public void run() {
-        //super.run() actually runs the triggers in the loop
-        super.run();
+        mLT.setPower(gamepad2.left_stick_y);
+        mLB.setPower(gamepad2.left_stick_y);
 
-        if (killSwitchPressed){
-            mLT.setPower(gamepad2.left_stick_y);
-            mLB.setPower(gamepad2.left_stick_y);
-            sEL.setPosition(BotPositions.EXTENDO_IN);
-            sER.setPosition(BotPositions.EXTENDO_IN);
-            sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
-        }
-
-        //if driver2 is holding down the start button, the hanging state of the lift is triggered
-        lift.hanging(driver2.getButton(GamepadKeys.Button.START));
+//        if (killSwitchPressed){
+//
+////            sEL.setPosition(BotPositions.EXTENDO_IN);
+////            sER.setPosition(BotPositions.EXTENDO_IN);
+////            sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
+//        }
+        //else{
+            //super.run() actually runs the triggers in the loop
+            super.run();
+            //if driver2 is holding down the start button, the hanging state of the lift is triggered
+            //lift.hanging(driver2.getButton(GamepadKeys.Button.START));
 
 //        if (extendo.extensionPosition > 0.6) {
 //            new SequentialCommandGroup(
@@ -559,15 +564,15 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                );
 //        }
 
-        if(AllianceColor.aColor == "blue"){
-            notAColor = "red";
-        }
-        else if(AllianceColor.aColor == "red"){
-            notAColor = "blue";
-        }
+            if(AllianceColor.aColor == "blue"){
+                notAColor = "red";
+            }
+            else if(AllianceColor.aColor == "red"){
+                notAColor = "blue";
+            }
 
-        //This is kinda redundant as the trigger for the drivers to run the intakeOutCommand also has this as a condition.
-        //if the detected color of the intake doesn't match the alliance color, spit out the sample and set the wrongColorIntaked bool to true
+            //This is kinda redundant as the trigger for the drivers to run the intakeOutCommand also has this as a condition.
+            //if the detected color of the intake doesn't match the alliance color, spit out the sample and set the wrongColorIntaked bool to true
 //        if (intake.checkColor() == notAColor){
 //            new ParallelCommandGroup(
 //                    new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_OUT)),
@@ -577,79 +582,83 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                wrongColorIntaked = true;
 //        }
 
-        //these define the left and right trigger values as the real triggers and takes there difference divided by ten
-        //as the input of the extendo.update method.
-        LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+            //these define the left and right trigger values as the real triggers and takes there difference divided by ten
+            //as the input of the extendo.update method.
+            LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
 
-        RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+            RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
-        Trigger = (LeftTrigger - RightTrigger)/10;
+            Trigger = (LeftTrigger - RightTrigger)/10;
 
-        //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
-        if(Trigger > .03){
-            Trigger = .03;
-        }
-        else if(Trigger < -.03){
-            Trigger = -.03;
-        }
+            //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
+            if(Trigger > .03){
+                Trigger = .03;
+            }
+            else if(Trigger < -.03){
+                Trigger = -.03;
+            }
 
-        extendo.update(Trigger);
+            extendo.update(Trigger);
 
-        //this is just so the manual driving of the lift is based off of the right stick values of gamepad2
-        lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
+            //this is just so the manual driving of the lift is based off of the right stick values of gamepad2
+            //lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
 
-        //applies stick values to motor variables with cubic scaling
-        Rotation = cubicScaling(-gamepad1.right_stick_x);
-        FB = cubicScaling(gamepad1.left_stick_y);
-        LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
+            //applies stick values to motor variables with cubic scaling
+            Rotation = cubicScaling(-gamepad1.right_stick_x);
+            FB = cubicScaling(gamepad1.left_stick_y);
+            LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
 
-        //defines the powers for the motors based on the stick inputs (trust i've written this so many times)
-        double mFLPower = FB + LR + Rotation;
-        double mFRPower = FB - LR - Rotation;
-        double mBLPower = FB - LR + Rotation;
-        double mBRPower = FB + LR - Rotation;
+            //defines the powers for the motors based on the stick inputs (trust i've written this so many times)
+            double mFLPower = FB + LR + Rotation;
+            double mFRPower = FB - LR - Rotation;
+            double mBLPower = FB - LR + Rotation;
+            double mBRPower = FB + LR - Rotation;
 
-        //actually sets the motor powers
-        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
-        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
-        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
-        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+            //actually sets the motor powers
+            mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
+            mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
+            mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
+            mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-        //the following is all telemetry for debugging and verifying things in the teleop
-        telemetry.addData("RobotState", DepositState);
-        //telemetry.addData("IntakeState", intake.checkSample());
-        telemetry.addData("AssignedExtensionPosition", Trigger);
-        telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
-        telemetry.addData("checkIntake", intake.checkSample());
-        telemetry.addData("check sample present", intake.samplePresent);
-        telemetry.addData("DetectedColor", intake.checkColor());
-        //telemetry.addData("Blue", intake.checkBlue());
-        telemetry.addData("Alliance Color", AllianceColor.aColor);
-        telemetry.addData("wrongColorDetected", wrongColorIntaked);
-        telemetry.addData("isHanging?", lift.liftHanging);
-        telemetry.addData("LiftAssignedPower", lift.motorPower);
-        telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
-        telemetry.addData("PIDEnabled?", lift.PIDEnabled);
-        telemetry.addData("JoystickPowerInput", lift.joystickPowerInput);
-        telemetry.addData("liftPosition", lift.getCurrentPosition());
+            //the following is all telemetry for debugging and verifying things in the teleop
+            telemetry.addData("RobotState", DepositState);
+            //telemetry.addData("IntakeState", intake.checkSample());
+            telemetry.addData("AssignedExtensionPosition", Trigger);
+            telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
+            telemetry.addData("checkIntake", intake.checkSample());
+            telemetry.addData("check sample present", intake.samplePresent);
+            telemetry.addData("DetectedColor", intake.checkColor());
+            //telemetry.addData("Blue", intake.checkBlue());
+            telemetry.addData("Alliance Color", AllianceColor.aColor);
+            telemetry.addData("wrongColorDetected", wrongColorIntaked);
+           // telemetry.addData("isHanging?", lift.liftHanging);
+            //telemetry.addData("LiftAssignedPower", lift.motorPower);
+            telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
+            //telemetry.addData("PIDEnabled?", lift.PIDEnabled);
+            //telemetry.addData("JoystickPowerInput", lift.joystickPowerInput);
+            //telemetry.addData("liftPosition", lift.getCurrentPosition());
 
-        //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called
-        //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't get it to run continuously
-        //thus it needs to be called in the run loop in some way, in this case as telemetry
-        telemetry.addData("GripperState", gripper.verifyGripper());
+            //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called
+            //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't get it to run continuously
+            //thus it needs to be called in the run loop in some way, in this case as telemetry
+            telemetry.addData("GripperState", gripper.verifyGripper());
 
-        telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
-        telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
-        //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
-        //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
-        //telemetry.addData("Yellow", intake.checkYellow());
-        telemetry.addData("ReadingIntakeRED", intake.cI.red());//620-650 Yellow 300-400 Red
-        telemetry.addData("ReadingIntakeBLUE", intake.cI.blue());//120-250 Blue
-        telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
-        telemetry.addData("ReadingGripperBLUE", gripper.cG.blue());//120-250 Blue
-        //telemetry.addData("ReadingIntake", cI.green());
-        telemetry.update();
+            //telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
+            //telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
+            //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
+            //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
+            //telemetry.addData("Yellow", intake.checkYellow());
+            telemetry.addData("ReadingIntakeRED", intake.cI.red());//620-650 Yellow 300-400 Red
+            telemetry.addData("ReadingIntakeBLUE", intake.cI.blue());//120-250 Blue
+            telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
+            telemetry.addData("ReadingGripperBLUE", gripper.cG.blue());//120-250 Blue
+            //telemetry.addData("ReadingIntake", cI.green());
+            telemetry.update();
+
+       // }
+
+
     }
     //supa cewl cubic scaling method
     //new methods need to be written outside of the run loop since the run loop is a method and there should be no new methods in methods.
