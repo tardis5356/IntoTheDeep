@@ -314,7 +314,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
                                 new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, 25),
                                 new InstantCommand(arm::hang),
-                                new InstantCommand(wrist::tuck)
+                                new InstantCommand(wrist::basket)
 
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
