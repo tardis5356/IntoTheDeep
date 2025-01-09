@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -197,7 +198,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                     .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake")
-                    .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::intake));
+                    .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::intake));
 
          //   new Trigger(() -> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
          //           .whenActive(new InstantCommand(gripper::close));
@@ -210,26 +211,32 @@ public class Gen1_TeleOp extends CommandOpMode {
 
             //intake tilting
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72)
-                .toggleWhenActive(
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && wasRaised)
+                .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
                         new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
-                                new WaitCommand(400),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP))
-                        ),
-                        new SequentialCommandGroup(
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
                                 new WaitCommand(250),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
+                                new InstantCommand(()-> wasRaised = false)
+                        )
+                );
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !wasRaised)
+                .whenActive(
+                        new SequentialCommandGroup(
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                new WaitCommand(400),
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
+                                new InstantCommand(()-> wasRaised = true)
                         )
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
                 .whileActiveOnce(new SequentialCommandGroup(
-                        new InstantCommand(intake::transferPosition)
+                        new InstantCommand(intake::transferPosition),
+                        new InstantCommand(()-> wasRaised = true)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
@@ -303,13 +310,15 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(intake::transferPosition),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
-                                new InstantCommand(extendo::in)
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(()-> wasRaised = true)
                         ),
                         new SequentialCommandGroup(
                                 new InstantCommand(extendo::out),
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
                                 new WaitCommand(250),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP))
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
+                                new InstantCommand(()-> wasRaised = true)
                         )
                 );
 
@@ -319,11 +328,12 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
-                            new InstantCommand(intake::transferPosition),
-                            new InstantCommand(()->intake.sIW.setPower(.18)),
-                            new WaitCommand(400),
-                            new InstantCommand(intake::stop),
-                            new InstantCommand(extendo::in)
+                                new InstantCommand(intake::transferPosition),
+                                new InstantCommand(()->intake.sIW.setPower(.17)),
+                                new WaitCommand(400),
+                                new InstantCommand(intake::stop),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(()-> wasRaised = true)
                         )
                 );
         }
