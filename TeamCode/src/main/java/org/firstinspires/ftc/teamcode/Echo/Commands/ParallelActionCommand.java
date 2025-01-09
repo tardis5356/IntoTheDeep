@@ -488,7 +488,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(800),//500
                                                 RedBasket_RightSampleToBasket)),
                                 new InstantCommand(gripper::open)
                         )
@@ -548,7 +548,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(400),
+                                                new WaitCommand(800),//400
                                                 RedBasket_MidSampleToBasket)),
                                 new InstantCommand(gripper::open)
                         )
@@ -607,7 +607,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(800),//500
                                                 RedBasket_LeftSampleToBasket)),
                                 new InstantCommand(gripper::open)
                         )
