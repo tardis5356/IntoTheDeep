@@ -40,6 +40,8 @@ public class Gen1_TeleOp extends CommandOpMode {
     boolean wrongColorIntaked = false;
 
     boolean killSwitchPressed = false;
+
+    boolean wasRaised;
     boolean killSwitchActive = false;
 
     boolean outaking = false;
@@ -51,7 +53,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     //drivetrain motors and variables
     //DcMotorEx is an expanded version of the DcMotor variable that gives us more methods.
     //For example, stop and reset encoder.
-    private DcMotorEx mFL, mFR, mBL, mBR, mLT, mLB;
+    private DcMotorEx mFL, mFR, mBL, mBR;
 
     private Servo sEL, sER, sIG;
 
@@ -167,14 +169,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        mLT = hardwareMap.get(DcMotorEx.class, "mLT");
-        mLB = hardwareMap.get(DcMotorEx.class, "mLB");
-        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mLT.setDirection(DcMotorSimple.Direction.REVERSE);
-        mLB.setDirection(DcMotorSimple.Direction.REVERSE);
-        mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         sER = hardwareMap.get(Servo.class, "sER");
         sEL = hardwareMap.get(Servo.class, "sEL");
@@ -220,6 +215,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
                         new SequentialCommandGroup(
+                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
+                                new WaitCommand(400),
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP))
                         ),
                         new SequentialCommandGroup(
@@ -321,9 +318,10 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> intake.checkSample() && (intake.checkColor() == AllianceColor.aColor || intake.checkColor() == "yellow") && intake.checkColor() != notAColor)
                 .whenActive(
                         new SequentialCommandGroup(
+                                new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
                             new InstantCommand(intake::transferPosition),
-                            new InstantCommand(()->intake.sIW.setPower(.2)),
-                            new WaitCommand(500),
+                            new InstantCommand(()->intake.sIW.setPower(.18)),
+                            new WaitCommand(400),
                             new InstantCommand(intake::stop),
                             new InstantCommand(extendo::in)
                         )
@@ -539,8 +537,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     //this is the main run loop
     public void run() {
-        mLT.setPower(gamepad2.left_stick_y);
-        mLB.setPower(gamepad2.left_stick_y);
+
 
 //        if (killSwitchPressed){
 //
@@ -601,7 +598,7 @@ public class Gen1_TeleOp extends CommandOpMode {
             extendo.update(Trigger);
 
             //this is just so the manual driving of the lift is based off of the right stick values of gamepad2
-            //lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
+            lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
 
             //applies stick values to motor variables with cubic scaling
             Rotation = cubicScaling(-gamepad1.right_stick_x);

@@ -13,9 +13,9 @@ public class BotPositions {
     public static double EXTENDO_IN = 0.8, EXTENDO_OUT = .5, EXTENDO_SPECLEFT =.65, EXTENDO_SPECMID =.53, EXTENDO_SPECRIGHT = .5;
 
     //These are in motor ticks. On the ITD robot 100 ticks ~= 1 inch. Will differ from robot to robot.
-    public static int LIFT_WALL = -300, LIFT_SPECIMEN_HIGH = -1850, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -3050,
-            LIFT_BASKET_LOW = -890, LIFT_TRANSIT = -980, LIFT_LIMIT = -3100, LIFT_TOLERANCE = 10, LIFT_INTAKE = -530, LIFT_SPECIMEN_HIGH_CLIP = -2850;
+    public static int LIFT_WALL = -300, LIFT_SPECIMEN_HIGH = -1850, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -3000,
+            LIFT_BASKET_LOW = -890, LIFT_TRANSIT = -980, LIFT_LIMIT = -3050, LIFT_TOLERANCE = 10, LIFT_INTAKE = -520, LIFT_SPECIMEN_HIGH_CLIP = -2850;
     public static double  INTAKE_RED_MIN = 200, INTAKE_BLUE_MIN = 190, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double LIFT_FF = 0.1, WINCH_FF = 0;
-    public static double LIFT_P = 0.007, LIFT_D = 0.0003, LIFT_I = 0.000;
+    public static double LIFT_P = 0.007, LIFT_D = 0.00025, LIFT_I = 0.000;
 }
