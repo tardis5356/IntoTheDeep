@@ -39,17 +39,17 @@ public class UticaAutoTrajectories {
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(38,-60,Math.toRadians(90));
 
     //Red Basket Poses
-    public static final Pose2d redBasket_SampleStartPos = new Pose2d(-40, -65.5, Math.toRadians(0)); // after wide shielding
+    public static final Pose2d redBasket_SampleStartPos = new Pose2d(-40, -62.5, Math.toRadians(0));
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
-    public static final Pose2d redBasket_BasketDrop = new Pose2d(-57,-60, Math.toRadians(45));
-    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47.5, -65, Math.toRadians(93));
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-47.5, -56, Math.toRadians(93));
-    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-51.5,-65, Math.toRadians(105));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-57,-58, Math.toRadians(45));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-48, -62, Math.toRadians(93));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -56, Math.toRadians(93));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-51.5,-62, Math.toRadians(105));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-51.5,-56, Math.toRadians(105));
-    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-55,-65, Math.toRadians(120));
-    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-55,-56, Math.toRadians(120));
-    public static final Pose2d redBasket_AscentParkPos = new Pose2d(-20, -8, Math.toRadians(180));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-55,-61, Math.toRadians(120));
+    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-55,-54, Math.toRadians(120));
+    public static final Pose2d redBasket_AscentParkPos = new Pose2d(-26, -12, Math.toRadians(180));
 
 
 
