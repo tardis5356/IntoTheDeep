@@ -329,8 +329,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new SequentialCommandGroup(
                                 new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
                                 new InstantCommand(intake::transferPosition),
-                                new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(400),
+                                new InstantCommand(()->intake.sIW.setPower(.175)),
+                                new WaitCommand(420),
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(extendo::in),
                                 new InstantCommand(()-> wasRaised = true)
