@@ -62,9 +62,9 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "Delayed-SpecimenAuto")
 
-public class UticaCommandSpecimenExAuto extends OpMode {
+public class UticaCommandDelayedSpecimenExAuto extends OpMode {
 
 
     // Declare OpMode members.
@@ -231,51 +231,17 @@ public class UticaCommandSpecimenExAuto extends OpMode {
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-
-
+                        new WaitCommand(13000),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_StartToSub"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_LeftSpecDepo"),
-//
-
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_MidSpecDepo"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_RightSpecDepo"),
-new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub1"),
-new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub2"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs2"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub3")
-
-
-
-//                        new ActionCommand(redSpecEx_LeftSpecToLeftDepo, requirements),
-//                        new ActionCommand(redSpecEx_LeftDepoToMidSpec, requirements),
-//                        new ActionCommand(redSpecEx_MidSpecToMidDepo, requirements),
-//                        new ActionCommand(redSpecEx_MidDepoToRightSpec, requirements),
-//                        new ActionCommand(redSpecEx_RightSpecToRightDepo, requirements)
-
-
-//                        RedSpec_MidWayToLeftSpec,
-//
-//                        RedSpec_LeftSpecToObs,
-//
-//                        RedSpec_ObsToMidSpec,
-//
-//                        RedSpec_MidSpecToObs,
-//
-//                        RedSpec_ObsToRightSpec,
-//
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecPickUpSpecimen")
-
-//                       new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "RightSpecDepoToSub")
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "ObsToSub"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
-
-
                 )
         );
     }
