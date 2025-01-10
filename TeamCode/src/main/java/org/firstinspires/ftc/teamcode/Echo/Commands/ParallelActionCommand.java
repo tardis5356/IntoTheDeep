@@ -254,7 +254,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                 new InstantCommand(gripper::open),
-                                new WaitCommand(300)
+                                new WaitCommand(100)
                         )
                 );
                 break;
@@ -268,7 +268,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                 new InstantCommand(gripper::open),
-                                new WaitCommand(300)
+                                new WaitCommand(100)
                         )
                 );
                 break;
@@ -282,7 +282,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                 new InstantCommand(gripper::open),
-                                new WaitCommand(300)
+                                new WaitCommand(100)
                         )
                 );
                 break;
@@ -309,7 +309,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_SubToObs,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
@@ -325,7 +325,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_SubToObs2,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
