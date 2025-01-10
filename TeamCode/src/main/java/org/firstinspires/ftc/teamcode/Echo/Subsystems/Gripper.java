@@ -61,7 +61,7 @@ public class Gripper extends SubsystemBase {
         //gripperClosed = false;
     }
     public boolean verifyGripper(){
-        if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 4)){
+        if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 3)){
             return true;
         }
         else {

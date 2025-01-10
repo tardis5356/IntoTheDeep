@@ -33,9 +33,9 @@ public class UticaAutoTrajectories {
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28,-45,Math.toRadians(45));
     public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(28.1,-45,Math.toRadians(340));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40,-48,Math.toRadians(58));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.1,-52,Math.toRadians(320));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.1,-52,Math.toRadians(326));//320
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(48,-48,Math.toRadians(55));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(37,-58,Math.toRadians(335));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(41,-57,Math.toRadians(345)); //37,-58,335
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(38,-60,Math.toRadians(90));
 
     //Red Basket Poses
@@ -171,13 +171,13 @@ public static Action Horizontal;
 
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
-                        .setTangent(Math.toRadians(270))
+                        .setTangent(Math.toRadians(315))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
         redSpec_SubToObs2 =
                 drive.actionBuilder(redSpec_SubDepoPos2)
-                        .setTangent(Math.toRadians(270))
+                        .setTangent(Math.toRadians(315))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
