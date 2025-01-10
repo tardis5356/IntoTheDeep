@@ -217,7 +217,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         //that's done so we don't the intake pinned against the ground
                         new SequentialCommandGroup(
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(250),
+                                new WaitCommand(200),
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
                                 new InstantCommand(()-> wasRaised = false)
                         )
@@ -226,7 +226,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(400),
+                                new WaitCommand(200),
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
                                 new InstantCommand(()-> wasRaised = true)
                         )
