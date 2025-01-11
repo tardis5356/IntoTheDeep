@@ -296,7 +296,7 @@ new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSub
         telemetry.addData("Gripper", gripper.verifyGripper());
         telemetry.addData("BotState", botState);
         telemetry.addData("Lift Position", lift.getCurrentPosition());
-        telemetry.addData("Lift Position", lift.getTargetPosition());
+        telemetry.addData("Lift Target Position", lift.getTargetPosition());
         telemetry.addData("Lift localized", lift.localized);
 
         drive.updatePoseEstimate();
