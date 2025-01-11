@@ -57,9 +57,14 @@ public class Intake extends SubsystemBase {
 //            //    stop();
 //            //}
         }
-        if(!samplePresent&&!Intaking){
-            stop();
-            }
+//        if((checkColor() == "blue" && AllianceColor.aColor == "red") || (checkColor() == "red" && AllianceColor.aColor == "blue")){
+//            out();
+//        }
+
+
+//        if(!samplePresent&&!Intaking){
+//            stop();
+//            }
     }
 
     public void downPosition(){
@@ -146,22 +151,19 @@ public class Intake extends SubsystemBase {
 //        else return false;
 //    }
     public String checkColor(){
-        if (cI.red() >= INTAKE_RED_MIN && cI.blue() <= INTAKE_BLUE_MIN){
+        if (cI.blue()<200 && cI.red()>150){
             return "red";
         }
-        else if (cI.blue() >= INTAKE_BLUE_MIN && cI.red() <= INTAKE_RED_MIN){
+        else if (cI.blue() >= 260){
             return "blue";
         }
-        else if(cI.blue() >= INTAKE_BLUE_MIN && cI.red() >= INTAKE_RED_MIN){
-            return "yellow";
-        }
         else {
-            return "unknown";
+            return "unknown/yellow";
         }
 
     }
     public boolean checkSample(){
-        if (((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 3.5){
+        if ( ((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 3.5){
             return true;
         }
         else return false;

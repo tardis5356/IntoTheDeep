@@ -44,12 +44,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::intake),
                                 new WaitCommand(250),
-                                new InstantCommand(wrist::intake),
-                                new InstantCommand(gripper::intake),
-                                new WaitCommand(400),
+                                new ParallelCommandGroup(new InstantCommand(arm::intake),
+                                        new InstantCommand(wrist::intake),
+                                        new InstantCommand(gripper::intake)),
+                                new WaitCommand(300),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
 
                         )
@@ -63,10 +62,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(wrist::tuck),
-                                new WaitCommand(500),
-                                new InstantCommand(arm::wall),
-                                new WaitCommand(500),
-                                new InstantCommand(wrist::wall),
+                                new WaitCommand(250),
+                                new ParallelCommandGroup(
+                                        new InstantCommand(arm::wall),
+                                        //new WaitCommand(500),
+                                        new InstantCommand(wrist::wall)),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
                                 //new InstantCommand(gripper::open)
                         )
