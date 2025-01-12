@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 public class Gripper extends SubsystemBase {
-    private Servo sG; //the servo of the gripper. opens and closes it
+    public Servo sG; //the servo of the gripper. opens and closes it
     public ColorSensor cG; // this is a color sensor in the gripper that checks if a sample is inside of it
     //private ColorSensor cJ;
 

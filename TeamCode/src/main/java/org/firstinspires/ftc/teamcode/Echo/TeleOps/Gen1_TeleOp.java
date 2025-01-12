@@ -325,11 +325,11 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(()-> wasRaised = true)
                         ),
                         new SequentialCommandGroup(
-                                new InstantCommand(extendo::out),
-                                new WaitCommand(300),
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(50),
+                                new WaitCommand(150),
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
+                                new WaitCommand(300),
+                                new InstantCommand(extendo::out),
                                 new InstantCommand(()-> wasRaised = true)
                         )
                 );
@@ -397,13 +397,21 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake")
+        new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWall"),
+                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWallWithSomething"),
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
+
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && !gripper.verifyGripper())
+                    .whenActive(new SequentialCommandGroup(
+                            new InstantCommand(()->lift.PIDEnabled= true),
+                            new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWallWithNothing"),
+                            new InstantCommand(() -> DepositState = "wall"),
+                            new InstantCommand(() -> killSwitchActive = false)
+                    ));
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
@@ -510,6 +518,7 @@ public class Gen1_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(()->lift.PIDEnabled= true),
+                            new InstantCommand(()-> arm.hang()),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = true),

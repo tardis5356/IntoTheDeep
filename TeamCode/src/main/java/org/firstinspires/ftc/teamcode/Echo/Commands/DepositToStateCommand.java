@@ -48,7 +48,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(new InstantCommand(arm::intake),
                                         new InstantCommand(wrist::intake),
                                         new InstantCommand(gripper::intake)),
-                                new WaitCommand(300),
+                                new WaitCommand(400),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
 
                         )
@@ -56,7 +56,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 //setState = "intake";
                 break;
 
-            case "intakeToWall":
+            case "intakeToWallWithSomething":
                 addCommands(
                         new SequentialCommandGroup(
 
@@ -73,7 +73,24 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 );
                 //setState = "wall";
                 break;
+            case "intakeToWallWithNothing":
+                addCommands(
+                        new SequentialCommandGroup(
 
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new InstantCommand(wrist::tuck),
+                                new WaitCommand(250),
+                                new ParallelCommandGroup(
+                                        new InstantCommand(arm::wall),
+                                        //new WaitCommand(500),
+                                        new InstantCommand(wrist::wall)),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
+                                new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
+                                //new InstantCommand(gripper::open)
+                        )
+                );
+                //setState = "wall";
+                break;
             case "basketToWall":
                 addCommands(
                         //maybe edit this one, needs to be tested
@@ -85,7 +102,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(500),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE),
-                                new InstantCommand(wrist::wall)
+                                new InstantCommand(wrist::wall),
+                                new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
                                 //new InstantCommand(gripper::open)
 
 
@@ -212,7 +230,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(200),
                                 new InstantCommand(wrist::wall),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE))
+                                new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
+                        new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
                         //new InstantCommand(gripper::open)
 
                 );

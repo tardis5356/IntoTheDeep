@@ -479,9 +479,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(extendo::in)
                                 ),
                                 new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(250),
-                                                new InstantCommand(intake::transfer)),
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(250),
+//                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
@@ -539,9 +539,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(extendo::in)
                                 ),
                                 new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(250),
-                                                new InstantCommand(intake::transfer)),
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(250),
+//                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
@@ -598,9 +598,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(extendo::in)
                                 ),
                                 new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(250),
-                                                new InstantCommand(intake::transfer)),
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(250),
+//                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
