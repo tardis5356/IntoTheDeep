@@ -315,6 +315,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
                         new SequentialCommandGroup(
+                                new InstantCommand(intake::stop),
                                 new InstantCommand(intake::transferPosition),
                                 new WaitCommand(300),
                                 new InstantCommand(intake::stop),

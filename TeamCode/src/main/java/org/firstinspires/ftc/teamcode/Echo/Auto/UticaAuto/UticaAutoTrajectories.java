@@ -33,7 +33,7 @@ public class UticaAutoTrajectories {
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28,-45,Math.toRadians(45));
     public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(28.1,-45,Math.toRadians(340));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40,-48,Math.toRadians(58));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.1,-52,Math.toRadians(326));//320
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.8,-52,Math.toRadians(320));//320
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(48,-48,Math.toRadians(55));
     public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(41,-57,Math.toRadians(345)); //37,-58,335
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(38,-60,Math.toRadians(90));
@@ -235,7 +235,7 @@ public static Action Horizontal;
 
         redSpecEx_MidDepoToRightSpec =
                 drive.actionBuilder(redSpecEx_MidSpecDepoPos)
-                        .setTangent(Math.toRadians(0))
+                        .setTangent(Math.toRadians(180))
                         .splineToLinearHeading(redSpecEx_RightSpecZonePos,Math.toRadians(0))
                         .build();
 
