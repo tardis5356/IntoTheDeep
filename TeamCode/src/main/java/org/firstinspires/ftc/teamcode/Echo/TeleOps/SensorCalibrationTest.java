@@ -37,6 +37,7 @@ public class SensorCalibrationTest extends CommandOpMode {
         //telemetry.addData("Intake_detected_blue?", intake.checkBlue());
         telemetry.addData("Intake_Blue_Recording", intake.cI.blue());
         telemetry.addData("Intake_Red_Recording", intake.cI.red());
+        telemetry.addData("Intake_Green_Recording", intake.cI.green());
 
         telemetry.update(); //Also super important. This actually prints the data. Make sure you have it.
 

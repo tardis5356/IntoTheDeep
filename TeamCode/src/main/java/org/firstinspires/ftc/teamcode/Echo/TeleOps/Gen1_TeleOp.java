@@ -255,9 +255,11 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
+
+
             //TODO: Change this one if we do the pass through
             //if the drivers manually hit outake or the wrong alliance color is detected, outake
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) /*|| ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red") && intake.checkSample())*/)
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red") && intake.checkSample()))
                     .whenActive(
                             new SequentialCommandGroup(
                                     //new InstantCommand(()-> intake.samplePresent = false),
