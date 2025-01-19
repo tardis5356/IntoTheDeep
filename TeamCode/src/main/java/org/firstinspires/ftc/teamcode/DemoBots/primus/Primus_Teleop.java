@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.DemoBots.primus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Disabled
 @TeleOp(name = "Primus_TeleOp", group="demo")
-public class Primus_Teleop extends BaseClass_PP {    // LinearOpMode {
+public class Primus_Teleop extends LinearOpMode {    // LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -20,10 +24,44 @@ public class Primus_Teleop extends BaseClass_PP {    // LinearOpMode {
     double vArmPower;
     TouchSensor ArmLim;
 
+    DcMotor mBL;//Back left
+    DcMotor mBR;
+    DcMotor mFL;
+    DcMotor mFR;//Front right
+
+
+    //connected to sparkMini controller don't have enough ports
+    CRServo mArm;
+
+
+
+
+    Servo sL;
+    Servo sR;
+
     @Override
     public void runOpMode() {
 
-        defineComponentsPrimus();
+        mBL = hardwareMap.dcMotor.get("mBL");//Back left
+        mBR = hardwareMap.dcMotor.get("mBR");
+        mFL = hardwareMap.dcMotor.get("mFL");
+        mFR = hardwareMap.dcMotor.get("mFR");//Front right
+
+
+        mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        mBL.setDirection(DcMotor.Direction.FORWARD);
+        mBR.setDirection(DcMotor.Direction.REVERSE);
+        mFR.setDirection(DcMotor.Direction.REVERSE);
+        mFL.setDirection(DcMotor.Direction.REVERSE);
+
+        sL = hardwareMap.servo.get("sL");
+        sR = hardwareMap.servo.get("sR");
+        mArm = hardwareMap.crservo.get("mArm");
+
         ArmLim = hardwareMap.get(TouchSensor.class, "aTouch");
 //        while(armLimit.getVoltage() > 3.0) {
 

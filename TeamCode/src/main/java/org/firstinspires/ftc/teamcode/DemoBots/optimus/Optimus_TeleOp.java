@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 //@Disabled
 @TeleOp(name="Optimus_TeleOp", group="demo")
-//211@Disabled
+@Disabled
 public class Optimus_TeleOp extends LinearOpMode{
 
     // create objects and give them classes

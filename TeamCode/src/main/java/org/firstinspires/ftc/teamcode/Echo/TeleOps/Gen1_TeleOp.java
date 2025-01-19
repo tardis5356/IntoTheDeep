@@ -104,7 +104,10 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 
     //Commands are also objects, and thus new instances need to be made for new files
-    public DepositToStateCommand depositToStateCommand;
+    public DepositToStateCommand intakeToIntake, wallToIntake, basketToIntake, specimenToIntake;
+    public DepositToStateCommand intakeToWallWithSomething, intakeToWallWithNothing, basketToWall, specimenToWall;
+
+
 
     public IntakeOutCommand intakeOutCommand;
 
@@ -153,7 +156,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //intakeInCommand = new IntakeInCommand(intake);
         //also hardware map the depositToStateCommand. Although we do create new instances in the triggers so I don't think that's needed
-        //depositToStateCommand = new DepositToStateCommand(arm,wrist, gripper, lift, "basketToIntake");
+        intakeToIntake = new DepositToStateCommand(arm,wrist, gripper, lift, "intakeToIntake");
+        wallToIntake = new DepositToStateCommand(arm,wrist,gripper,lift, "wallToIntake");
+        basketToIntake = new DepositToStateCommand(arm,wrist,gripper,lift, "basketToIntake");
+        specimenToIntake = new DepositToStateCommand(arm,wrist,gripper,lift, "specimenToIntake");
+
+        specimenToWall = new DepositToStateCommand(arm,wrist,gripper,lift,"specimenToWall");
+        basketToWall = new DepositToStateCommand(arm, wrist, gripper,lift, "basketToWall");
+        intakeToWallWithNothing = new DepositToStateCommand(arm, wrist, gripper,lift, "intakeToWallWithNothing");
 
         intakeOutCommand = new IntakeOutCommand(intake);
 
@@ -259,7 +269,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
             //TODO: Change this one if we do the pass through
             //if the drivers manually hit outake or the wrong alliance color is detected, outake
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red") && intake.checkSample()))
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red")))
                     .whenActive(
                             new SequentialCommandGroup(
                                     //new InstantCommand(()-> intake.samplePresent = false),
@@ -322,7 +332,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new WaitCommand(300),
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(300),
+                                new WaitCommand(350),
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(extendo::in),
                                 new InstantCommand(()-> wasRaised = true)
@@ -339,13 +349,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
-        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
+        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))
                 .whenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
+                                new WaitCommand(500),
                                 new InstantCommand(intake::transferPosition),
-                                new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(400),
+//                                new InstantCommand(()->intake.sIW.setPower(.17)),
+//                                new WaitCommand(300),
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(extendo::in),
                                 new InstantCommand(()-> wasRaised = true)
@@ -386,8 +397,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                   new DepositToStateCommand(arm, wrist, gripper, lift, "intakeToIntake"),
-                   new InstantCommand(() -> DepositState = "intake"),
+                        intakeToIntake,
+                        new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
