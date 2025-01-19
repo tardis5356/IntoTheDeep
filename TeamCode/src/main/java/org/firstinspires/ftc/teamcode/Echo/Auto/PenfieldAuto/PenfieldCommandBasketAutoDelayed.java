@@ -33,7 +33,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 import java.util.Set;
 
@@ -117,7 +117,7 @@ public class PenfieldCommandBasketAutoDelayed extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
 
 
     /*
@@ -127,10 +127,10 @@ public class PenfieldCommandBasketAutoDelayed extends OpMode {
     public void init() {
         //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
-        drive = new MecanumDrive(hardwareMap, redBasket_StartPos); //
+        drive = new MecanumDriveSpecimen(hardwareMap, redBasket_StartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redBasket_StartPos)); //
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redBasket_StartPos)); //
 //
 
         intake = new Intake(hardwareMap);

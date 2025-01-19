@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 
 public class PenfieldAutoTrajectories {
@@ -125,7 +125,7 @@ public class PenfieldAutoTrajectories {
 
 
 
-    public static void generateTrajectories(MecanumDrive drive) {
+    public static void generateTrajectories(MecanumDriveSpecimen drive) {
 
         //red specimen auto
 

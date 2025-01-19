@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 import java.util.Set;
 
@@ -62,7 +62,7 @@ public class OpModeTest extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
 
 
     /*
@@ -70,7 +70,7 @@ public class OpModeTest extends OpMode {
      */
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, initialPose);
+        drive = new MecanumDriveSpecimen(hardwareMap, initialPose);
         telemetry.addData("Status", "Initialized");
 
 //        // Initialize the hardware variables. Note that the strings used here as parameters
@@ -107,7 +107,7 @@ public class OpModeTest extends OpMode {
     public void start() {
 
         // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
 
         Set<Subsystem> requirements = Set.of(ExampleSubsystem);
         runtime.reset();

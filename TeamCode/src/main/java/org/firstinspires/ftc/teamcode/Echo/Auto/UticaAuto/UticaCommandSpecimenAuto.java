@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
@@ -23,7 +20,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -33,13 +29,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -129,7 +122,7 @@ public class UticaCommandSpecimenAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
     static String botState;
 
     /*
@@ -140,11 +133,11 @@ public class UticaCommandSpecimenAuto extends OpMode {
         //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
+        drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
 
 
         intake = new Intake(hardwareMap);
@@ -180,7 +173,7 @@ public class UticaCommandSpecimenAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-        generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 

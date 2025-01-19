@@ -45,7 +45,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 import java.util.Set;
 
@@ -126,7 +126,7 @@ public class PenfieldCommandSpecimenAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
     static String botState;
 
     /*
@@ -136,11 +136,11 @@ public class PenfieldCommandSpecimenAuto extends OpMode {
     public void init() {
         //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
-        drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
+        drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
 
 
         intake = new Intake(hardwareMap);
@@ -176,7 +176,7 @@ public class PenfieldCommandSpecimenAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-        generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 

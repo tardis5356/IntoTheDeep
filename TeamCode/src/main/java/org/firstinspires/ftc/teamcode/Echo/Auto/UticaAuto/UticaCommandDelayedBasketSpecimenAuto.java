@@ -21,12 +21,13 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
@@ -34,7 +35,6 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -60,7 +60,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "Delayed-BasketSpecimenAuto")
-
+@Disabled
 public class UticaCommandDelayedBasketSpecimenAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -125,7 +125,7 @@ public class UticaCommandDelayedBasketSpecimenAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
 
 
     /*
@@ -136,10 +136,10 @@ public class UticaCommandDelayedBasketSpecimenAuto extends OpMode {
 //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDrive(hardwareMap, redBasket_SpecimenStartPos); //
+        drive = new MecanumDriveSpecimen(hardwareMap, redBasket_SpecimenStartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redBasket_SpecimenStartPos)); //
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redBasket_SpecimenStartPos)); //
 //
 
         intake = new Intake(hardwareMap);

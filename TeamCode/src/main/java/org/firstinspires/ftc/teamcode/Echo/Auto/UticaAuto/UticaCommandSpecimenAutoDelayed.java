@@ -31,7 +31,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
@@ -124,7 +124,7 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDrive drive;
+    private MecanumDriveSpecimen drive;
     static String botState;
 
     /*
@@ -134,11 +134,11 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
     public void init() {
         //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
-        drive = new MecanumDrive(hardwareMap, redSpec_StartPos);
+        drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
         //add initial position
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDrive(hardwareMap, redSpec_StartPos));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
 
 
         intake = new Intake(hardwareMap);
@@ -174,7 +174,7 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-        generateTrajectories(new MecanumDrive(hardwareMap, initialPose));
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
 
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 

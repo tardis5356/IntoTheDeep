@@ -1,27 +1,36 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.PenfieldAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PenfieldAuto.PenfieldAutoTrajectories.redBasket_StartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PenfieldAuto.PenfieldAutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PenfieldAuto.PenfieldAutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PenfieldAuto.PenfieldAutoTrajectories.redBasket_SubToMidWayLeftSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SpecimenStartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SubToRightSample;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
@@ -32,7 +41,6 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 import java.util.Set;
 
@@ -50,15 +58,15 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "PenfieldBasketAuto")
-@Disabled
-public class PenfieldCommandBasketAuto extends OpMode {
+@Autonomous(name = "Delayed-BasketSpecimenAuto")
+
+public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_StartPos;
+    Pose2d initialPose = redBasket_SpecimenStartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -88,11 +96,11 @@ public class PenfieldCommandBasketAuto extends OpMode {
     private ActionCommand RedBasket_StartToSub;
     private ActionCommand RedBasket_SubToRightSample;
     private ActionCommand RedBasket_RightSampleToBasket;
-    private ActionCommand RedBasket_ToMidSample;
+    private ActionCommand RedBasket_BasketToMidSample;
     private ActionCommand RedBasket_MidSampleToBasket;
     private ActionCommand RedBasket_BasketToLeftSample;
     private ActionCommand RedBasket_LeftSampleToBasket;
-    private ActionCommand RedBasket_BasketToAscent;
+    private ActionCommand RedBasket_BasketToAscentPark;
 
     private InstantCommand OpenGripper;
 
@@ -116,7 +124,7 @@ public class PenfieldCommandBasketAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDriveSpecimen drive;
+    private MecanumDriveBasket drive;
 
 
     /*
@@ -124,12 +132,13 @@ public class PenfieldCommandBasketAuto extends OpMode {
      */
     @Override
     public void init() {
-        //Removes previous Commands from scheduler
+//Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
-        drive = new MecanumDriveSpecimen(hardwareMap, redBasket_StartPos); //
+
+        drive = new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redBasket_StartPos)); //
+        generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos)); //
 //
 
         intake = new Intake(hardwareMap);
@@ -154,6 +163,12 @@ public class PenfieldCommandBasketAuto extends OpMode {
      */
     @Override
     public void init_loop() {
+        if (gamepad1.a) {
+            AllianceColor.aColor = "blue";
+        }
+        if (gamepad1.b) {
+            AllianceColor.aColor = "red";
+        }
     }
 
     /*
@@ -174,8 +189,6 @@ public class PenfieldCommandBasketAuto extends OpMode {
 
         extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
-        RedBasket_StartToSub = new ActionCommand(redBasket_StartToSub, requirements);//
-
         OpenGripper = new InstantCommand(gripper::open);
 
         CloseGripper = new InstantCommand(gripper::close);
@@ -188,41 +201,47 @@ public class PenfieldCommandBasketAuto extends OpMode {
 
         time_since_start = new ElapsedTime();
 
+        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
+
+        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample,requirements);
+
+        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+
+        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
+
+        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
+
+        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
+
+        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
+
+        RedBasket_BasketToAscentPark = new ActionCommand (redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
-                ArmSpecimen,
-                WristSpecimen,
-                CloseGripper,
-                GripperCheck,
+                new InstantCommand(extendo::in),
+                new InstantCommand(intake::transferPosition),
+                new InstantCommand(()->lift.PIDEnabled= true),
 
                 new SequentialCommandGroup(
-
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
-
-new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_MidWayToPark")
-
-
-
-//                RedBasket_SubToRightSample,
-//               // new InstantCommand(intake::)
-//                extendoSpecRight,
-//                intakeIn,
-//
-//                RedBasket_RightSampleToBasket,
-//                //score right sample
-//                RedBasket_ToMidSample,
-//                //pick up mid sample
-//                RedBasket_MidSampleToBasket,
-//                //score mid sample
-//                RedBasket_BasketToLeftSample,
-//                //pick up left sample
-//                RedBasket_LeftSampleToBasket,
-//                //score left sample
-//                RedBasket_BasketToAscent //park
-
-        ));
+                        new WaitCommand(13000),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
+                        RedBasket_SubToRightSample,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(300),
+                                        RedBasket_BasketToAscentPark),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new LiftToStateCommand(lift, 0, 25)))
+                )
+        );
     }
 
     /*
@@ -233,13 +252,41 @@ new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
 
         CommandScheduler.getInstance().run();
 
+//        if(intake.checkSample()== true){
+//            intake.sIW.setPower(BotPositions.INTAKE_STOP);
+//            intake.sIO.setPower(BotPositions.INTAKE_STOP);
+//            intake.Intaking = false;
+//            CommandScheduler.getInstance().cancelAll();
+//            telemetry.addData("confirmed sample", "yes");
+//        }
 
+
+//        new Trigger(() -> intake.checkSample())
+//                .whenActive(
+//                        new SequentialCommandGroup(
+//
+//                                new InstantCommand(intake::stop)
+//                        )
+//                );
+
+//        new Trigger(() -> intake.checkSample() && (AllianceColor.aColor == intake.checkColor() || intake.checkColor() == "yellow"))
+//                .whenActive(
+//                        new SequentialCommandGroup(
+//                                new InstantCommand(intake::transferPosition),
+//                                new InstantCommand(()->intake.sIW.setPower(.15)),
+//                                new WaitCommand(500),
+//                                new InstantCommand(intake::stop),
+//                                new InstantCommand(extendo::in)
+//                        )
+//                );
 
 
         // Note: to access the drive position info, needed to declare a drive = mecanumDrive as private variable at top of this class
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
+        telemetry.addData("Sample acquired", intake.checkSample());
+
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 
         drive.updatePoseEstimate();

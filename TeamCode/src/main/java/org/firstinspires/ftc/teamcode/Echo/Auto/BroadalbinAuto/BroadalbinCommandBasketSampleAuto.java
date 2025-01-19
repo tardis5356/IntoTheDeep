@@ -1,15 +1,18 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SpecimenStartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_RightSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToMidSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToLeftSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redBasket_SubToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SampleStartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToBasket;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -21,13 +24,12 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
@@ -59,15 +61,15 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketSpecimenAuto")
-@Disabled
-public class UticaCommandBasketSpecimenAuto extends OpMode {
+@Autonomous(name = "BasketSampleAuto")
+
+public class BroadalbinCommandBasketSampleAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_SpecimenStartPos;
+    Pose2d initialPose = redBasket_SampleStartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -94,13 +96,16 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    private ActionCommand RedBasket_StartToSub;
-    private ActionCommand RedBasket_SubToRightSample;
+    private ActionCommand RedBasket_StartToBasket;
     private ActionCommand RedBasket_RightSampleToBasket;
+    private ActionCommand RedBasket_BasketToRightSample;
+    private ActionCommand RedBasket_RightSampleIntake;
     private ActionCommand RedBasket_BasketToMidSample;
     private ActionCommand RedBasket_MidSampleToBasket;
+    private ActionCommand RedBasket_MidSampleIntake;
     private ActionCommand RedBasket_BasketToLeftSample;
     private ActionCommand RedBasket_LeftSampleToBasket;
+    private ActionCommand RedBasket_LeftSampleIntake;
     private ActionCommand RedBasket_BasketToAscentPark;
 
     private InstantCommand OpenGripper;
@@ -116,8 +121,6 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
     private DepositToStateCommand depositToStateCommand;
 
 
-
-
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
 
@@ -125,7 +128,7 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDriveSpecimen drive;
+    private MecanumDriveBasket drive;
 
 
     /*
@@ -136,11 +139,11 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
 //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDriveSpecimen(hardwareMap, redBasket_SpecimenStartPos); //
+        drive = new MecanumDriveBasket(hardwareMap, redBasket_SampleStartPos); //
         telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redBasket_SpecimenStartPos)); //
-//
+        generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SampleStartPos)); //
+
 
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap);
@@ -151,7 +154,6 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
         exampleSubsystem = new ExampleSubsystem(hardwareMap);
 
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
-
 
 
         CommandScheduler.getInstance().registerSubsystem(intake);//
@@ -194,39 +196,48 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
 
         CloseGripper = new InstantCommand(gripper::close);
 
-        WristSpecimen =  new InstantCommand(wrist::specimen);
+        WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen =  new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimen);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
 
-        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
+        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
 
-        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample,requirements);
+        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
 
-        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
 
-        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
+        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
 
-        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
+        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
+
+        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
+
+        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
 
         RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
 
-        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
+        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
 
-        RedBasket_BasketToAscentPark = new ActionCommand (redBasket_BasketToAscentPark, requirements);
+        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
+
+        RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
-                new InstantCommand(()->lift.PIDEnabled= true),
+                new InstantCommand(arm::specimen),
+                new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
-                        RedBasket_SubToRightSample,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToBasketDepo"),
+//                        new WaitCommand(800),
+//                        new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
+//                        new WaitCommand(800),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
@@ -236,7 +247,7 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
-                                        RedBasket_BasketToAscentPark),
+                                RedBasket_BasketToAscentPark),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
                                         new LiftToStateCommand(lift, 0, 25)))
@@ -307,8 +318,6 @@ public class UticaCommandBasketSpecimenAuto extends OpMode {
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
-
 
 
     }
