@@ -46,7 +46,7 @@ public class BroadalbinBasketAutoTraj {
 
         redBasket_StartToSub =
                 drive.actionBuilder(redBasket_SpecimenStartPos)
-                        .setTangent(Math.toRadians(90))
+                        .setTangent(Math.toRadians(120)) //90
                         .splineToLinearHeading(redBasket_SubDepoPos, Math.toRadians(90))
                         .build();
 

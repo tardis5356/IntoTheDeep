@@ -12,7 +12,7 @@ public class BroadalbinSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(16, -64, Math.toRadians(90));
     //   public static final Pose2d redSpec_StartPos = new Pose2d(40, -64, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(0, -31, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -31, Math.toRadians(90)); //x=0
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(38, -66.25, Math.toRadians(90));
     //    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(46, -10, Math.toRadians(90));
     //    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(46, -56, Math.toRadians(90));
@@ -21,9 +21,10 @@ public class BroadalbinSpecimenAutoTraj {
     //    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
     //    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(3, -31, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(6, -31, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(9, -31, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(0, -31, Math.toRadians(90)); //x=3
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3, -31, Math.toRadians(90)); //x=6
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -31, Math.toRadians(90)); //x=9
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(9,-31, Math.toRadians(90));
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -45, Math.toRadians(45));
     public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(28.1, -45, Math.toRadians(340));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40, -48, Math.toRadians(58));
@@ -48,9 +49,12 @@ public class BroadalbinSpecimenAutoTraj {
     public static Action redSpec_ObsToSub1;
     public static Action redSpec_ObsToSub2;
     public static Action redSpec_ObsToSub3;
+    public static Action redSpec_ObsToSub4;
 
     public static Action redSpec_SubToObs;
     public static Action redSpec_SubToObs2;
+    public static Action redSpec_SubToObs3;
+    public static Action redSpec_SubToObs4;
     public static Action redSpecEx_SubToLeftSpecZone;
     public static Action redSpecEx_LeftSpecToLeftDepo;
     public static Action redSpecEx_LeftDepoToMidSpec;
@@ -131,6 +135,18 @@ public class BroadalbinSpecimenAutoTraj {
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
+        redSpec_SubToObs3 =
+                drive.actionBuilder(redSpec_SubDepoPos3)
+                        .setTangent(Math.toRadians(315))
+                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
+                        .build();
+
+        redSpec_SubToObs4 =
+                drive.actionBuilder(redSpec_SubDepoPos4)
+                        .setTangent(Math.toRadians(315))
+                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
+                        .build();
+
 //        redSpec_ObsToSub =
 //                drive.actionBuilder(redSpec_ObsSpecPos)
 //                        .setTangent(Math.toRadians(90))
@@ -155,6 +171,11 @@ public class BroadalbinSpecimenAutoTraj {
                         .splineToLinearHeading(redSpec_SubDepoPos3, Math.toRadians(90))
                         .build();
 
+        redSpec_ObsToSub4 =
+                drive.actionBuilder(redSpec_SubDepoPos3)
+                        .setTangent(90)
+                        .splineToLinearHeading(redSpec_SubDepoPos4, Math.toRadians(90))
+                        .build();
 
         redSpecEx_SubToLeftSpecZone =
                 drive.actionBuilder(redSpec_SubDepoPos)
