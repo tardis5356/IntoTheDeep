@@ -60,7 +60,7 @@ import java.util.Set;
 
 @Autonomous(name = "SpecimenAuto")
 
-public class BroadalbinCommandSpecimenExAuto extends OpMode {
+public class BroadalbinCommand5SpecimenAuto extends OpMode {
 
 
     // Declare OpMode members.
@@ -98,19 +98,12 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
 //    private ActionCommand RedSpec_ObsToMidSpec;
 //    private ActionCommand RedSpec_ObsToSub;
     private ActionCommand RedSpec_SubToObs;
-
     private InstantCommand OpenGripper;
-
     private InstantCommand CloseGripper;
-
     private InstantCommand WristSpecimen;
-
     private InstantCommand ArmSpecimen;
-
     private InstantCommand GripperCheck;
-
     private DepositToStateCommand Wall;
-
     private GripperAutoCloseCommand gripperAutoCloseCommand;
 
 
@@ -219,8 +212,10 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub2"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs2"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub3"),
-                        RedSpec_SubToObs
-                )
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs3"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub4"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs4")
+                        )
         );
     }
 
