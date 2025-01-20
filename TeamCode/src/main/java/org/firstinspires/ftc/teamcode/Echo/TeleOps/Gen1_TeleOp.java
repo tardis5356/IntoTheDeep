@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -22,7 +21,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
@@ -40,7 +38,6 @@ public class Gen1_TeleOp extends CommandOpMode {
     //gamepads
     //GamepadEx is an extended object version of gamepads that has more organized input checks that we use in triggers.
     private GamepadEx driver1, driver2;
-    //private DcMotorEx liftEncoder;
 
     //This is just a boolean used for telemetry to see if we took in the incorrect sample color
     boolean wrongColorIntaked = false;
@@ -185,7 +182,6 @@ public class Gen1_TeleOp extends CommandOpMode {
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
 
-        //liftEncoder = hardwareMap.get(DcMotorEx.class, "");
         //cI = hardwareMap.get(ColorSensor.class, "cI");
         //limitLift = hardwareMap.get(TouchSensor.class, "lL");
         //this motor physically runs opposite. For convenience, reverse direction.
@@ -212,8 +208,6 @@ public class Gen1_TeleOp extends CommandOpMode {
         gripper.intake();
         intake.transferPosition();
 
-
-
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
 
@@ -230,14 +224,6 @@ public class Gen1_TeleOp extends CommandOpMode {
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake" && DepositState != "specimen")
                     .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::intake));
-
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "specimen")
-                    .whenActive(
-                            new SequentialCommandGroup(
-                                    new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 20),
-                                    new InstantCommand(gripper::open)
-                            )
-                    );
 
          //   new Trigger(() -> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
          //           .whenActive(new InstantCommand(gripper::close));
@@ -272,7 +258,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
-        new Trigger(() -> extendo.sER.getPosition() >= .62)
+        new Trigger(() -> extendo.sER.getPosition() >= .62 && AllianceColor.cycleType == "basket")
                 .whileActiveOnce(new SequentialCommandGroup(
                         new InstantCommand(intake::transferPosition),
                         new InstantCommand(()-> wasRaised = true)
@@ -346,56 +332,56 @@ public class Gen1_TeleOp extends CommandOpMode {
         //Extendo
         {
         //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .toggleWhenActive(
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extendoOut && AllianceColor.cycleType == "basket")
+                .whenActive(
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new InstantCommand(intake::stop),
-                                        new InstantCommand(intake::transferPosition),
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new InstantCommand(intake::stop),
+                                                new InstantCommand(intake::transferPosition),
 //                                        new WaitCommand(300),
 //                                        new InstantCommand(()->intake.sIW.setPower(.17)),
-                                        new WaitCommand(350),
-                                        new InstantCommand(intake::stop)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new InstantCommand(extendo::in)
-                                ),
-                                new InstantCommand(()-> wasRaised = true)
-                        ),
-                        new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new InstantCommand(intake::stop),
-                                new WaitCommand(150),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
-                                new WaitCommand(300),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(()-> wasRaised = true)
+                                                new WaitCommand(350),
+                                                new InstantCommand(intake::stop)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(400),
+                                                new InstantCommand(extendo::in)
+                                        ),
+                                        new InstantCommand(()-> wasRaised = true)
+                                )
                         )
                 );
 
         //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
-        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))
+        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow") && AllianceColor.cycleType=="basket")
                 .whenActive(
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new InstantCommand(intake::stop),
-                                        new InstantCommand(intake::transferPosition),
-//                                        new WaitCommand(300),
-//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
-                                        new WaitCommand(350),
-                                        new InstantCommand(intake::stop)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new InstantCommand(extendo::in)
-                                ),
-                                new InstantCommand(()-> wasRaised = true))
-
+                        new SequentialCommandGroup(
+                                new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
+                                new WaitCommand(500),
+                                new InstantCommand(intake::transferPosition),
+//                                new InstantCommand(()->intake.sIW.setPower(.17)),
+//                                new WaitCommand(300),
+                                new InstantCommand(intake::stop),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(()-> wasRaised = true)
+                        )
                 );
+            new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow") && AllianceColor.cycleType=="specimen")
+                    .whenActive(
+                            new SequentialCommandGroup(
+                                    new InstantCommand(intake::stop),
+                                    new InstantCommand(arm::hang),
+                                    new InstantCommand(intake::outakePosition),
+                                    new WaitCommand(1000),
+
+                                    new InstantCommand(extendo::in),
+                                    new InstantCommand(()-> wasRaised = true)
+                            )
+                    );
         }
 //
 //        //Deposit to state commands
@@ -717,6 +703,8 @@ public class Gen1_TeleOp extends CommandOpMode {
             telemetry.addData("DetectedColor", intake.checkColor());
             //telemetry.addData("Blue", intake.checkBlue());
             telemetry.addData("Alliance Color", AllianceColor.aColor);
+        telemetry.addData("cycleType", AllianceColor.cycleType);
+        telemetry.addData("extendoOut", extendo.extendoOut);
         telemetry.addData("notAColor", notAColor);
             telemetry.addData("wrongColorDetected", wrongColorIntaked);
            // telemetry.addData("isHanging?", lift.liftHanging);

@@ -18,6 +18,8 @@ public class Extendo extends SubsystemBase {
     //there is another reason for using a separate variable which we'll get to shortly
     double stickInput; //this will store a calculated value that's based off of the stick values of the gamepad
 
+    public boolean extendoOut;
+
     public Extendo(HardwareMap hardwareMap){
         //map the servos to the configuration
         sER = hardwareMap.get(Servo.class, "sER");
@@ -35,6 +37,13 @@ public class Extendo extends SubsystemBase {
         //we set the servo's to the extensionPosition here so that they are constantly updated.
         sER.setPosition(extensionPosition);
         sEL.setPosition(extensionPosition);
+        if (sER.getPosition() <= .70){
+            extendoOut = true;
+
+        }else{
+            extendoOut = false;
+        }
+
 
     }
 

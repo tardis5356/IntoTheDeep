@@ -356,9 +356,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new SequentialCommandGroup(
                                         new WaitCommand(1000),
                                         new InstantCommand(extendo::out),
-                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN_AUTO)),
                                         new WaitCommand(100),
-                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))
+                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO))
                                 ))
 
                 );
@@ -372,7 +372,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpecEx_LeftDepoToMidSpec),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))),
+                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO))),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(200),
                                                 RedSpecEx_MidSpecToMidDepo))
@@ -388,7 +388,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpecEx_MidDepoToRightSpec),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN))),
+                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO))),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpecEx_RightSpecToRightDepo))
@@ -450,9 +450,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new ParallelCommandGroup(
                                                         new InstantCommand(extendo::out),
                                                         new SequentialCommandGroup(
-                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN_AUTO)),
                                                                 new WaitCommand(100),
-                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO)))
                                                 ),
 
                                                 new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
@@ -510,9 +510,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new ParallelCommandGroup(
                                                         new InstantCommand(extendo::out),
                                                         new SequentialCommandGroup(
-                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN_AUTO)),
                                                                 new WaitCommand(100),
-                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO)))
                                                 ),
 
                                                 new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
@@ -570,9 +570,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new ParallelCommandGroup(
                                                 new InstantCommand(extendo::out),
                                                 new SequentialCommandGroup(
-                                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN_AUTO)),
                                                         new WaitCommand(100),
-                                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN_AUTO)))
                                         ),
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
                                 )),
