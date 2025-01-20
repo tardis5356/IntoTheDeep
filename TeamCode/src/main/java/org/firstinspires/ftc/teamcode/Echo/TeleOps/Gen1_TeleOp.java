@@ -225,13 +225,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         //gripper Commands
         {
             //if driver 2 presses b, toggle between open and closed
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake" && DepositState != "specimen")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake")
                     .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake" && DepositState != "specimen")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake")
                     .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::intake));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "specimen")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y) && DepositState == "specimen")
                     .whenActive(
                             new SequentialCommandGroup(
                                     new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 20),
