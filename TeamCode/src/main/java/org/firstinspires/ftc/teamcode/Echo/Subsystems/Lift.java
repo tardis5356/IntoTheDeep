@@ -88,6 +88,9 @@ public class Lift extends SubsystemBase {
 
         if(limitLift.isPressed()){//localizes the lift if its limit is pressed
             mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            mLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             liftOffset = 0;
             localized = true;
             //targetPosition = 10;
