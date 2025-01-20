@@ -5,4 +5,5 @@ package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 //this lets us assign it a value in auto, specifically the color of the sample, so that logic in teleop can be based off of things in auto
 public class AllianceColor {
     public static String aColor = new String();
+    public static String cycleType = new String();
 }

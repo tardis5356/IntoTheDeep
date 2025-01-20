@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -64,11 +65,11 @@ public class Gen1_TeleOp extends CommandOpMode {
     double FB, LR, Rotation;
 
     //multipliers applied to the sum of the above variables to evenly change the speed of the drivetrain
-    double FAST_SPEED_MULTIPLIER = 1;
-    double SLOW_SPEED_MULTIPLIER = 0.5;
+    static double FAST_SPEED_MULTIPLIER = 1;
+    static double SLOW_SPEED_MULTIPLIER = 0.4;
 
     //CURRENT_SPEED_MULTIPLIER is the actual multiplier applied to the drive train power. It is set to either the fast or slow multipliers
-    double CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
+    double CURRENT_SPEED_MULTIPLIER;
 
 
     //below we create a new object instance of all the subsystem classes
@@ -106,6 +107,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand intakeToIntake, wallToIntake, basketToIntake, specimenToIntake;
     public DepositToStateCommand intakeToWallWithSomething, intakeToWallWithNothing, basketToWall, specimenToWall;
+    public DepositToStateCommand intakeToSpecimen, basketToSpecimen, wallToSpecimen;
 
 
 
@@ -164,6 +166,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         specimenToWall = new DepositToStateCommand(arm,wrist,gripper,lift,"specimenToWall");
         basketToWall = new DepositToStateCommand(arm, wrist, gripper,lift, "basketToWall");
         intakeToWallWithNothing = new DepositToStateCommand(arm, wrist, gripper,lift, "intakeToWallWithNothing");
+        intakeToWallWithSomething = new DepositToStateCommand(arm, wrist, gripper,lift, "intakeToWallWithSomething");
+
+        wallToSpecimen = new DepositToStateCommand(arm,wrist,gripper,lift,"wallToSpecimen");
+        intakeToSpecimen = new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToSpecimen");
+        basketToSpecimen = new DepositToStateCommand(arm,wrist,gripper,lift,"basketToSpecimen");
+
+
 
         intakeOutCommand = new IntakeOutCommand(intake);
 
@@ -200,19 +209,20 @@ public class Gen1_TeleOp extends CommandOpMode {
         intake.transferPosition();
 
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==SLOW_SPEED_MULTIPLIER)
-                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER);
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B)&&CURRENT_SPEED_MULTIPLIER ==FAST_SPEED_MULTIPLIER)
-                .whenActive(() -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
+        CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
+
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
+                .toggleWhenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER, ()-> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
+
 
 
         //gripper Commands
         {
             //if driver 2 presses b, toggle between open and closed
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake" && DepositState != "specimen")
                     .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake" && DepositState != "specimen")
                     .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::intake));
 
          //   new Trigger(() -> (gripper.verifyJig() && DepositState == "intake") || (DepositState == "wall" && gripper.verifyGripper()))
@@ -248,7 +258,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
-        new Trigger(() -> extendo.sER.getPosition() >= .62)
+        new Trigger(() -> extendo.sER.getPosition() >= .62 && AllianceColor.cycleType == "basket")
                 .whileActiveOnce(new SequentialCommandGroup(
                         new InstantCommand(intake::transferPosition),
                         new InstantCommand(()-> wasRaised = true)
@@ -322,34 +332,32 @@ public class Gen1_TeleOp extends CommandOpMode {
         //Extendo
         {
         //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .toggleWhenActive(
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extendoOut && AllianceColor.cycleType == "basket")
+                .whenActive(
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::stop),
-                                new InstantCommand(intake::transferPosition),
-                                new WaitCommand(300),
-                                new InstantCommand(intake::stop),
-                                new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(350),
-                                new InstantCommand(intake::stop),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(()-> wasRaised = true)
-                        ),
-                        new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(150),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
-                                new WaitCommand(300),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(()-> wasRaised = true)
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new InstantCommand(intake::stop),
+                                                new InstantCommand(intake::transferPosition),
+//                                        new WaitCommand(300),
+//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
+                                                new WaitCommand(350),
+                                                new InstantCommand(intake::stop)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(400),
+                                                new InstantCommand(extendo::in)
+                                        ),
+                                        new InstantCommand(()-> wasRaised = true)
+                                )
                         )
                 );
 
         //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
-        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))
+        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow") && AllianceColor.cycleType=="basket")
                 .whenActive(
                         new SequentialCommandGroup(
                                 new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
@@ -362,6 +370,18 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(()-> wasRaised = true)
                         )
                 );
+            new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow") && AllianceColor.cycleType=="specimen")
+                    .whenActive(
+                            new SequentialCommandGroup(
+                                    new InstantCommand(intake::stop),
+                                    new InstantCommand(arm::hang),
+                                    new InstantCommand(intake::outakePosition),
+                                    new WaitCommand(1000),
+
+                                    new InstantCommand(extendo::in),
+                                    new InstantCommand(()-> wasRaised = true)
+                            )
+                    );
         }
 //
 //        //Deposit to state commands
@@ -373,7 +393,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToIntake"),
+                        basketToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -381,7 +401,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToIntake"),
+                        wallToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -389,7 +409,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToIntake"),
+                        specimenToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -406,7 +426,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToWall"),
+                        basketToWall,
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -414,7 +434,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWallWithSomething"),
+                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
+                        intakeToWallWithSomething,
+                        new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -422,15 +444,17 @@ public class Gen1_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && !gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(()->lift.PIDEnabled= true),
-                            new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToWallWithNothing"),
+                            intakeToWallWithNothing,
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> killSwitchActive = false)
-                    ));
+                    ))
+                    .cancelWhenActive(specimenToWall);
+
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToWall"),
+                        specimenToWall,
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -447,7 +471,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
+                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
+                        new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -480,7 +506,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
+                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketLow"),
+                        new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -522,7 +550,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
+                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
                         new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
+                        new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -673,6 +703,8 @@ public class Gen1_TeleOp extends CommandOpMode {
             telemetry.addData("DetectedColor", intake.checkColor());
             //telemetry.addData("Blue", intake.checkBlue());
             telemetry.addData("Alliance Color", AllianceColor.aColor);
+        telemetry.addData("cycleType", AllianceColor.cycleType);
+        telemetry.addData("extendoOut", extendo.extendoOut);
         telemetry.addData("notAColor", notAColor);
             telemetry.addData("wrongColorDetected", wrongColorIntaked);
            // telemetry.addData("isHanging?", lift.liftHanging);
@@ -697,6 +729,10 @@ public class Gen1_TeleOp extends CommandOpMode {
             telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
             telemetry.addData("ReadingGripperBLUE", gripper.cG.blue());//120-250 Blue
             //telemetry.addData("ReadingIntake", cI.green());
+
+        telemetry.addData("MotorEncoder",lift.getCurrentPosition());
+        telemetry.addData("ShaftEncoder", lift.mLB.getCurrentPosition());
+
             telemetry.update();
 
        // }
