@@ -2,17 +2,17 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToRightSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToRightSample;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleIntake;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleIntake;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleIntake;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SampleStartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToBasket;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -96,16 +96,16 @@ public class BroadalbinCommandBasketSampleAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    private ActionCommand RedBasket_StartToBasket;
-    private ActionCommand RedBasket_RightSampleToBasket;
-    private ActionCommand RedBasket_BasketToRightSample;
-    private ActionCommand RedBasket_RightSampleIntake;
-    private ActionCommand RedBasket_BasketToMidSample;
-    private ActionCommand RedBasket_MidSampleToBasket;
-    private ActionCommand RedBasket_MidSampleIntake;
-    private ActionCommand RedBasket_BasketToLeftSample;
-    private ActionCommand RedBasket_LeftSampleToBasket;
-    private ActionCommand RedBasket_LeftSampleIntake;
+    //    private ActionCommand RedBasket_StartToBasket;
+//    private ActionCommand RedBasket_RightSampleToBasket;
+//    private ActionCommand RedBasket_BasketToRightSample;
+//    private ActionCommand RedBasket_RightSampleIntake;
+//    private ActionCommand RedBasket_BasketToMidSample;
+//    private ActionCommand RedBasket_MidSampleToBasket;
+//    private ActionCommand RedBasket_MidSampleIntake;
+//    private ActionCommand RedBasket_BasketToLeftSample;
+//    private ActionCommand RedBasket_LeftSampleToBasket;
+//    private ActionCommand RedBasket_LeftSampleIntake;
     private ActionCommand RedBasket_BasketToAscentPark;
 
     private InstantCommand OpenGripper;
@@ -204,25 +204,25 @@ public class BroadalbinCommandBasketSampleAuto extends OpMode {
 
         time_since_start = new ElapsedTime();
 
-        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
-
-        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
-
-        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
-
-        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
-
-        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
-
-        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
-
-        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
-
-        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
-
-        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
-
-        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
+//        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
+//
+//        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
+//
+//        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
+//
+//        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
+//
+//        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
+//
+//        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
+//
+//        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
+//
+//        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
+//
+//        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
+//
+//        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
 
         RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
@@ -235,9 +235,6 @@ public class BroadalbinCommandBasketSampleAuto extends OpMode {
 
                 new SequentialCommandGroup(
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToBasketDepo"),
-//                        new WaitCommand(800),
-//                        new DepositToStateCommand(arm,wrist,gripper,lift,"basketToIntake"),
-//                        new WaitCommand(800),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
@@ -247,7 +244,7 @@ public class BroadalbinCommandBasketSampleAuto extends OpMode {
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
-                                RedBasket_BasketToAscentPark),
+                                        RedBasket_BasketToAscentPark),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
                                         new LiftToStateCommand(lift, 0, 25)))

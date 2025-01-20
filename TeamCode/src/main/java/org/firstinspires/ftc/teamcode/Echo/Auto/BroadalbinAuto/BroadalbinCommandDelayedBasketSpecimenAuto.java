@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SpecimenStartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToSub;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_SubToRightSample;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -93,13 +93,13 @@ public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    private ActionCommand RedBasket_StartToSub;
+    //    private ActionCommand RedBasket_StartToSub;
     private ActionCommand RedBasket_SubToRightSample;
-    private ActionCommand RedBasket_RightSampleToBasket;
-    private ActionCommand RedBasket_BasketToMidSample;
-    private ActionCommand RedBasket_MidSampleToBasket;
-    private ActionCommand RedBasket_BasketToLeftSample;
-    private ActionCommand RedBasket_LeftSampleToBasket;
+    //    private ActionCommand RedBasket_RightSampleToBasket;
+//    private ActionCommand RedBasket_BasketToMidSample;
+//    private ActionCommand RedBasket_MidSampleToBasket;
+//    private ActionCommand RedBasket_BasketToLeftSample;
+//    private ActionCommand RedBasket_LeftSampleToBasket;
     private ActionCommand RedBasket_BasketToAscentPark;
 
     private InstantCommand OpenGripper;
@@ -113,8 +113,6 @@ public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
     private InstantCommand GripperCheck;
 
     private DepositToStateCommand depositToStateCommand;
-
-
 
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
@@ -150,7 +148,6 @@ public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
         exampleSubsystem = new ExampleSubsystem(hardwareMap);
 
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
-
 
 
         CommandScheduler.getInstance().registerSubsystem(intake);//
@@ -193,38 +190,38 @@ public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
 
         CloseGripper = new InstantCommand(gripper::close);
 
-        WristSpecimen =  new InstantCommand(wrist::specimen);
+        WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen =  new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimen);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
 
-        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
+//        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
 
-        RedBasket_SubToRightSample = new ActionCommand (redBasket_SubToRightSample,requirements);
+        RedBasket_SubToRightSample = new ActionCommand(redBasket_SubToRightSample, requirements);
 
-        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+//        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
+//
+//        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
+//
+//        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
+//
+//        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
+//
+//        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
 
-        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
-
-        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
-
-        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
-
-        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
-
-        RedBasket_BasketToAscentPark = new ActionCommand (redBasket_BasketToAscentPark, requirements);
+        RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
-                new InstantCommand(()->lift.PIDEnabled= true),
+                new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new WaitCommand(13000),
+                        new WaitCommand(12000),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
                         RedBasket_SubToRightSample,
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
@@ -307,8 +304,6 @@ public class BroadalbinCommandDelayedBasketSpecimenAuto extends OpMode {
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
-
 
 
     }

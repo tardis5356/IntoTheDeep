@@ -10,19 +10,20 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajec
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_RightDepoToObsPrep;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_RightSpecToRightDepo;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpecEx_SubToLeftSpecZone;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToMidSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToRightSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidPointToLeftSpec;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_LeftSpecToObs;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_MidSpecToObs;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToMidSpec;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToRightSpec;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub1;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_ObsToSub3;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecToObs;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecObsPickUpToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SpecDepoToObs;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecToObs;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_RightSpecObsPickUpToSub;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_StartToSub;
+//import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToMidPoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToMidPoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.UticaAuto.UticaAutoTrajectories.redSpec_SubToObs;
 
@@ -70,16 +71,16 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     //RedSpecimen
     private ActionCommand RedSpec_StartToSub;
     private ActionCommand RedSpec_SubToMidPoint;
-    private ActionCommand RedSpec_MidPointToLeftSpec;
-    private ActionCommand RedSpec_LeftSpecToObs;
-    private ActionCommand RedSpec_ObsToMidSpec;
-    private ActionCommand RedSpec_MidSpecToObs;
-    private ActionCommand RedSpec_ObsToRightSpec;
-
-    private ActionCommand RedSpec_RightSpecObsPickUpToSub;
-    private ActionCommand RedSpec_RightSpecToObs;
-    private ActionCommand RedSpec_SpecDepoToObs;
-    private ActionCommand RedSpec_ObsToSub;
+    //    private ActionCommand RedSpec_MidPointToLeftSpec;
+//    private ActionCommand RedSpec_LeftSpecToObs;
+//    private ActionCommand RedSpec_ObsToMidSpec;
+//    private ActionCommand RedSpec_MidSpecToObs;
+//    private ActionCommand RedSpec_ObsToRightSpec;
+//
+//    private ActionCommand RedSpec_RightSpecObsPickUpToSub;
+//    private ActionCommand RedSpec_RightSpecToObs;
+//    private ActionCommand RedSpec_SpecDepoToObs;
+    private ActionCommand RedSpec_ObsToSub1;
 
     private ActionCommand RedSpec_ObsToSub2;
 
@@ -95,6 +96,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedSpecEx_MidSpecToMidDepo;
     private ActionCommand RedSpecEx_MidDepoToRightSpec;
     private ActionCommand RedSpecEx_RightSpecToRightDepo;
+    private ActionCommand RedSpecEx_ObsPrepToObsSpec;
 
 
     //RedBasket
@@ -119,27 +121,28 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
         //RedSpecimen
-        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
-        RedSpec_MidPointToLeftSpec = new ActionCommand(redSpec_MidPointToLeftSpec, requirements);
+        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
         RedSpec_SubToMidPoint = new ActionCommand(redSpec_SubToMidPoint, requirements);
 
-        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
+//        RedSpec_MidPointToLeftSpec = new ActionCommand(redSpec_MidPointToLeftSpec, requirements);
 
-        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
+//        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
 
-        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec, requirements);
+//        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
 
-        RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
+//        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec, requirements);
 
-        RedSpec_RightSpecObsPickUpToSub = new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements);
+//        RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
 
-        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);
+//        RedSpec_RightSpecObsPickUpToSub = new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements);
 
-        RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
+//        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);
 
-        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub1, requirements);
+//        RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
+
+        RedSpec_ObsToSub1 = new ActionCommand(redSpec_ObsToSub1, requirements);
 
         RedSpec_ObsToSub2 = new ActionCommand(redSpec_ObsToSub2, requirements);
 
@@ -148,7 +151,6 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
 
         RedSpec_SubToObs2 = new ActionCommand(redSpec_SubToObs2, requirements);
-
 
         RedSpecEx_LeftSpecToLeftDepo = new ActionCommand(redSpecEx_LeftSpecToLeftDepo, requirements);
 
@@ -159,6 +161,8 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedSpecEx_MidDepoToRightSpec = new ActionCommand(redSpecEx_MidDepoToRightSpec, requirements);
 
         RedSpecEx_RightSpecToRightDepo = new ActionCommand(redSpecEx_RightSpecToRightDepo, requirements);
+
+        RedSpecEx_ObsPrepToObsSpec = new ActionCommand(redSpecEx_ObsPrepToObsSpec, requirements);
 
 
         //RedBasket
@@ -202,10 +206,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         RedSpec_StartToSub,
                                         new SequentialCommandGroup(
-                                        new WaitCommand(2200),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
-                                        new InstantCommand(gripper::open)
-                                )
+                                                new WaitCommand(2200),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
+                                                new InstantCommand(gripper::open)
+                                        )
                                 )
 
 
@@ -250,7 +254,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "wallToSpecimen"),
-                                        RedSpec_ObsToSub
+                                        RedSpec_ObsToSub1
                                 ),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                 new InstantCommand(gripper::open),
@@ -566,16 +570,16 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(200),
                                                 RedBasket_BasketToLeftSample),
                                         new SequentialCommandGroup(
-                                        new WaitCommand(800),
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(extendo::out),
-                                                new SequentialCommandGroup(
-                                                        new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                                        new WaitCommand(100),
-                                                        new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
-                                        ),
-                                        new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
-                                )),
+                                                new WaitCommand(800),
+                                                new ParallelCommandGroup(
+                                                        new InstantCommand(extendo::out),
+                                                        new SequentialCommandGroup(
+                                                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                                                new WaitCommand(100),
+                                                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)))
+                                                ),
+                                                new DepositToStateCommand(arm, wrist, gripper, lift, "basketToIntake")
+                                        )),
 
                                 new ParallelCommandGroup(
                                         new IntakeGetSampleCommand(intake),
