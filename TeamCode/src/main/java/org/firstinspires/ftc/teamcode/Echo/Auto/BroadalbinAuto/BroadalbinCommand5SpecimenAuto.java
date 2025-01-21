@@ -58,7 +58,7 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "5SpecimenAuto")
 
 public class BroadalbinCommand5SpecimenAuto extends OpMode {
 

@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -52,6 +53,8 @@ public class Gen1_TeleOp extends CommandOpMode {
     boolean outaking = false;
 
     String notAColor;
+
+    boolean gOpen;
 
     //private IntakeInCommand intakeInCommand;
 
@@ -211,7 +214,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         gripper.intake();
         intake.transferPosition();
 
-
+        gOpen = true;
 
         //Changes if the drivetrain is in fast mode or slow mode. Thx Graham!
         CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
@@ -223,14 +226,30 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //gripper Commands
         {
+            new Trigger(()-> gripper.verifyGripper())
+                    .whenActive(new InstantCommand(()-> gOpen = false));
+
             //if driver 2 presses b, toggle between open and closed
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake")
-                    .toggleWhenActive(new InstantCommand(gripper::open), new InstantCommand(gripper::close));
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake" && !gOpen && DepositState != "specimen")
+                    .whileActiveOnce(new SequentialCommandGroup(
+                            new InstantCommand(gripper::open),
+                            new InstantCommand(()->gOpen = true)
+                    ));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake")
-                    .toggleWhenActive(new InstantCommand(gripper::close), new InstantCommand(gripper::intake));
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && gOpen )
+                    .whileActiveOnce(new SequentialCommandGroup(
+                            new InstantCommand(gripper::close),
+                            new InstantCommand(()->gOpen = false)
+                    ));
 
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y) && DepositState == "specimen")
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState == "intake" && !gOpen)
+                    .whileActiveOnce(new SequentialCommandGroup(
+                            new InstantCommand(gripper::intake),
+                            new InstantCommand(()->gOpen = true)
+                    ));
+
+
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y) && DepositState == "specimen" && !gOpen)
                     .whenActive(
                             new SequentialCommandGroup(
                                     new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 20),
@@ -285,7 +304,7 @@ public class Gen1_TeleOp extends CommandOpMode {
             //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
             //toggle between running the intake and not
 
-        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
+        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
                 .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
 
 
@@ -327,7 +346,7 @@ public class Gen1_TeleOp extends CommandOpMode {
             //       .whenActive(new InstantCommand(intake::transfer));
 
         //If driver1 hits a or driver2 hits x, run the intake pass or transfer command
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A))
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(new IntakePassCommand(intake));
 
             //if the gripper detects a sample while the depositing system is in the intake configuration, the intake should
@@ -345,25 +364,10 @@ public class Gen1_TeleOp extends CommandOpMode {
         //Extendo
         {
         //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .toggleWhenActive(
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition >= .78)
+                .whenActive(
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new InstantCommand(intake::stop),
-                                        new InstantCommand(intake::transferPosition),
-//                                        new WaitCommand(300),
-//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
-                                        new WaitCommand(350),
-                                        new InstantCommand(intake::stop)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new InstantCommand(extendo::in)
-                                ),
-                                new InstantCommand(()-> wasRaised = true)
-                        ),
                         new SequentialCommandGroup(
                                 new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
                                 new InstantCommand(intake::stop),
@@ -374,6 +378,23 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(()-> wasRaised = true)
                         )
                 );
+
+        new Trigger(()->driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78)
+                .whenActive(new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new InstantCommand(intake::stop),
+                                new InstantCommand(intake::transferPosition),
+//                                        new WaitCommand(300),
+//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
+                                new WaitCommand(350),
+                                new InstantCommand(intake::stop)
+                        ),
+                        new SequentialCommandGroup(
+                                new WaitCommand(400),
+                                new InstantCommand(extendo::in)
+                        ),
+                        new InstantCommand(()-> wasRaised = true)
+                ));
 
         //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
@@ -408,6 +429,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         basketToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -416,6 +438,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         wallToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -424,6 +447,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         specimenToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -432,6 +456,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         intakeToIntake,
                         new InstantCommand(() -> DepositState = "intake"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -441,6 +466,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         basketToWall,
                         new InstantCommand(() -> DepositState = "wall"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -451,6 +477,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         intakeToWallWithSomething,
                         new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "wall"),
+                        new InstantCommand(() -> gOpen = false),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 
@@ -459,6 +486,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                             new InstantCommand(()->lift.PIDEnabled= true),
                             intakeToWallWithNothing,
                             new InstantCommand(() -> DepositState = "wall"),
+                            new InstantCommand(() -> gOpen = true),
                             new InstantCommand(() -> killSwitchActive = false)
                     ))
                     .cancelWhenActive(specimenToWall);
@@ -469,6 +497,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(()->lift.PIDEnabled= true),
                         specimenToWall,
                         new InstantCommand(() -> DepositState = "wall"),
+                        new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
 

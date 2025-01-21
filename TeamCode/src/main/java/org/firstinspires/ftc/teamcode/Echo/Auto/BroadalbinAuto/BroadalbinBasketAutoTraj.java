@@ -13,12 +13,12 @@ public class BroadalbinBasketAutoTraj {
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-57,-58, Math.toRadians(45));
-    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-48, -62, Math.toRadians(93));
-    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-48, -56, Math.toRadians(93));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47, -62, Math.toRadians(93));
+    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-47, -56, Math.toRadians(93));
     public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-51.5,-62, Math.toRadians(105));
     public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-51.5,-56, Math.toRadians(105));
     public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-55,-61, Math.toRadians(120));
-    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-55,-54, Math.toRadians(120));
+    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-55,-52, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-26, -12, Math.toRadians(180));
 
 
