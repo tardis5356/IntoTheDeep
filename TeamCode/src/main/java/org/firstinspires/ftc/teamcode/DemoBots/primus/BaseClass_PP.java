@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.easyopencv.OpenCvCamera;
 
-import org.firstinspires.ftc.teamcode.DemoBots.primus.Pose;
+//import org.firstinspires.ftc.teamcode.DemoBots.primus.Pose;
 
 import java.util.Arrays;
 
@@ -70,8 +70,8 @@ public abstract class BaseClass_PP extends LinearOpMode {
     ElapsedTime runtime;
     ElapsedTime runtimeTwo;
     Orientation lastAngle = new Orientation();
-    Pose pose = new Pose(0, 0, 0);
-
+//    Pose pose = new Pose(0, 0, 0);
+//
     //Global sensor values
     float gyroZ = 0;        // initializing at zero just to be sure
     boolean isStartRecorded = false;
@@ -264,10 +264,10 @@ public abstract class BaseClass_PP extends LinearOpMode {
     }
 
     //////////////////////////////////////////////////////odometry functions///////////////////////////////////////////////
-    public Pose getPose() {
-        return this.pose;
-    }
-
+//    public Pose getPose() {
+//        return this.pose;
+//    }
+//
 
     //////////////////////////////////////////////////drive functions///////////////////////////////////////////////////
 

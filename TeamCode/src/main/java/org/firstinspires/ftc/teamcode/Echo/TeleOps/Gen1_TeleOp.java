@@ -387,8 +387,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new SequentialCommandGroup(
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(intake::transferPosition),
-//                                        new WaitCommand(300),
-//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
+                                     new WaitCommand(300),
+                                        new InstantCommand(()->intake.sIW.setPower(.17)),
                                 new WaitCommand(350),
                                 new InstantCommand(intake::stop)
                         ),
@@ -407,8 +407,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new SequentialCommandGroup(
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(intake::transferPosition),
-//                                        new WaitCommand(300),
-//                                        new InstantCommand(()->intake.sIW.setPower(.17)),
+                                        new WaitCommand(300),
+                                        new InstantCommand(()->intake.sIW.setPower(.17)),
                                         new WaitCommand(350),
                                         new InstantCommand(intake::stop)
                                 ),
@@ -721,7 +721,7 @@ public class Gen1_TeleOp extends CommandOpMode {
             lift.ManualMode(driftLock(gamepad2.left_stick_y), driftLock(gamepad2.right_stick_y));
 
             //applies stick values to motor variables with cubic scaling
-            Rotation = cubicScaling(-gamepad1.right_stick_x);
+            Rotation = cubicScaling(-gamepad1.right_stick_x)*0.7;
             FB = cubicScaling(gamepad1.left_stick_y);
             LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
 

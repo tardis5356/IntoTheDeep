@@ -222,10 +222,10 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(300),
+                                new WaitCommand(200),
                                 new InstantCommand(arm::wall),
                                 new InstantCommand(wrist::wall),
-                                new WaitCommand(300),
+                                new WaitCommand(200),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
                         new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
                         //new InstantCommand(gripper::open)
