@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "Primus_TeleOp", group="demo")
 public class Primus_Teleop extends LinearOpMode {    // LinearOpMode {
 
@@ -135,7 +135,7 @@ public class Primus_Teleop extends LinearOpMode {    // LinearOpMode {
                 armPosition = 1000;
                 PosDiff = armPosition - mBR.getCurrentPosition();
                 FarForward = true;
-                if(rightY2 < 0){
+                if(rightY2 > 0){
                     vArmPower = (0);
                 }
 
