@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_BLUE_MIN;
 import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE_RED_MIN;
 //import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
 //import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -21,6 +24,11 @@ public class Gripper extends SubsystemBase {
 
     //boolean gripperClosed;
     boolean gripperClear; // this is a variable to store if a sample is inside the gripper or not.
+
+
+
+
+
 
     public Gripper(HardwareMap hardwareMap){
         //hardware map the objects to the configuration
@@ -62,6 +70,7 @@ public class Gripper extends SubsystemBase {
     }
     public boolean verifyGripper(){
         if ((((DistanceSensor) cG).getDistance(DistanceUnit.CM) <= 3)){
+
             return true;
         }
         else {

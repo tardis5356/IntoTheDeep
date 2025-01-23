@@ -12,8 +12,8 @@ public class BroadalbinSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -64, Math.toRadians(90));
     //   public static final Pose2d redSpec_StartPos = new Pose2d(40, -64, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -31, Math.toRadians(90)); //x=0
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35, -64.75, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-5, -29, Math.toRadians(90)); //x=0
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35, -66, Math.toRadians(90));
     //    public static final Pose2d redSpec_LeftSpecZonePos = new Pose2d(46, -10, Math.toRadians(90));
     //    public static final Pose2d redSpec_LeftSpecDepoPos = new Pose2d(46, -56, Math.toRadians(90));
     //    public static final Pose2d redSpec_MidSpecZonePos = new Pose2d(53, -10, Math.toRadians(90));
@@ -21,17 +21,17 @@ public class BroadalbinSpecimenAutoTraj {
     //    public static final Pose2d redSpec_RightSpecZonePos = new Pose2d(63, -14, Math.toRadians(90));
     //    public static final Pose2d redSpec_RightSpecDepoPos = new Pose2d(63, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(0, -32.75, Math.toRadians(90)); //x=3
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3, -32.75, Math.toRadians(90)); //x=6
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -30, Math.toRadians(85)); //x=9
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(9,-30, Math.toRadians(85));
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(29, -45, Math.toRadians(45));
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(29.1, -45, Math.toRadians(340));
-    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40, -48, Math.toRadians(58));
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-2.5, -29, Math.toRadians(90)); //x=3
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(0, -29, Math.toRadians(90)); //x=6
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(2.5, -29, Math.toRadians(90)); //x=9
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(5,-29, Math.toRadians(90));
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(30, -45, Math.toRadians(45));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(30, -45.1, Math.toRadians(300));
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40, -48, Math.toRadians(45));
     public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.8, -52, Math.toRadians(320));//320
-    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(48, -48, Math.toRadians(55));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(41, -57, Math.toRadians(345)); //37,-58,335
-    public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(35, -58.5, Math.toRadians(90));
+    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(49, -48, Math.toRadians(55));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(42, -57, Math.toRadians(345)); //37,-58,335
+    public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(35, -58, Math.toRadians(90));
 
 
     //Actions
@@ -131,19 +131,19 @@ public class BroadalbinSpecimenAutoTraj {
 
         redSpec_SubToObs2 =
                 drive.actionBuilder(redSpec_SubDepoPos2)
-                        .setTangent(Math.toRadians(315))
+                        .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
         redSpec_SubToObs3 =
                 drive.actionBuilder(redSpec_SubDepoPos3)
-                        .setTangent(Math.toRadians(315))
+                        .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
         redSpec_SubToObs4 =
                 drive.actionBuilder(redSpec_SubDepoPos4)
-                        .setTangent(Math.toRadians(315))
+                        .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 
@@ -219,13 +219,13 @@ public class BroadalbinSpecimenAutoTraj {
         redSpecEx_RightDepoToObsPrep =
                 drive.actionBuilder(redSpecEx_RightSpecDepoPos)
                         .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(redSpecEx_ObsPrepPos, Math.toRadians(90))
+                        .splineToLinearHeading(redSpecEx_ObsPrepPos, Math.toRadians(0))
                         .build();
 
         redSpecEx_ObsPrepToObsSpec =
                 drive.actionBuilder(redSpecEx_ObsPrepPos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(90))
+                        .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
     }
 }

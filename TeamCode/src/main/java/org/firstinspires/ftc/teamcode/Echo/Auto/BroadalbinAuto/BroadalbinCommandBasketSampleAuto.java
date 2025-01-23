@@ -37,6 +37,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
@@ -247,6 +248,7 @@ public class BroadalbinCommandBasketSampleAuto extends OpMode {
                                         RedBasket_BasketToAscentPark),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
+                                       new InstantCommand(() ->arm.sAR.setPosition(BotPositions.ARM_BASKET + .05)),
                                         new LiftToStateCommand(lift, 0, 25)))
                 )
         );

@@ -389,7 +389,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(intake::transferPosition),
                                      new WaitCommand(300),
                                         new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(350),
+                                new WaitCommand(310),
                                 new InstantCommand(intake::stop)
                         ),
                         new SequentialCommandGroup(
@@ -409,7 +409,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                         new InstantCommand(intake::transferPosition),
                                         new WaitCommand(300),
                                         new InstantCommand(()->intake.sIW.setPower(.17)),
-                                        new WaitCommand(350),
+                                        new WaitCommand(310),
                                         new InstantCommand(intake::stop)
                                 ),
                                 new SequentialCommandGroup(

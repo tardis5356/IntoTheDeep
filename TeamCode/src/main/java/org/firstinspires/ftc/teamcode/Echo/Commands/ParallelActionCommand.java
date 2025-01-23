@@ -212,7 +212,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         RedSpec_StartToSub,
                                         new SequentialCommandGroup(
-                                                new WaitCommand(2200),
+                                                new WaitCommand(1800),
                                                 new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                                 new WaitCommand(100),
                                                 new InstantCommand(gripper::open)
@@ -247,9 +247,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition)
                                 ),
                                 new ParallelCommandGroup(
-                                        new ActionCommand(redSpecEx_ObsPrepToObsSpec, requirements),
-                                        new GripperAutoCloseCommand(gripper)
-                                )
+                                        new ActionCommand(redSpecEx_ObsPrepToObsSpec, requirements)
+                                ),
+                                new InstantCommand(gripper::close)
+
                         )
                 );
                 break;
@@ -336,7 +337,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_SubToObs,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
 
                                         )
@@ -353,7 +354,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_SubToObs2,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
@@ -370,12 +371,12 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_SubToObs3,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
                                 new GripperAutoCloseCommand(gripper),
-                                new WaitCommand(250)
+                                new WaitCommand(100)
                         )
                 );
                 break;
@@ -532,7 +533,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -541,6 +542,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(
@@ -592,7 +594,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -601,6 +603,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(
@@ -651,7 +654,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -660,6 +663,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(

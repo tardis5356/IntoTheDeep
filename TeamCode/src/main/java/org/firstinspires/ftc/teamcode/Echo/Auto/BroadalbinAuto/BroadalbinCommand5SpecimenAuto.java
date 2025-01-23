@@ -227,9 +227,9 @@ public class BroadalbinCommand5SpecimenAuto extends OpMode {
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
-                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
-                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
-                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
+//                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
+//                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
+//                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
 
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
