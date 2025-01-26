@@ -108,6 +108,8 @@ public class Gen1_TeleOp extends CommandOpMode {
     //This is then used to determine which DepositToStateCommand should be called.
     static String DepositState;
 
+    boolean IntakeToggle = true;
+
 
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand intakeToIntake, wallToIntake, basketToIntake, specimenToIntake;
@@ -307,8 +309,17 @@ public class Gen1_TeleOp extends CommandOpMode {
             //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
             //toggle between running the intake and not
 
-        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)))
-                .toggleWhenActive(new InstantCommand(intake::in), new InstantCommand(intake::stop));
+        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == true)
+                .whenActive(new SequentialCommandGroup(new InstantCommand(intake::in),
+                        new WaitCommand(50),
+                        new InstantCommand(() -> IntakeToggle = false)
+                ));
+
+            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == false)
+                    .whenActive( new SequentialCommandGroup(new InstantCommand(intake::stop),
+                            new WaitCommand(50),
+                            new InstantCommand(() -> IntakeToggle = true)
+                    ));
 
 
 
@@ -320,8 +331,8 @@ public class Gen1_TeleOp extends CommandOpMode {
                                     //new InstantCommand(()-> intake.samplePresent = false),
                                     new InstantCommand(()-> outaking = true),
                                     new InstantCommand(intake::out),
+                                    new InstantCommand(() -> IntakeToggle = false),
                                     new WaitCommand(2000),
-                                    new InstantCommand(intake::stop),
                                     new InstantCommand(()-> outaking = false)
                                     //new IntakeOutCommand(intake)
                             )
@@ -335,8 +346,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new WaitCommand(1000),
                                 new InstantCommand(intake::stop),
                                 new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
-                                new WaitCommand(1000),
-                                new InstantCommand(intake::stop)
+                                        new InstantCommand(() -> IntakeToggle = false)
                         )
                 );
 
