@@ -388,6 +388,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                                 new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
                                 new WaitCommand(300),
                                 new InstantCommand(extendo::out),
+                                new InstantCommand(()-> IntakeToggle = true),
                                 new InstantCommand(()-> wasRaised = true)
                         )
                 );

@@ -332,7 +332,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
 
                                         )
                                 ),
-                                new GripperAutoCloseCommand(gripper)
+                                new InstantCommand(gripper::close)
                         )
                 );
                 break;
@@ -348,7 +348,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
-                                new GripperAutoCloseCommand(gripper)
+                                new InstantCommand(gripper::close)
                         )
                 );
                 break;
@@ -364,7 +364,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                                 new InstantCommand(gripper::open)
                                         )
                                 ),
-                                new GripperAutoCloseCommand(gripper)
+                                new InstantCommand(gripper::close)
                         )
                 );
                 break;
