@@ -26,7 +26,7 @@ public class BroadalbinSpecimenAutoTraj {
     public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(2.5, -29, Math.toRadians(90)); //x=9
     public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(5,-29, Math.toRadians(90));
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(30, -45, Math.toRadians(45));
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(30, -45.1, Math.toRadians(300));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(30, -45.1, Math.toRadians(307));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(40, -48, Math.toRadians(55));
     public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(40.8, -52, Math.toRadians(320));//320
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(49, -48, Math.toRadians(55));
