@@ -222,7 +222,6 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
                         )
                 );
-
                 break;
 
             case "redSpec_SubToLeftSpec":

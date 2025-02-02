@@ -24,6 +24,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -60,6 +61,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "Delayed-SpecimenAuto")
+@Disabled
 
 public class BroadalbinCommandDelayedSpecimenExAuto extends OpMode {
 
