@@ -154,6 +154,8 @@ public class MVCC_TeleOp extends CommandOpMode {
 
 
 
+
+
     }
     private double cubicScaling(float joystickValue) {
         //store 5% of the joystick value + 95% of the joystick value to the 3rd power
