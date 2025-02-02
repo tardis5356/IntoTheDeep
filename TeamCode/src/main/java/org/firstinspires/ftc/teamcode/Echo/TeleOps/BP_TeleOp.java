@@ -240,7 +240,11 @@ public class BP_TeleOp extends CommandOpMode {
                     .whenActive(new InstantCommand(()-> gOpen = false));
 
             new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                    .whenActive(new InstantCommand((arm::specimenHang)));
+                    .whenActive(new SequentialCommandGroup(
+                            new InstantCommand(arm::specimenHang),
+                            new WaitCommand(650),
+                            new InstantCommand(gripper::open)
+                    ));
 
             //if driver 2 presses b, toggle between open and closed
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake" && !gOpen)
