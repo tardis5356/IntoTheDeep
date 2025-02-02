@@ -2,36 +2,36 @@ package org.firstinspires.ftc.teamcode.Echo.Commands;
 
 //RedSpec
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToLeftSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToMidSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_BasketToRightSample;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleIntake;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_RightSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinBasketAutoTraj.redBasket_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_LeftDepoToMidSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_LeftSpecToLeftDepo;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_MidDepoToRightSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_MidSpecToMidDepo;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_ObsPrepToObsSpec;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_RightDepoToObsPrep;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_RightSpecToRightDepo;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpecEx_SubToLeftSpecZone;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub1;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub2;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub3;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub4;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_StartToSub;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToMidPoint;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs2;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs3;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs4;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToLeftSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToMidSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftDepoToMidSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftSpecToLeftDepo;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_MidDepoToRightSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_MidSpecToMidDepo;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_ObsPrepToObsSpec;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_RightDepoToObsPrep;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_RightSpecToRightDepo;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_SubToLeftSpecZone;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_ObsToSub1;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_ObsToSub2;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_ObsToSub3;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_ObsToSub4;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToMidPoint;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs2;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs3;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs4;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -60,15 +60,6 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
     //RedSpecimen
     private ActionCommand RedSpec_StartToSub;
     private ActionCommand RedSpec_SubToMidPoint;
-    //    private ActionCommand RedSpec_MidPointToLeftSpec;
-//    private ActionCommand RedSpec_LeftSpecToObs;
-//    private ActionCommand RedSpec_ObsToMidSpec;
-//    private ActionCommand RedSpec_MidSpecToObs;
-//    private ActionCommand RedSpec_ObsToRightSpec;
-//
-//    private ActionCommand RedSpec_RightSpecObsPickUpToSub;
-//    private ActionCommand RedSpec_RightSpecToObs;
-//    private ActionCommand RedSpec_SpecDepoToObs;
     private ActionCommand RedSpec_ObsToSub1;
     private ActionCommand RedSpec_ObsToSub2;
     private ActionCommand RedSpec_ObsToSub3;
@@ -112,22 +103,6 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
         RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
 
         RedSpec_SubToMidPoint = new ActionCommand(redSpec_SubToMidPoint, requirements);
-
-//        RedSpec_MidPointToLeftSpec = new ActionCommand(redSpec_MidPointToLeftSpec, requirements);
-
-//        RedSpec_LeftSpecToObs = new ActionCommand(redSpec_LeftSpecToObs, requirements);
-
-//        RedSpec_MidSpecToObs = new ActionCommand(redSpec_MidSpecToObs, requirements);
-
-//        RedSpec_ObsToMidSpec = new ActionCommand(redSpec_ObsToMidSpec, requirements);
-
-//        RedSpec_ObsToRightSpec = new ActionCommand(redSpec_ObsToRightSpec, requirements);
-
-//        RedSpec_RightSpecObsPickUpToSub = new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements);
-
-//        RedSpec_RightSpecToObs = new ActionCommand(redSpec_RightSpecToObs, requirements);
-
-//        RedSpec_SpecDepoToObs = new ActionCommand(redSpec_SpecDepoToObs, requirements);
 
         RedSpec_ObsToSub1 = new ActionCommand(redSpec_ObsToSub1, requirements);
 
@@ -305,20 +280,6 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                 );
                 break;
 
-//            case "specDepoToObs":
-//                addCommands(
-//                        new SequentialCommandGroup(
-//                                new ParallelCommandGroup(
-//                                        RedSpec_SpecDepoToObs,
-//                                        new InstantCommand(gripper::close),
-//                                        new InstantCommand(wrist::specimen),
-//                                        new InstantCommand(arm::specimen)                                ),
-//                                RedSpec_ObsSpecCheck,
-//                                new WaitCommand(1500),
-//                          new InstantCommand(gripper::close)
-//                        )
-//                );
-//                break;
 
             case "redSpec_SubToObs":
                 addCommands(
@@ -326,7 +287,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs,
                                         new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                       new SequentialCommandGroup(
+                                        new SequentialCommandGroup(
                                                 new WaitCommand(1000),
                                                 new InstantCommand(gripper::open)
 
@@ -677,4 +638,3 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
         depositCurrentState = "wall";
     }
 }
-
