@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand5Specimen;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
@@ -215,14 +215,14 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToSub"),
                         RedBasket_SubToRightSample,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+                        new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),

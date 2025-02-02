@@ -39,6 +39,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeGetSampleCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
@@ -482,7 +483,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -491,6 +492,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(
@@ -542,7 +544,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -551,6 +553,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(
@@ -601,7 +604,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                                         new InstantCommand(intake::transferPosition),
                                         new InstantCommand(() -> intake.sIW.setPower(.17)),
                                         new InstantCommand(() -> intake.sIO.setPower(.17)),
-                                        new WaitCommand(500),
+                                        new WaitCommand(400),
                                         new InstantCommand(intake::stop),
                                         new InstantCommand(extendo::in)
                                 ),
@@ -610,6 +613,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper)),
+                                new InstantCommand(() ->intake.sIW.setPower(BotPositions.INTAKE_TRANSFER)),
                                 new WaitCommand(500),
                                 new InstantCommand(intake::stop),
                                 new ParallelCommandGroup(
@@ -621,7 +625,6 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
                         )
                 );
                 break;
-
 
         }
     }
