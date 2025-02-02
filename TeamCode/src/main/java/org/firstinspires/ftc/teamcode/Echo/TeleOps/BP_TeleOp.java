@@ -177,6 +177,16 @@ public class BP_TeleOp extends CommandOpMode {
         intakeToSpecimen = new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToSpecimen");
         basketToSpecimen = new DepositToStateCommand(arm,wrist,gripper,lift,"basketToSpecimen");
 
+        intakeToBasketLow = new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketLow");
+        wallToBasketLow = new DepositToStateCommand(arm,wrist,gripper,lift,"wallToBasketLow");
+        specimenToBasketLow = new DepositToStateCommand(arm,wrist,gripper,lift,"specimenToBasketLow");
+        basketHighToBasketLow = new DepositToStateCommand(arm,wrist,gripper,lift,"basketHighToBasketLow");
+
+        intakeToBasketHigh = new DepositToStateCommand(arm,wrist,gripper,lift,"intakeToBasketHigh");
+        wallToBasketHigh = new DepositToStateCommand(arm,wrist,gripper,lift,"wallToBasketHigh");
+        specimenToBasketHigh = new DepositToStateCommand(arm,wrist,gripper,lift,"specimenToBasketHigh");
+        basketLowToBasketHigh = new DepositToStateCommand(arm,wrist,gripper,lift,"basketLowToBasketHigh");
+
 
 
         intakeOutCommand = new IntakeOutCommand(intake);
