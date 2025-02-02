@@ -54,6 +54,10 @@ public class MVCC_TeleOp extends CommandOpMode {
     double FB, LR, Rotation;
 
     private Extendo extendo;
+    double LeftTrigger;
+    double RightTrigger;
+    //This is the difference of the two driver1 trigger values that is then added to the position of the extension servos
+    double Trigger;
 
 
     @Override
@@ -122,6 +126,24 @@ public class MVCC_TeleOp extends CommandOpMode {
         double mFLPower = FB + LR + Rotation;
         double mFRPower = FB - LR - Rotation;
         double mBLPower = FB - LR + Rotation;
+
+        //these define the left and right trigger values as the real triggers and takes there difference divided by ten
+        //as the input of the extendo.update method.
+        LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+
+        RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+
+        Trigger = (LeftTrigger - RightTrigger)/10;
+
+        //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
+        if(Trigger > .07){
+            Trigger = .07;
+        }
+        else if(Trigger < -.07){
+            Trigger = -.07;
+        }
+
+        extendo.update(Trigger);
         double mBRPower = FB + LR - Rotation;
 
         //actually sets the motor powers
@@ -129,6 +151,8 @@ public class MVCC_TeleOp extends CommandOpMode {
         mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
         mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+
+
 
     }
     private double cubicScaling(float joystickValue) {
