@@ -115,7 +115,8 @@ public class Gen1_TeleOp extends CommandOpMode {
     public DepositToStateCommand intakeToIntake, wallToIntake, basketToIntake, specimenToIntake;
     public DepositToStateCommand intakeToWallWithSomething, intakeToWallWithNothing, basketToWall, specimenToWall;
     public DepositToStateCommand intakeToSpecimen, basketToSpecimen, wallToSpecimen;
-
+    public DepositToStateCommand intakeToBasketLow, wallToBasketLow, specimenToBasketLow, basketHighToBasketLow;
+    public DepositToStateCommand intakeToBasketHigh, wallToBasketHigh, specimenToBasketHigh, basketLowToBasketHigh;
 
 
     public IntakeOutCommand intakeOutCommand;
@@ -448,7 +449,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                //.cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
@@ -457,7 +477,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                //.cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
@@ -466,7 +505,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
+                //.cancelWhenActive(specimenToIntake);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
@@ -475,7 +533,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "intake"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                //.cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         //ToWallCommands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
@@ -485,7 +562,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                //.cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                 .whenActive(new SequentialCommandGroup(
@@ -496,7 +592,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> gOpen = false),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))
+                .cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                //.cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && !gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
@@ -506,7 +621,24 @@ public class Gen1_TeleOp extends CommandOpMode {
                             new InstantCommand(() -> gOpen = true),
                             new InstantCommand(() -> killSwitchActive = false)
                     ))
-                    .cancelWhenActive(specimenToWall);
+                    .cancelWhenActive(specimenToWall)
+                    .cancelWhenActive(intakeToWallWithSomething)
+                    .cancelWhenActive(intakeToBasketHigh)
+                    .cancelWhenActive(intakeToBasketLow)
+                    .cancelWhenActive(intakeToIntake)
+                    .cancelWhenActive(intakeToSpecimen)
+                    .cancelWhenActive(basketHighToBasketLow)
+                    .cancelWhenActive(basketLowToBasketHigh)
+                    .cancelWhenActive(basketToIntake)
+                    .cancelWhenActive(basketToSpecimen)
+                    .cancelWhenActive(basketToWall)
+                    .cancelWhenActive(specimenToBasketLow)
+                    .cancelWhenActive(specimenToBasketHigh)
+                    .cancelWhenActive(specimenToIntake)
+                    .cancelWhenActive(wallToBasketHigh)
+                    .cancelWhenActive(wallToBasketLow)
+                    .cancelWhenActive(wallToIntake)
+                    .cancelWhenActive(wallToSpecimen);
 
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
@@ -516,105 +648,332 @@ public class Gen1_TeleOp extends CommandOpMode {
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> gOpen = true),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                ))//.cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         //ToHighBasket Commands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
+                        wallToBasketHigh,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                //.cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
                         new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
+                        intakeToBasketHigh,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
                         new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                //.cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
+                        specimenToBasketHigh,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                //.cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "basketLow")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketLowToBasketHigh"),
+                        basketLowToBasketHigh,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"basketLowToBasketHigh"),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                //.cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         //To Low Basket Commands
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "basketHigh")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketHighToBasketLow"),
+                        basketHighToBasketLow,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"basketHighToBasketLow"),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                //.cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
                         new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketLow"),
+                        intakeToBasketLow,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketLow"),
                         new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                //.cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketLow"),
+                        wallToBasketLow,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketLow"),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                //.cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "specimen")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketLow"),
+                        specimenToBasketLow,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketLow"),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                //.cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         //To high specimen commands
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"basketToSpecimen"),
+                        basketToSpecimen,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"basketToSpecimen"),
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                //.cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "wall")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"wallToSpecimen"),
+                        wallToSpecimen,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToSpecimen"),
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                .cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake);
+                //.cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
                         new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
-                        new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
+                        intakeToSpecimen,
+                        //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
                         new InstantCommand(()->intake.sIW.setPower(0)),
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
-                ));
+                )).cancelWhenActive(specimenToWall)
+                .cancelWhenActive(intakeToWallWithNothing)
+                .cancelWhenActive(intakeToWallWithSomething)
+                .cancelWhenActive(intakeToBasketHigh)
+                .cancelWhenActive(intakeToBasketLow)
+                //.cancelWhenActive(intakeToSpecimen)
+                .cancelWhenActive(intakeToIntake)
+                .cancelWhenActive(basketHighToBasketLow)
+                .cancelWhenActive(basketLowToBasketHigh)
+                .cancelWhenActive(basketToIntake)
+                .cancelWhenActive(basketToSpecimen)
+                .cancelWhenActive(basketToWall)
+                .cancelWhenActive(specimenToBasketLow)
+                .cancelWhenActive(specimenToBasketHigh)
+                .cancelWhenActive(specimenToIntake)
+                .cancelWhenActive(wallToBasketHigh)
+                .cancelWhenActive(wallToBasketLow)
+                .cancelWhenActive(wallToIntake)
+                .cancelWhenActive(wallToSpecimen);
 
         //To hang
 
@@ -626,7 +985,25 @@ public class Gen1_TeleOp extends CommandOpMode {
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = true),
                             new InstantCommand(extendo::in)
-                    ));
+                    )).cancelWhenActive(specimenToWall)
+                    .cancelWhenActive(intakeToWallWithNothing)
+                    .cancelWhenActive(intakeToWallWithSomething)
+                    .cancelWhenActive(intakeToBasketHigh)
+                    .cancelWhenActive(intakeToBasketLow)
+                    .cancelWhenActive(intakeToSpecimen)
+                    .cancelWhenActive(intakeToIntake)
+                    .cancelWhenActive(basketHighToBasketLow)
+                    .cancelWhenActive(basketLowToBasketHigh)
+                    .cancelWhenActive(basketToIntake)
+                    .cancelWhenActive(basketToSpecimen)
+                    .cancelWhenActive(basketToWall)
+                    .cancelWhenActive(specimenToBasketLow)
+                    .cancelWhenActive(specimenToBasketHigh)
+                    .cancelWhenActive(specimenToIntake)
+                    .cancelWhenActive(wallToBasketHigh)
+                    .cancelWhenActive(wallToBasketLow)
+                    .cancelWhenActive(wallToIntake)
+                    .cancelWhenActive(wallToSpecimen);
 
 //            new Trigger(()-> driver2.getButton(GamepadKeys.Button.START) && killSwitchActive)
 //                    .whenActive(new SequentialCommandGroup(

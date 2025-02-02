@@ -1,18 +1,8 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.generateTrajectories;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_LeftSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_MidPointToLeftSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_MidSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToMidSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToRightSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_RightSpecObsPickUpToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_RightSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_StartPos;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_StartToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToMidPoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -23,7 +13,6 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -60,9 +49,8 @@ import java.util.Set;
  */
 
 @Autonomous(name = "SpecimenAuto")
-@Disabled
 
-public class BroadalbinCommandSpecimenExAuto extends OpMode {
+public class MVCCCommandSpecimenExAuto extends OpMode {
 
 
     // Declare OpMode members.

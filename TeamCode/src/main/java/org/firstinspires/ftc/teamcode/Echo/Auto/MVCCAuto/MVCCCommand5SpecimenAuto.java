@@ -1,19 +1,7 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.generateTrajectories;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_LeftSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_MidPointToLeftSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_MidSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToMidSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToRightSpec;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_ObsToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_RightSpecObsPickUpToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_RightSpecToObs;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SpecDepoToObs;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_StartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_StartToSub;
-//import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToMidPoint;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.BroadalbinAuto.BroadalbinSpecimenAutoTraj.redSpec_SubToObs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -23,7 +11,6 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -32,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand5Specimen;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
@@ -40,7 +27,6 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
-import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 
 import java.util.Set;
@@ -59,10 +45,9 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "SpecimenAuto")
-@Disabled
+@Autonomous(name = "5SpecimenAuto")
 
-public class BroadalbinCommandSpecimenExAuto extends OpMode {
+public class MVCCCommand5SpecimenAuto extends OpMode {
 
 
     // Declare OpMode members.
@@ -88,7 +73,9 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    private ActionCommand RedSpec_StartToSub;
+    private ParallelActionCommand5Specimen RedSpec_StartToSub;
+
+
     //    private ActionCommand RedSpec_SubToMidPoint;
 //    private ActionCommand RedSpec_MidPointToLeftSpec;
 //    private ActionCommand RedSpec_RightSpecToObs;
@@ -99,22 +86,26 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
 //    private ActionCommand RedSpec_MidSpecToObs;
 //    private ActionCommand RedSpec_ObsToMidSpec;
 //    private ActionCommand RedSpec_ObsToSub;
-    private ActionCommand RedSpec_SubToObs;
-
+    private ParallelActionCommand5Specimen RedSpec_SubToObs;
     private InstantCommand OpenGripper;
-
     private InstantCommand CloseGripper;
-
     private InstantCommand WristSpecimen;
-
     private InstantCommand ArmSpecimen;
-
     private InstantCommand GripperCheck;
-
     private DepositToStateCommand Wall;
-
     private GripperAutoCloseCommand gripperAutoCloseCommand;
+    private ParallelActionCommand5Specimen RedSpecEx_LeftSpecDepo;
+    private ParallelActionCommand5Specimen RedSpecEx_MidSpecDepo;
+    private ParallelActionCommand5Specimen RedSpecEx_RightSpecDepo;
+    private ParallelActionCommand5Specimen RedSpec_RightSpecDepoToObs;
+    private ParallelActionCommand5Specimen RedSpec_ObsToSub1;
+    private ParallelActionCommand5Specimen RedSpec_ObsToSub2;
 
+    private ParallelActionCommand5Specimen RedSpec_SubToObs2;
+    private ParallelActionCommand5Specimen RedSpec_ObsToSub3;
+    private ParallelActionCommand5Specimen RedSpec_SubToObs3;
+    private ParallelActionCommand5Specimen RedSpec_ObsToSub4;
+    private ParallelActionCommand5Specimen RedSpec_SubToObs4;
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
@@ -141,6 +132,7 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
         generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
 
 
+
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
@@ -153,6 +145,20 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
 
 
         CommandScheduler.getInstance().registerSubsystem(intake);//
+        RedSpec_StartToSub = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_StartToSub");
+        RedSpecEx_LeftSpecDepo = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_LeftSpecDepo");
+        RedSpecEx_MidSpecDepo = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_MidSpecDepo");
+        RedSpecEx_RightSpecDepo = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_RightSpecDepo");
+        RedSpec_RightSpecDepoToObs = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs");
+        RedSpec_ObsToSub1 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub1");
+        RedSpec_SubToObs = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs");
+        RedSpec_ObsToSub2 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub2");
+        RedSpec_SubToObs2 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs2");
+        RedSpec_ObsToSub3 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub3");
+        RedSpec_SubToObs3 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs3");
+        RedSpec_ObsToSub4 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub4");
+        RedSpec_SubToObs4 = new ParallelActionCommand5Specimen(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs4");
+
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -182,11 +188,6 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
 
         generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
 
-        RedSpec_StartToSub = new ActionCommand(redSpec_StartToSub, requirements);
-
-//        RedSpec_ObsToSub = new ActionCommand(redSpec_ObsToSub, requirements);
-
-        RedSpec_SubToObs = new ActionCommand(redSpec_SubToObs, requirements);
 
         OpenGripper = new InstantCommand(gripper::open);
 
@@ -209,19 +210,24 @@ public class BroadalbinCommandSpecimenExAuto extends OpMode {
                 new InstantCommand(extendo::in),
                 new InstantCommand(intake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
+//                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
+//                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
+//                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_StartToSub"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_LeftSpecDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_MidSpecDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_RightSpecDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub1"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub2"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs2"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub3"),
-                        RedSpec_SubToObs
+                        RedSpec_StartToSub,
+                        RedSpecEx_LeftSpecDepo,
+                        RedSpecEx_MidSpecDepo,
+                        RedSpecEx_RightSpecDepo,
+                        RedSpec_RightSpecDepoToObs,
+                        RedSpec_ObsToSub1,
+                        RedSpec_SubToObs,
+                        RedSpec_ObsToSub2,
+                        RedSpec_SubToObs2,
+                        RedSpec_ObsToSub3,
+                        RedSpec_SubToObs3,
+                        RedSpec_ObsToSub4,
+                        RedSpec_SubToObs4
                 )
         );
     }
