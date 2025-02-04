@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
 
     public boolean Intaking;
     public boolean samplePresent;
-    public boolean Passing;
+    public boolean wasRaised;
 
     public Intake(HardwareMap hardwareMap){
         sIG = hardwareMap.get(Servo.class, "sIG");
@@ -73,6 +73,7 @@ public class Intake extends SubsystemBase {
 
                 sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
                 sIG.setPosition(BotPositions.INTAKE_ARM_DOWN);
+                wasRaised = false;
 
 
     }
@@ -81,12 +82,14 @@ public class Intake extends SubsystemBase {
         //sIT.setPosition(BotPositions.INTAKE_UP);
         sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
         sIT.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
+        wasRaised = true;
     }
     public void upPosition(){
         //specifically moves the intake arm and wrist to the transfer position
         //wrist up isn't used here since it was determined to be unnecessary
         sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN);
         sIG.setPosition(BotPositions.INTAKE_ARM_UP);
+        wasRaised = true;
     }
 
     public void outakePosition(){
