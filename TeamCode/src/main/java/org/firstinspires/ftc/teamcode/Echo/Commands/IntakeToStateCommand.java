@@ -26,24 +26,37 @@ public class IntakeToStateCommand extends ParallelCommandGroup {
             case "intakeDown":
                 addCommands(
                         new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                new InstantCommand(() -> intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
                                 new WaitCommand(200),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
-                                new InstantCommand(()-> wasRaised = false)
+                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
+                                new InstantCommand(() -> wasRaised = false)
                         )
                 );
                 //setState = "intake";
                 break;
+            case "intakeUp":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                new WaitCommand(200),
+                                new InstantCommand(() -> intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
+                                new InstantCommand(() -> wasRaised = true)
+                        )
+                );
+                break;
         }
     }    //These are no longer used.
+
     //They set the depositCurrentState to a value that is then used as a condition to select which case is ran
-    public void setBasket(){
+    public void setBasket() {
         depositCurrentState = "basket";
     }
-    public void setIntake(){
+
+    public void setIntake() {
         depositCurrentState = "intake";
     }
-    public void setWall(){
+
+    public void setWall() {
         depositCurrentState = "wall";
     }
 }

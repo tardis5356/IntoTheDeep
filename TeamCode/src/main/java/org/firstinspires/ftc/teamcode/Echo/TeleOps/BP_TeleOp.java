@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
@@ -292,26 +293,19 @@ public class BP_TeleOp extends CommandOpMode {
                 .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
-                        new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(200),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
-                                new InstantCommand(()-> wasRaised = false)
-                        )
+
+                                new IntakeToStateCommand(intake,"intakeDown")
+
                 );
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !wasRaised)
                 .whenActive(
-                        new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new WaitCommand(200),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
-                                new InstantCommand(()-> wasRaised = true)
-                        )
+                        new IntakeToStateCommand(intake,"intakeUp")
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
-                .whileActiveOnce(new SequentialCommandGroup(
+                .whileActiveOnce(
+                        new SequentialCommandGroup(
                         new InstantCommand(intake::transferPosition),
                         new InstantCommand(()-> wasRaised = true)
                         //new WaitCommand(200),
