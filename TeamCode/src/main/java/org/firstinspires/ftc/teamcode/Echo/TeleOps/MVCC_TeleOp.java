@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
@@ -59,10 +60,14 @@ public class MVCC_TeleOp extends CommandOpMode {
     //This is the difference of the two driver1 trigger values that is then added to the position of the extension servos
     double Trigger;
 
+    //intake
+    private Intake intake;
+
+
 
     @Override
     //stuff that is ran when you click init at the start of teleop.
-    public void initialize(){
+    public void initialize() {
 
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
@@ -90,35 +95,66 @@ public class MVCC_TeleOp extends CommandOpMode {
         {
             extendo = new Extendo(hardwareMap);
 
+            //intake
+            intake = new Intake(hardwareMap);
+
         }
 
-            CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
+        //initialization of subsystems for positions
+        {
+            intake.transferPosition();
+        }
+
+        CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER;
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
-                .toggleWhenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER, ()-> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
+                .toggleWhenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER, () -> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
 
         //Extendo commands
         {
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition >= .78)
-                .whenActive(
-                        new SequentialCommandGroup(
-                                new InstantCommand(extendo::out)
-                        )
-                );
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON) && extendo.extensionPosition >= .78)
+                    .whenActive(
+                                    new InstantCommand(extendo::out)
+                    );
 
-        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78) /*|| (intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))*/)
-                .whenActive(new ParallelCommandGroup(
-                                new InstantCommand(extendo::in)
-                        ));
+            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78) /*|| (intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))*/)
+                    .whenActive(
+                            new InstantCommand(extendo::in)
+                    );
+        }
+
+        //intake commands
+        {
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && intake.wasRaised)
+                    .whenActive(
+                            //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
+                            //that's done so we don't the intake pinned against the ground
+                            new SequentialCommandGroup(
+                                    new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                    new WaitCommand(200),
+                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
+                                    new InstantCommand(()-> intake.wasRaised = false)
+                            )
+                    );
+            new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !intake.wasRaised)
+                    .whenActive(
+                            new SequentialCommandGroup(
+                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
+                                    new WaitCommand(200),
+                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
+                                    new InstantCommand(()-> intake.wasRaised = true)
+                            )
+                    );
         }
 
     }
+
     //this is the main run loop
     public void run() {
 
         super.run();
 
         //applies stick values to motor variables with cubic scaling
-        Rotation = cubicScaling(-gamepad1.right_stick_x)*0.7;
+        Rotation = cubicScaling(-gamepad1.right_stick_x) * 0.7;
         FB = cubicScaling(gamepad1.left_stick_y);
         LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
 
@@ -129,18 +165,17 @@ public class MVCC_TeleOp extends CommandOpMode {
 
         //these define the left and right trigger values as the real triggers and takes there difference divided by ten
         //as the input of the extendo.update method.
-        LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        LeftTrigger = driftLock((float)driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/20;
 
-        RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+        RightTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER))/20;
 
-        Trigger = (LeftTrigger - RightTrigger)/10;
+        Trigger = (LeftTrigger - RightTrigger) / 10;
 
         //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
-        if(Trigger > .07){
-            Trigger = .07;
-        }
-        else if(Trigger < -.07){
-            Trigger = -.07;
+        if (Trigger > .03) {
+            Trigger = .03;
+        } else if (Trigger < -.03) {
+            Trigger = -.03;
         }
 
         extendo.update(Trigger);
@@ -153,10 +188,8 @@ public class MVCC_TeleOp extends CommandOpMode {
         mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
 
-
-
-
     }
+
     private double cubicScaling(float joystickValue) {
         //store 5% of the joystick value + 95% of the joystick value to the 3rd power
         double v = 0.05 * joystickValue + 0.95 * Math.pow(joystickValue, 3);
@@ -169,5 +202,13 @@ public class MVCC_TeleOp extends CommandOpMode {
             // theres a range where this won't do either, which is a good counter against stick drift (because you can never escape stick drift)
         else
             return 0;
+    }
+    private double driftLock(float stickValue){
+        if(stickValue > 0.02 || stickValue < -.02){
+            return stickValue;
+        }
+        else {
+            return  0;
+        }
     }
 }

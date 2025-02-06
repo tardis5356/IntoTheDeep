@@ -54,7 +54,7 @@ import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import java.util.Set;
 
 
-public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
+public class ParallelActionCommand extends ParallelCommandGroup {
 
     public String depositCurrentState = "";
 
@@ -96,7 +96,7 @@ public class ParallelActionCommand5Specimen extends ParallelCommandGroup {
     static String DepositState;
 
 
-    public ParallelActionCommand5Specimen(Arm arm, Wrist wrist, Gripper gripper, Lift lift, Extendo extendo, Intake intake, ExampleSubsystem exampleSubsystem, String desiredState/*, String setState*/) {
+    public ParallelActionCommand(Arm arm, Wrist wrist, Gripper gripper, Lift lift, Extendo extendo, Intake intake, ExampleSubsystem exampleSubsystem, String desiredState/*, String setState*/) {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
         //RedSpecimen
