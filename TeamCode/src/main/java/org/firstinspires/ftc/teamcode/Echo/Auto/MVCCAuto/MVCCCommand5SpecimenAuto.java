@@ -215,19 +215,19 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
 //                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
 
                 new SequentialCommandGroup(
-                        RedSpec_StartToSub,
-                        RedSpecEx_LeftSpecDepo,
-                        RedSpecEx_MidSpecDepo,
-                        RedSpecEx_RightSpecDepo,
-                        RedSpec_RightSpecDepoToObs,
-                        RedSpec_ObsToSub1,
-                        RedSpec_SubToObs,
-                        RedSpec_ObsToSub2,
-                        RedSpec_SubToObs2,
-                        RedSpec_ObsToSub3,
-                        RedSpec_SubToObs3,
-                        RedSpec_ObsToSub4,
-                        RedSpec_SubToObs4
+                        RedSpec_StartToSub
+//                        RedSpecEx_LeftSpecDepo,
+//                        RedSpecEx_MidSpecDepo,
+//                        RedSpecEx_RightSpecDepo,
+//                        RedSpec_RightSpecDepoToObs,
+//                        RedSpec_ObsToSub1,
+//                        RedSpec_SubToObs,
+//                        RedSpec_ObsToSub2,
+//                        RedSpec_SubToObs2,
+//                        RedSpec_ObsToSub3,
+//                        RedSpec_SubToObs3,
+//                        RedSpec_ObsToSub4,
+//                        RedSpec_SubToObs4
                 )
         );
     }

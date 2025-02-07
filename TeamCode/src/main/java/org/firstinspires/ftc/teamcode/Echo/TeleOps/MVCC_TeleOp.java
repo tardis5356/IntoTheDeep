@@ -20,6 +20,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
@@ -62,8 +63,12 @@ public class MVCC_TeleOp extends CommandOpMode {
 
     //intake
     private Intake intake;
+    private Servo sEL, sER, sIG;
+    boolean wasRaised = false;
 
+    IntakeToStateCommand intakeDown = new IntakeToStateCommand(intake, "intakeDown");
 
+    IntakeToStateCommand intakeUp = new IntakeToStateCommand(intake, "intakeUp");
 
     @Override
     //stuff that is ran when you click init at the start of teleop.
@@ -89,6 +94,10 @@ public class MVCC_TeleOp extends CommandOpMode {
             mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            sER = hardwareMap.get(Servo.class, "sER");
+            sEL = hardwareMap.get(Servo.class, "sEL");
+            sIG = hardwareMap.get(Servo.class, "sIG");
         }
 
         //subsystem hardware maps
@@ -113,7 +122,7 @@ public class MVCC_TeleOp extends CommandOpMode {
         {
             new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON) && extendo.extensionPosition >= .78)
                     .whenActive(
-                                    new InstantCommand(extendo::out)
+                            new InstantCommand(extendo::out)
                     );
 
             new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78) /*|| (intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))*/)
@@ -124,24 +133,20 @@ public class MVCC_TeleOp extends CommandOpMode {
 
         //intake commands
         {
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && intake.wasRaised)
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72 && wasRaised)
                     .whenActive(
                             //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                             //that's done so we don't the intake pinned against the ground
                             new SequentialCommandGroup(
-                                    new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                    new WaitCommand(200),
-                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_DOWN)),
-                                    new InstantCommand(()-> intake.wasRaised = false)
+                                    intakeDown,
+                                    new InstantCommand(()->wasRaised=false)
                             )
                     );
-            new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !intake.wasRaised)
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition() <= .72 && !wasRaised)
                     .whenActive(
                             new SequentialCommandGroup(
-                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                    new WaitCommand(200),
-                                    new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
-                                    new InstantCommand(()-> intake.wasRaised = true)
+                                    intakeUp,
+                                    new InstantCommand(()->wasRaised=true)
                             )
                     );
         }
@@ -165,17 +170,17 @@ public class MVCC_TeleOp extends CommandOpMode {
 
         //these define the left and right trigger values as the real triggers and takes there difference divided by ten
         //as the input of the extendo.update method.
-        LeftTrigger = driftLock((float)driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/20;
+        LeftTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)) / 20;
 
-        RightTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER))/20;
+        RightTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)) / 20;
 
         Trigger = (LeftTrigger - RightTrigger) / 10;
 
         //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
         if (Trigger > .03) {
-            Trigger = .03;
+            Trigger = .025;
         } else if (Trigger < -.03) {
-            Trigger = -.03;
+            Trigger = -.025;
         }
 
         extendo.update(Trigger);
@@ -203,12 +208,12 @@ public class MVCC_TeleOp extends CommandOpMode {
         else
             return 0;
     }
-    private double driftLock(float stickValue){
-        if(stickValue > 0.02 || stickValue < -.02){
+
+    private double driftLock(float stickValue) {
+        if (stickValue > 0.02 || stickValue < -.02) {
             return stickValue;
-        }
-        else {
-            return  0;
+        } else {
+            return 0;
         }
     }
 }

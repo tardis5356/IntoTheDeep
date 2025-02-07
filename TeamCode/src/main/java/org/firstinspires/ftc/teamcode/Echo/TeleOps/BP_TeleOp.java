@@ -293,13 +293,16 @@ public class BP_TeleOp extends CommandOpMode {
                 .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
-
-                                new IntakeToStateCommand(intake,"intakeDown")
+new SequentialCommandGroup(
+                                new IntakeToStateCommand(intake,"intakeDown"),
+                        new InstantCommand(()->wasRaised=false))
 
                 );
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !wasRaised)
                 .whenActive(
-                        new IntakeToStateCommand(intake,"intakeUp")
+                        new SequentialCommandGroup(
+                                new IntakeToStateCommand(intake,"intakeUp"),
+                                new InstantCommand(()->wasRaised=true))
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
@@ -336,15 +339,7 @@ public class BP_TeleOp extends CommandOpMode {
             //if the drivers manually hit outake or the wrong alliance color is detected, outake
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red")))
                     .whenActive(
-                            new SequentialCommandGroup(
-                                    //new InstantCommand(()-> intake.samplePresent = false),
-                                    new InstantCommand(()-> outaking = true),
-                                    new InstantCommand(intake::out),
-                                    new InstantCommand(() -> IntakeToggle = false),
-                                    new WaitCommand(2000),
-                                    new InstantCommand(()-> outaking = false)
-                                    //new IntakeOutCommand(intake)
-                            )
+                           new IntakeToStateCommand(intake, "intakeOut")
                     );
 
         //if the intake detects a sample and we haven't disabled the samplePresent variable for transferring
@@ -751,19 +746,18 @@ public class BP_TeleOp extends CommandOpMode {
 
             //these define the left and right trigger values as the real triggers and takes there difference divided by ten
             //as the input of the extendo.update method.
-            LeftTrigger = driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        LeftTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)) / 20;
 
-            RightTrigger = driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+        RightTrigger = driftLock((float) driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)) / 20;
 
-            Trigger = (LeftTrigger - RightTrigger)/10;
+        Trigger = (LeftTrigger - RightTrigger) / 10;
 
-            //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
-            if(Trigger > .07){
-                Trigger = .07;
-            }
-            else if(Trigger < -.07){
-                Trigger = -.07;
-            }
+        //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
+        if (Trigger > .03) {
+            Trigger = .025;
+        } else if (Trigger < -.03) {
+            Trigger = -.025;
+        }
 
             extendo.update(Trigger);
 

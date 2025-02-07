@@ -176,7 +176,8 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_StartToSub,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1500),
-                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
+                                                new InstantCommand(arm::specimenHang),
+                                                new WaitCommand(200),
                                                 new InstantCommand(gripper::open)
                                         )
                                 )

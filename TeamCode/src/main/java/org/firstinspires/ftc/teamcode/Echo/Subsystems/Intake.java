@@ -29,8 +29,11 @@ public class Intake extends SubsystemBase {
     //IntakeToFloorCommand intakeToFloorCommand;
 
     public boolean Intaking;
+    boolean outaking;
     public boolean samplePresent;
     public boolean wasRaised;
+
+    boolean IntakeToggle;
 
     public Intake(HardwareMap hardwareMap){
         sIG = hardwareMap.get(Servo.class, "sIG");
@@ -82,7 +85,7 @@ public class Intake extends SubsystemBase {
         //sIT.setPosition(BotPositions.INTAKE_UP);
         sIG.setPosition(BotPositions.INTAKE_ARM_TRANSFER);
         sIT.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
-        wasRaised = true;
+
     }
     public void upPosition(){
         //specifically moves the intake arm and wrist to the transfer position

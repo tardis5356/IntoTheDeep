@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 public class MVCCSpecimenAutoTraj {
 
-    public static final Pose2d redSpec_StartPos = new Pose2d(8, -64, Math.toRadians(90));
+    public static final Pose2d redSpec_StartPos = new Pose2d(8, -60, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -29, Math.toRadians(90)); //x=-5
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));

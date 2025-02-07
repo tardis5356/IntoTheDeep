@@ -20,7 +20,8 @@ public class IntakeToStateCommand extends ParallelCommandGroup {
 
     public String depositCurrentState = "";
     boolean wasRaised;
-
+    boolean IntakeToggle;
+    boolean outaking;
     public IntakeToStateCommand(Intake intake, String desiredState/*, String setState*/) {
         switch (desiredState) {
             case "intakeDown":
@@ -44,19 +45,20 @@ public class IntakeToStateCommand extends ParallelCommandGroup {
                         )
                 );
                 break;
+            case "intakeOut":
+                addCommands(
+            new SequentialCommandGroup(
+                    //new InstantCommand(()-> intake.samplePresent = false),
+                    new InstantCommand(()-> outaking = true),
+                    new InstantCommand(intake::out),
+                    new InstantCommand(() -> IntakeToggle = false),
+                    new WaitCommand(2000),
+                    new InstantCommand(()-> outaking = false)
+                    //new IntakeOutCommand(intake)
+            )
+                );
+                break;
         }
     }    //These are no longer used.
 
-    //They set the depositCurrentState to a value that is then used as a condition to select which case is ran
-    public void setBasket() {
-        depositCurrentState = "basket";
-    }
-
-    public void setIntake() {
-        depositCurrentState = "intake";
-    }
-
-    public void setWall() {
-        depositCurrentState = "wall";
-    }
 }
