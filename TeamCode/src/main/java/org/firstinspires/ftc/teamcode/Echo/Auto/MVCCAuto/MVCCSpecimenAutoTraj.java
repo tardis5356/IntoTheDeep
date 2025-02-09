@@ -4,13 +4,14 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 
+import org.firstinspires.ftc.teamcode.DemoBots.primus.Pose;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 
 public class MVCCSpecimenAutoTraj {
 
-    public static final Pose2d redSpec_StartPos = new Pose2d(8, -60, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -29, Math.toRadians(90)); //x=-5
+    public static final Pose2d redSpec_StartPos = new Pose2d(8, -64, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -25, Math.toRadians(87)); //x=-5
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-2.5, -29, Math.toRadians(90)); //x=3
@@ -24,6 +25,8 @@ public class MVCCSpecimenAutoTraj {
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(49, -48, Math.toRadians(55));
     public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(42, -57, Math.toRadians(345)); //37,-58,335
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(35, -58, Math.toRadians(90));
+
+    public static final Pose2d  redBasket_BasketDrop = new Pose2d(-57,-58, Math.toRadians(45));
 
 
     //Actions
@@ -46,6 +49,8 @@ public class MVCCSpecimenAutoTraj {
     public static Action redSpecEx_RightSpecToRightDepo;
     public static Action redSpecEx_RightDepoToObsPrep;
     public static Action redSpecEx_ObsPrepToObsSpec;
+
+    public static Action teleop_CurrentToBasket;
 
 
     public static void generateTrajectories(MecanumDriveSpecimen drive) {
@@ -168,5 +173,7 @@ public class MVCCSpecimenAutoTraj {
                         .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
+
+
     }
 }

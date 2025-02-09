@@ -1,11 +1,17 @@
 package org.firstinspires.ftc.teamcode.Echo.TeleOps;
 
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_StartPos;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -16,6 +22,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
@@ -28,13 +35,17 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
+import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
+
+import java.util.Set;
 
 @Config
 @TeleOp(name = "BP_TeleOp", group = "AGen1")
 
-public class BP_TeleOp extends CommandOpMode {
+public class VIntake_TeleOp extends CommandOpMode {
     //gamepads
     //GamepadEx is an extended object version of gamepads that has more organized input checks that we use in triggers.
     private GamepadEx driver1, driver2;
@@ -45,7 +56,7 @@ public class BP_TeleOp extends CommandOpMode {
 
     boolean killSwitchPressed = false;
 
-    boolean wasRaised;
+
     boolean killSwitchActive = false;
 
     boolean outaking = false;
@@ -86,12 +97,14 @@ public class BP_TeleOp extends CommandOpMode {
     private Wrist wrist;
 
     //intake
-    private Intake intake;
+    private VIntake vintake;
 
     private Extendo extendo;
 
     private Arm arm;
     private Winch winch;
+
+    private MecanumDriveSpecimen drive;
 
     //private ColorSensor cI;
 
@@ -123,7 +136,15 @@ public class BP_TeleOp extends CommandOpMode {
     double LeftTrigger;
     double RightTrigger;
 
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+    MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+    int visionOutputPosition = 1;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    private ExampleSubsystem exampleSubsystem;
     @Override
     //stuff that is ran when you click init at the start of teleop.
     public void initialize(){
@@ -153,13 +174,16 @@ public class BP_TeleOp extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
 
         //intake
-        intake = new Intake(hardwareMap);
+        vintake = new VIntake(hardwareMap);
 
         //intake
         arm = new Arm(hardwareMap);
-
+        //drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
         winch = new Winch(hardwareMap);
-
+//        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
+//        exampleSubsystem = new ExampleSubsystem(hardwareMap);
+//
+//        Set<Subsystem> requirements = Set.of(exampleSubsystem);
         //TeamColorRed = true;
 
         //intakeInCommand = new IntakeInCommand(intake);
@@ -190,7 +214,7 @@ public class BP_TeleOp extends CommandOpMode {
 
 
 
-        intakeOutCommand = new IntakeOutCommand(intake);
+
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -217,13 +241,15 @@ public class BP_TeleOp extends CommandOpMode {
         sEL = hardwareMap.get(Servo.class, "sEL");
         sIG = hardwareMap.get(Servo.class, "sIG");
 
+
+
         //new DepositToStateCommand(arm,wrist,gripper,lift,"transit");
 
         //This will drive the arm, wrist, and gripper, to the intake position for the start of teleop
         //arm.hang();
         wrist.intake();
         gripper.intake();
-        intake.transferPosition();
+        vintake.transferPosition();
 
         gOpen = true;
 
@@ -240,12 +266,13 @@ public class BP_TeleOp extends CommandOpMode {
             new Trigger(()-> gripper.verifyGripper())
                     .whenActive(new InstantCommand(()-> gOpen = false));
 
-            new Trigger(()-> driver2.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                    .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(arm::specimenHang),
-                            new WaitCommand(650),
-                            new InstantCommand(gripper::open)
-                    ));
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
+                    .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "basket"));
+
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
+                    .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "specimen"));
+
+
 
             //if driver 2 presses b, toggle between open and closed
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && DepositState != "intake" && !gOpen)
@@ -289,47 +316,48 @@ public class BP_TeleOp extends CommandOpMode {
 
             //intake tilting
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && wasRaised)
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && vintake.wasRaised)
                 .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
 new SequentialCommandGroup(
-                                new IntakeToStateCommand(intake,"intakeDown"),
-                        new InstantCommand(()->wasRaised=false))
+                                new InstantCommand(vintake::downPosition))
 
                 );
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !wasRaised)
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !vintake.wasRaised)
                 .whenActive(
                         new SequentialCommandGroup(
-                                new IntakeToStateCommand(intake,"intakeUp"),
-                                new InstantCommand(()->wasRaised=true))
+                                new InstantCommand(vintake::upPosition)
+                        )
                 );
 
         //This trigger is if the extension is close to the robot, the intake automatically goes to be in the transfer position
         new Trigger(() -> extendo.sER.getPosition() >= .62)
                 .whileActiveOnce(
                         new SequentialCommandGroup(
-                        new InstantCommand(intake::transferPosition),
-                        new InstantCommand(()-> wasRaised = true)
+                        new InstantCommand(vintake::upPosition)
                         //new WaitCommand(200),
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
                         /*new InstantCommand(intake::transfer)*/)
                 );
 
+
+
+
         //intake inning and outing
             //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
             //toggle between running the intake and not
 
-        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == true)
-                .whenActive(new SequentialCommandGroup(new InstantCommand(intake::in),
-                        new WaitCommand(50),
+        new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == true)
+                .whenActive(new SequentialCommandGroup(new InstantCommand(vintake::in),
+                        new WaitCommand(30),
                         new InstantCommand(() -> IntakeToggle = false)
                 ));
 
-            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && !intake.checkSample() && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == false)
-                    .whenActive( new SequentialCommandGroup(new InstantCommand(intake::stop),
-                            new WaitCommand(50),
+            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))&& (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == false)
+                    .whenActive( new SequentialCommandGroup(new InstantCommand(vintake::stop),
+                            new WaitCommand(30),
                             new InstantCommand(() -> IntakeToggle = true)
                     ));
 
@@ -337,25 +365,23 @@ new SequentialCommandGroup(
 
             //TODO: Change this one if we do the pass through
             //if the drivers manually hit outake or the wrong alliance color is detected, outake
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((intake.checkColor() == "red" && AllianceColor.aColor == "blue") || (intake.checkColor() == "blue" && AllianceColor.aColor == "red")))
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((vintake.checkColor() == "red" && AllianceColor.aColor == "blue") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "red")))
                     .whenActive(
-                           new IntakeToStateCommand(intake, "intakeOut")
+                            new SequentialCommandGroup(
+                                    //new InstantCommand(()-> intake.samplePresent = false),
+                               //     new InstantCommand(()-> outaking = true),
+                                    new InstantCommand(vintake::upPosition),
+                                    new InstantCommand(vintake::out),
+                                    new InstantCommand(() -> IntakeToggle = false)
+                      //              new WaitCommand(2000),
+                                  //  new InstantCommand(()-> outaking = false)
+                                    //new IntakeOutCommand(intake)
+                            )
                     );
 
         //if the intake detects a sample and we haven't disabled the samplePresent variable for transferring
         //stop intaking and outake just the spokes to make sure we don't accidentally nab 2 samples
-        new Trigger(()-> intake.checkSample() && intake.samplePresent && outaking == false)
-                .whileActiveOnce(
-                        new SequentialCommandGroup(
-                                new WaitCommand(1000),
-                                new InstantCommand(intake::stop),
-                                new InstantCommand(()-> intake.sIO.setPower(BotPositions.INTAKE_OUT)),
-                                        new InstantCommand(() -> IntakeToggle = false)
-                        )
-                );
 
-
-        }
 
         //transfer
         {
@@ -364,7 +390,12 @@ new SequentialCommandGroup(
 
         //If driver1 hits a or driver2 hits x, run the intake pass or transfer command
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                .whenActive(new IntakePassCommand(intake));
+                .whenActive(new SequentialCommandGroup(
+                        new InstantCommand(vintake::transferPosition),
+                        new InstantCommand(vintake::in),
+                        new WaitCommand(1000),
+                        new InstantCommand(vintake::stop)
+                        ));
 
             //if the gripper detects a sample while the depositing system is in the intake configuration, the intake should
             //transfer the sample.
@@ -386,54 +417,60 @@ new SequentialCommandGroup(
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
                         new SequentialCommandGroup(
-                                new InstantCommand(()->intake.sIT.setPosition(BotPositions.INTAKE_WRIST_DOWN)),
-                                new InstantCommand(intake::stop),
-                                new WaitCommand(150),
-                                new InstantCommand(()->intake.sIG.setPosition(BotPositions.INTAKE_ARM_UP)),
-                                new WaitCommand(300),
+
+                                new InstantCommand(vintake::in),
                                 new InstantCommand(extendo::out),
-                                new InstantCommand(()-> IntakeToggle = true),
-                                new InstantCommand(()-> wasRaised = true)
+                                new InstantCommand(vintake::upPosition),
+                                new InstantCommand(()-> IntakeToggle = true)
                         )
                 );
 
         new Trigger(()->driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78)
                 .whenActive(new ParallelCommandGroup(
                         new SequentialCommandGroup(
-                                new InstantCommand(intake::stop),
-                                new InstantCommand(intake::transferPosition),
-                                     new WaitCommand(300),
-                                        new InstantCommand(()->intake.sIW.setPower(.17)),
-                                new WaitCommand(310),
-                                new InstantCommand(intake::stop)
+                                new InstantCommand(vintake::stop),
+                                new InstantCommand(vintake::upPosition)
                         ),
                         new SequentialCommandGroup(
-                                new WaitCommand(400),
+                                new WaitCommand(100),
                                 new InstantCommand(extendo::in)
-                        ),
-                        new InstantCommand(()-> wasRaised = true)
+                        )
                 ));
 
         //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
-        new Trigger(() -> intake.checkSample() && ((intake.checkColor() == "red" && AllianceColor.aColor == "red") || (intake.checkColor() == "blue" && AllianceColor.aColor == "blue") || intake.checkColor() == "yellow"))
+        new Trigger(() -> AllianceColor.cycleType == "basket" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue") || vintake.checkColor() == "yellow"))
                 .whenActive(
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new InstantCommand(intake::stop),
-                                        new InstantCommand(intake::transferPosition),
-                                        new WaitCommand(300),
-                                        new InstantCommand(()->intake.sIW.setPower(.17)),
-                                        new WaitCommand(310),
-                                        new InstantCommand(intake::stop)
+                                        new InstantCommand(vintake::out),
+                                        new InstantCommand(vintake::upPosition)
                                 ),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(400),
-                                        new InstantCommand(extendo::in)
-                                ),
-                                new InstantCommand(()-> wasRaised = true))
+                                        new WaitCommand(100),
+                                        new InstantCommand(vintake::in),
+                                        new InstantCommand(extendo::in),
+                                        new WaitCommand(300),
+                                        new InstantCommand(vintake::stop)
+                                )
 
-                );
+                ));
+            new Trigger(() -> AllianceColor.cycleType == "specimen" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
+                    .whenActive(
+                            new ParallelCommandGroup(
+                                    new SequentialCommandGroup(
+                                            new InstantCommand(vintake::out),
+                                            new InstantCommand(vintake::upPosition)
+                                    ),
+                                    new SequentialCommandGroup(
+                                            new WaitCommand(100),
+                                            new InstantCommand(vintake::in),
+                                            new InstantCommand(extendo::in),
+                                            new WaitCommand(300),
+                                            new InstantCommand(vintake::stop)
+                                    )
+
+                            ));
         }
 //
 //        //Deposit to state commands
@@ -492,9 +529,9 @@ new SequentialCommandGroup(
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
+                        new InstantCommand(vintake::in),
                         intakeToWallWithSomething,
-                        new InstantCommand(()->intake.sIW.setPower(0)),
+                        new InstantCommand(vintake::stop),
                         new InstantCommand(() -> DepositState = "wall"),
                         new InstantCommand(() -> gOpen = false),
                         new InstantCommand(() -> killSwitchActive = false)
@@ -532,10 +569,10 @@ new SequentialCommandGroup(
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
+                        new InstantCommand(vintake::in),
                         intakeToBasketHigh,
                         //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
-                        new InstantCommand(()->intake.sIW.setPower(0)),
+                        new InstantCommand(vintake::stop),
                         new InstantCommand(() -> DepositState = "basketHigh"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -571,10 +608,10 @@ new SequentialCommandGroup(
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
+                        new InstantCommand(vintake::in),
                         intakeToBasketLow,
                         //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketLow"),
-                        new InstantCommand(()->intake.sIW.setPower(0)),
+                        new InstantCommand(vintake::stop),
                         new InstantCommand(() -> DepositState = "basketLow"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -616,15 +653,26 @@ new SequentialCommandGroup(
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
+
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "specimen")
+                    .whenActive(new SequentialCommandGroup(
+                            new InstantCommand(()->lift.PIDEnabled= true),
+                           new InstantCommand(arm::specimenHang),
+                            new WaitCommand(350),
+                            new InstantCommand(gripper::open),
+                            //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToSpecimen"),
+                            new InstantCommand(() -> DepositState = "specimen"),
+                            new InstantCommand(() -> killSwitchActive = false)
+                    ));
                 //.cancelWhenActive(wallToSpecimen);
 
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "intake")
                 .whenActive(new SequentialCommandGroup(
                         new InstantCommand(()->lift.PIDEnabled= true),
-                        new InstantCommand(()->intake.sIW.setPower(BotPositions.INTAKE_IN)),
+                        new InstantCommand(vintake::in),
                         intakeToSpecimen,
                         //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
-                        new InstantCommand(()->intake.sIW.setPower(0)),
+                        new InstantCommand(vintake::stop),
                         new InstantCommand(() -> DepositState = "specimen"),
                         new InstantCommand(() -> killSwitchActive = false)
                 ));
@@ -698,7 +746,7 @@ new SequentialCommandGroup(
                         new InstantCommand(()->AllianceColor.aColor = "red")
                 );
 
-    }
+    }}
 
     //this is the main run loop
     public void run() {
@@ -781,15 +829,16 @@ new SequentialCommandGroup(
             mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
             mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
+       // drive.updatePoseEstimate();
 
             //the following is all telemetry for debugging and verifying things in the teleop
             telemetry.addData("RobotState", DepositState);
             //telemetry.addData("IntakeState", intake.checkSample());
             telemetry.addData("AssignedExtensionPosition", Trigger);
             telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
-            telemetry.addData("checkIntake", intake.checkSample());
-            telemetry.addData("check sample present", intake.samplePresent);
-            telemetry.addData("DetectedColor", intake.checkColor());
+            telemetry.addData("checkIntake", vintake.checkSample());
+            telemetry.addData("check sample present", vintake.samplePresent);
+            telemetry.addData("DetectedColor", vintake.checkColor());
             //telemetry.addData("Blue", intake.checkBlue());
             telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("notAColor", notAColor);
@@ -811,10 +860,11 @@ new SequentialCommandGroup(
             //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
             //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
             //telemetry.addData("Yellow", intake.checkYellow());
-            telemetry.addData("ReadingIntakeRED", intake.cI.red());//620-650 Yellow 300-400 Red
-            telemetry.addData("ReadingIntakeBLUE", intake.cI.blue());//120-250 Blue
+            telemetry.addData("ReadingIntakeRED", vintake.cI.red());//620-650 Yellow 300-400 Red
+            telemetry.addData("ReadingIntakeBLUE", vintake.cI.blue());//120-250 Blue
             telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
             telemetry.addData("ReadingGripperBLUE", gripper.cG.blue());//120-250 Blue
+
             //telemetry.addData("ReadingIntake", cI.green());
 
         telemetry.addData("MotorEncoder",lift.getCurrentPosition());
