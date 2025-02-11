@@ -36,13 +36,23 @@ public class LiftTest extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
 
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE));
+                .whenActive( new SequentialCommandGroup(
+                                new InstantCommand(()->lift.PIDEnabled = true),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH, BotPositions.LIFT_TOLERANCE)
+                        )
+                );
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_LEFT))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE));
+
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE));
+                .whenActive( new SequentialCommandGroup(
+                            new InstantCommand(()->lift.PIDEnabled = true),
+                            new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)
+                        )
+                );
+
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.A))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.B))

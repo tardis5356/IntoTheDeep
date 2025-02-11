@@ -17,5 +17,5 @@ public class BotPositions {
             LIFT_BASKET_LOW = -890, LIFT_TRANSIT = -980, LIFT_LIMIT = -3050, LIFT_INTAKE = -550, LIFT_SPECIMEN_HIGH_CLIP = -3100, LIFT_TOLERANCE = 80,LIFT_TOLERANCE_MED = 35, LIFT_TOLERANCE_TIGHT = 10;//100 is 1 inch
     public static double  INTAKE_RED_MIN = 200, INTAKE_BLUE_MIN = 190, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double LIFT_FF = 0.1, WINCH_FF = 0;
-    public static double LIFT_P = 0.007, LIFT_D = 0.00008, LIFT_I = 0.000;
+    public static double LIFT_P = 0.005, LIFT_D = 0.0001, LIFT_I = 0.000;
 }

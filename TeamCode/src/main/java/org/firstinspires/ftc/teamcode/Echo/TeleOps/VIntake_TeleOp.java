@@ -239,7 +239,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         sER = hardwareMap.get(Servo.class, "sER");
         sEL = hardwareMap.get(Servo.class, "sEL");
-        sIG = hardwareMap.get(Servo.class, "sIG");
+        //sIG = hardwareMap.get(Servo.class, "sIG");
 
 
 
@@ -259,18 +259,29 @@ public class VIntake_TeleOp extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
                 .toggleWhenActive(() -> CURRENT_SPEED_MULTIPLIER = FAST_SPEED_MULTIPLIER, ()-> CURRENT_SPEED_MULTIPLIER = SLOW_SPEED_MULTIPLIER);
 
+    //global variables
+        {
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
+                .whenActive(
+                        new InstantCommand(()->AllianceColor.aColor = "blue")
+                );
 
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whenActive(
+                        new InstantCommand(()->AllianceColor.aColor = "red")
+                );
+
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
+                .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "basket"));
+
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
+                .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "specimen"));}
 
         //gripper Commands
         {
             new Trigger(()-> gripper.verifyGripper())
                     .whenActive(new InstantCommand(()-> gOpen = false));
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_UP))
-                    .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "basket"));
-
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_DOWN))
-                    .whenActive(new InstantCommand(()-> AllianceColor.cycleType = "specimen"));
 
 
 
@@ -320,7 +331,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                 .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
-new SequentialCommandGroup(
+                            new SequentialCommandGroup(
                                 new InstantCommand(vintake::downPosition))
 
                 );
@@ -346,15 +357,16 @@ new SequentialCommandGroup(
 
 
         //intake inning and outing
-            //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
-            //toggle between running the intake and not
 
+
+            //if d1 hits right bumper, there are no commands to outake, and the toggle is true
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == true)
                 .whenActive(new SequentialCommandGroup(new InstantCommand(vintake::in),
                         new WaitCommand(30),
                         new InstantCommand(() -> IntakeToggle = false)
                 ));
 
+        //if d1 hits right bumper, there are no commands to outake, and the toggle is false
             new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))&& (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == false)
                     .whenActive( new SequentialCommandGroup(new InstantCommand(vintake::stop),
                             new WaitCommand(30),
@@ -364,7 +376,9 @@ new SequentialCommandGroup(
 
 
             //TODO: Change this one if we do the pass through
-            //if the drivers manually hit outake or the wrong alliance color is detected, outake
+
+            //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
+            //toggle between running the intake and not
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((vintake.checkColor() == "red" && AllianceColor.aColor == "blue") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "red")))
                     .whenActive(
                             new SequentialCommandGroup(
@@ -377,7 +391,7 @@ new SequentialCommandGroup(
                                   //  new InstantCommand(()-> outaking = false)
                                     //new IntakeOutCommand(intake)
                             )
-                    );
+                    );}
 
         //if the intake detects a sample and we haven't disabled the samplePresent variable for transferring
         //stop intaking and outake just the spokes to make sure we don't accidentally nab 2 samples
@@ -441,34 +455,29 @@ new SequentialCommandGroup(
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
         new Trigger(() -> AllianceColor.cycleType == "basket" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue") || vintake.checkColor() == "yellow"))
                 .whenActive(
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
+                        new SequentialCommandGroup(
                                         new InstantCommand(vintake::out),
-                                        new InstantCommand(vintake::upPosition)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(100),
+                                        new InstantCommand(vintake::upPosition),
+                                        new WaitCommand(250),
                                         new InstantCommand(vintake::in),
                                         new InstantCommand(extendo::in),
-                                        new WaitCommand(300),
+                                        new WaitCommand(500),
                                         new InstantCommand(vintake::stop)
-                                )
+
 
                 ));
             new Trigger(() -> AllianceColor.cycleType == "specimen" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
                     .whenActive(
-                            new ParallelCommandGroup(
-                                    new SequentialCommandGroup(
+                            new SequentialCommandGroup(
+
                                             new InstantCommand(vintake::out),
-                                            new InstantCommand(vintake::upPosition)
-                                    ),
-                                    new SequentialCommandGroup(
-                                            new WaitCommand(100),
+                                            new InstantCommand(vintake::upPosition),
+                                            new WaitCommand(250),
                                             new InstantCommand(vintake::in),
                                             new InstantCommand(extendo::in),
-                                            new WaitCommand(300),
+                                            new WaitCommand(500),
                                             new InstantCommand(vintake::stop)
-                                    )
+
 
                             ));
         }
@@ -736,17 +745,9 @@ new SequentialCommandGroup(
                     .whenActive(new InstantCommand(winch::stop));
         }
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whenActive(
-                        new InstantCommand(()->AllianceColor.aColor = "blue")
-                );
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(
-                        new InstantCommand(()->AllianceColor.aColor = "red")
-                );
 
-    }}
+    }
 
     //this is the main run loop
     public void run() {
