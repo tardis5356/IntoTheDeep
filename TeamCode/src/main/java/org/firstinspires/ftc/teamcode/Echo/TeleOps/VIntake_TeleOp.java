@@ -142,6 +142,8 @@ public class VIntake_TeleOp extends CommandOpMode {
 
     int visionOutputPosition = 1;
 
+    boolean wasRaised = true;
+
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private ExampleSubsystem exampleSubsystem;
@@ -176,10 +178,11 @@ public class VIntake_TeleOp extends CommandOpMode {
         //intake
         vintake = new VIntake(hardwareMap);
 
+
         //intake
         arm = new Arm(hardwareMap);
         //drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
-        winch = new Winch(hardwareMap);
+//        winch = new Winch(hardwareMap);
 //        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
 //        exampleSubsystem = new ExampleSubsystem(hardwareMap);
 //
@@ -327,18 +330,24 @@ public class VIntake_TeleOp extends CommandOpMode {
 
             //intake tilting
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && vintake.wasRaised)
+
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && wasRaised)
                 .whenActive(
                         //we have sequences for the tilting to make sure that the wrist of the intake moves first before the arm
                         //that's done so we don't the intake pinned against the ground
                             new SequentialCommandGroup(
-                                new InstantCommand(vintake::downPosition))
+                                new InstantCommand(vintake::downPosition),
+                                    new WaitCommand(100),
+                                    new InstantCommand(()-> wasRaised = false)
+                            )
 
                 );
-        new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !vintake.wasRaised)
+        new Trigger(()-> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER) && extendo.sER.getPosition()<=.72 && !wasRaised)
                 .whenActive(
                         new SequentialCommandGroup(
-                                new InstantCommand(vintake::upPosition)
+                                new InstantCommand(vintake::upPosition),
+                                new WaitCommand(100),
+                                new InstantCommand(()-> wasRaised = true)
                         )
                 );
 
@@ -735,14 +744,14 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //winch code
         {
-            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0)
-                    .whenActive(() -> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
-
-            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) != 0)
-                    .whenActive(() -> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
-
-            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
-                    .whenActive(new InstantCommand(winch::stop));
+//            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0)
+//                    .whenActive(() -> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+//
+//            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) != 0)
+//                    .whenActive(() -> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+//
+//            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) == 0 && driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) == 0)
+//                    .whenActive(new InstantCommand(winch::stop));
         }
 
 

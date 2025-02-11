@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 //@Disabled
 @TeleOp(name = "indexTele")
@@ -50,7 +51,7 @@ public class IndexTeleop extends CommandOpMode {
     private Wrist wrist;
 //
 //    //intake
-    private Intake intake;
+    private VIntake intake;
 //
 //    //extendo
     private Extendo extendo;
@@ -95,7 +96,7 @@ public class IndexTeleop extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
 //
 //        //intake
-        intake = new Intake(hardwareMap);
+        intake = new VIntake(hardwareMap);
 //
 //        //extend
         extendo = new Extendo(hardwareMap);
@@ -112,9 +113,9 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver2.getButton(GamepadKeys.Button.B))
                 .whenActive(new SequentialCommandGroup(new InstantCommand(arm::specimen), new InstantCommand(wrist::specimen)));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
-                .whenActive(new InstantCommand(intake::transfer));
-
+//        new Trigger(() -> driver2.getButton(GamepadKeys.Button.A))
+//                .whenActive(new InstantCommand(intake::transfer));
+//
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.X))
                 .whenActive(new InstantCommand(intake::in));
 
@@ -123,7 +124,7 @@ public class IndexTeleop extends CommandOpMode {
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.A))
                 .whenActive(new InstantCommand(intake::stop));
-
+//
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.B))
                 .whenActive(new InstantCommand(intake::downPosition));
 
@@ -131,12 +132,13 @@ public class IndexTeleop extends CommandOpMode {
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(new InstantCommand(intake::upPosition));
 
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .whenActive(new InstantCommand(intake::outakePosition));
+//        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_BUMPER))
+//                .whenActive(new InstantCommand(intake::outakePosition));
 
         //wrist
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_RIGHT))
                 .whenActive(new InstantCommand(intake::transferPosition));
+
 
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.DPAD_LEFT))
                 .whenActive(new InstantCommand(gripper::close));
@@ -149,13 +151,12 @@ public class IndexTeleop extends CommandOpMode {
 
 //
 //        //Extendo
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE));
+
         new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
                 .whenActive(new InstantCommand(extendo::in));
 
-        new Trigger(() -> driver2.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON))
-                .whenActive(new InstantCommand(extendo::rightBasket));
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON))
+                .whenActive(new InstantCommand(extendo::out));
 
 
 //

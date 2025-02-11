@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -36,6 +37,8 @@ public class VIntake extends SubsystemBase {
         sI = hardwareMap.get(Servo.class, "sI");
         mI = hardwareMap.get(DcMotorEx.class, "mI");
         cI = hardwareMap.get(ColorSensor.class, "cI");
+
+        mI.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //sIT.setPosition(BotPositions.INTAKE_UP);
 
@@ -69,7 +72,7 @@ public class VIntake extends SubsystemBase {
         //drives the intake arm and wrist to the ground for intaking
         //sIT.setPosition(BotPositions.INTAKE_DOWN);
 
-                sI.setPosition(BotPositions.INTAKE_WRIST_DOWN);
+                sI.setPosition(BotPositions.VINTAKE_DOWN);
                 wasRaised =false;
 
 
@@ -79,14 +82,14 @@ public class VIntake extends SubsystemBase {
         //drives the arm and wrist of the intake to a neutral position to go into the robot and hopefully not scratch the deck plate more
         //sIT.setPosition(BotPositions.INTAKE_UP);
 
-        sI.setPosition(BotPositions.INTAKE_WRIST_TRANSFER);
+        sI.setPosition(BotPositions.VINTAKE_TRANSFER);
         wasRaised =true;
 
     }
     public void upPosition(){
         //specifically moves the intake arm and wrist to the transfer position
         //wrist up isn't used here since it was determined to be unnecessary
-        sI.setPosition(BotPositions.INTAKE_WRIST_DOWN);
+        sI.setPosition(BotPositions.VINTAKE_UP);
         wasRaised = true;
 
     }
