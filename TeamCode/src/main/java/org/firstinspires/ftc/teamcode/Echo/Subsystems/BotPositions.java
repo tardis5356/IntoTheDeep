@@ -14,7 +14,7 @@ public class BotPositions {
 
     //These are in motor ticks. On the ITD robot 100 ticks ~= 1 inch. Will differ from robot to robot.
     public static int LIFT_WALL = -120, LIFT_SPECIMEN_HIGH = -600, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -3200,
-            LIFT_BASKET_LOW = -890, LIFT_TRANSIT = -980, LIFT_LIMIT = -3300, LIFT_INTAKE = -435, LIFT_SPECIMEN_HIGH_CLIP = -3100, LIFT_TOLERANCE = 80,LIFT_TOLERANCE_MED = 35, LIFT_TOLERANCE_TIGHT = 10;//100 is 1 inch
+            LIFT_BASKET_LOW = -890, LIFT_TRANSIT = -980, LIFT_LIMIT = -3300, LIFT_INTAKE = -400, LIFT_SPECIMEN_HIGH_CLIP = -3100, LIFT_TOLERANCE = 80,LIFT_TOLERANCE_MED = 35, LIFT_TOLERANCE_TIGHT = 10;//100 is 1 inch
     public static double  INTAKE_RED_MIN = 200, INTAKE_BLUE_MIN = 190, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double LIFT_FF = 0.1, WINCH_FF = 0;
     public static double LIFT_P = 0.005, LIFT_D = 0.0001, LIFT_I = 0.000;

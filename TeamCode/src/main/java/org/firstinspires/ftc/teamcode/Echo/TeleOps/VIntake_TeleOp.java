@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import java.util.Set;
 
 @Config
-@TeleOp(name = "BP_TeleOp", group = "AGen1")
+@TeleOp(name = "VIntake", group = "AGen1")
 
 public class VIntake_TeleOp extends CommandOpMode {
     //gamepads
@@ -102,7 +102,7 @@ public class VIntake_TeleOp extends CommandOpMode {
     private Extendo extendo;
 
     private Arm arm;
-    private Winch winch;
+    //private Winch winch;
 
     private MecanumDriveSpecimen drive;
 
@@ -145,6 +145,9 @@ public class VIntake_TeleOp extends CommandOpMode {
     boolean wasRaised = true;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    boolean Extendo_Toggle = true; //When true it goes out
+
 
     private ExampleSubsystem exampleSubsystem;
     @Override
@@ -299,6 +302,7 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.B) && gOpen )
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(gripper::close),
+                            new InstantCommand(()->driver2.gamepad.rumble(300)),
                             new WaitCommand(300),
                             new InstantCommand(()->gOpen = false)
                     ));
@@ -371,14 +375,14 @@ public class VIntake_TeleOp extends CommandOpMode {
             //if d1 hits right bumper, there are no commands to outake, and the toggle is true
         new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == true)
                 .whenActive(new SequentialCommandGroup(new InstantCommand(vintake::in),
-                        new WaitCommand(30),
+                        new WaitCommand(60),
                         new InstantCommand(() -> IntakeToggle = false)
                 ));
 
         //if d1 hits right bumper, there are no commands to outake, and the toggle is false
             new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))&& (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y))&& IntakeToggle == false)
                     .whenActive( new SequentialCommandGroup(new InstantCommand(vintake::stop),
-                            new WaitCommand(30),
+                            new WaitCommand(60),
                             new InstantCommand(() -> IntakeToggle = true)
                     ));
 
@@ -388,14 +392,18 @@ public class VIntake_TeleOp extends CommandOpMode {
 
             //if either the right bumpers are down AND there isn't a detected sample AND neither driver2's left bumper or driver1's y button are down
             //toggle between running the intake and not
-            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) || ((vintake.checkColor() == "red" && AllianceColor.aColor == "blue") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "red")))
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || driver1.getButton(GamepadKeys.Button.Y) )
                     .whenActive(
                             new SequentialCommandGroup(
                                     //new InstantCommand(()-> intake.samplePresent = false),
                                //     new InstantCommand(()-> outaking = true),
                                     new InstantCommand(vintake::upPosition),
                                     new InstantCommand(vintake::out),
-                                    new InstantCommand(() -> IntakeToggle = false)
+                                    new InstantCommand(()->AllianceColor.cycleType = "O"),
+                                    new WaitCommand(2000),
+                                    new InstantCommand(()->AllianceColor.cycleType = "specimen"),
+                                    new InstantCommand(vintake::in),
+                                    new InstantCommand(() -> IntakeToggle = true)
                       //              new WaitCommand(2000),
                                   //  new InstantCommand(()-> outaking = false)
                                     //new IntakeOutCommand(intake)
@@ -414,10 +422,8 @@ public class VIntake_TeleOp extends CommandOpMode {
         //If driver1 hits a or driver2 hits x, run the intake pass or transfer command
         new Trigger(()-> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(vintake::transferPosition),
-                        new InstantCommand(vintake::in),
-                        new WaitCommand(1000),
-                        new InstantCommand(vintake::stop)
+                        new InstantCommand(vintake::transferPosition)
+
                         ));
 
             //if the gripper detects a sample while the depositing system is in the intake configuration, the intake should
@@ -435,7 +441,7 @@ public class VIntake_TeleOp extends CommandOpMode {
         //Extendo
         {
         //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
-        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition >= .78)
+        new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition >= .78 && Extendo_Toggle == true)
                 .whenActive(
                         //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                         //and to make sure any samples don't get spat out.
@@ -444,11 +450,12 @@ public class VIntake_TeleOp extends CommandOpMode {
                                 new InstantCommand(vintake::in),
                                 new InstantCommand(extendo::out),
                                 new InstantCommand(vintake::upPosition),
-                                new InstantCommand(()-> IntakeToggle = true)
+                                new InstantCommand(()-> IntakeToggle = true),
+                                new InstantCommand(()->Extendo_Toggle = false)
                         )
                 );
 
-        new Trigger(()->driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78)
+        new Trigger(()->driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78 && Extendo_Toggle == false)
                 .whenActive(new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 new InstantCommand(vintake::stop),
@@ -456,7 +463,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                         ),
                         new SequentialCommandGroup(
                                 new WaitCommand(100),
-                                new InstantCommand(extendo::in)
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(()->Extendo_Toggle = true)
                         )
                 ));
 
@@ -464,31 +472,35 @@ public class VIntake_TeleOp extends CommandOpMode {
         //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
         new Trigger(() -> AllianceColor.cycleType == "basket" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue") || vintake.checkColor() == "yellow"))
                 .whenActive(
+                        new ParallelCommandGroup(new InstantCommand(()->driver1.gamepad.rumble(300)),
                         new SequentialCommandGroup(
-                                        new InstantCommand(vintake::out),
                                         new InstantCommand(vintake::upPosition),
-                                        new WaitCommand(250),
-                                        new InstantCommand(vintake::in),
-                                        new InstantCommand(extendo::in),
-                                        new WaitCommand(500),
-                                        new InstantCommand(vintake::stop)
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(400),
+                                new InstantCommand(extendo::in),
+                                new WaitCommand(400),
+                                new InstantCommand(vintake::stop),
+                                new InstantCommand(()->Extendo_Toggle = true)
 
 
-                ));
+                )));
             new Trigger(() -> AllianceColor.cycleType == "specimen" && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
                     .whenActive(
                             new SequentialCommandGroup(
 
-                                            new InstantCommand(vintake::out),
+                                    new InstantCommand(()->driver1.gamepad.rumble(300)),
                                             new InstantCommand(vintake::upPosition),
-                                            new WaitCommand(250),
-                                            new InstantCommand(vintake::in),
-                                            new InstantCommand(extendo::in),
-                                            new WaitCommand(500),
-                                            new InstantCommand(vintake::stop)
+                                    new InstantCommand(vintake::in),
+                                    new WaitCommand(400),
+                                    new InstantCommand(extendo::in),
+                                    new WaitCommand(400),
+
+                                    new InstantCommand(vintake::stop),
+                                    new InstantCommand(()->Extendo_Toggle = true)
 
 
                             ));
+
         }
 //
 //        //Deposit to state commands
@@ -812,9 +824,9 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
         if (Trigger > .03) {
-            Trigger = .025;
+            Trigger = .05;
         } else if (Trigger < -.03) {
-            Trigger = -.025;
+            Trigger = -.05;
         }
 
             extendo.update(Trigger);

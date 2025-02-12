@@ -139,13 +139,13 @@ public class VIntake extends SubsystemBase {
 //        else return false;
 //    }
     public String checkColor(){
-        if (cI.blue()>175&& cI.blue() <430 && cI.red()>630 && cI.red()<1100 && cI.green()<1000){
+        if (cI.red()>300 && cI.red()<520){
             return "red";
         }
-        else if (cI.blue()>650 && cI.green()<1700 ){
+        else if (cI.blue()>320 && cI.blue()< 420){
             return "blue";
         }
-        else if (cI.green()>1300){
+        else if (cI.red()>520){
             return "yellow";
         }
         else {
@@ -154,7 +154,7 @@ public class VIntake extends SubsystemBase {
 
     }
     public boolean checkSample(){
-        if ( ((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 1.5){
+        if ( ((DistanceSensor)cI).getDistance(DistanceUnit.CM) <= 3){
             return true;
         }
         else return false;
