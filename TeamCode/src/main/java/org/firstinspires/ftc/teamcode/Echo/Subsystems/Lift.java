@@ -102,6 +102,12 @@ public class Lift extends SubsystemBase {
         } else {tooHigh = false;}
 //TODO: Redo this so it doesn't suck to think through
         {
+            if(liftHanging){
+                liftFF = 0;
+            }
+            else{
+                liftFF = .1;
+            }
 //            if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
 //                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
 //                targetPosition = 15;

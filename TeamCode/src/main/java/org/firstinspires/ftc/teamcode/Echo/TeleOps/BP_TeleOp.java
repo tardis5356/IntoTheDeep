@@ -502,7 +502,7 @@ new SequentialCommandGroup(
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && !gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(()->lift.controller.reset()),
+
                             intakeToWallWithNothing,
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = true),
@@ -634,6 +634,7 @@ new SequentialCommandGroup(
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(()->lift.PIDEnabled= false),
+                            new InstantCommand(()->lift.controller.reset()),
                             new InstantCommand(()-> arm.hang()),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),
                             new InstantCommand(() -> DepositState = "specimen"),
