@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.INTAKE
 //import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MAX;
 //import static org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions.RED_MIN;
 
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -23,7 +24,7 @@ public class Gripper extends SubsystemBase {
     //private ColorSensor cJ;
 
     //boolean gripperClosed;
-    boolean gripperClear; // this is a variable to store if a sample is inside the gripper or not.
+    public boolean gripperClear; // this is a variable to store if a sample is inside the gripper or not.
 
 
 
@@ -48,6 +49,7 @@ public class Gripper extends SubsystemBase {
         //if the gripper was clear and something is detected inside it, the gripper will close.
         if(gripperClear && verifyGripper()){
             close();
+
         }
 
     }

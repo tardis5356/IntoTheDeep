@@ -9,17 +9,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 
 public class IntakeGetSampleCommand extends CommandBase {//This is a separate command used to actually set the target position of the lift for the PID
-    private Intake intake;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
+    private VIntake vintake;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
     private ElapsedTime runtime = new ElapsedTime();
     private Double timeout = 4.0;
-    public IntakeGetSampleCommand(Intake intake) {
+    public IntakeGetSampleCommand(VIntake vintake) {
         // this is the actual method itself. It takes a lift as an input to associate with its own, that way it can change the target position value of the lift.
         // Does the same thing with the target position, taking a double in as an input
         // and same thing with the tolerance
 
-        this.intake = intake;
+        this.vintake = vintake;
 
     }
 
@@ -27,9 +28,8 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
     public void initialize() { // runs once
 
         //TODO Test run this
-        intake.Intaking = true;
-        intake.sIW.setPower(BotPositions.INTAKE_IN);
-        intake.sIO.setPower(BotPositions.INTAKE_IN);
+        vintake.Intaking = true;
+      new InstantCommand(vintake::in);
         runtime.reset();
 //        lift.setTargetPosition(targetPosition);
 
@@ -47,7 +47,7 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public boolean isFinished() { // returns true when finished
-        if ( intake.checkSample()||runtime.seconds()>timeout){
+        if ( vintake.checkSample()||runtime.seconds()>timeout){
             return true;
         }
 
@@ -57,9 +57,8 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public void end(boolean interrupted) {
-        intake.sIW.setPower(BotPositions.INTAKE_STOP);
-        intake.sIO.setPower(BotPositions.INTAKE_STOP);
-        intake.Intaking = false;;
+       new InstantCommand(vintake::stop);
+        vintake.Intaking = false;;
     }
 
 }
