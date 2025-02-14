@@ -198,12 +198,12 @@ public class PenfieldCommandBasketAutoDelayed extends OpMode {
                 GripperCheck,
 
                 new SequentialCommandGroup(
-                        new WaitCommand(15000),
+                        new WaitCommand(15000)
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
-
-new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_MidWayToPark")
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_StartToSub"),
+//
+//new ActionCommand(redBasket_SubToMidWayLeftSpec, requirements),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redBasket_MidWayToPark")
 
 
 

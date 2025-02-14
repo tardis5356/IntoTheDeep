@@ -227,9 +227,9 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
                 new SequentialCommandGroup(
                         new WaitCommand(15000),
 
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpec_StartToSub"),
-
-                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToLeftSpec"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem,"redSpec_StartToSub"),
+//
+//                        new ParallelCommandGroup(new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToLeftSpec"),
 
                                 new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
 
@@ -256,7 +256,7 @@ public class UticaCommandSpecimenAutoDelayed extends OpMode {
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, exampleSubsystem, "specDepoToObs")
 
 
-                )
+
         );
     }
 

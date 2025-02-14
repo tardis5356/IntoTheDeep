@@ -57,8 +57,7 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public void end(boolean interrupted) {
-       new InstantCommand(vintake::stop);
-        vintake.Intaking = false;;
+
     }
 
 }

@@ -32,6 +32,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
@@ -80,7 +81,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     private DcMotorEx mFR;
     private DcMotorEx mBL;
     private DcMotorEx mBR;
-    private Intake intake;
+    private VIntake vintake;
     private Arm arm;
     private Gripper gripper;
     private Extendo extendo;
@@ -136,7 +137,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SampleStartPos)); //
 
 
-        intake = new Intake(hardwareMap);
+        vintake = new VIntake(hardwareMap);
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
@@ -147,7 +148,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
 
-        CommandScheduler.getInstance().registerSubsystem(intake);//
+        CommandScheduler.getInstance().registerSubsystem(vintake);//
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -173,15 +174,15 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-        intakeIn = new IntakeInCommand(intake);
-
-        intakeOut = new IntakeInCommand(intake);
-
-        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
-
-        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
-
-        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
+//        intakeIn = new IntakeInCommand(vintake);
+//
+//        intakeOut = new IntakeInCommand(intake);
+//
+//        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
+//
+//        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
+//
+//        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
         OpenGripper = new InstantCommand(gripper::open);
 
@@ -220,26 +221,26 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
-                new InstantCommand(intake::transferPosition),
-                new InstantCommand(arm::specimen),
+                new InstantCommand(vintake::transferPosition),
+                new InstantCommand(arm::intake),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_StartToBasketDepo"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redBasket_ScoreLeftSample"),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        RedBasket_BasketToAscentPark),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                       new InstantCommand(() ->arm.sAR.setPosition(BotPositions.ARM_BASKET + .05)),
-                                        new LiftToStateCommand(lift, 0, 25)))
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_StartToBasketDepo"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreRightSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample")
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+//                        new ParallelCommandGroup(
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(300),
+//                                        RedBasket_BasketToAscentPark),
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(500),
+//                                       new InstantCommand(() ->arm.sAR.setPosition(BotPositions.ARM_BASKET + .05)),
+//                                        new LiftToStateCommand(lift, 0, 25)))
                 )
         );
     }
@@ -285,7 +286,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
-        telemetry.addData("Sample acquired", intake.checkSample());
+        telemetry.addData("Sample acquired", vintake.checkSample());
 
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 

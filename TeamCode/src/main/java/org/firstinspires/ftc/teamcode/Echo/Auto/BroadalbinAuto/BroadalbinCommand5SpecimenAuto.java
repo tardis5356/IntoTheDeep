@@ -37,6 +37,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 
@@ -78,7 +79,7 @@ public class BroadalbinCommand5SpecimenAuto extends OpMode {
     private DcMotorEx mFR;
     private DcMotorEx mBL;
     private DcMotorEx mBR;
-    private Intake intake;
+    private VIntake vintake;
     private Arm arm;
     private Gripper gripper;
     private Extendo extendo;
@@ -145,7 +146,7 @@ public class BroadalbinCommand5SpecimenAuto extends OpMode {
 
 
 
-        intake = new Intake(hardwareMap);
+        vintake = new VIntake(hardwareMap);
         arm = new Arm(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
@@ -156,20 +157,20 @@ public class BroadalbinCommand5SpecimenAuto extends OpMode {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
 
 
-        CommandScheduler.getInstance().registerSubsystem(intake);//
-        RedSpec_StartToSub = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_StartToSub");
-        RedSpecEx_LeftSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_LeftSpecDepo");
-        RedSpecEx_MidSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_MidSpecDepo");
-        RedSpecEx_RightSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpecEx_RightSpecDepo");
-        RedSpec_RightSpecDepoToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_RightSpecDepoToObs");
-        RedSpec_ObsToSub1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub1");
-        RedSpec_SubToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs");
-        RedSpec_ObsToSub2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub2");
-        RedSpec_SubToObs2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs2");
-        RedSpec_ObsToSub3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub3");
-        RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs3");
-        RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_ObsToSub4");
-        RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, intake, exampleSubsystem, "redSpec_SubToObs4");
+        CommandScheduler.getInstance().registerSubsystem(vintake);//
+        RedSpec_StartToSub = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_StartToSub");
+        RedSpecEx_LeftSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_LeftSpecDepo");
+        RedSpecEx_MidSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_MidSpecDepo");
+        RedSpecEx_RightSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_RightSpecDepo");
+        RedSpec_RightSpecDepoToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_RightSpecDepoToObs");
+        RedSpec_ObsToSub1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub1");
+        RedSpec_SubToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs");
+        RedSpec_ObsToSub2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub2");
+        RedSpec_SubToObs2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs2");
+        RedSpec_ObsToSub3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub3");
+        RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
+        RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
+        RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -220,7 +221,7 @@ public class BroadalbinCommand5SpecimenAuto extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
-                new InstantCommand(intake::transferPosition),
+                new InstantCommand(vintake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 //                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
 //                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),

@@ -220,16 +220,16 @@ public class UticaCommandSpecimenAuto extends OpMode {
 
 
                 new SequentialCommandGroup(
-                        new ActionCommand(redSpec_StartToSub, requirements),
-                        new ActionCommand(redSpec_SubToMidPoint, requirements),
-                        new ActionCommand(redSpec_MidPointToLeftSpec, requirements),
-                        new ActionCommand(redSpec_LeftSpecToObs, requirements),
-                        new ActionCommand(redSpec_ObsToMidSpec, requirements),
-                        new ActionCommand(redSpec_MidSpecToObs, requirements),
-                        new ActionCommand(redSpec_ObsToRightSpec, requirements),
-                        new ActionCommand(redSpec_RightSpecToObs, requirements),
-                        new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements),
-                        new ActionCommand(redSpec_SubToObs, requirements)
+//                        new ActionCommand(redSpec_StartToSub, requirements),
+//                        new ActionCommand(redSpec_SubToMidPoint, requirements),
+//                        new ActionCommand(redSpec_MidPointToLeftSpec, requirements),
+//                        new ActionCommand(redSpec_LeftSpecToObs, requirements),
+//                        new ActionCommand(redSpec_ObsToMidSpec, requirements),
+//                        new ActionCommand(redSpec_MidSpecToObs, requirements),
+//                        new ActionCommand(redSpec_ObsToRightSpec, requirements),
+//                        new ActionCommand(redSpec_RightSpecToObs, requirements),
+//                        new ActionCommand(redSpec_RightSpecObsPickUpToSub, requirements),
+//                        new ActionCommand(redSpec_SubToObs, requirements)
 
 
 
