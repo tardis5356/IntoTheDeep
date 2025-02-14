@@ -148,7 +148,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
     boolean wasRaised = true;
 
-    ButtonReader reader = new ButtonReader(driver1, GamepadKeys.Button.RIGHT_BUMPER);
+//    ButtonReader reader = new ButtonReader(driver1, GamepadKeys.Button.RIGHT_BUMPER);
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -306,8 +306,7 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(()-> gripper.verifyGripper())
                     .whenActive(new InstantCommand(()-> gOpen = false));
 
-            new Trigger((()-> gripper.gripperClear && gripper.verifyGripper()))
-                    .whenActive(new InstantCommand(() -> driver2.gamepad.rumble(300)));
+
 
 
 
@@ -379,8 +378,10 @@ public class VIntake_TeleOp extends CommandOpMode {
         new Trigger(() -> extendo.sER.getPosition() >= .62)
                 .whileActiveOnce(
                         new SequentialCommandGroup(
-                        new InstantCommand(vintake::upPosition)
-                        //new WaitCommand(200),
+                        new InstantCommand(vintake::upPosition),
+                                new WaitCommand(200),
+                                new InstantCommand(()-> wasRaised = true)
+
                         //new InstantCommand(extendo::in),
                         //new WaitCommand(300),
                         /*new InstantCommand(intake::transfer)*/)
@@ -396,21 +397,21 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)) && IntakeToggle == true)
                     .whenActive(
                             new SequentialCommandGroup(
-                                    new InstantCommand(vintake::in)
-//                            new WaitCommand(60),
-//                            new InstantCommand(() -> IntakeToggle = false)
-                            )).and(new Trigger(() -> reader.wasJustReleased())
-                            .whenActive(new InstantCommand(() -> IntakeToggle = false)));
+                                    new InstantCommand(vintake::in),
+                            new WaitCommand(60),
+                            new InstantCommand(() -> IntakeToggle = false)
+//                            ))
+                          ));
 
             //if d1 hits right bumper, there are no commands to outake, and the toggle is false
-            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER)) && (!driver2.getButton(GamepadKeys.Button.LEFT_BUMPER) || !driver1.getButton(GamepadKeys.Button.Y)) && IntakeToggle == false)
+            new Trigger(() -> (driver1.getButton(GamepadKeys.Button.RIGHT_BUMPER))  && IntakeToggle == false)
                     .whenActive(
                             new SequentialCommandGroup(
-                                    new InstantCommand(vintake::stop)
-//                                    new WaitCommand(60),
-//                                    new InstantCommand(() -> IntakeToggle = true)
-                            )).and(new Trigger(() -> reader.wasJustReleased())
-                            .whenActive(new InstantCommand(() -> IntakeToggle = false)));
+                                    new InstantCommand(vintake::stop),
+                                    new WaitCommand(60),
+                                    new InstantCommand(() -> IntakeToggle = true)
+                            )
+                    );
 
 
             //TODO: Change this one if we do the pass through
@@ -423,6 +424,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                                     //new InstantCommand(()-> intake.samplePresent = false),
                                     //     new InstantCommand(()-> outaking = true),
                                     new InstantCommand(vintake::upPosition),
+                                    new InstantCommand(()-> wasRaised = true),
                                     new InstantCommand(vintake::out),
                                     new InstantCommand(() -> AllianceColor.cycleType = "O"),
                                     new WaitCommand(1500),
@@ -475,6 +477,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                                     new InstantCommand(vintake::in),
                                     new InstantCommand(extendo::out),
                                     new InstantCommand(vintake::upPosition),
+                                    new InstantCommand(()-> wasRaised = true),
                                     new InstantCommand(() -> IntakeToggle = true),
                                     new InstantCommand(() -> Extendo_Toggle = false)
                             )
@@ -484,7 +487,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                     .whenActive(new ParallelCommandGroup(
                             new SequentialCommandGroup(
                                     new InstantCommand(vintake::stop),
-                                    new InstantCommand(vintake::upPosition)
+                                    new InstantCommand(vintake::upPosition),
+                                    new InstantCommand(()-> wasRaised = true)
                             ),
                             new SequentialCommandGroup(
                                     new WaitCommand(100),
@@ -500,6 +504,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                             new ParallelCommandGroup(new InstantCommand(() -> driver1.gamepad.rumble(300)),
                                     new SequentialCommandGroup(
                                             new InstantCommand(vintake::upPosition),
+                                            new InstantCommand(()-> wasRaised = true),
                                             new InstantCommand(vintake::in),
                                             new WaitCommand(400),
                                             new InstantCommand(extendo::in),
@@ -515,6 +520,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
                                     new InstantCommand(() -> driver1.gamepad.rumble(300)),
                                     new InstantCommand(vintake::upPosition),
+                                    new InstantCommand(()-> wasRaised = true),
                                     new InstantCommand(vintake::in),
                                     new WaitCommand(400),
                                     new InstantCommand(extendo::in),
@@ -736,7 +742,6 @@ public class VIntake_TeleOp extends CommandOpMode {
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(()->lift.controller.reset()),
                             new InstantCommand(()->lift.PIDEnabled= false),
                             new InstantCommand(()-> lift.hanging(true)),
                             new InstantCommand(()-> arm.hang()),
@@ -800,6 +805,14 @@ public class VIntake_TeleOp extends CommandOpMode {
     //this is the main run loop
     public void run() {
 
+        if(driver2.getButton(GamepadKeys.Button.X)){
+            lift.controller.reset();
+
+        }
+
+        if(gripper.gripperClear && gripper.verifyGripper()){
+            driver2.gamepad.rumble(500);
+        }
 
 //        if (killSwitchPressed){
 //
