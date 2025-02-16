@@ -113,39 +113,15 @@ public class Lift extends SubsystemBase {
             else{
                 liftFF = .125;
             }
-//            if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
-//                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-//                targetPosition = 15;
-//            } else if (joystickPowerInput != 0 && limitLift.isPressed() && !liftHanging) {
-//                if (joystickPowerInput > 0) {
-//                    motorPower = 0;
-//                } else if (joystickPowerInput <= 0) {
-//                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-//                    targetPosition = 15;
-//                }
-//            } else if (joystickPowerInput != 0 && tooHigh && !liftHanging) {
-//                if (joystickPowerInput < 0) {
-//                    motorPower = 0;
-//                } else if (joystickPowerInput >= 0) {
-//                    motorPower = joystickPowerInput - BotPositions.LIFT_FF;
-//                    targetPosition = 15;
-//                }
-//            } else if (liftHanging) {
-//                motorPower = joystickPowerInput;
-//                targetPosition = 15;
-//            } else if (targetPosition != 15) {
-//                motorPower = -BotPositions.LIFT_FF + getCurrentPID();
-//            } else if (targetPosition == 10) {
-//                motorPower = 0;
-//            } else {
-//                motorPower = -BotPositions.LIFT_FF;
-//            }
+//
 
             if (liftHanging){
                 motorPower = 10;
+                targetPosition = 10;
             }
             else if(joystickPowerInput != 0 && !liftHanging){
                 PIDEnabled = false;
+                targetPosition = 10;
                 //CommandScheduler.getInstance().reset();
                 if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
                     motorPower = 0 - liftFF;
@@ -162,11 +138,11 @@ public class Lift extends SubsystemBase {
             }
 
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
-        if (!liftHanging){
+        //if (!liftHanging){
             mLB.setPower(motorPower);
             mLF.setPower(motorPower);
             mLT.setPower(motorPower);
-        }
+        //}
 
     }
 
@@ -187,6 +163,8 @@ public class Lift extends SubsystemBase {
     public double getCurrentMotorPower() {
         return motorPower;
     }
+
+
 
     //this was for auto with so that we could do a stage one hang by letting the motors sag down to the lower bar.
     //it never worked and I still don't know why

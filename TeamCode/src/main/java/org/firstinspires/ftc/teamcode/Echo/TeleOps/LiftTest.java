@@ -129,24 +129,24 @@ public class LiftTest extends CommandOpMode {
     public void run() {
         super.run();
 
-        lift.ManualMode(aparatus.getLeftY(), aparatus.getRightY());
+        lift.ManualMode(-aparatus.getLeftY(), -aparatus.getRightY());
 
         //applies stick values to motor variables with cubic scaling
-        Rotation = cubicScaling(-gamepad1.right_stick_x) * 0.7;
-        FB = cubicScaling(gamepad1.left_stick_y);
-        LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
-
-        //defines the powers for the motors based on the stick inputs (trust i've written this so many times)
-        double mFLPower = FB + LR + Rotation;
-        double mFRPower = FB - LR - Rotation;
-        double mBLPower = FB - LR + Rotation;
-        double mBRPower = FB + LR - Rotation;
-
-        //actually sets the motor powers
-        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
-        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
-        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
-        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
+//        Rotation = cubicScaling(-gamepad1.right_stick_x) * 0.7;
+//        FB = cubicScaling(gamepad1.left_stick_y);
+//        LR = cubicScaling(-gamepad1.left_stick_x) * 1.2;
+//
+//        //defines the powers for the motors based on the stick inputs (trust i've written this so many times)
+//        double mFLPower = FB + LR + Rotation;
+//        double mFRPower = FB - LR - Rotation;
+//        double mBLPower = FB - LR + Rotation;
+//        double mBRPower = FB + LR - Rotation;
+//
+//        //actually sets the motor powers
+//        mFL.setPower(mFLPower * CURRENT_SPEED_MULTIPLIER);
+//        mFR.setPower(mFRPower * CURRENT_SPEED_MULTIPLIER);
+//        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
+//        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
         telemetry.addData("LeftStick", aparatus.getLeftY());
         telemetry.addData("RightStick", aparatus.getRightY());
