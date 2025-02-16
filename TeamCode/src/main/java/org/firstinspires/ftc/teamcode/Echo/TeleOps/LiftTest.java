@@ -98,6 +98,7 @@ public class LiftTest extends CommandOpMode {
         telemetry.addData("liftPosition", lift.getCurrentPosition());
         telemetry.addData("TargetPosition", lift.getTargetPosition());
         telemetry.addData("PID power", lift.getCurrentPID());
+        telemetry.addData("LiftAssignedPower", lift.motorPower);
         telemetry.update();
 
 

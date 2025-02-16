@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Lift extends SubsystemBase {
     public DcMotorEx mLT; //top motor driving the lift
     public DcMotorEx mLB; //bottom motor driving the lift
+    public DcMotorEx mLF;
     TouchSensor limitLift; //touch sensor near the bottom of the lift slides used to localize the lift encoder
 //and prevent the lift from driving into the deck plate
 
@@ -37,16 +38,17 @@ public class Lift extends SubsystemBase {
     public Lift(HardwareMap hardwareMap) {
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
         mLB = hardwareMap.get(DcMotorEx.class, "mLB");
+        mLF = hardwareMap.get(DcMotorEx.class, "mLF");
 
         limitLift = hardwareMap.get(TouchSensor.class, "lL");
 
         localized = false;
 
-        liftFF = .1;
+        liftFF = .6;
 
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//this is an example of using the hardwaremap method as an init
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//sets the lift motors to sag and not resist anything when they have a power of 0
-
+        mLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         /*
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -55,9 +57,11 @@ public class Lift extends SubsystemBase {
         //mLT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//at the start of teleop reset the encoder value to 0 (localize it)
         mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mLT.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mLT.setDirection(DcMotorSimple.Direction.REVERSE);
         mLB.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLF.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //IMPORTANT NOTES ON TUNING PID. The P value can be seen as how fast the lift moves to reach a position. Start very
         //small and slowly increase it until the lift slightly oscillates around the desired location. Then, increase the D value,
@@ -91,6 +95,7 @@ public class Lift extends SubsystemBase {
             mLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             mLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            mLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             liftOffset = 0;
             localized = true;
             //targetPosition = 10;
@@ -106,7 +111,7 @@ public class Lift extends SubsystemBase {
                 liftFF = 0;
             }
             else{
-                liftFF = .1;
+                liftFF = .125;
             }
 //            if (joystickPowerInput != 0 && !limitLift.isPressed() && !tooHigh && !liftHanging) {
 //                motorPower = joystickPowerInput - BotPositions.LIFT_FF;
@@ -157,6 +162,7 @@ public class Lift extends SubsystemBase {
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
         mLT.setPower(motorPower);//like the extendo we change a variable that is then constantly assigned to the hardware
         mLB.setPower(motorPower);
+        mLF.setPower(motorPower);
     }
 
     //these are a few telemetry methods for trouble shooting
