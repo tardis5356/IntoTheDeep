@@ -826,6 +826,7 @@ public class VIntake_TeleOp extends CommandOpMode {
             lift.mLT.setPower(0);//like the extendo we change a variable that is then constantly assigned to the hardware
             lift.mLB.setPower(0);
             lift.mLF.setPower(0);
+            lift.liftHanging = false;
         }
 
 //        if (killSwitchPressed){
