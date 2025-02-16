@@ -24,7 +24,7 @@ public class Lift extends SubsystemBase {
 
     public static double targetPosition = 0;// stores the desired position of the lift in motor ticks
     public double joystickPowerInput = 0;//like the extendo, it stores the stick input, this time as a motor power
-    public static double motorPower = 0;//stores the final desired motor power, which is then fed into the motors
+    public double motorPower = 0;//stores the final desired motor power, which is then fed into the motors
     boolean tooHigh; //Boolean to check if the lift is to high
     public boolean liftHanging;
 
@@ -141,8 +141,10 @@ public class Lift extends SubsystemBase {
 //                motorPower = -BotPositions.LIFT_FF;
 //            }
 
-
-            if(joystickPowerInput != 0){
+            if (liftHanging){
+                motorPower = 10;
+            }
+            else if(joystickPowerInput != 0 && !liftHanging){
                 PIDEnabled = false;
                 //CommandScheduler.getInstance().reset();
                 if(((getCurrentPosition()>100 && joystickPowerInput > 0) || (joystickPowerInput < 0 && tooHigh)) && localized == true){
@@ -152,7 +154,7 @@ public class Lift extends SubsystemBase {
                     motorPower = joystickPowerInput - liftFF;
                 }
             }
-            else if (PIDEnabled == true){
+            else if (PIDEnabled == true && !liftHanging){
                 motorPower = -liftFF + getCurrentPID();
             }
             else{
@@ -160,9 +162,12 @@ public class Lift extends SubsystemBase {
             }
 
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
-        mLT.setPower(motorPower);//like the extendo we change a variable that is then constantly assigned to the hardware
-        mLB.setPower(motorPower);
-        mLF.setPower(motorPower);
+        if (!liftHanging){
+            mLB.setPower(motorPower);
+            mLF.setPower(motorPower);
+            mLT.setPower(motorPower);
+        }
+
     }
 
     //these are a few telemetry methods for trouble shooting

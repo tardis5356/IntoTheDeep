@@ -306,12 +306,12 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, 25),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::open),
                                 new WaitCommand(700),
-                                new LiftToStateCommand(lift, 0, 10)
+                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE)
 
                         )
                 );
@@ -322,11 +322,11 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, 25),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, 25)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
 
@@ -339,7 +339,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, 25),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                 new InstantCommand(arm::hang),
                                 new InstantCommand(wrist::basket)
 

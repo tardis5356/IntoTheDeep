@@ -337,7 +337,7 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.Y) && DepositState == "specimen" && !gOpen)
                     .whenActive(
                             new SequentialCommandGroup(
-                                    new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 20),
+                                    new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, BotPositions.LIFT_TOLERANCE),
                                     new InstantCommand(gripper::open)
                             )
                     );
@@ -398,7 +398,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                     .whenActive(
                             new SequentialCommandGroup(
                                     new InstantCommand(vintake::in),
-                            new WaitCommand(60),
+                            new WaitCommand(100),
                             new InstantCommand(() -> IntakeToggle = false)
 //                            ))
                           ));
@@ -408,7 +408,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                     .whenActive(
                             new SequentialCommandGroup(
                                     new InstantCommand(vintake::stop),
-                                    new WaitCommand(60),
+                                    new WaitCommand(100),
                                     new InstantCommand(() -> IntakeToggle = true)
                             )
                     );
@@ -747,7 +747,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                             new InstantCommand(()-> arm.hang()),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),
                             new InstantCommand(() -> DepositState = "specimen"),
-                            new InstantCommand(() -> killSwitchActive = true),
+                            //new InstantCommand(() -> killSwitchActive = true),
                             new InstantCommand(extendo::in)
                     )).cancelWhenActive(specimenToWall)
                     .cancelWhenActive(intakeToWallWithNothing)
@@ -812,6 +812,20 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         if(gripper.gripperClear && gripper.verifyGripper()){
             driver2.gamepad.rumble(500);
+            driver1.gamepad.rumble(500);
+
+        }
+
+        if(driver2.gamepad.right_stick_button){
+            lift.mLT.setPower(10);//like the extendo we change a variable that is then constantly assigned to the hardware
+            lift.mLB.setPower(10);
+            lift.mLF.setPower(10);
+            lift.liftHanging = true;
+        }
+        else if (driver2.gamepad.left_stick_button){
+            lift.mLT.setPower(0);//like the extendo we change a variable that is then constantly assigned to the hardware
+            lift.mLB.setPower(0);
+            lift.mLF.setPower(0);
         }
 
 //        if (killSwitchPressed){
@@ -862,10 +876,10 @@ public class VIntake_TeleOp extends CommandOpMode {
         Trigger = (LeftTrigger - RightTrigger) / 10;
 
         //additionally if Trigger gets to large in magnitude it is capped that way the extendo can't be manually launched somewhere crazy.
-        if (Trigger > .03) {
-            Trigger = .05;
-        } else if (Trigger < -.03) {
-            Trigger = -.05;
+        if (Trigger > .07) {
+            Trigger = .07;
+        } else if (Trigger < -.07) {
+            Trigger = -.07;
         }
 
             extendo.update(Trigger);

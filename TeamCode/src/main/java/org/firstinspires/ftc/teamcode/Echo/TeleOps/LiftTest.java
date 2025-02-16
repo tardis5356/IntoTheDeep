@@ -54,7 +54,10 @@ public class LiftTest extends CommandOpMode {
                 );
 
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.A))
-                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE));
+                .whenActive( new SequentialCommandGroup(
+                        new InstantCommand(()->lift.PIDEnabled = true),
+                        new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                ));
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.B))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE));
 
@@ -75,6 +78,12 @@ public class LiftTest extends CommandOpMode {
                 .whenActive(new SequentialCommandGroup(
 
                         new InstantCommand(gripper::open)
+                ));
+
+        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.LEFT_BUMPER))
+                .whenActive(new SequentialCommandGroup(
+
+                        new InstantCommand(arm::basket)
                 ));
 
 //        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
