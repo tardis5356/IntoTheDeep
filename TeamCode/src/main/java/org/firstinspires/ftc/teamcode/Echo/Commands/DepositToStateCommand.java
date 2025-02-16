@@ -237,9 +237,9 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_WALL, BotPositions.LIFT_TOLERANCE)),
                                         new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)
-                                )
+                                ))
 
-                        )
+
                         //new InstantCommand(gripper::open)
 
                 );
