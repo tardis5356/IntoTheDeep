@@ -173,6 +173,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     public void start() {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
+        telemetry.setMsTransmissionInterval(30);
+
 
 //        intakeIn = new IntakeInCommand(vintake);
 //
@@ -195,6 +197,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
+
 
 //        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
 //
@@ -230,9 +233,9 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample")
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample")
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(
 //                                        new WaitCommand(300),

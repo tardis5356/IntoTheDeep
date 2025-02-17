@@ -26,7 +26,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "basketToIntake":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE_TIGHT),
                                 new SequentialCommandGroup(
                                         //new WaitCommand(500),
                                         new InstantCommand(wrist::intake),
@@ -50,7 +50,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                                         new InstantCommand(gripper::intake)
                                                 ),
                                                 new WaitCommand(250),
-                                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE_TIGHT)
                                         )
                                 )
                 );
@@ -201,7 +201,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(arm::intake),
                                 new WaitCommand(500),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE_TIGHT)
                         )
 
                 );
@@ -326,7 +326,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE_TIGHT)
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
 
