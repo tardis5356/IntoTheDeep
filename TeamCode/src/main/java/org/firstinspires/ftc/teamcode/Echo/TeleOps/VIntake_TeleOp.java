@@ -126,6 +126,8 @@ public class VIntake_TeleOp extends CommandOpMode {
     boolean IntakeToggle = true;
 
 
+
+
     //Commands are also objects, and thus new instances need to be made for new files
     public DepositToStateCommand intakeToIntake, wallToIntake, basketToIntake, specimenToIntake;
     public DepositToStateCommand intakeToWallWithSomething, intakeToWallWithNothing, basketToWall, specimenToWall;
@@ -742,6 +744,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.X))
                     .whenActive(new SequentialCommandGroup(
+                            new LiftToStateCommand(lift, 10, 0),
                             new InstantCommand(()->lift.PIDEnabled= false),
                             new InstantCommand(()-> lift.hanging(true)),
                             new InstantCommand(()-> arm.hang()),

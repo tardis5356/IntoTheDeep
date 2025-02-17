@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -53,7 +54,7 @@ public class Primus_TeleopCampTARDIS extends LinearOpMode {    // LinearOpMode {
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         mBL.setDirection(DcMotor.Direction.FORWARD);
-        mBR.setDirection(DcMotor.Direction.REVERSE);
+        mBR.setDirection(DcMotor.Direction.FORWARD);
         mFR.setDirection(DcMotor.Direction.REVERSE);
         mFL.setDirection(DcMotor.Direction.REVERSE);
 
@@ -70,6 +71,7 @@ public class Primus_TeleopCampTARDIS extends LinearOpMode {    // LinearOpMode {
             //Gamepad 1 Variablesz
             double leftY1 = gamepad1.left_stick_y;
             double rightX1 = gamepad1.right_stick_x;
+            double rightY1 = gamepad1.right_stick_y;
 
             //Gamepad 2 Variables
             double leftY2 = gamepad2.left_stick_y;
@@ -78,22 +80,24 @@ public class Primus_TeleopCampTARDIS extends LinearOpMode {    // LinearOpMode {
             double rightY2 = gamepad2.right_stick_y;
             boolean aButton = gamepad2.a;
             boolean bButton = gamepad2.b;
+            boolean lbumper = gamepad2.left_bumper;
+            boolean rbumper = gamepad2.right_bumper;
             vArmPower = rightY2;
 
             //Drivetrain controls
             //TODO write drivetrain code using joysticks
-            mBL.setPower();
-            mBR.setPower();
-            mFL.setPower();
-            mFR.setPower();
+            mBL.setPower(-leftY1);
+            mBR.setPower(-rightY1);
+            mFL.setPower(-leftY1);
+            mFR.setPower(-rightY1);
 
             //TODO write Arm code with limits using limit switch and far foward and far back variables
 
-            if(ArmLim.isPressed() ==  || (FarForward ==  && FarBack == )){
+            if(ArmLim.isPressed() == false || (FarForward == false && FarBack == false)){
                 mArm.setPower(-vArmPower);
 
             }
-            if(ArmLim.isPressed() == ){
+            if(ArmLim.isPressed() ==true ){
                 armPosition = 1000;
                 PosDiff = armPosition - mBR.getCurrentPosition();
                 FarForward = true;
@@ -103,18 +107,18 @@ public class Primus_TeleopCampTARDIS extends LinearOpMode {    // LinearOpMode {
 
                 mArm.setPower(-vArmPower);
             }
-            if(armPosition < 2000 && FarForward == ){
+            if(armPosition < 2000 && FarForward == true){
                 mArm.setPower(-vArmPower);
             }
             if(armPosition >= 2000){
-                FarForward = ;
+                FarForward = false;
             }
-            if(armPosition >= 5000 || FarBack == ){
-                FarBack = ;
+            if(armPosition >= 5000 || FarBack == true){
+                FarBack = true;
                 mArm.setPower(-1);
             }
             if(armPosition >= 4000){
-                FarBack = ;
+                FarBack = false;
             }
 
 
@@ -123,15 +127,15 @@ public class Primus_TeleopCampTARDIS extends LinearOpMode {    // LinearOpMode {
             //sR open = 0.6, close = 0.25
             //sL open = 0.35, close = 0.75
 
-            if (/*button*/ != 0) {
-                sR.setPosition(/*Position*/);
+            if (lbumper == true) {
+                sR.setPosition(0.25);
             } else {
-                sR.setPosition(/*Position*/);
+                sR.setPosition(0.6);
             }
-            if (/*button*/ != 0) {
-                sL.setPosition(/*Position*/);
+            if (rbumper == true) {
+                sL.setPosition(0.75);
             } else {
-                sL.setPosition(/*Position*/);
+                sL.setPosition(0.35);
             }
 
             armPosition = mBR.getCurrentPosition() + PosDiff;

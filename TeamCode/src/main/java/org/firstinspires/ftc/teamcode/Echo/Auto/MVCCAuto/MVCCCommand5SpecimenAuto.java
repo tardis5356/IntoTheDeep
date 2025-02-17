@@ -210,6 +210,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                 new InstantCommand(extendo::in),
                 new InstantCommand(vintake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
+new InstantCommand(arm::intake),
 //                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
 //                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
 //                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),

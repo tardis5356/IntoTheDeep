@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 public class LiftToStateCommand extends CommandBase {//This is a separate command used to actually set the target position of the lift for the PID
     private Lift lift;//create a lift object. It will have all the associated code of the lift file since that file outlines a class
 
-    int targetPosition;
+   public int targetPosition;
     int tolerance;//This is a +/- # of ticks on the lift. We have this so that the PID doesn't get stuck oscillating trying to reach an exact value.
 
     public LiftToStateCommand(Lift lift, int targetPosition, int tolerance) {

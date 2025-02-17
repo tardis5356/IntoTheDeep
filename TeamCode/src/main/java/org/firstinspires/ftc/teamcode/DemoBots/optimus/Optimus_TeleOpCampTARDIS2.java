@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 //@Disabled
 @TeleOp(name="Optimus_TeleOpCampTARDIS2", group="demo")
-public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode{
+public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode {
 
     // create objects and give them classes
     DcMotor mL;
@@ -34,7 +34,7 @@ public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode{
 // initialization
 
     @Override
-    public void runOpMode (){
+    public void runOpMode() {
 // map objects to motors/servos
         mL = hardwareMap.get(DcMotor.class, "mL");
         mR = hardwareMap.get(DcMotor.class, "mR");
@@ -50,12 +50,10 @@ public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode{
         Gamepad previousGamepad2 = new Gamepad();
 
 
-
-
 // program has startedz
         waitForStart();
 
-        while(opModeIsActive())   {
+        while (opModeIsActive()) {
 
             previousGamepad1.copy(currentGamepad1);
             previousGamepad2.copy(currentGamepad2);
@@ -72,94 +70,94 @@ public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode{
 
             //TODO Write drivetrain code using the joysticks
 
-            mL.setPower();
-            mR.setPower();
-
-            ArmPosition = mA.getCurrentPosition() + PositionDiff;
-
-            //gripper
-            boolean RightTrigger = gamepad2.right_bumper;
-            boolean LeftTrigger = gamepad2.left_bumper;
-
-            //TODO Write an if/else statement using the Gripper state variable
-            // to make an open/close toggle for the gripper
-
-            //gripper positions
-            // close = .37
-            //open = .6
-
-            if(GripperState){
-
-            }
-            else if(GripperState == false){
-
-            }
-
-
-
-            //wrist
-            boolean rB2 = gamepad2.dpad_down;
-            boolean lB2 = gamepad2.dpad_up;
-
-            //decide if to do this part
-
-            //TODO write code that moves the wrist by setting the wrist position double
-            //down = 1 up = .7
-
-
-                if (lB2) {
-
-                }
-                else if (rB2) {
-
-                }
-            }
-            sW.setPosition(wristPosition);
-            //arm
-
-            double RightstickY2 = gamepad2.right_stick_y;
-            double LeftstickY2 = gamepad2.left_stick_y;
-
-            Rabs = Math.abs(RightstickY2);
-            Labs = Math.abs(LeftstickY2);
-
-            //TODO Explain the logic here and fill out the limit switch true or false
-
-            if(limit.isPressed() ==  && ArmPosition >= 0){
-                if(Rabs > Labs){
-                    mA.setPower((-RightstickY2)/2);
-                }
-                else {
-                    mA.setPower((-LeftstickY2)/2);
-                }
-//                mA.setPower((-RightstickY2)/2);
-//                mA.setPower((-LeftstickY2)/2);
-                FarBack = false;
-            }
-            else if(ArmPosition < -100 && limit.isPressed() == ){
-                FarBack = true;
-                mA.setPower(.5);
-            }
-            else if (ArmPosition >= -100 && ArmPosition < 0 && FarBack == ){
-                mA.setPower(.5);
-            }
-            else if (ArmPosition >= -100 && ArmPosition < 0 && FarBack == ){
-                if(Rabs > Labs){
-                    mA.setPower((-RightstickY2));
-                }
-                else {
-                    mA.setPower((-LeftstickY2));
-                }
-            }   else if (limit.isPressed() == ){
-                mA.setPower(-.5);
-                ArmPosition = 3750;
-                PositionDiff = ArmPosition - mA.getCurrentPosition();
-            }
-            if (ArmPosition >= 3850){
-                mA.setPower(-.5);
-            }
-
-
+//            mL.setPower();
+//            mR.setPower();
+//
+//            ArmPosition = mA.getCurrentPosition() + PositionDiff;
+//
+//            //gripper
+//            boolean RightTrigger = gamepad2.right_bumper;
+//            boolean LeftTrigger = gamepad2.left_bumper;
+//
+//            //TODO Write an if/else statement using the Gripper state variable
+//            // to make an open/close toggle for the gripper
+//
+//            //gripper positions
+//            // close = .37
+//            //open = .6
+//
+//            if(GripperState){
+//
+//            }
+//            else if(GripperState == false){
+//
+//            }
+//
+//
+//
+//            //wrist
+//            boolean rB2 = gamepad2.dpad_down;
+//            boolean lB2 = gamepad2.dpad_up;
+//
+//            //decide if to do this part
+//
+//            //TODO write code that moves the wrist by setting the wrist position double
+//            //down = 1 up = .7
+//
+//
+//                if (lB2) {
+//
+//                }
+//                else if (rB2) {
+//
+//                }
+//            }
+//            sW.setPosition(wristPosition);
+//            //arm
+//
+//            double RightstickY2 = gamepad2.right_stick_y;
+//            double LeftstickY2 = gamepad2.left_stick_y;
+//
+//            Rabs = Math.abs(RightstickY2);
+//            Labs = Math.abs(LeftstickY2);
+//
+//            //TODO Explain the logic here and fill out the limit switch true or false
+//
+//            if(limit.isPressed() ==  && ArmPosition >= 0){
+//                if(Rabs > Labs){
+//                    mA.setPower((-RightstickY2)/2);
+//                }
+//                else {
+//                    mA.setPower((-LeftstickY2)/2);
+//                }
+////                mA.setPower((-RightstickY2)/2);
+////                mA.setPower((-LeftstickY2)/2);
+//                FarBack = false;
+//            }
+//            else if(ArmPosition < -100 && limit.isPressed() == ){
+//                FarBack = true;
+//                mA.setPower(.5);
+//            }
+//            else if (ArmPosition >= -100 && ArmPosition < 0 && FarBack == ){
+//                mA.setPower(.5);
+//            }
+//            else if (ArmPosition >= -100 && ArmPosition < 0 && FarBack == ){
+//                if(Rabs > Labs){
+//                    mA.setPower((-RightstickY2));
+//                }
+//                else {
+//                    mA.setPower((-LeftstickY2));
+//                }
+//            }   else if (limit.isPressed() == ){
+//                mA.setPower(-.5);
+//                ArmPosition = 3750;
+//                PositionDiff = ArmPosition - mA.getCurrentPosition();
+//            }
+//            if (ArmPosition >= 3850){
+//                mA.setPower(-.5);
+//            }
+//
+//
 
             telemetry.addData("trigger", gamepad2.right_trigger);
             telemetry.addData("lbump", gamepad2.left_bumper);
@@ -174,6 +172,6 @@ public class Optimus_TeleOpCampTARDIS2 extends LinearOpMode{
         }
 
 
-
     }
 
+}

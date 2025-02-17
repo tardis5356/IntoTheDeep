@@ -15,7 +15,7 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-59,-61, Math.toRadians(45));
     public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-45.25, -56, Math.toRadians(100));
 //    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-46, -50, Math.toRadians(93));
-    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-56,-56, Math.toRadians(120));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-56,-56, Math.toRadians(115));
 //    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-54.5,-49, Math.toRadians(100));
     public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-60,-54, Math.toRadians(135));
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
@@ -99,7 +99,7 @@ public class MVCCBasketAutoTraj {
         redBasket_MidSampleToBasket =
                 drive.actionBuilder(redBasket_MidSampleIntakePos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
+                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(20))
                         .build();
 
         redBasket_BasketToLeftSample =

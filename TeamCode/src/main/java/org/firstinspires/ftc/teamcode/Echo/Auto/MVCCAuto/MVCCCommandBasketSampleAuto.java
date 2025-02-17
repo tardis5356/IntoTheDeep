@@ -173,7 +173,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     public void start() {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
-        telemetry.setMsTransmissionInterval(30);
+
 
 
 //        intakeIn = new IntakeInCommand(vintake);

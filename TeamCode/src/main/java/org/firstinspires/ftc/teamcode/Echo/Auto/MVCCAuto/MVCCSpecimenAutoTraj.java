@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 public class MVCCSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -64, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(8, -25, Math.toRadians(87)); //x=-5
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(0, -30, Math.toRadians(90)); //x=-5
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35, -66, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-2.5, -29, Math.toRadians(90)); //x=3
@@ -57,9 +57,9 @@ public class MVCCSpecimenAutoTraj {
 
         redSpec_StartToSub =
                 drive.actionBuilder(redSpec_StartPos)
-                        .strafeTo(new Vector2d(8, -29))
-//                        .setTangent(Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
+
+                        .setTangent(Math.toRadians(90))
+                        .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .build();
 
 

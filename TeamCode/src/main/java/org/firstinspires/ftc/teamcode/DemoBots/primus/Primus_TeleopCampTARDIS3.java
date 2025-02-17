@@ -81,58 +81,58 @@ public class Primus_TeleopCampTARDIS3 extends LinearOpMode {    // LinearOpMode 
             vArmPower = rightY2;
 
             //Drivetrain controls
-            //TODO write drivetrain code using joysticks
-            mBL.setPower();
-            mBR.setPower();
-            mFL.setPower();
-            mFR.setPower();
-
-            //TODO write Arm code with limits using limit switch and far foward and far back variables
-
-            if(ArmLim.isPressed() ==  || (FarForward ==  && FarBack == )){
-                mArm.setPower(-vArmPower);
-
-            }
-            if(ArmLim.isPressed() == ){
-                armPosition = 1000;
-                PosDiff = armPosition - mBR.getCurrentPosition();
-                FarForward = true;
-                if(rightY2 > 0){
-                    vArmPower = (0);
-                }
-
-                mArm.setPower(-vArmPower);
-            }
-            if(armPosition < 2000 && FarForward == ){
-                mArm.setPower(-vArmPower);
-            }
-            if(armPosition >= 2000){
-                FarForward = ;
-            }
-            if(armPosition >= 5000 || FarBack == ){
-                FarBack = ;
-                mArm.setPower(-1);
-            }
-            if(armPosition >= 4000){
-                FarBack = ;
-            }
-
-
-
-            //TODO write code for the grippers with any button
-            //sR open = 0.6, close = 0.25
-            //sL open = 0.35, close = 0.75
-
-            if (/*button*/ != 0) {
-                sR.setPosition(/*Position*/);
-            } else {
-                sR.setPosition(/*Position*/);
-            }
-            if (/*button*/ != 0) {
-                sL.setPosition(/*Position*/);
-            } else {
-                sL.setPosition(/*Position*/);
-            }
+//            //TODO write drivetrain code using joysticks
+//            mBL.setPower();
+//            mBR.setPower();
+//            mFL.setPower();
+//            mFR.setPower();
+//
+//            //TODO write Arm code with limits using limit switch and far foward and far back variables
+//
+//            if(ArmLim.isPressed() ==  || (FarForward ==  && FarBack == )){
+//                mArm.setPower(-vArmPower);
+//
+//            }
+//            if(ArmLim.isPressed() == ){
+//                armPosition = 1000;
+//                PosDiff = armPosition - mBR.getCurrentPosition();
+//                FarForward = true;
+//                if(rightY2 > 0){
+//                    vArmPower = (0);
+//                }
+//
+//                mArm.setPower(-vArmPower);
+//            }
+//            if(armPosition < 2000 && FarForward == ){
+//                mArm.setPower(-vArmPower);
+//            }
+//            if(armPosition >= 2000){
+//                FarForward = ;
+//            }
+//            if(armPosition >= 5000 || FarBack == ){
+//                FarBack = ;
+//                mArm.setPower(-1);
+//            }
+//            if(armPosition >= 4000){
+//                FarBack = ;
+//            }
+//
+//
+//
+//            //TODO write code for the grippers with any button
+//            //sR open = 0.6, close = 0.25
+//            //sL open = 0.35, close = 0.75
+//
+//            if (/*button*/ != 0) {
+//                sR.setPosition(/*Position*/);
+//            } else {
+//                sR.setPosition(/*Position*/);
+//            }
+//            if (/*button*/ != 0) {
+//                sL.setPosition(/*Position*/);
+//            } else {
+//                sL.setPosition(/*Position*/);
+//            }
 
             armPosition = mBR.getCurrentPosition() + PosDiff;
 
