@@ -144,13 +144,13 @@ public class VIntake extends SubsystemBase {
 //        else return false;
 //    }
     public String checkColor(){
-        if (cI.red()>300 && cI.red()<520){
+        if (cI.red()>420 && cI.red()<550 && cI.blue()<170){
             return "red";
         }
-        else if (cI.blue()>320 && cI.blue()< 420){
+        else if (cI.blue()>450){
             return "blue";
         }
-        else if (cI.red()>520){
+        else if (cI.red()>800 && cI.blue()<280){
             return "yellow";
         }
         else {
