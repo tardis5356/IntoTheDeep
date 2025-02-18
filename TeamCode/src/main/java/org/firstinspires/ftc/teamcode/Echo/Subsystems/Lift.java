@@ -44,7 +44,7 @@ public class Lift extends SubsystemBase {
 
         localized = false;
 
-        liftFF = .6;
+        liftFF = .25;
 
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//this is an example of using the hardwaremap method as an init
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//sets the lift motors to sag and not resist anything when they have a power of 0
