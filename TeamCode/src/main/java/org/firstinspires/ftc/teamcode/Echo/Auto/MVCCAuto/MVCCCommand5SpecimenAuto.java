@@ -216,11 +216,11 @@ new InstantCommand(arm::intake),
 //                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
 
                 new SequentialCommandGroup(
-                        RedSpec_StartToSub
-//                        RedSpecEx_LeftSpecDepo,
-//                        RedSpecEx_MidSpecDepo,
-//                        RedSpecEx_RightSpecDepo,
-//                        RedSpec_RightSpecDepoToObs,
+                        RedSpec_StartToSub,
+                        RedSpecEx_LeftSpecDepo,
+                        RedSpecEx_MidSpecDepo,
+                        RedSpecEx_RightSpecDepo,
+                        RedSpec_RightSpecDepoToObs
 //                        RedSpec_ObsToSub1,
 //                        RedSpec_SubToObs,
 //                        RedSpec_ObsToSub2,

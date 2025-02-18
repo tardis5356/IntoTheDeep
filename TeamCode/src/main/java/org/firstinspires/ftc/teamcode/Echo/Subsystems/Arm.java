@@ -30,6 +30,15 @@ public class Arm extends SubsystemBase {
         sAL.setPosition(BotPositions.ARM_SPECIMEN);
         sAR.setPosition(BotPositions.ARM_SPECIMEN);
     }
+    public void specimenAuto(){
+        sAL.setPosition(BotPositionsAuto.ARM_SPECIMEN_AUTO);
+        sAR.setPosition(BotPositionsAuto.ARM_SPECIMEN_AUTO);
+    }
+
+    public void specimenHangAuto(){
+        sAL.setPosition(BotPositionsAuto.ARM_SPECIMEN_HANG_AUTO);
+        sAR.setPosition(BotPositionsAuto.ARM_SPECIMEN_HANG_AUTO);
+    }
     public void specimenHang(){
         sAL.setPosition(BotPositions.ARM_SPECIMEN_HANG);
         sAR.setPosition(BotPositions.ARM_SPECIMEN_HANG);

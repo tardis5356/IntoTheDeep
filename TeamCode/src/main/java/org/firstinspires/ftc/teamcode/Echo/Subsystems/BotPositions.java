@@ -18,6 +18,6 @@ public class BotPositions {
     public static double  INTAKE_RED_MIN = 200, INTAKE_BLUE_MIN = 190, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double LIFT_FF = 0.1, WINCH_FF = 0;
     public static double LIFT_P = 0.0002, LIFT_D = 0.0000, LIFT_I = 0.000;
-    public static double VINTAKE_TRANSFER = 0.45, VINTAKE_UP = .7, VINTAKE_DOWN = .8, VINTAKE_SWEEP=.9;
+    public static double VINTAKE_TRANSFER = 0.45, VINTAKE_UP = .7, VINTAKE_DOWN = .8, VINTAKE_SWEEP=.92;
 
 }

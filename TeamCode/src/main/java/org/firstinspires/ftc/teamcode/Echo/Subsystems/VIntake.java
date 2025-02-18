@@ -94,6 +94,11 @@ public class VIntake extends SubsystemBase {
 
     }
 
+    public void sweepPosition (){
+        sI.setPosition(BotPositions.VINTAKE_SWEEP);
+        wasRaised = true;
+    }
+
 
 
 
