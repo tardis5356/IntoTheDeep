@@ -111,7 +111,7 @@ public class Lift extends SubsystemBase {
                 liftFF = 0;
             }
             else{
-                liftFF = .08;
+                liftFF = .125;
             }
 //
 
