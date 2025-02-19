@@ -10,7 +10,7 @@ public class BotPositions {
     public static double INTAKE_ARM_DOWN = .9, INTAKE_ARM_DOWN_AUTO = 0.97,INTAKE_ARM_TRANSFER = 0.38, INTAKE_ARM_UP = .77, INTAKE_ARM_OUTAKE = .16,
             INTAKE_WRIST_DOWN = .85, INTAKE_WRIST_DOWN_AUTO = .95, INTAKE_WRIST_TRANSFER = .05, INTAKE_WRIST_UP = .8, INTAKE_WRIST_OUTAKE = .2,
             INTAKE_IN = 1, INTAKE_OUT = -1, INTAKE_STOP = 0, INTAKE_TRANSFER = 0.4;
-    public static double EXTENDO_IN = 0.81, EXTENDO_OUT = .51, EXTENDO_SPECLEFT =.65, EXTENDO_SPECMID =.53, EXTENDO_SPECRIGHT = .5;
+    public static double EXTENDO_IN = 0.81, EXTENDO_OUT = .51, EXTENDO_SPECLEFT =.66, EXTENDO_SPECMID =.54, EXTENDO_SPECRIGHT = .51;
 
     //These are in motor ticks. On the ITD robot 100 ticks ~= 1 inch. Will differ from robot to robot.
     public static int LIFT_WALL = -1000, LIFT_SPECIMEN_HIGH = -9000, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -49000,

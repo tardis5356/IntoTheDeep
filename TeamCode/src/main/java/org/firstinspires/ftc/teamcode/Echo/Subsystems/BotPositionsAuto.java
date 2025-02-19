@@ -5,12 +5,12 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class BotPositionsAuto {
     public static double GRIPPER_OPEN = .6, GRIPPER_CLOSED = 0.338, GRIPPER_INTAKE = .475;
-    public static double WRIST_TRANSIT = 0.87, WRIST_WALL = .78, WRIST_INTAKE = .37, WRIST_BASKET = .15, WRIST_SPECIMEN = .5;
-    public static double ARM_BASKET = .85, ARM_INTAKE = .44, ARM_WALL = .2, ARM_TRANSIT = .5, ARM_SPECIMEN_AUTO =.65, ARM_SPECIMEN_HANG_AUTO =.74, ARM_HANG = .61, ARM_START = .7;
+    public static double WRIST_TRANSIT = 0.87, WRIST_WALL = .78, WRIST_INTAKE = .37, WRIST_BASKET = .15, WRIST_SPECIMEN = .46; // WRIST_SPECIMEN = 0.5
+    public static double ARM_BASKET = .85, ARM_INTAKE = .44, ARM_WALL = .2, ARM_TRANSIT = .5, ARM_SPECIMEN_AUTO =.65, ARM_SPECIMEN_HANG_AUTO =.76, ARM_HANG = .61, ARM_START = .7;
     public static double INTAKE_ARM_DOWN = .9, INTAKE_ARM_DOWN_AUTO = 0.97,INTAKE_ARM_TRANSFER = 0.38, INTAKE_ARM_UP = .77, INTAKE_ARM_OUTAKE = .16,
             INTAKE_WRIST_DOWN = .85, INTAKE_WRIST_DOWN_AUTO = .95, INTAKE_WRIST_TRANSFER = .05, INTAKE_WRIST_UP = .8, INTAKE_WRIST_OUTAKE = .2,
             INTAKE_IN = 1, INTAKE_OUT = -1, INTAKE_STOP = 0, INTAKE_TRANSFER = 0.4;
-    public static double EXTENDO_IN = 0.8, EXTENDO_OUT = .5, EXTENDO_SPECLEFT =.65, EXTENDO_SPECMID =.53, EXTENDO_SPECRIGHT = .5;
+    public static double EXTENDO_IN = 0.81, EXTENDO_OUT = .51, EXTENDO_SPECLEFT =.66, EXTENDO_SPECMID =.54, EXTENDO_SPECRIGHT = .51;
 
     //These are in motor ticks. On the ITD robot 100 ticks ~= 1 inch. Will differ from robot to robot.
     public static int LIFT_WALL = -1800, LIFT_SPECIMEN_HIGH = -9000, LIFT_SPECIMEN_LOW = 0, LIFT_BASKET_HIGH = -49000,
