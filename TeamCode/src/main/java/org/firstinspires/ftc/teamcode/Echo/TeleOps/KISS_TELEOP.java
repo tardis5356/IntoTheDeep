@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Echo.TeleOps;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_StartPos;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -11,11 +8,8 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
-import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -27,27 +21,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeOutCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakePassCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Winch;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 
-import java.util.Set;
-
 @Config
-@TeleOp(name = "VIntake", group = "AGen1")
+@TeleOp(name = "KISS", group = "AGen1")
 
-public class VIntake_TeleOp extends CommandOpMode {
+public class KISS_TELEOP extends CommandOpMode {
     //gamepads
     //GamepadEx is an extended object version of gamepads that has more organized input checks that we use in triggers.
     private GamepadEx driver1, driver2;
@@ -545,141 +533,173 @@ public class VIntake_TeleOp extends CommandOpMode {
             //ToIntakeCommands
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            basketToIntake,
+                            //new InstantCommand(() -> lift.PIDEnabled = true),
+                            new InstantCommand(arm::intake),
+                            new InstantCommand(wrist::intake),
+                            new InstantCommand(gripper::intake),
+                            //basketToIntake,
                             new InstantCommand(() -> DepositState = "intake"),
                             new InstantCommand(() -> gOpen = true),
                             new InstantCommand(() -> killSwitchActive = false),
                             new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            //new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "wall")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            wallToIntake,
+                            //new InstantCommand(() -> lift.PIDEnabled = true),
+                            //wallToIntake,
+                            new InstantCommand(arm::intake),
+                            new InstantCommand(wrist::intake),
+                            new InstantCommand(gripper::intake),
                             new InstantCommand(() -> DepositState = "intake"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "specimen")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            specimenToIntake,
+                            //new InstantCommand(() -> lift.PIDEnabled = true),
+                            //specimenToIntake,
+                            new InstantCommand(arm::intake),
+                            new InstantCommand(wrist::intake),
+                            new InstantCommand(gripper::intake),
                             new InstantCommand(() -> DepositState = "intake"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
             //.cancelWhenActive(specimenToIntake);
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.A) && DepositState == "intake")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            intakeToIntake,
+                            //new InstantCommand(() -> lift.PIDEnabled = true),
+                            //intakeToIntake,
+                            new InstantCommand(arm::intake),
+                            new InstantCommand(wrist::intake),
+                            new InstantCommand(gripper::intake),
                             new InstantCommand(() -> DepositState = "intake"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             //ToWallCommands
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && (DepositState == "basketHigh" || DepositState == "basketLow"))
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            basketToWall,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+////                            basketToWall,
+                            new InstantCommand(arm::wall),
+                            new InstantCommand(wrist::wall),
+                            new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)),
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                        //    new InstantCommand(vintake::in),
-                            intakeToWallWithSomething,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                        //    new InstantCommand(vintake::in),
+//                            intakeToWallWithSomething,
                        //     new InstantCommand(vintake::stop),
+                            new InstantCommand(arm::wall),
+                            new InstantCommand(wrist::wall),
+                            //new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)),
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = false),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && !gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            intakeToWallWithNothing,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                            intakeToWallWithNothing,
+                            new InstantCommand(arm::wall),
+                            new InstantCommand(wrist::wall),
+                            new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)),
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "specimen")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            specimenToWall,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                            specimenToWall,
+                            new InstantCommand(arm::wall),
+                            new InstantCommand(wrist::wall),
+                            new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)),
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = true),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             //ToHighBasket Commands
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "wall")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            wallToBasketHigh,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                            wallToBasketHigh,
+                                    new InstantCommand(wrist::basket),
+                                    new InstantCommand(arm::basket),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketHigh"),
                             new InstantCommand(() -> DepositState = "basketHigh"),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                       //     new InstantCommand(vintake::in),
-                            intakeToBasketHigh,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                       //     new InstantCommand(vintake::in),
+//                            intakeToBasketHigh,
+                            new InstantCommand(wrist::basket),
+                            new InstantCommand(arm::basket),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
                        //     new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "basketHigh"),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "specimen")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            specimenToBasketHigh,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                            specimenToBasketHigh,
+                            new InstantCommand(wrist::basket),
+                            new InstantCommand(arm::basket),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketHigh"),
                             new InstantCommand(() -> DepositState = "basketHigh"),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "basketLow")
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(() -> lift.PIDEnabled = true),
-                            basketLowToBasketHigh,
+//                            new InstantCommand(() -> lift.PIDEnabled = true),
+//                            basketLowToBasketHigh,
+                            new InstantCommand(wrist::basket),
+                            new InstantCommand(arm::basket),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"basketLowToBasketHigh"),
                             new InstantCommand(() -> DepositState = "basketHigh"),
-                            new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
+                            new InstantCommand(() -> killSwitchActive = false)
+//                            new InstantCommand(() -> lift.PIDEnabled = false),
 //                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
@@ -691,8 +711,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"basketHighToBasketLow"),
                             new InstantCommand(() -> DepositState = "basketLow"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "intake")
@@ -704,8 +724,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                           //  new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "basketLow"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "wall")
@@ -715,8 +735,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToBasketLow"),
                             new InstantCommand(() -> DepositState = "basketLow"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "specimen")
@@ -726,8 +746,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"specimenToBasketLow"),
                             new InstantCommand(() -> DepositState = "basketLow"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             //To high specimen commands
@@ -739,8 +759,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"basketToSpecimen"),
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "wall")
@@ -750,21 +770,21 @@ public class VIntake_TeleOp extends CommandOpMode {
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToSpecimen"),
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "specimen")
                     .whenActive(new SequentialCommandGroup(
-                            //new InstantCommand(() -> lift.PIDEnabled = true),
+                            new InstantCommand(() -> lift.PIDEnabled = true),
                             new InstantCommand(arm::specimenHang),
                             new WaitCommand(350),
                             new InstantCommand(gripper::open),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"wallToSpecimen"),
                             new InstantCommand(() -> DepositState = "specimen"),
-                            new InstantCommand(() -> killSwitchActive = false)
-//                            new InstantCommand(() -> lift.PIDEnabled = false),
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> killSwitchActive = false),
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
                 //.cancelWhenActive(wallToSpecimen);
 
@@ -777,8 +797,8 @@ public class VIntake_TeleOp extends CommandOpMode {
                          //   new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = false),
-                            new InstantCommand(() -> lift.PIDEnabled = false)
-//                            new InstantCommand(()-> lift.targetPosition = 10)
+                            new InstantCommand(() -> lift.PIDEnabled = false),
+                            new InstantCommand(()-> lift.targetPosition = 10)
                     ));
 
         //To hang
@@ -787,7 +807,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                     .whenActive(new SequentialCommandGroup(
                             //new LiftToStateCommand(lift, 10, 0),
                             new InstantCommand(()->lift.PIDEnabled= false),
-//                            new InstantCommand(()-> lift.targetPosition = 10),
+                            new InstantCommand(()-> lift.targetPosition = 10),
                             new InstantCommand(()-> lift.hanging(true)),
                             new InstantCommand(()-> arm.hang()),
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"initHang"),

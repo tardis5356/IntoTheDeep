@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 
 //This is a simple TeleOp to test the color sensors on the robot.
 //The intake needs to be able to spit out the wrong alliance color sample
@@ -13,14 +14,14 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 @TeleOp(name = "SensorCalibration", group = "AGen1") //Makes it so that the driver station app recognizes the file as a TeleOp and has a name
 public class SensorCalibrationTest extends CommandOpMode {
     Gripper gripper; //make an object with class gripper. We have to do this with each subsystem. Format is: class object;
-    Intake intake;
+    VIntake intake;
 
     @Override
     public void initialize(){
         gripper = new Gripper(hardwareMap); //this is a constructor. It says, hey this object needs to run this method a new time.
         //the method is the Gripper method from the gripper subsystem, which was commented as the hardware map, since it is the hardware mapping method
 
-        intake = new Intake(hardwareMap); //we also do this with every subsystem
+        intake = new VIntake(hardwareMap); //we also do this with every subsystem
     }
     public void run() {
         super.run(); //this is the scheduler for all our commands and such. Any command groups are scheduled and ran by this, as well as the periodic loops. Inw, VERY IMPORTANT
