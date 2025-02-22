@@ -6,6 +6,12 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToLeftSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToMidSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1B;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2B;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3B;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleIntake;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleIntake;
@@ -14,6 +20,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToSub;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftDepoToMidSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftSpecToLeftDepo;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_MidDepoToRightSpec;
@@ -85,14 +92,23 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedBasket_StartToBasket;
     private ActionCommand RedBasket_BasketToRightSample;
     private ActionCommand RedBasket_RightSampleToBasket;
-//    private ActionCommand RedBasket_RightSampleIntake;
+    //    private ActionCommand RedBasket_RightSampleIntake;
     private ActionCommand RedBasket_BasketToMidSample;
     private ActionCommand RedBasket_MidSampleToBasket;
-//    private ActionCommand RedBasket_MidSampleIntake;
+    //    private ActionCommand RedBasket_MidSampleIntake;
     private ActionCommand RedBasket_BasketToLeftSample;
     private ActionCommand RedBasket_LeftSampleToBasket;
-//    private ActionCommand RedBasket_LeftSampleIntake;
+    //    private ActionCommand RedBasket_LeftSampleIntake;
     private ActionCommand RedBasket_BasketToAscentPark;
+    private ActionCommand RedBasket_BasketToSub1A;
+    private ActionCommand RedBasket_BasketToSub1B;
+    private ActionCommand RedBasket_BasketToSub2A;
+    private ActionCommand RedBasket_BasketToSub2B;
+    private ActionCommand RedBasket_BasketToSub3A;
+    private ActionCommand RedBasket_BasketToSub3B;
+
+    private ActionCommand RedBasket_SubToBasket;
+
 
 
     static String DepositState;
@@ -161,6 +177,13 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 //        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
 
         RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
+        RedBasket_BasketToSub1A = new ActionCommand(redBasket_BasketToSub1A, requirements);
+        RedBasket_BasketToSub1B = new ActionCommand(redBasket_BasketToSub1B, requirements);
+        RedBasket_BasketToSub2A = new ActionCommand(redBasket_BasketToSub2A, requirements);
+        RedBasket_BasketToSub2B = new ActionCommand(redBasket_BasketToSub2B, requirements);
+        RedBasket_BasketToSub3A = new ActionCommand(redBasket_BasketToSub3A, requirements);
+        RedBasket_BasketToSub3B = new ActionCommand(redBasket_BasketToSub3B, requirements);
+        RedBasket_SubToBasket = new ActionCommand(redBasket_SubToBasket, requirements);
 
 
         switch (desiredState) {
@@ -230,10 +253,10 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(300),
                                                 RedSpec_ObsToSub1),
                                         new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new InstantCommand(gripper::close),
-                                        new InstantCommand(wrist::specimen),
-                                        new InstantCommand(arm::specimenAuto))),
+                                                new WaitCommand(500),
+                                                new InstantCommand(gripper::close),
+                                                new InstantCommand(wrist::specimen),
+                                                new InstantCommand(arm::specimenAuto))),
                                 new WaitCommand(200),
                                 new InstantCommand(arm::specimenHangAuto),
                                 new WaitCommand(200),
@@ -426,7 +449,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
                                                 new WaitCommand(500),
-                                        RedBasket_StartToBasket),
+                                                RedBasket_StartToBasket),
                                         new InstantCommand(gripper::close),
                                         new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh")
                                 ), new InstantCommand(extendo::out),
@@ -498,18 +521,18 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 //                                                new WaitCommand(250),
 //                                                new InstantCommand(intake::transfer)),
                                         new GripperAutoCloseCommand(gripper),
-                                new WaitCommand(400),
+                                        new WaitCommand(400),
                                         new InstantCommand(vintake::stop),
-                                new ParallelCommandGroup(
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(400),//500
-                                                new WaitCommand(400),
-                                                RedBasket_RightSampleToBasket)),
-                                new InstantCommand(gripper::open),
-                new InstantCommand(extendo::out)
-                        )
-                ));
+                                        new ParallelCommandGroup(
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
+                                                new SequentialCommandGroup(
+                                                        new WaitCommand(400),//500
+                                                        new WaitCommand(400),
+                                                        RedBasket_RightSampleToBasket)),
+                                        new InstantCommand(gripper::open),
+                                        new InstantCommand(extendo::out)
+                                )
+                        ));
                 break;
 
             case "redBasket_IntakeMidSample":
@@ -520,17 +543,16 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new SequentialCommandGroup(
                                                 new WaitCommand(200),
                                                 RedBasket_BasketToMidSample,
-                new InstantCommand(vintake::downPosition)),
+                                                new InstantCommand(vintake::downPosition)),
 
 
                                         new InstantCommand(vintake::in),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1500),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")
-                                        ) ,
+                                        ),
                                         new ParallelCommandGroup(
-                    new IntakeGetSampleCommand(vintake)))
-
+                                                new IntakeGetSampleCommand(vintake)))
 
 
                                 //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
@@ -583,8 +605,8 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1500),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")
-                                        ),  new ParallelCommandGroup(
-                    new IntakeGetSampleCommand(vintake)))
+                                        ), new ParallelCommandGroup(
+                                        new IntakeGetSampleCommand(vintake)))
 
                                 //   new IntakeGetSampleCommand(intake))//runs until sample is acquired
                         )
@@ -618,6 +640,45 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 )
                         ));
                 break;
+
+            case "redBasket_BasketToSub1A":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub1A),
+                                new InstantCommand(extendo::out),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                new InstantCommand(gripper::close),
+                new WaitCommand(300),
+                new InstantCommand(vintake::stop)
+                        ));
+                break;
+
+            case "redBasket_SubToBasket":
+                addCommands(
+                        new SequentialCommandGroup(
+
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1000),
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh")),
+                                                RedBasket_SubToBasket),
+                                new WaitCommand(400),
+                                new InstantCommand(gripper::open)
+                        ));
+                break;
+
+
 
         }
     }

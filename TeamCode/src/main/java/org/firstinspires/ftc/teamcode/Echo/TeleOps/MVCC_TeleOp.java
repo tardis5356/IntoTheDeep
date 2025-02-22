@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -34,6 +35,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 
 @Config
 @TeleOp(name = "MVCC_TeleOp", group = "AGen1")
+@Disabled
 public class MVCC_TeleOp extends CommandOpMode {
 
     //gamepads

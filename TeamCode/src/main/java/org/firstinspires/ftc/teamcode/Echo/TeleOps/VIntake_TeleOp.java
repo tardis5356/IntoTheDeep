@@ -45,7 +45,7 @@ import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 import java.util.Set;
 
 @Config
-@TeleOp(name = "VIntake", group = "AGen1")
+@TeleOp(name = "MVCC_TeleOp", group = "AGen1")
 
 public class VIntake_TeleOp extends CommandOpMode {
     //gamepads
@@ -471,7 +471,7 @@ public class VIntake_TeleOp extends CommandOpMode {
         //Extendo
         {
             //if driver1 presses in on the right stick, toggle between the extendo being all the way out or all the way in.
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition >= .78 && Extendo_Toggle == true)
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && Extendo_Toggle == true)
                     .whenActive(
                             //this sequential command group is here to make sure the intake doesn't hit the drivetrain on the way in
                             //and to make sure any samples don't get spat out.
@@ -486,7 +486,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                             )
                     );
 
-            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && extendo.extensionPosition < .78 && Extendo_Toggle == false)
+            new Trigger(() -> driver1.getButton(GamepadKeys.Button.RIGHT_STICK_BUTTON) && Extendo_Toggle == false)
                     .whenActive(new ParallelCommandGroup(
                             new SequentialCommandGroup(
                                     new InstantCommand(vintake::stop),

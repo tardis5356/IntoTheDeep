@@ -80,13 +80,13 @@ public class MecanumDriveBasket {
 
         // feedforward parameters (in tick units)
         public double kS = 0.315 ; //0.8306274788948262
-        public double kV = 0.00023; //0.00010597696143860526
+        public double kV = 0.00036; //0.00010597696143860526
         public double kA =0.0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 79;
-        public double minProfileAccel = -80;
-        public double maxProfileAccel = 80;
+        public double minProfileAccel = -60;
+        public double maxProfileAccel = 60;
 
         // turn profile parameters (in radians)
         public double maxAngVel = 6.689; // shared with path
@@ -312,7 +312,7 @@ public class MecanumDriveBasket {
             //TODO fix the second timer
              double headingToleranceDeg = 1;
             double positionToleranceIn = 1;
-            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
+            double timeoutSec = 1; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
            // if (t>= timeTrajectory.duration + 2) {`1

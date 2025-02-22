@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -112,6 +113,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
     private DepositToStateCommand depositToStateCommand;
 
+    private ParallelCommandGroup SampleCycle1, SampleCycle2;
+
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
@@ -155,7 +158,14 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit START
+     * up =1
+     * right = 2
+     * down = 3
+     * left = 4
+     * leftstickbutton = a
+     * rightstickbutton = b
      */
+
     @Override
     public void init_loop() {
         if (gamepad1.a) {
@@ -164,6 +174,11 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         if (gamepad1.b) {
             AllianceColor.aColor = "red";
         }
+        //  if (gamepad1.dpad_up && gamepad1.left_stick_button) {
+        SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
+        SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
+
+        // }
     }
 
     /*
@@ -173,7 +188,6 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     public void start() {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
-
 
 
 //        intakeIn = new IntakeInCommand(vintake);
@@ -235,7 +249,11 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeMidSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample")
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        SampleCycle1,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket"),
+                        SampleCycle2,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(
 //                                        new WaitCommand(300),
