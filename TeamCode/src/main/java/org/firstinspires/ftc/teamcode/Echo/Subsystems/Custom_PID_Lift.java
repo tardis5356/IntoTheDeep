@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Echo.Subsystems;
 
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class Lift extends SubsystemBase {
+public class Custom_PID_Lift extends SubsystemBase {
     public DcMotorEx mLT; //top motor driving the lift
     public DcMotorEx mLB; //bottom motor driving the lift
     public DcMotorEx mLF;
@@ -35,7 +34,7 @@ public class Lift extends SubsystemBase {
     public static double liftOffset = 0;
 
     //hardwaremap virtual components to configuration
-    public Lift(HardwareMap hardwareMap) {
+    public Custom_PID_Lift(HardwareMap hardwareMap) {
         mLT = hardwareMap.get(DcMotorEx.class, "mLT");
         mLB = hardwareMap.get(DcMotorEx.class, "mLB");
         mLF = hardwareMap.get(DcMotorEx.class, "mLF");
@@ -44,11 +43,11 @@ public class Lift extends SubsystemBase {
 
         localized = false;
 
-        liftFF = .08;
+        liftFF = .1;
 
-        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//this is an example of using the hardwaremap method as an init
-        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);//sets the lift motors to sag and not resist anything when they have a power of 0
-        mLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//this is an example of using the hardwaremap method as an init
+        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//sets the lift motors to sag and not resist anything when they have a power of 0
+        mLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         /*
         mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -78,14 +77,14 @@ public class Lift extends SubsystemBase {
         //joystickPowerInput = left;
     }
 
-    public void hanging(boolean amHanging){
-        if (amHanging){
-            liftHanging = true;
-        }
-        else{
-            liftHanging = false;
-        }
-    }
+//    public void hanging(boolean amHanging){
+//        if (amHanging){
+//            liftHanging = true;
+//        }
+//        else{
+//            liftHanging = false;
+//        }
+//    }
 
     public void periodic() {
         // runs every loop
@@ -144,9 +143,9 @@ public class Lift extends SubsystemBase {
 
         }//A super messy if statement to swap between manual and pid and stop the lift from going too high or too low.
         //if (!liftHanging){
-        mLB.setPower(motorPower);
-        mLF.setPower(motorPower);
-        mLT.setPower(motorPower);
+            mLB.setPower(motorPower);
+            mLF.setPower(motorPower);
+            mLT.setPower(motorPower);
         //}
 
     }
@@ -173,10 +172,10 @@ public class Lift extends SubsystemBase {
 
     //this was for auto with so that we could do a stage one hang by letting the motors sag down to the lower bar.
     //it never worked and I still don't know why
-    public void cutPower(){
-       mLT.setMotorDisable();
-        mLB.setMotorDisable();
-        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-    }
+//    public void cutPower(){
+//       mLT.setMotorDisable();
+//        mLB.setMotorDisable();
+//        mLT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        mLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//    }
 }

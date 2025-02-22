@@ -990,6 +990,7 @@ public class VIntake_TeleOp extends CommandOpMode {
         //telemetry.addData("ReadingIntake", cI.green());
 
         telemetry.addData("MotorEncoder", lift.getCurrentPosition());
+        telemetry.addData("Lift_Power", lift.motorPower);
         telemetry.addData("ShaftEncoder", lift.mLB.getCurrentPosition());
 
         telemetry.update();
