@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
@@ -158,7 +159,9 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
         RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
         RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
         RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
-
+        arm.sAL.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
+        arm.sAR.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
+        gripper.sG.setPosition(BotPositions.GRIPPER_CLOSED);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -210,7 +213,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                 new InstantCommand(extendo::in),
                 new InstantCommand(vintake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
-new InstantCommand(arm::intake),
+
 //                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
 //                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
 //                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),

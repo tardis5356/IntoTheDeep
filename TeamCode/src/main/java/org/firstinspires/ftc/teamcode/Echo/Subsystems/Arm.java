@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Arm extends SubsystemBase {
-    private Servo sAL; //left servo driving the arm
+    public Servo sAL; //left servo driving the arm
     public Servo sAR; //right servo driving the arm
 
     public Arm(HardwareMap hardwareMap){
@@ -31,13 +31,13 @@ public class Arm extends SubsystemBase {
         sAR.setPosition(BotPositions.ARM_SPECIMEN);
     }
     public void specimenAuto(){
-        sAL.setPosition(BotPositionsAuto.ARM_SPECIMEN_AUTO);
-        sAR.setPosition(BotPositionsAuto.ARM_SPECIMEN_AUTO);
+        sAL.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
+        sAR.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
     }
 
     public void specimenHangAuto(){
-        sAL.setPosition(BotPositionsAuto.ARM_SPECIMEN_HANG_AUTO);
-        sAR.setPosition(BotPositionsAuto.ARM_SPECIMEN_HANG_AUTO);
+        sAL.setPosition(BotPositions.ARM_SPECIMEN_HANG_AUTO);
+        sAR.setPosition(BotPositions.ARM_SPECIMEN_HANG_AUTO);
     }
     public void specimenHang(){
         sAL.setPosition(BotPositions.ARM_SPECIMEN_HANG);

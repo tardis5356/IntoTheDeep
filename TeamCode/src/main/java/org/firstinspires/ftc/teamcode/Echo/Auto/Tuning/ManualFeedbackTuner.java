@@ -9,8 +9,8 @@ public final class ManualFeedbackTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        if (TuningOpModes.DRIVE_CLASS.equals(MecanumDriveBasket.class)) {
-            MecanumDriveBasket drive = new MecanumDriveBasket(hardwareMap, new Pose2d(0, 0, 0));
+        if (TuningOpModes.DRIVE_CLASS.equals(MecanumDriveSpecimen.class)) {
+            MecanumDriveSpecimen drive = new MecanumDriveSpecimen(hardwareMap, new Pose2d(0, 0, 0));
             
             if (drive.localizer instanceof TwoDeadWheelLocalizer) {
                 if (TwoDeadWheelLocalizer.PARAMS.perpXTicks == 0 && TwoDeadWheelLocalizer.PARAMS.parYTicks == 0) {

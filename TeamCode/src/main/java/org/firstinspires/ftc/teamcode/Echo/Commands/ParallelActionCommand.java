@@ -12,11 +12,8 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2B;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3A;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3B;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleIntake;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleIntake;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleIntake;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToSub;
@@ -42,7 +39,6 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAuto
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -50,10 +46,9 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeGetSampleCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositionsAuto;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
@@ -197,10 +192,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(gripper::close),
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimenAuto),
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH - 3900, BotPositionsAuto.LIFT_TOLERANCE),
-                                        RedSpec_StartToSub,
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1200),
+                                                RedSpec_StartToSub,
                                                 new InstantCommand(arm::specimenHangAuto),
                                                 new WaitCommand(200),
                                                 new InstantCommand(gripper::open)
@@ -248,7 +242,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH - 3900, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(300),
                                                 RedSpec_ObsToSub1),
@@ -270,7 +264,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH - 3900, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(300),
                                                 RedSpec_ObsToSub2),
@@ -295,7 +289,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_ObsToSub3,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1700),
-                                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH_CLIP, 70))
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70))
                                 ),
                                 new InstantCommand(gripper::open)
 
@@ -311,7 +305,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         RedSpec_ObsToSub4,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1700),
-                                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH_CLIP, 70))
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70))
                                 ),
                                 new InstantCommand(gripper::open)
 
@@ -466,11 +460,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(gripper::close),
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimen),
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         RedBasket_StartToSub,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1800),
-                                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH_CLIP, 70),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_CLIP, 70),
                                                 new WaitCommand(100),
                                                 new InstantCommand(gripper::open)
                                         )

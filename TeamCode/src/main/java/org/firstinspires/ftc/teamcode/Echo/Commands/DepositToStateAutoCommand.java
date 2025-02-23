@@ -6,7 +6,8 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositionsAuto;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
@@ -25,7 +26,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "basketToIntake":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_INTAKE, BotPositionsAuto.LIFT_TOLERANCE_TIGHT),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                 new SequentialCommandGroup(
                                         //new WaitCommand(500),
                                         new InstantCommand(wrist::intake),
@@ -42,14 +43,14 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 //TODO: Test This
                 addCommands(
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT-100, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO -100, BotPositions.LIFT_TOLERANCE_AUTO),
                                         new SequentialCommandGroup(new WaitCommand(750),
                                                 new ParallelCommandGroup(new InstantCommand(arm::intake),
                                                         new InstantCommand(wrist::intake),
                                                         new InstantCommand(gripper::intake)
                                                 ),
                                                 new WaitCommand(250),
-                                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_INTAKE, BotPositionsAuto.LIFT_TOLERANCE_TIGHT)
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO)
                                         )
                                 )
                 );
@@ -59,7 +60,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "intakeToWallWithSomething":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT-100, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO -100, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
                                         new ParallelCommandGroup(
@@ -67,7 +68,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                                                 new InstantCommand(wrist::wall)
                                         ),
                                         new WaitCommand(200),
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_WALL, BotPositionsAuto.LIFT_TOLERANCE)
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)
                                 )
                                 //new InstantCommand(gripper::open)
                         )
@@ -77,7 +78,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "intakeToWallWithNothing":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT-100, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO -100, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         new WaitCommand(150),
                                         new ParallelCommandGroup(
@@ -85,8 +86,8 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                                                 new InstantCommand(wrist::wall)
                                         ),
                                         new WaitCommand(200),
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_WALL, BotPositionsAuto.LIFT_TOLERANCE),
-                                        new InstantCommand(()->gripper.sG.setPosition(BotPositionsAuto.GRIPPER_OPEN + .1))
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
+                                        new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
                                 )
 
                                 //new InstantCommand(gripper::open)
@@ -99,16 +100,16 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                         //maybe edit this one, needs to be tested
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                         new InstantCommand(wrist::tuck)
                                 ),
                                 new WaitCommand(300),
                                 new InstantCommand(arm::wall),
                                 new WaitCommand(500),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_WALL, BotPositionsAuto.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                         new InstantCommand(wrist::wall),
-                                        new InstantCommand(()->gripper.sG.setPosition(BotPositionsAuto.GRIPPER_OPEN + .1))
+                                        new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1))
                                 )
                                 //new InstantCommand(gripper::open)
                         )
@@ -123,7 +124,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                         //a SequentialCommandGroup that makes the arm and wrist wait before starting to swing up, while the lift is still traveling up
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         new WaitCommand(700),
                                         new InstantCommand(wrist::basket),
@@ -138,7 +139,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_LOW, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         //new WaitCommand(500),
                                         new InstantCommand(wrist::basket),
@@ -153,14 +154,14 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new ParallelCommandGroup(
                                         new WaitCommand(300),
                                         new InstantCommand(wrist::basket),
                                         new InstantCommand(arm::basket)
                                 ),
                                 new WaitCommand(400),
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_LOW, BotPositionsAuto.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)
                         )
                 );
                 //setState = "basket";
@@ -170,7 +171,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(new WaitCommand(500),
                                         new InstantCommand(wrist::basket),
                                         new InstantCommand(arm::basket))
@@ -183,7 +184,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "intakeToSpecimen":
                 addCommands(
                         new SequentialCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 //new WaitCommand(200),
                                 new InstantCommand(wrist::specimen),
                                 new InstantCommand(arm::specimen)
@@ -200,7 +201,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(arm::intake),
                                 new WaitCommand(500),
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_INTAKE, BotPositionsAuto.LIFT_TOLERANCE_TIGHT)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO)
                         )
 
                 );
@@ -210,14 +211,14 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "wallToSpecimen":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         new InstantCommand(wrist::tuck),
                                         new WaitCommand(200),
                                         new InstantCommand(arm::specimen),
                                         new WaitCommand(200),
                                         new InstantCommand(wrist::specimen),
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH, BotPositionsAuto.LIFT_TOLERANCE)
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)
                                 )
                         )
                 );
@@ -228,14 +229,14 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new WaitCommand(200),
                                 new InstantCommand(arm::wall),
                                 new InstantCommand(wrist::wall),
                                 new WaitCommand(250),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_WALL, BotPositionsAuto.LIFT_TOLERANCE)),
-                                        new InstantCommand(()->gripper.sG.setPosition(BotPositionsAuto.GRIPPER_OPEN + .1)
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_WALL_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)),
+                                        new InstantCommand(()->gripper.sG.setPosition(BotPositions.GRIPPER_OPEN + .1)
                                 ))
 
 
@@ -249,7 +250,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_LOW, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 //new WaitCommand(500),
                                 new InstantCommand(arm::basket),
                                 new InstantCommand(wrist::basket))
@@ -262,7 +263,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new ParallelCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                // new WaitCommand(100),
                                 new InstantCommand(arm::basket),
                                 new InstantCommand(wrist::basket))
@@ -274,7 +275,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "basketToSpecimen":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_SPECIMEN_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
                                         new InstantCommand(arm::specimen),
@@ -287,7 +288,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "basketLowToBasketHigh":
                 addCommands(
 
-                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_HIGH, BotPositionsAuto.LIFT_TOLERANCE)
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)
                 );
                 //setState = "specimen";
                 break;
@@ -295,7 +296,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
             case "basketHighToBasketLow":
                 addCommands(
 
-                        new LiftToStateCommand(lift, BotPositionsAuto.LIFT_BASKET_LOW, BotPositionsAuto.LIFT_TOLERANCE)
+                        new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW_AUTO, BotPositions.LIFT_TOLERANCE_AUTO)
                 );
                 //setState = "specimen";
                 break;
@@ -305,12 +306,12 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::open),
                                 new WaitCommand(700),
-                                new LiftToStateCommand(lift, 0, BotPositionsAuto.LIFT_TOLERANCE)
+                                new LiftToStateCommand(lift, 0, BotPositions.LIFT_TOLERANCE_AUTO)
 
                         )
                 );
@@ -321,11 +322,11 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositionsAuto.LIFT_TRANSIT, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),
-                                new LiftToStateCommand(lift, BotPositionsAuto.LIFT_INTAKE, BotPositionsAuto.LIFT_TOLERANCE_TIGHT)
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO)
                                 //new WaitCommand(700),
                                 //new LiftToStateCommand(lift, 0, 10)
 
@@ -338,7 +339,7 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositionsAuto.LIFT_SPECIMEN_HIGH, BotPositionsAuto.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
                                 new InstantCommand(arm::hang),
                                 new InstantCommand(wrist::basket)
 
