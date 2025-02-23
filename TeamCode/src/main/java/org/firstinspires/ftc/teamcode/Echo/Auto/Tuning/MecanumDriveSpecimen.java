@@ -300,7 +300,7 @@ public class MecanumDriveSpecimen {
             //TODO fix the second timer
              double headingToleranceDeg = 1;
             double positionToleranceIn = 1;
-            double timeoutSec = 0.5; //0.1 in specimen, 0.5 in basket
+            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
            // if (t>= timeTrajectory.duration + 2) {`1
