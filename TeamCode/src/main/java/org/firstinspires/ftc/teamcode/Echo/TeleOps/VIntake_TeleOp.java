@@ -350,8 +350,8 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //intake
         {
-//            new Trigger (() -> AllianceColor.aColor == "blue")
-//                    .whenActive(new InstantCommand(intake::checkBlue));
+            new Trigger (() -> extendo.extensionPosition > .8)
+                    .whenActive(new InstantCommand(()->Extendo_Toggle = true));
 
             //intake tilting
             //if the extendo is outside the robot and the driver is trying to tilt the intake, toggle between up and down
@@ -976,6 +976,7 @@ public class VIntake_TeleOp extends CommandOpMode {
         //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't get it to run continuously
         //thus it needs to be called in the run loop in some way, in this case as telemetry
         telemetry.addData("GripperState", gripper.verifyGripper());
+        telemetry.addData("ExtendoToggle", Extendo_Toggle);
 
         //telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
         //telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
