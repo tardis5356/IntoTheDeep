@@ -10,23 +10,23 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 
 public class MVCCSpecimenAutoTraj {
 
-    public static final Pose2d redSpec_StartPos = new Pose2d(8, -64, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-4, -34.6, Math.toRadians(90)); //two inches from the sub
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35.5, -62, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos1 = new Pose2d(35.5, -62, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(35.5, -62, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(37, -62, Math.toRadians(90));
+    public static final Pose2d redSpec_StartPos = new Pose2d(8, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -28, Math.toRadians(90)); //two inches from the sub
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(35.5, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos1 = new Pose2d(35.5, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(35.5, -61, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(35.5, -61, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-2, -34.6, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(0, -34.6, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(2, -34.6, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(4,-34.6, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(25, -44, Math.toRadians(55));
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(29.7, -50, Math.toRadians(310));
-    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32, -37, Math.toRadians(45));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(35, -47, Math.toRadians(310));//320
-    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(42.6, -39, Math.toRadians(55));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(43.5, -58, Math.toRadians(303)); //37,-58,335
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-2, -27.5, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(0, -27.5, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(2, -27.5, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(4,-27.5, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -41, Math.toRadians(50));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(28.1, -50, Math.toRadians(325));
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(33, -37, Math.toRadians(40));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(36, -47, Math.toRadians(320));//320
+    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(42.6, -39, Math.toRadians(45));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(43.5, -55, Math.toRadians(335)); //37,-58,335
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(35, -58, Math.toRadians(90));
 
     public static final Pose2d  redBasket_BasketDrop = new Pose2d(-57,-58, Math.toRadians(45));
@@ -75,7 +75,7 @@ public class MVCCSpecimenAutoTraj {
 
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
-                        .setTangent(Math.toRadians(315))
+                        .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
                         .build();
 

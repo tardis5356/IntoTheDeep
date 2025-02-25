@@ -74,8 +74,8 @@ public class MecanumDriveSpecimen {
 
         // path profile parameters (in inches)
         public double maxWheelVel = 79;
-        public double minProfileAccel = -80;
-        public double maxProfileAccel = 80;
+        public double minProfileAccel = -30;
+        public double maxProfileAccel = 50;
 
         // turn profile parameters (in radians)
         public double maxAngVel = 6.689; // shared with path
@@ -299,8 +299,8 @@ public class MecanumDriveSpecimen {
             // It only exits the trajectory once within a certain angle or one second after the trajectory finishes.
             //TODO fix the second timer
              double headingToleranceDeg = 1;
-            double positionToleranceIn = 1;
-            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
+            double positionToleranceIn = .3;
+            double timeoutSec = 0.0; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
            // if (t>= timeTrajectory.duration + 2) {`1

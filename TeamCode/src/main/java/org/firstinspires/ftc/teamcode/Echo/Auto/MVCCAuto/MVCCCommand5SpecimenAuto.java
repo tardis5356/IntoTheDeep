@@ -159,8 +159,8 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
         RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
         RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
         RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
-        arm.sAL.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
-        arm.sAR.setPosition(BotPositions.ARM_SPECIMEN_AUTO);
+        arm.sAL.setPosition(BotPositions.ARM_INTAKE);
+        arm.sAR.setPosition(BotPositions.ARM_INTAKE);
         gripper.sG.setPosition(BotPositions.GRIPPER_CLOSED);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -226,12 +226,12 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                         RedSpec_RightSpecDepoToObs,
                         RedSpec_ObsToSub1,
                         RedSpec_SubToObs,
-                        RedSpec_ObsToSub2
-//                        RedSpec_SubToObs2,
-//                        RedSpec_ObsToSub3,
-//                        RedSpec_SubToObs3,
-//                        RedSpec_ObsToSub4,
-//                        RedSpec_SubToObs4
+                        RedSpec_ObsToSub2,
+                        RedSpec_SubToObs2,
+                        RedSpec_ObsToSub3,
+                        RedSpec_SubToObs3,
+                        RedSpec_ObsToSub4,
+                        RedSpec_SubToObs4
                 )
         );
     }
