@@ -228,8 +228,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
-                                new WaitCommand(200),
+                                //new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                //new WaitCommand(200),
                                 new InstantCommand(arm::wall),
                                 new InstantCommand(wrist::wall),
                                 new WaitCommand(250),
