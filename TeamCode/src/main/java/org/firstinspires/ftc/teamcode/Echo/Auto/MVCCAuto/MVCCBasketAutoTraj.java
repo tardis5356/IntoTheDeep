@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 
 public class MVCCBasketAutoTraj {
 
+    private static MecanumDriveBasket drive;
+
     public static final Pose2d redBasket_SampleStartPos = new Pose2d(-40, -63, Math.toRadians(0));
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
@@ -23,15 +25,17 @@ public class MVCCBasketAutoTraj {
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-21, -12, Math.toRadians(180));
 
-    public static final Pose2d redBasket_SubPos1B = new Pose2d(-25, -12, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos1B = new Pose2d(-25, -16, Math.toRadians(0));
 
-    public static final Pose2d redBasket_SubPos2B = new Pose2d(-25, -12, Math.toRadians(0));
-    public static final Pose2d redBasket_SubPos3B = new Pose2d(-25, -12, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos2B = new Pose2d(-25, -8, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos3B = new Pose2d(-25, -0, Math.toRadians(0));
 
-    public static final Pose2d redBasket_SubPos1A = new Pose2d(-25, -12, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos1A = new Pose2d(-19, -16, Math.toRadians(0));
 
-    public static final Pose2d redBasket_SubPos2A = new Pose2d(-25, -12, Math.toRadians(0));
-    public static final Pose2d redBasket_SubPos3A = new Pose2d(-25, -12, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos2A = new Pose2d(-19, -8, Math.toRadians(0));
+    public static final Pose2d redBasket_SubPos3A = new Pose2d(-19, 0, Math.toRadians(0));
+
+    public static final Pose2d redBasket_SubIntakePos = new Pose2d(drive.pose.position.x - 4, drive.pose.position.y, Math.toRadians(0));
 
 
     //Actions
@@ -57,6 +61,7 @@ public class MVCCBasketAutoTraj {
     public static Action redBasket_BasketToSub2B;
     public static Action redBasket_BasketToSub3B;
     public static Action redBasket_SubToBasket;
+    public static Action redBasket_SubToSubIntake;
 
 
 
@@ -168,8 +173,14 @@ public class MVCCBasketAutoTraj {
         redBasket_BasketToSub3B =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(redBasket_SubPos3A, Math.toRadians(315))
+                        .splineToLinearHeading(redBasket_SubPos3B, Math.toRadians(315))
                         .build();
+
+        redBasket_SubToSubIntake = drive.actionBuilder(drive.pose)
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(redBasket_SubIntakePos, Math.toRadians(0))
+                .build();
+
         redBasket_SubToBasket = drive.actionBuilder(drive.pose)
                 .setTangent(Math.toRadians(115))
                 .splineToLinearHeading(redBasket_BasketDrop1, Math.toRadians(65))

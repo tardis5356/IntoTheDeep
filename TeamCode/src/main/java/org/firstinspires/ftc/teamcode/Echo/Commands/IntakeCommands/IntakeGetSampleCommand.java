@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
@@ -47,7 +48,7 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public boolean isFinished() { // returns true when finished
-        if ( vintake.checkSample()||runtime.seconds()>timeout){
+        if ( vintake.checkSample() && vintake.checkColor() == AllianceColor.aColor || vintake.checkColor() == "yellow"||runtime.seconds()>timeout){
             return true;
         }
 

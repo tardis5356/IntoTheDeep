@@ -125,6 +125,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
     private MecanumDriveBasket drive;
 
+    private double CycleDecision = 1;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -164,6 +166,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
      * left = 4
      * leftstickbutton = a
      * rightstickbutton = b
+     * x = 1st cycle
+     * y = 2nd cycle
      */
 
     @Override
@@ -174,11 +178,59 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         if (gamepad1.b) {
             AllianceColor.aColor = "red";
         }
-        //  if (gamepad1.dpad_up && gamepad1.left_stick_button) {
-        SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
-        SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
+        if (gamepad1.x){
+            if (gamepad1.dpad_up && gamepad1.left_stick_button) {
+                SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
 
-        // }
+            }
+        if (gamepad1.dpad_right && gamepad1.left_stick_button) {
+            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A");
+
+        }
+        if (gamepad1.dpad_down && gamepad1.left_stick_button) {
+            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A");
+
+        }
+
+        if (gamepad1.dpad_up && gamepad1.right_stick_button) {
+            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B");
+
+        }
+        if (gamepad1.dpad_right && gamepad1.right_stick_button) {
+            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B");
+
+        }
+        if (gamepad1.dpad_down && gamepad1.right_stick_button) {
+            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B");
+
+        }}
+
+        if (gamepad1.y) {
+            if (gamepad1.dpad_up && gamepad1.left_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
+
+            }
+            if (gamepad1.dpad_right && gamepad1.left_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A");
+
+            }
+            if (gamepad1.dpad_down && gamepad1.left_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A");
+
+            }
+            if (gamepad1.dpad_up && gamepad1.right_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B");
+
+            }
+            if (gamepad1.dpad_right && gamepad1.right_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B");
+
+            }
+            if (gamepad1.dpad_down && gamepad1.right_stick_button) {
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B");
+
+            }
+        }
     }
 
     /*
