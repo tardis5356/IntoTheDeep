@@ -250,79 +250,98 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(100),
                                                 RedSpec_ObsToSub1),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))),
-                                new InstantCommand(arm::specimenHangAuto),
-                                new WaitCommand(0),
-                                new InstantCommand(gripper::open)
+                                                new InstantCommand(arm::specimenAuto)),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(2000),
+                                                new InstantCommand(arm::specimenHangAuto),
+                                                new WaitCommand(0),
+                                                new InstantCommand(gripper::open)
+                                        )
+                                )
                         )
                 );
                 break;
 
             case "redSpec_ObsToSub2":
                 addCommands(
+
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(100),
                                                 RedSpec_ObsToSub2),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))),
-                                new InstantCommand(arm::specimenHangAuto),
-                                new WaitCommand(0),
-                                new InstantCommand(gripper::open)
+                                                new InstantCommand(arm::specimenAuto)),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(2000),
+                                                new InstantCommand(arm::specimenHangAuto),
+                                                new WaitCommand(0),
+                                                new InstantCommand(gripper::open)
+                                        )
+                                )
                         )
                 );
                 break;
 
             case "redSpec_ObsToSub3":
                 addCommands(
+
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(100),
                                                 RedSpec_ObsToSub3),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))),
-                                new InstantCommand(arm::specimenHangAuto),
-                                new WaitCommand(0),
-                                new InstantCommand(gripper::open)
+                                                new InstantCommand(arm::specimenAuto)),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(2000),
+                                                new InstantCommand(arm::specimenHangAuto),
+                                                new WaitCommand(0),
+                                                new InstantCommand(gripper::open)
+                                        )
+                                )
                         )
                 );
                 break;
 
             case "redSpec_ObsToSub4":
                 addCommands(
+
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(100),
                                                 RedSpec_ObsToSub4),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
+                                                new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))),
-                                new InstantCommand(arm::specimenHangAuto),
-                                new WaitCommand(0),
-                                new InstantCommand(gripper::open)
+                                                new InstantCommand(arm::specimenAuto)),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(2000),
+                                                new InstantCommand(arm::specimenHangAuto),
+                                                new WaitCommand(0),
+                                                new InstantCommand(gripper::open)
+                                        )
+                                )
                         )
                 );
                 break;
@@ -333,12 +352,12 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs,
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1000),
-                                                new InstantCommand(gripper::open)
-
-                                        )
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall")
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1000),
+//                                                new InstantCommand(gripper::open)
+//
+//                                        )
                                 ),
                                 new InstantCommand(gripper::close)
                         )
@@ -350,11 +369,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs2,
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new InstantCommand(gripper::open)
-                                        )
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall")
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new InstantCommand(gripper::open)
+//                                        )
                                 ),
                                 new InstantCommand(gripper::close)
                         )
@@ -366,11 +385,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         RedSpec_SubToObs3,
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall"),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new InstantCommand(gripper::open)
-                                        )
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "specimenToWall")
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new InstantCommand(gripper::open)
+//                                        )
                                 ),
                                 new InstantCommand(gripper::close)
                         )
@@ -381,8 +400,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
-                                        RedSpec_SubToObs4,
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToIntake")
+                                        RedSpec_SubToObs4
                                 )
                         )
                 );
@@ -649,138 +667,138 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         ));
                 break;
 
-            case "redBasket_BasketToSub1A":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub1A),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                new InstantCommand(gripper::close),
-                new WaitCommand(300),
-                new InstantCommand(vintake::stop)
-                        ));
-                break;
-            case "redBasket_BasketToSub2A":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub2A),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                                new InstantCommand(gripper::close),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::stop)
-                        ));
-                break;
-            case "redBasket_BasketToSub3A":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub3A),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                                new InstantCommand(gripper::close),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::stop)
-                        ));
-                break;
-            case "redBasket_BasketToSub1B":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub1B),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                                new InstantCommand(gripper::close),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::stop)
-                        ));
-                break;
-            case "redBasket_BasketToSub2B":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub2B),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                                new InstantCommand(gripper::close),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::stop)
-                        ));
-                break;
-            case "redBasket_BasketToSub3B":
-                addCommands(
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1500),
-                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
-                                        RedBasket_BasketToSub3B),
-                                new InstantCommand(extendo::out),
-                                new InstantCommand(vintake::in),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::downPosition),
-                                new IntakeGetSampleCommand(vintake),
-                                new InstantCommand(extendo::in),
-                                new InstantCommand(vintake::transferPosition),
-                                new WaitCommand(1000),
-                                new GripperAutoCloseCommand(gripper),
-                                new InstantCommand(gripper::close),
-                                new WaitCommand(300),
-                                new InstantCommand(vintake::stop)
-                        ));
-                break;
+//            case "redBasket_BasketToSub1A":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub1A),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                new InstantCommand(gripper::close),
+//                new WaitCommand(300),
+//                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
+//            case "redBasket_BasketToSub2A":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub2A),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                                new InstantCommand(gripper::close),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
+//            case "redBasket_BasketToSub3A":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub3A),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                                new InstantCommand(gripper::close),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
+//            case "redBasket_BasketToSub1B":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub1B),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                                new InstantCommand(gripper::close),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
+//            case "redBasket_BasketToSub2B":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub2B),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                                new InstantCommand(gripper::close),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
+//            case "redBasket_BasketToSub3B":
+//                addCommands(
+//                        new SequentialCommandGroup(
+//                                new ParallelCommandGroup(
+//                                        new SequentialCommandGroup(
+//                                                new WaitCommand(1500),
+//                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+//                                        RedBasket_BasketToSub3B),
+//                                new InstantCommand(extendo::out),
+//                                new InstantCommand(vintake::in),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::downPosition),
+//                                new IntakeGetSampleCommand(vintake),
+//                                new InstantCommand(extendo::in),
+//                                new InstantCommand(vintake::transferPosition),
+//                                new WaitCommand(1000),
+//                                new GripperAutoCloseCommand(gripper),
+//                                new InstantCommand(gripper::close),
+//                                new WaitCommand(300),
+//                                new InstantCommand(vintake::stop)
+//                        ));
+//                break;
 
 
 

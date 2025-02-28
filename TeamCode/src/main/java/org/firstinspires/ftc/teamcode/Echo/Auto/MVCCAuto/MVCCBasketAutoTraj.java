@@ -9,8 +9,6 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 
 public class MVCCBasketAutoTraj {
 
-    private static MecanumDriveBasket drive;
-
     public static final Pose2d redBasket_SampleStartPos = new Pose2d(-40, -63, Math.toRadians(0));
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
@@ -35,7 +33,7 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_SubPos2A = new Pose2d(-19, -8, Math.toRadians(0));
     public static final Pose2d redBasket_SubPos3A = new Pose2d(-19, 0, Math.toRadians(0));
 
-    public static final Pose2d redBasket_SubIntakePos = new Pose2d(drive.pose.position.x - 4, drive.pose.position.y, Math.toRadians(0));
+    public static final Pose2d redBasket_SubIntakePos = new Pose2d(0,0, Math.toRadians(0));
 
 
     //Actions

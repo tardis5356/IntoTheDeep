@@ -5,7 +5,10 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAuto
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -214,16 +217,21 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                 new InstantCommand(vintake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
-//                new InstantCommand(() -> new TranslationalVelConstraint(150.0)),
-//                new InstantCommand(() -> new AngularVelConstraint(15 * Math.PI)),
-//                new InstantCommand(() -> new ProfileAccelConstraint(-100, 100)),
+
+
 
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
+                        new InstantCommand(() -> new AngularVelConstraint(11)),//9.7
+                        new InstantCommand(() -> new ProfileAccelConstraint(-60, 80)),//-60,70
+                        new InstantCommand(() -> new TranslationalVelConstraint(100)),
                         RedSpecEx_LeftSpecDepo,
                         RedSpecEx_MidSpecDepo,
                         RedSpecEx_RightSpecDepo,
                         RedSpec_RightSpecDepoToObs,
+                        new InstantCommand(() -> new AngularVelConstraint(6.689)),
+                        new InstantCommand(() -> new ProfileAccelConstraint(-30, 50)),
+                        new InstantCommand(() -> new TranslationalVelConstraint(79)),
                         RedSpec_ObsToSub1,
                         RedSpec_SubToObs,
                         RedSpec_ObsToSub2,
