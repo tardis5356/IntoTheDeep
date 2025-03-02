@@ -48,7 +48,7 @@ public class IntakeGetSampleCommand extends CommandBase {//This is a separate co
 
     @Override
     public boolean isFinished() { // returns true when finished
-        if ( vintake.checkSample() && vintake.checkColor() == AllianceColor.aColor || vintake.checkColor() == "yellow"||runtime.seconds()>timeout){
+        if ( (vintake.checkSample() && (vintake.checkColor() == AllianceColor.aColor || vintake.checkColor() == "yellow"))||runtime.seconds()>timeout){
             return true;
         }
 

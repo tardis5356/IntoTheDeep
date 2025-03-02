@@ -17,7 +17,7 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_BasketDrop1 = new Pose2d(-60,-59.5, Math.toRadians(45));
     public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-49.5, -52, Math.toRadians(90));
 //    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-46, -50, Math.toRadians(93));
-    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-56.75,-53, Math.toRadians(95));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-60.75,-56, Math.toRadians(85));
 //    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-54.5,-49, Math.toRadians(100));
     public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-60,-53, Math.toRadians(110));
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
@@ -33,7 +33,10 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_SubPos2A = new Pose2d(-19, -8, Math.toRadians(0));
     public static final Pose2d redBasket_SubPos3A = new Pose2d(-19, 0, Math.toRadians(0));
 
-    public static final Pose2d redBasket_SubIntakePos = new Pose2d(0,0, Math.toRadians(0));
+    public static final Pose2d redBasket_WaypointPos = new Pose2d(-30,-8, Math.toRadians(0));
+
+
+
 
 
     //Actions
@@ -60,6 +63,8 @@ public class MVCCBasketAutoTraj {
     public static Action redBasket_BasketToSub3B;
     public static Action redBasket_SubToBasket;
     public static Action redBasket_SubToSubIntake;
+
+    public static Action redBasket_SubToWaypoint;
 
 
 
@@ -176,12 +181,17 @@ public class MVCCBasketAutoTraj {
 
         redBasket_SubToSubIntake = drive.actionBuilder(drive.pose)
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(redBasket_SubIntakePos, Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(drive.pose.position.x-4, drive.pose.position.y, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
-        redBasket_SubToBasket = drive.actionBuilder(drive.pose)
-                .setTangent(Math.toRadians(115))
-                .splineToLinearHeading(redBasket_BasketDrop1, Math.toRadians(65))
+        redBasket_SubToWaypoint = drive.actionBuilder(drive.pose)
+
+                .lineToX(-30)
+                .build();
+
+        redBasket_SubToBasket = drive.actionBuilder(redBasket_WaypointPos)
+                .setTangent(Math.toRadians(180))
+                .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(225))
                 .build();
 
 
