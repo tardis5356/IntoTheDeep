@@ -56,6 +56,10 @@ public class Extendo extends SubsystemBase {
         extensionPosition = EXTENDO_OUT;
     }
 
+    public void outAuto(){
+        extensionPosition = EXTENDO_OUT;
+    }
+
     public void leftBasket(){
         extensionPosition = EXTENDO_SPECLEFT;
     }

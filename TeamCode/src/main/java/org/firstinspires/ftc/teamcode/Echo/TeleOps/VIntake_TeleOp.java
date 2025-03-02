@@ -430,8 +430,9 @@ public class VIntake_TeleOp extends CommandOpMode {
                                     new InstantCommand(()-> wasRaised = true),
                                     new InstantCommand(() -> AllianceColor.cycleType = "O"),
                                     new InstantCommand(vintake::out),
-                                    new WaitCommand(1500),
+                                    new WaitCommand(2000),
                                     new InstantCommand(() -> AllianceColor.cycleType = savedCycleType),
+                                    new InstantCommand(vintake::in),
                                     //new InstantCommand(vintake::in),
                                     new InstantCommand(() -> IntakeToggle = true)
                                     //              new WaitCommand(2000),
@@ -502,7 +503,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
             //if the intake detects a sample and its the right alliance color, or is yellow, automatically drive the extendo into the robot
             //and have the sample be slightly popped out. This is really cool actually as the extendo brings the sample right into the gripper.
-            new Trigger(() -> AllianceColor.cycleType == "basket"  && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue") || vintake.checkColor() == "yellow"))
+            new Trigger(() -> AllianceColor.cycleType == "basket"  && vintake.checkSample()&& ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue") || vintake.checkColor() == "yellow"))
                     .whenActive(
                             new ParallelCommandGroup(new InstantCommand(() -> driver1.gamepad.rumble(300)),
                                     new SequentialCommandGroup(
@@ -517,7 +518,7 @@ public class VIntake_TeleOp extends CommandOpMode {
 
 
                                     )));
-            new Trigger(() -> AllianceColor.cycleType == "specimen"  && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
+            new Trigger(() -> AllianceColor.cycleType == "specimen"   && vintake.checkSample() && ((vintake.checkColor() == "red" && AllianceColor.aColor == "red") || (vintake.checkColor() == "blue" && AllianceColor.aColor == "blue")))
                     .whenActive(
                             new SequentialCommandGroup(
 

@@ -306,9 +306,9 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
                         SampleCycle1,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket"),
-                        SampleCycle2,
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
+//                        SampleCycle2,
+//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(
 //                                        new WaitCommand(300),
