@@ -201,7 +201,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
 
         WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen = new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimenAuto);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
