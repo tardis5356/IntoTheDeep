@@ -91,7 +91,7 @@ public class MVCCSpecimenAutoTraj {
      */
     public static MinVelConstraint sweepingConstraint = new MinVelConstraint(
             Arrays.asList(
-                    new TranslationalVelConstraint(10),
+                    new TranslationalVelConstraint(80),//inches per second
                     new AngularVelConstraint(10) // remember the units you're working in, especially for angular constraints!
             )
     );
@@ -108,7 +108,7 @@ public class MVCCSpecimenAutoTraj {
      acceleration of 20in/s, but maybe double check if that seems to
      be the corresponding physical behavior.
      */
-    public static ProfileAccelConstraint sweepingAccelProfile = new ProfileAccelConstraint(-10, 20);
+    public static ProfileAccelConstraint sweepingAccelProfile = new ProfileAccelConstraint(-60, 60);//(-30,50)
 
     /*
     See directly applied constraints (I recommend against using them
@@ -191,35 +191,33 @@ public class MVCCSpecimenAutoTraj {
                 drive.actionBuilder(redSpecEx_LeftSpecZonePos)
                         .setTangent(Math.toRadians(0))
                         .splineToLinearHeading(
-                                redSpecEx_LeftSpecDepoPos,
-                                Math.toRadians(0),
-                                sweepingConstraint)
+                                redSpecEx_LeftSpecDepoPos, Math.toRadians(0), sweepingConstraint)
                         .build();
 
         redSpecEx_LeftDepoToMidSpec =
                 drive.actionBuilder(redSpecEx_LeftSpecDepoPos)
                         .setTangent(Math.toRadians(90))//0
-                        .splineToLinearHeading(redSpecEx_MidSpecZonePos, Math.toRadians(0), sweepingConstraint)
+                        .splineToLinearHeading(redSpecEx_MidSpecZonePos, Math.toRadians(0), sweepingConstraint, sweepingAccelProfile)
                         .build();
 
 
         redSpecEx_MidSpecToMidDepo =
                 drive.actionBuilder(redSpecEx_MidSpecZonePos)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redSpecEx_MidSpecDepoPos, Math.toRadians(270), sweepingConstraint)
+                        .splineToLinearHeading(redSpecEx_MidSpecDepoPos, Math.toRadians(270), sweepingConstraint, sweepingAccelProfile)
                         .build();
 
 
         redSpecEx_MidDepoToRightSpec =
                 drive.actionBuilder(redSpecEx_MidSpecDepoPos)
                         .setTangent(Math.toRadians(180))
-                        .splineToLinearHeading(redSpecEx_RightSpecZonePos, Math.toRadians(0), sweepingConstraint)
+                        .splineToLinearHeading(redSpecEx_RightSpecZonePos, Math.toRadians(0), sweepingConstraint, sweepingAccelProfile)
                         .build();
 
         redSpecEx_RightSpecToRightDepo =
                 drive.actionBuilder(redSpecEx_RightSpecZonePos)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redSpecEx_RightSpecDepoPos, Math.toRadians(270), sweepingConstraint)
+                        .splineToLinearHeading(redSpecEx_RightSpecDepoPos, Math.toRadians(270), sweepingConstraint, sweepingAccelProfile)
                         .build();
 
 
