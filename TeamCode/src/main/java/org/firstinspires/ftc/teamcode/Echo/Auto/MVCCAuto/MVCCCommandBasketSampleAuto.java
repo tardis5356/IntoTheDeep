@@ -208,27 +208,27 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
         if (gamepad1.y) {
             if (gamepad1.dpad_up && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A_2");
 
             }
             if (gamepad1.dpad_right && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A_2");
 
             }
             if (gamepad1.dpad_down && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A_2");
 
             }
             if (gamepad1.dpad_up && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B_2");
 
             }
             if (gamepad1.dpad_right && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B_2");
 
             }
             if (gamepad1.dpad_down && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B");
+                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B_2");
 
             }
         }
@@ -306,8 +306,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
                         SampleCycle1,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
-//                        SampleCycle2,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket"),
+                        SampleCycle2
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(

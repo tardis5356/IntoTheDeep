@@ -7,18 +7,24 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToMidSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToRightSample;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1A_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1B;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub1B_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2A_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2B;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub2B_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3A;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3A_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3B;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToSub3B_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_LeftSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_MidSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_RightSampleToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToBasket;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToSubIntake;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToSubIntakeA;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToWaypoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftDepoToMidSpec;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftSpecToLeftDepo;
@@ -104,6 +110,13 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedBasket_BasketToSub3A;
     private ActionCommand RedBasket_BasketToSub3B;
 
+    private ActionCommand RedBasket_BasketToSub1A_2;
+    private ActionCommand RedBasket_BasketToSub1B_2;
+    private ActionCommand RedBasket_BasketToSub2A_2;
+    private ActionCommand RedBasket_BasketToSub2B_2;
+    private ActionCommand RedBasket_BasketToSub3A_2;
+    private ActionCommand RedBasket_BasketToSub3B_2;
+
     private ActionCommand RedBasket_BasketToSub4A;
     private ActionCommand RedBasket_BasketToSub4B;
 
@@ -185,8 +198,15 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedBasket_BasketToSub2B = new ActionCommand(redBasket_BasketToSub2B, requirements);
         RedBasket_BasketToSub3A = new ActionCommand(redBasket_BasketToSub3A, requirements);
         RedBasket_BasketToSub3B = new ActionCommand(redBasket_BasketToSub3B, requirements);
+        RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
+        RedBasket_BasketToSub1A_2 = new ActionCommand(redBasket_BasketToSub1A_2, requirements);
+        RedBasket_BasketToSub1B_2 = new ActionCommand(redBasket_BasketToSub1B_2, requirements);
+        RedBasket_BasketToSub2A_2 = new ActionCommand(redBasket_BasketToSub2A_2, requirements);
+        RedBasket_BasketToSub2B_2 = new ActionCommand(redBasket_BasketToSub2B_2, requirements);
+        RedBasket_BasketToSub3A_2 = new ActionCommand(redBasket_BasketToSub3A_2, requirements);
+        RedBasket_BasketToSub3B_2 = new ActionCommand(redBasket_BasketToSub3B_2, requirements);
         RedBasket_SubToBasket = new ActionCommand(redBasket_SubToBasket, requirements);
-        RedBasket_SubToSubIntake = new ActionCommand(redBasket_SubToSubIntake, requirements);
+        RedBasket_SubToSubIntake = new ActionCommand(redBasket_SubToSubIntakeA, requirements);
         RedBasket_SubToWaypoint = new ActionCommand(redBasket_SubToWaypoint, requirements);
 
         switch (desiredState) {
@@ -787,6 +807,139 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(1500),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub3B),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+
+            case "redBasket_BasketToSub1A_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub1A_2),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+            case "redBasket_BasketToSub2A_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub2A_2),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+            case "redBasket_BasketToSub3A_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub3A_2),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+            case "redBasket_BasketToSub1B_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub1B_2),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+            case "redBasket_BasketToSub2B_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub2B_2),
+                                new InstantCommand(extendo::outAuto),
+                                new InstantCommand(vintake::in),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::downPosition),
+                                new IntakeGetSampleCommand(vintake),
+                                new InstantCommand(extendo::in),
+                                new InstantCommand(vintake::transferPosition),
+                                new WaitCommand(1000),
+                                new GripperAutoCloseCommand(gripper),
+                                new InstantCommand(gripper::close),
+                                new WaitCommand(300),
+                                new InstantCommand(vintake::stop)
+                        ));
+                break;
+            case "redBasket_BasketToSub3B_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1500),
+                                                new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
+                                        RedBasket_BasketToSub3B_2),
                                 new InstantCommand(extendo::outAuto),
                                 new InstantCommand(vintake::in),
                                 new WaitCommand(300),
