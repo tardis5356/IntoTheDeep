@@ -124,8 +124,6 @@ public class MVCCSpecimenAutoTraj {
         redSpec_StartToSub =
                 drive.actionBuilder(redSpec_StartPos)
                         .strafeToLinearHeading(redSpec_SubDepoPosition, Math.toRadians(90))
-//                        .setTangent(Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_SubDepoPos, Math.toRadians(90))
                         .build();
 
 
@@ -138,60 +136,43 @@ public class MVCCSpecimenAutoTraj {
 
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos)
-//                        .setTangent(Math.toRadians(270))
                         .strafeToLinearHeading(redSpec_ObsSpecPosition, Math.toRadians(90))
-                        //.splineToLinearHeading(redSpec_ObsSpecPos, Math.toRadians(270))
-
                         .build();
 
         redSpec_SubToObs2 =
                 drive.actionBuilder(redSpec_SubDepoPos2)
-//                        .setTangent(Math.toRadians(270))
                         .strafeToLinearHeading(redSpec_ObsSpecPosition1, Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_ObsSpecPos1, Math.toRadians(270))
                         .build();
 
         redSpec_SubToObs3 =
                 drive.actionBuilder(redSpec_SubDepoPos3)
-//                        .setTangent(Math.toRadians(270))
                         .strafeToLinearHeading(redSpec_ObsSpecPosition2, Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_ObsSpecPos2, Math.toRadians(270))
                         .build();
 
         redSpec_SubToObs4 =
                 drive.actionBuilder(redSpec_SubDepoPos4)
-//                        .setTangent(Math.toRadians(270))
                         .strafeToLinearHeading(redSpec_ObsSpecPosition3, Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_ObsSpecPos3, Math.toRadians(270))
                         .build();
 
 
         redSpec_ObsToSub1 =
                 drive.actionBuilder(redSpec_ObsSpecPos)
                         .strafeToLinearHeading(redSpec_SubDepoPosition1, Math.toRadians(90))
-//                        .setTangent(Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_SubDepoPos1, Math.toRadians(90))
                         .build();
 
         redSpec_ObsToSub2 =
                 drive.actionBuilder(redSpec_ObsSpecPos1)
                         .strafeToLinearHeading(redSpec_SubDepoPosition2, Math.toRadians(90))
-//                        .setTangent(Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_SubDepoPos2, Math.toRadians(90))
                         .build();
 
         redSpec_ObsToSub3 =
                 drive.actionBuilder(redSpec_ObsSpecPos2)
                         .strafeToLinearHeading(redSpec_SubDepoPosition3, Math.toRadians(90))
-//                        .setTangent(Math.toRadians(90))
-//                        .splineToLinearHeading(redSpec_SubDepoPos3, Math.toRadians(90))
                         .build();
 
         redSpec_ObsToSub4 =
                 drive.actionBuilder(redSpec_ObsSpecPos3)
                         .strafeToLinearHeading(redSpec_SubDepoPosition4, Math.toRadians(90))
-//                        .setTangent(90)
-//                        .splineToLinearHeading(redSpec_SubDepoPos4, Math.toRadians(90))
                         .build();
 
         redSpecEx_SubToLeftSpecZone =
@@ -212,11 +193,7 @@ public class MVCCSpecimenAutoTraj {
                         .splineToLinearHeading(
                                 redSpecEx_LeftSpecDepoPos,
                                 Math.toRadians(0),
-                                new MinVelConstraint(
-                                        Arrays.asList(
-                                                new TranslationalVelConstraint(10),
-                                                new AngularVelConstraint(10)
-                                        )))
+                                sweepingConstraint)
                         .build();
 
         redSpecEx_LeftDepoToMidSpec =
@@ -229,20 +206,20 @@ public class MVCCSpecimenAutoTraj {
         redSpecEx_MidSpecToMidDepo =
                 drive.actionBuilder(redSpecEx_MidSpecZonePos)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redSpecEx_MidSpecDepoPos, Math.toRadians(270))
+                        .splineToLinearHeading(redSpecEx_MidSpecDepoPos, Math.toRadians(270), sweepingConstraint)
                         .build();
 
 
         redSpecEx_MidDepoToRightSpec =
                 drive.actionBuilder(redSpecEx_MidSpecDepoPos)
                         .setTangent(Math.toRadians(180))
-                        .splineToLinearHeading(redSpecEx_RightSpecZonePos, Math.toRadians(0))
+                        .splineToLinearHeading(redSpecEx_RightSpecZonePos, Math.toRadians(0), sweepingConstraint)
                         .build();
 
         redSpecEx_RightSpecToRightDepo =
                 drive.actionBuilder(redSpecEx_RightSpecZonePos)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redSpecEx_RightSpecDepoPos, Math.toRadians(270))
+                        .splineToLinearHeading(redSpecEx_RightSpecDepoPos, Math.toRadians(270), sweepingConstraint)
                         .build();
 
 
