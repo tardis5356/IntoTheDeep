@@ -19,8 +19,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
@@ -307,7 +309,8 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
                         SampleCycle1,
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket"),
-                        SampleCycle2
+                        SampleCycle2,
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket_2")
 //                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
 //                        new ParallelCommandGroup(
 //                                new SequentialCommandGroup(
@@ -364,7 +367,7 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         telemetry.addData("Y", drive.pose.position.y);
         telemetry.addData("Sample acquired", vintake.checkSample());
         telemetry.addData("Intake Color", vintake.checkColor());
-
+        telemetry.addData("Sample Disatnce" ,((DistanceSensor)vintake.cI).getDistance(DistanceUnit.CM));
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 
         drive.updatePoseEstimate();

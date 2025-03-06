@@ -9,7 +9,7 @@ public class Arm extends SubsystemBase {
     public Servo sAR; //right servo driving the arm
 
     public Arm(HardwareMap hardwareMap){
-        sAL = hardwareMap.get(Servo.class, "sAL"); //hardware map both of the servos to the on robot configuration
+        sAL = hardwareMap.get(Servo.class, "sAL"); //hardware map b7oth of the servos to the on robot configuration
         sAR = hardwareMap.get(Servo.class, "sAR");
         //generally we keep the configuration name and code name the same.
         //It makes us mentally associate the physical servos with the code objects.

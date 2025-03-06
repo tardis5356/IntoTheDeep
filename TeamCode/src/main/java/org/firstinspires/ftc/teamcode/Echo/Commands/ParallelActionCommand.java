@@ -24,6 +24,7 @@ import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTr
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToBasket;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_StartToSub;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToBasket;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToBasket_2;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToSubIntakeA;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToWaypoint;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpecEx_LeftDepoToMidSpec;
@@ -121,6 +122,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
     private ActionCommand RedBasket_BasketToSub4B;
 
     private ActionCommand RedBasket_SubToBasket;
+    private ActionCommand RedBasket_SubToBasket_2;
     private ActionCommand RedBasket_SubToSubIntake;
     private ActionCommand RedBasket_SubToWaypoint;
 
@@ -206,6 +208,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
         RedBasket_BasketToSub3A_2 = new ActionCommand(redBasket_BasketToSub3A_2, requirements);
         RedBasket_BasketToSub3B_2 = new ActionCommand(redBasket_BasketToSub3B_2, requirements);
         RedBasket_SubToBasket = new ActionCommand(redBasket_SubToBasket, requirements);
+        RedBasket_SubToBasket_2 = new ActionCommand(redBasket_SubToBasket_2, requirements);
         RedBasket_SubToSubIntake = new ActionCommand(redBasket_SubToSubIntakeA, requirements);
         RedBasket_SubToWaypoint = new ActionCommand(redBasket_SubToWaypoint, requirements);
 
@@ -495,6 +498,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(gripper::close),
                                         new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh")
                                 ), new InstantCommand(extendo::outAuto),
+                                new WaitCommand(100),
                                 new InstantCommand(gripper::open)
                         )
                 );
@@ -571,6 +575,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                         new WaitCommand(400),//500
                                                         new WaitCommand(400),
                                                         RedBasket_RightSampleToBasket)),
+
                                         new InstantCommand(gripper::open),
                                         new InstantCommand(extendo::outAuto)
                                 )
@@ -625,6 +630,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
                                                         new WaitCommand(400),
                                                         RedBasket_MidSampleToBasket)),
+                                        new WaitCommand(100),
                                         new InstantCommand(gripper::open),
                                         new InstantCommand(extendo::outAuto)
                                 )
@@ -678,6 +684,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
                                                         new WaitCommand(400),
                                                         RedBasket_LeftSampleToBasket)),
+                                        new WaitCommand(100),
                                         new InstantCommand(gripper::open)
                                 )
                         ));
@@ -688,7 +695,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub1A),
                                 new InstantCommand(extendo::outAuto),
@@ -710,7 +717,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub2A),
                                 new InstantCommand(extendo::outAuto),
@@ -732,7 +739,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub3A),
                                 new InstantCommand(extendo::outAuto),
@@ -754,7 +761,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub1B),
                                 new InstantCommand(extendo::outAuto),
@@ -776,7 +783,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub2B),
                                 new InstantCommand(extendo::outAuto),
@@ -798,7 +805,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub3B),
                                 new InstantCommand(extendo::outAuto),
@@ -821,7 +828,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub1A_2),
                                 new InstantCommand(extendo::outAuto),
@@ -843,7 +850,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub2A_2),
                                 new InstantCommand(extendo::outAuto),
@@ -865,7 +872,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub3A_2),
                                 new InstantCommand(extendo::outAuto),
@@ -887,7 +894,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub1B_2),
                                 new InstantCommand(extendo::outAuto),
@@ -931,7 +938,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1000),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")),
                                         RedBasket_BasketToSub3B_2),
                                 new InstantCommand(extendo::outAuto),
@@ -956,14 +963,26 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
 RedBasket_SubToWaypoint,
                                 new ParallelCommandGroup(
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1000),
-                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh")),
+
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
                                                 RedBasket_SubToBasket),
                                 new WaitCommand(400),
                                 new InstantCommand(gripper::open)
                         ));
                 break;
+            case "redBasket_SubToBasket_2":
+                addCommands(
+                        new SequentialCommandGroup(
+                                RedBasket_SubToWaypoint,
+                                new ParallelCommandGroup(
+
+                                        new DepositToStateAutoCommand(arm, wrist, gripper, lift, "intakeToBasketHigh"),
+                                        RedBasket_SubToBasket_2),
+                                new WaitCommand(400),
+                                new InstantCommand(gripper::open)
+                        ));
+                break;
+
 
 
 

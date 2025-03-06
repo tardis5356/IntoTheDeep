@@ -90,7 +90,7 @@ public class MecanumDriveBasket {
 
         // turn profile parameters (in radians)
         public double maxAngVel = 6.689; // shared with path
-        public double maxAngAccel = 6.689;
+        public double maxAngAccel = 6.689/2;
 
         // path controller gains
         public double axialGain = 11;
