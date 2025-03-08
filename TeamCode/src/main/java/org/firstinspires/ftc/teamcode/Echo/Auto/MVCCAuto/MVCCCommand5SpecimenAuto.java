@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
 
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.generateTrajectories;
 import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs4;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -11,8 +12,10 @@ import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,6 +25,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
@@ -31,6 +35,7 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
+import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
 
 import java.util.Set;
@@ -80,16 +85,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
     private ParallelActionCommand RedSpec_StartToSub;
 
 
-    //    private ActionCommand RedSpec_SubToMidPoint;
-//    private ActionCommand RedSpec_MidPointToLeftSpec;
-//    private ActionCommand RedSpec_RightSpecToObs;
-//    private ActionCommand RedSpec_SpecDepoToObs;
-//    private ActionCommand RedSpec_ObsToRightSpec;
-//    private ActionCommand RedSpec_RightSpecObsPickUpToSub;
-//    private ActionCommand RedSpec_LeftSpecToObs;
-//    private ActionCommand RedSpec_MidSpecToObs;
-//    private ActionCommand RedSpec_ObsToMidSpec;
-//    private ActionCommand RedSpec_ObsToSub;
+    private ActionCommand RedSpec_SubToObs4Traj;
     private ParallelActionCommand RedSpec_SubToObs;
     private InstantCommand OpenGripper;
     private InstantCommand CloseGripper;
@@ -109,7 +105,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
     private ParallelActionCommand RedSpec_ObsToSub3;
     private ParallelActionCommand RedSpec_SubToObs3;
     private ParallelActionCommand RedSpec_ObsToSub4;
-    private ParallelActionCommand RedSpec_SubToObs4;
+//    private ParallelActionCommand RedSpec_SubToObs4;
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
@@ -149,6 +145,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
 
 
         CommandScheduler.getInstance().registerSubsystem(vintake);//
+        RedSpec_SubToObs4Traj = new ActionCommand(redSpec_SubToObs4, requirements);
         RedSpec_StartToSub = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_StartToSub");
         RedSpecEx_LeftSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_LeftSpecDepo");
         RedSpecEx_MidSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_MidSpecDepo");
@@ -161,7 +158,7 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
         RedSpec_ObsToSub3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub3");
         RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
         RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
-        RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
+//        RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
         arm.sAL.setPosition(BotPositions.ARM_INTAKE);
         arm.sAR.setPosition(BotPositions.ARM_INTAKE);
         gripper.sG.setPosition(BotPositions.GRIPPER_CLOSED);
@@ -222,16 +219,16 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
 
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
-                        new InstantCommand(() -> new AngularVelConstraint(11)),//9.7
-                        new InstantCommand(() -> new ProfileAccelConstraint(-60, 80)),//-60,70
-                        new InstantCommand(() -> new TranslationalVelConstraint(100)),
+//                        new InstantCommand(() -> new AngularVelConstraint(11)),//9.7
+//                        new InstantCommand(() -> new ProfileAccelConstraint(-60, 80)),//-60,70
+//                        new InstantCommand(() -> new TranslationalVelConstraint(100)),
                         RedSpecEx_LeftSpecDepo,
                         RedSpecEx_MidSpecDepo,
                         RedSpecEx_RightSpecDepo,
                         RedSpec_RightSpecDepoToObs,
-                        new InstantCommand(() -> new AngularVelConstraint(6.689)),
-                        new InstantCommand(() -> new ProfileAccelConstraint(-30, 50)),
-                        new InstantCommand(() -> new TranslationalVelConstraint(79)),
+//                        new InstantCommand(() -> new AngularVelConstraint(6.689)),
+//                        new InstantCommand(() -> new ProfileAccelConstraint(-30, 50)),
+//                        new InstantCommand(() -> new TranslationalVelConstraint(79)),
                         RedSpec_ObsToSub1,
                         RedSpec_SubToObs,
                         RedSpec_ObsToSub2,
@@ -239,7 +236,12 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                         RedSpec_ObsToSub3,
                         RedSpec_SubToObs3,
                         RedSpec_ObsToSub4,
-                        RedSpec_SubToObs4
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                                        ),
+                        RedSpec_SubToObs4Traj)
                 )
         );
     }

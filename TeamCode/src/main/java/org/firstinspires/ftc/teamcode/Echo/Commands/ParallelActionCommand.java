@@ -353,7 +353,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
-                                        new SequentialCommandGroup(
+                                                new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub4),
                                         new SequentialCommandGroup(
