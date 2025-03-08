@@ -453,8 +453,11 @@ public class VIntake_TeleOp extends CommandOpMode {
             //If driver1 hits a or driver2 hits x, run the intake pass or transfer command
             new Trigger(() -> driver1.getButton(GamepadKeys.Button.A) || driver2.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                     .whenActive(new SequentialCommandGroup(
-                            new InstantCommand(vintake::transferPosition)
-
+                            new InstantCommand(vintake::transferPosition),
+                            new InstantCommand(vintake::in),
+                            new WaitCommand(750),
+                            new InstantCommand(vintake::stop),
+                            new InstantCommand(() -> IntakeToggle = true)
                         ));
 
             //if the gripper detects a sample while the depositing system is in the intake configuration, the intake should
@@ -512,7 +515,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                                             new InstantCommand(vintake::in),
                                             new WaitCommand(200),
                                             new InstantCommand(extendo::in),
-                                            new WaitCommand(600),
+                                            new WaitCommand(1000),
                                             new InstantCommand(vintake::stop),
                                             new InstantCommand(() -> Extendo_Toggle = true)
 
@@ -528,7 +531,7 @@ public class VIntake_TeleOp extends CommandOpMode {
                                     new InstantCommand(vintake::in),
                                     new WaitCommand(200),
                                     new InstantCommand(extendo::in),
-                                    new WaitCommand(600),
+                                    new WaitCommand(1000),
 
                                     new InstantCommand(vintake::stop),
                                     new InstantCommand(() -> Extendo_Toggle = true)
@@ -652,10 +655,10 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_UP) && DepositState == "intake")
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(() -> lift.PIDEnabled = true),
-                       //     new InstantCommand(vintake::in),
+                            new InstantCommand(vintake::in),
                             intakeToBasketHigh,
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketHigh"),
-                       //     new InstantCommand(vintake::stop),
+                            new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "basketHigh"),
                             new InstantCommand(() -> killSwitchActive = false),
                             new InstantCommand(() -> lift.PIDEnabled = false)
@@ -699,10 +702,10 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_DOWN) && DepositState == "intake")
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(() -> lift.PIDEnabled = true),
-                          //  new InstantCommand(vintake::in),
+                            new InstantCommand(vintake::in),
                             intakeToBasketLow,
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToBasketLow"),
-                          //  new InstantCommand(vintake::stop),
+                            new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "basketLow"),
                             new InstantCommand(() -> killSwitchActive = false),
                             new InstantCommand(() -> lift.PIDEnabled = false)
@@ -772,10 +775,10 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_RIGHT) && DepositState == "intake")
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(() -> lift.PIDEnabled = true),
-                     //       new InstantCommand(vintake::in),
+                            new InstantCommand(vintake::in),
                             intakeToSpecimen,
                             //new DepositToStateCommand(arm, wrist, gripper, lift,"intakeToSpecimen"),
-                         //   new InstantCommand(vintake::stop),
+                            new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "specimen"),
                             new InstantCommand(() -> killSwitchActive = false),
                             new InstantCommand(() -> lift.PIDEnabled = false)
