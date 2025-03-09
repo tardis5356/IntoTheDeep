@@ -536,7 +536,8 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new SequentialCommandGroup(
                                                 new WaitCommand(200),
                                                 RedBasket_BasketToRightSample,
-                                                new InstantCommand(vintake::downPosition)),
+                                                new InstantCommand(vintake::downPosition)
+                                                ),
 
 
                                         new InstantCommand(vintake::in),
@@ -650,6 +651,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
 
                                         new InstantCommand(vintake::in),
+
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1500),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")

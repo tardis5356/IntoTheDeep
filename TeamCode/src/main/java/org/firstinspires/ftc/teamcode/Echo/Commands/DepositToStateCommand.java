@@ -43,7 +43,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 //TODO: Test This
                 addCommands(
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE_HIGH),
                                         new SequentialCommandGroup(new WaitCommand(750),
                                                 new ParallelCommandGroup(new InstantCommand(arm::intake),
                                                         new InstantCommand(wrist::intake),
@@ -60,7 +60,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "intakeToWallWithSomething":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new SequentialCommandGroup(
                                         new WaitCommand(300),
                                         new ParallelCommandGroup(
@@ -82,7 +82,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "intakeToWallWithNothing":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new SequentialCommandGroup(
                                         new WaitCommand(150),
                                         new ParallelCommandGroup(
@@ -107,7 +107,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                         //maybe edit this one, needs to be tested
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_HIGH),
                                         new InstantCommand(wrist::tuck)
                                 ),
                                 new WaitCommand(300),
@@ -162,7 +162,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new ParallelCommandGroup(
                                         new WaitCommand(300),
                                         new InstantCommand(wrist::basket),
@@ -218,7 +218,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
             case "wallToSpecimen":
                 addCommands(
                         new ParallelCommandGroup(
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new SequentialCommandGroup(
                                         new InstantCommand(wrist::tuck),
                                         new WaitCommand(200),
@@ -236,7 +236,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                //new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                //new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_),
                                 //new WaitCommand(200),
                                 new InstantCommand(arm::wall),
                                 new InstantCommand(wrist::wall),
@@ -316,7 +316,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::open),
@@ -332,7 +332,7 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new SequentialCommandGroup(
 
-                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE),
+                                new LiftToStateCommand(lift,BotPositions.LIFT_TRANSIT, BotPositions.LIFT_TOLERANCE_HIGH),
                                 new InstantCommand(arm::intake),
                                 new InstantCommand(wrist::intake),
                                 new InstantCommand(gripper::intake),

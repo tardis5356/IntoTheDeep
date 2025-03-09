@@ -45,8 +45,8 @@ public class MVCCSpecimenAutoTraj {
     public static final Vector2d redSpec_SubDepoPosition = new Vector2d(-6, -28);
     public static final Vector2d redSpec_SubDepoPosition1 = new Vector2d(-4, -31);
     public static final Vector2d redSpec_SubDepoPosition2 = new Vector2d(-3, -29.5);
-    public static final Vector2d redSpec_SubDepoPosition3 = new Vector2d(-1, -30);
-    public static final Vector2d redSpec_SubDepoPosition4 = new Vector2d(2, -30);
+    public static final Vector2d redSpec_SubDepoPosition3 = new Vector2d(-1, -29.5);
+    public static final Vector2d redSpec_SubDepoPosition4 = new Vector2d(2, -29.5);
     public static final Vector2d redSpec_ObsSpecPosition = new Vector2d(40, -61);
     public static final Vector2d redSpec_ObsSpecPosition1 = new Vector2d(38, -61);
     public static final Vector2d redSpec_ObsSpecPosition2 = new Vector2d(38, -61);

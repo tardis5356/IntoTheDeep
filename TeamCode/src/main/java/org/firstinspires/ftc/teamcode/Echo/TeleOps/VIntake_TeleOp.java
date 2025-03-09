@@ -607,9 +607,9 @@ public class VIntake_TeleOp extends CommandOpMode {
             new Trigger(() -> driver2.getButton(GamepadKeys.Button.DPAD_LEFT) && DepositState == "intake" && gripper.verifyGripper())
                     .whenActive(new SequentialCommandGroup(
                             new InstantCommand(() -> lift.PIDEnabled = true),
-                        //    new InstantCommand(vintake::in),
+                            new InstantCommand(vintake::in),
                             intakeToWallWithSomething,
-                       //     new InstantCommand(vintake::stop),
+                            new InstantCommand(vintake::stop),
                             new InstantCommand(() -> DepositState = "wall"),
                             new InstantCommand(() -> gOpen = false),
                             new InstantCommand(() -> killSwitchActive = false),
@@ -837,8 +837,8 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //winch code
         {
-//            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0)
-//                    .whenActive(() -> winch.extend(driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+            new Trigger(() -> driver2.getButton(GamepadKeys.Button.BACK))
+                    .whenActive(() -> lift.liftFF = -.7);
 //
 //            new Trigger(() -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) != 0)
 //                    .whenActive(() -> winch.retract(driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));

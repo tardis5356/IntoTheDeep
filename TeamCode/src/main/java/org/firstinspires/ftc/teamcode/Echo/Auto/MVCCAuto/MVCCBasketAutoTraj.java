@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
 
 
+import com.acmerobotics.roadrunner.AccelConstraint;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
@@ -20,11 +22,11 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-60,-59, Math.toRadians(45));
 
     public static final Pose2d redBasket_BasketDrop1 = new Pose2d(-59.5,-60.5, Math.toRadians(45));
-    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-46.5, -54, Math.toRadians(91));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47, -55.5, Math.toRadians(90));
 //    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-46, -50, Math.toRadians(93));
-    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-61.5,-55, Math.toRadians(86));
+    public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-58,-53.5, Math.toRadians(90));
 //    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-54.5,-49, Math.toRadians(100));
-    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-54, Math.toRadians(118));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-54, Math.toRadians(110));
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-21, -12, Math.toRadians(180));
 
@@ -87,6 +89,8 @@ public class MVCCBasketAutoTraj {
             )
     );
 
+    public static AccelConstraint IntakeAccelConstraint = new ProfileAccelConstraint(-40, 60);
+
     public static MinVelConstraint RightIntakeConstraint = new MinVelConstraint(
             Arrays.asList(
                     new TranslationalVelConstraint(60),//inches per second
@@ -118,7 +122,7 @@ public class MVCCBasketAutoTraj {
         redBasket_BasketToRightSample =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redBasket_RightSampleIntakePos,Math.toRadians(90), RightIntakeConstraint)
+                        .splineToLinearHeading(redBasket_RightSampleIntakePos,Math.toRadians(90), RightIntakeConstraint, IntakeAccelConstraint)
                         .build();
 
 //        redBasket_RightSampleIntake =
@@ -136,7 +140,7 @@ public class MVCCBasketAutoTraj {
         redBasket_BasketToMidSample =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redBasket_MidSampleIntakePos, Math.toRadians(90), IntakeConstraint)
+                        .splineToLinearHeading(redBasket_MidSampleIntakePos, Math.toRadians(90), IntakeConstraint, IntakeAccelConstraint)
                         .build();
 
 //        redBasket_MidSampleIntake =
@@ -154,7 +158,7 @@ public class MVCCBasketAutoTraj {
         redBasket_BasketToLeftSample =
                 drive.actionBuilder(redBasket_BasketDrop)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(redBasket_LeftSampleIntakePos, Math.toRadians(270), IntakeConstraint)
+                        .splineToLinearHeading(redBasket_LeftSampleIntakePos, Math.toRadians(270), IntakeConstraint, IntakeAccelConstraint)
                         .build();
 
 //        redBasket_LeftSampleIntake =
@@ -165,7 +169,7 @@ public class MVCCBasketAutoTraj {
         redBasket_LeftSampleToBasket =
                 drive.actionBuilder(redBasket_LeftSampleIntakePos)
                         .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(225))
+                        .splineToLinearHeading(redBasket_BasketDrop, Math.toRadians(270))
                         .build();
 
         redBasket_BasketToAscentPark =
