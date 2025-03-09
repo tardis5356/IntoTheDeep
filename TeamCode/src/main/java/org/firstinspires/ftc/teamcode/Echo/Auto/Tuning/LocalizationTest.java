@@ -7,10 +7,17 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class LocalizationTest extends LinearOpMode {
+    private DcMotorEx mFL, mFR, mBL, mBR;
+
     @Override
     public void runOpMode() throws InterruptedException {
+        mFL = hardwareMap.get(DcMotorEx.class, "mFL");
+        mFR = hardwareMap.get(DcMotorEx.class, "mFR");
+        mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+        mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDriveSpecimen.class)) {
@@ -32,6 +39,9 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);
                 telemetry.addData("heading (deg)", Math.toDegrees(drive.pose.heading.toDouble()));
+                telemetry.addData("Par0", mFR.getCurrentPosition());
+                telemetry.addData("Par1",  mFL.getCurrentPosition());
+                telemetry.addData("PerP",  mBR.getCurrentPosition());
                 telemetry.update();
 
                 TelemetryPacket packet = new TelemetryPacket();

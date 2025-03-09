@@ -97,6 +97,13 @@ public class MVCCSpecimenAutoTraj {
             )
     );
 
+    public static MinVelConstraint BaseConstraint = new MinVelConstraint(
+            Arrays.asList(
+                    new TranslationalVelConstraint(80),//inches per second
+                    new AngularVelConstraint(6.689) // remember the units you're working in, especially for angular constraints!
+            )
+    );
+
     /*
      You are also able to define just an accel constraint or just a
      vel constraint, if you only want to constrain one.
@@ -110,6 +117,7 @@ public class MVCCSpecimenAutoTraj {
      be the corresponding physical behavior.
      */
     public static ProfileAccelConstraint sweepingAccelProfile = new ProfileAccelConstraint(-60, 80);//(-30,50)
+    public static ProfileAccelConstraint SubApproachAccel = new ProfileAccelConstraint(-30, 50);//(-30,50)
     public static ProfileAccelConstraint endingAccelProfile = new ProfileAccelConstraint(-60, 80);//(-30,50)
 
 
@@ -166,22 +174,22 @@ public class MVCCSpecimenAutoTraj {
 
         redSpec_ObsToSub1 =
                 drive.actionBuilder(redSpec_ObsSpecPos)
-                        .strafeToLinearHeading(redSpec_SubDepoPosition1, Math.toRadians(90))
+                        .strafeToLinearHeading(redSpec_SubDepoPosition1, Math.toRadians(90),BaseConstraint, SubApproachAccel)
                         .build();
 
         redSpec_ObsToSub2 =
                 drive.actionBuilder(redSpec_ObsSpecPos1)
-                        .strafeToLinearHeading(redSpec_SubDepoPosition2, Math.toRadians(90))
+                        .strafeToLinearHeading(redSpec_SubDepoPosition2, Math.toRadians(90),BaseConstraint, SubApproachAccel)
                         .build();
 
         redSpec_ObsToSub3 =
                 drive.actionBuilder(redSpec_ObsSpecPos2)
-                        .strafeToLinearHeading(redSpec_SubDepoPosition3, Math.toRadians(90))
+                        .strafeToLinearHeading(redSpec_SubDepoPosition3, Math.toRadians(90),BaseConstraint, SubApproachAccel)
                         .build();
 
         redSpec_ObsToSub4 =
                 drive.actionBuilder(redSpec_ObsSpecPos3)
-                        .strafeToLinearHeading(redSpec_SubDepoPosition4, Math.toRadians(90)/*, sweepingConstraint, endingAccelProfile*/)
+                        .strafeToLinearHeading(redSpec_SubDepoPosition4, Math.toRadians(90),BaseConstraint, SubApproachAccel/*, sweepingConstraint, endingAccelProfile*/)
                         .build();
 
         redSpecEx_SubToLeftSpecZone =

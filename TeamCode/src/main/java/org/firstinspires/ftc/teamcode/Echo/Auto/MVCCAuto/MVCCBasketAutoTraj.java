@@ -22,11 +22,11 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-60,-59, Math.toRadians(45));
 
     public static final Pose2d redBasket_BasketDrop1 = new Pose2d(-59.5,-60.5, Math.toRadians(45));
-    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47, -55.5, Math.toRadians(90));
+    public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-46.5, -55.5, Math.toRadians(91.5));
 //    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-46, -50, Math.toRadians(93));
     public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-58,-53.5, Math.toRadians(90));
 //    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-54.5,-49, Math.toRadians(100));
-    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-54, Math.toRadians(110));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-53, Math.toRadians(115));
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-21, -12, Math.toRadians(180));
 
@@ -89,7 +89,7 @@ public class MVCCBasketAutoTraj {
             )
     );
 
-    public static AccelConstraint IntakeAccelConstraint = new ProfileAccelConstraint(-40, 60);
+    public static AccelConstraint IntakeAccelConstraint = new ProfileAccelConstraint(-30, 50);
 
     public static MinVelConstraint RightIntakeConstraint = new MinVelConstraint(
             Arrays.asList(
