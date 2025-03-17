@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Echo.TeleOps;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -13,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.Drawing;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
@@ -41,9 +45,11 @@ public class LiftTest extends CommandOpMode {
     public void initialize() {
         aparatus = new GamepadEx(gamepad1);
         lift = new Lift(hardwareMap);
-        arm = new Arm(hardwareMap);
-        gripper = new Gripper(hardwareMap);
-        wrist = new Wrist(hardwareMap);
+//        arm = new Arm(hardwareMap);
+//        gripper = new Gripper(hardwareMap);
+//        wrist = new Wrist(hardwareMap);
+
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //map motors
         mFL = hardwareMap.get(DcMotorEx.class, "mFL");
@@ -90,30 +96,33 @@ public class LiftTest extends CommandOpMode {
         new Trigger(() -> aparatus.getButton(GamepadKeys.Button.B))
                 .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH, BotPositions.LIFT_TOLERANCE));
 
-        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.X))
-                .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(arm::specimen),
-                        new InstantCommand(wrist::specimen),
-                        new InstantCommand(gripper::close)
-                ));
+//        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.X))
+//                .whenActive(new SequentialCommandGroup(
+//                        new InstantCommand(arm::specimen),
+//                        new InstantCommand(wrist::specimen),
+//                        new InstantCommand(gripper::close)
+//                ));
+//
+//        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.Y))
+//                .whenActive(new SequentialCommandGroup(
+//                        new InstantCommand(arm::specimenHang),
+//                        new WaitCommand(750),
+//                        new InstantCommand(gripper::open)
+//                ));
+//        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+//                .whenActive(new SequentialCommandGroup(
+//
+//                        new InstantCommand(gripper::open)
+//                ));
+//
+//        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.LEFT_BUMPER))
+//                .whenActive(new SequentialCommandGroup(
+//
+//                        new InstantCommand(arm::basket)
+//                ));
 
-        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.Y))
-                .whenActive(new SequentialCommandGroup(
-                        new InstantCommand(arm::specimenHang),
-                        new WaitCommand(750),
-                        new InstantCommand(gripper::open)
-                ));
-        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                .whenActive(new SequentialCommandGroup(
 
-                        new InstantCommand(gripper::open)
-                ));
 
-        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .whenActive(new SequentialCommandGroup(
-
-                        new InstantCommand(arm::basket)
-                ));
 
 //        new Trigger(() -> aparatus.getButton(GamepadKeys.Button.DPAD_DOWN))
 //                .whenActive(new LiftToStateCommand(lift, BotPositions.LIFT_BASKET_LOW, 1));
@@ -148,12 +157,15 @@ public class LiftTest extends CommandOpMode {
 //        mBL.setPower(mBLPower * CURRENT_SPEED_MULTIPLIER);
 //        mBR.setPower(mBRPower * CURRENT_SPEED_MULTIPLIER);
 
-        telemetry.addData("LeftStick", aparatus.getLeftY());
-        telemetry.addData("RightStick", aparatus.getRightY());
+        //telemetry.addData("LeftStick", aparatus.getLeftY());
+        //telemetry.addData("RightStick", aparatus.getRightY());
         telemetry.addData("liftPosition", lift.getCurrentPosition());
         telemetry.addData("TargetPosition", lift.getTargetPosition());
         telemetry.addData("PID power", lift.getCurrentPID());
-        telemetry.addData("LiftAssignedPower", lift.motorPower);
+        //telemetry.addData("LiftAssignedPower", lift.motorPower);
+
+
+
         telemetry.update();
 
 

@@ -163,6 +163,7 @@ public class VIntake_TeleOp extends CommandOpMode {
     //stuff that is ran when you click init at the start of teleop.
     public void initialize() {
 
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         //Removes previous Commands from scheduler
         //We call it at the start of TeleOp as it clears lingering autocommands that make the intake freak out
         //Make sure it is not called in a loop since it will clear all the triggers every frame. Be very careful. It is a kill switch.
@@ -958,35 +959,27 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //the following is all telemetry for debugging and verifying things in the teleop
         telemetry.addData("RobotState", DepositState);
-        //telemetry.addData("IntakeState", intake.checkSample());
+
         telemetry.addData("AssignedExtensionPosition", Trigger);
         telemetry.addData("ActualExtensionPosition", extendo.sER.getPosition());
         telemetry.addData("checkIntake", vintake.checkSample());
         telemetry.addData("check sample present", vintake.samplePresent);
         telemetry.addData("DetectedColor", vintake.checkColor());
-        //telemetry.addData("Blue", intake.checkBlue());
+
         telemetry.addData("Alliance Color", AllianceColor.aColor);
         telemetry.addData("Basket_or_Spec", AllianceColor.cycleType);
         telemetry.addData("notAColor", notAColor);
         telemetry.addData("wrongColorDetected", wrongColorIntaked);
-        // telemetry.addData("isHanging?", lift.liftHanging);
-        //telemetry.addData("LiftAssignedPower", lift.motorPower);
         telemetry.addData("SpeedMultiplyer", CURRENT_SPEED_MULTIPLIER);
-        //telemetry.addData("PIDEnabled?", lift.PIDEnabled);
-        //telemetry.addData("JoystickPowerInput", lift.joystickPowerInput);
-        //telemetry.addData("liftPosition", lift.getCurrentPosition());
-
+//
         //IMPORTANT: The automatic closing of the gripper is dependent on its sensor always being called
         //just having the verifyGripper() method in a conditional in the objects periodic loop doesn't get it to run continuously
         //thus it needs to be called in the run loop in some way, in this case as telemetry
-        telemetry.addData("GripperState", gripper.verifyGripper());
-        telemetry.addData("ExtendoToggle", Extendo_Toggle);
+//        telemetry.addData("GripperState", gripper.verifyGripper());
+//        telemetry.addData("ExtendoToggle", Extendo_Toggle);
 
-        //telemetry.addData("LiftTopMotorPower", lift.getCurrentMotorPower());
-        //telemetry.addData("LiftBottomMotorPower", lift.getCurrentMotorPower());
-        //telemetry.addData("LiftTopMotorCurrent", lift.mLT.getCurrent(CurrentUnit.MILLIAMPS));
-        //telemetry.addData("LiftBottomMotorCurrent", lift.mLB.getCurrent(CurrentUnit.MILLIAMPS));
-        //telemetry.addData("Yellow", intake.checkYellow());
+
+
         telemetry.addData("ReadingIntakeRED", vintake.cI.red());//620-650 Yellow 300-400 Red
         telemetry.addData("ReadingIntakeBLUE", vintake.cI.blue());//120-250 Blue
         telemetry.addData("ReadingGripperRED", gripper.cG.red());//620-650 Yellow 300-400 Red
@@ -994,9 +987,10 @@ public class VIntake_TeleOp extends CommandOpMode {
 
         //telemetry.addData("ReadingIntake", cI.green());
 
-        telemetry.addData("MotorEncoder", lift.getCurrentPosition());
-        telemetry.addData("Lift_Power", lift.motorPower);
-        telemetry.addData("ShaftEncoder", lift.mLB.getCurrentPosition());
+//        telemetry.addData("MotorEncoder", lift.getCurrentPosition());
+//        telemetry.addData("Lift_Power", lift.motorPower);
+        telemetry.addData("ShaftEncoder", lift.getCurrentPosition());
+        telemetry.addData("TargetPosition", lift.getTargetPosition());
 
         telemetry.update();
 
