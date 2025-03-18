@@ -19,7 +19,7 @@ public class BotPositions {
             , LIFT_SPECIMEN_HIGH_CLIP = -47250, LIFT_TOLERANCE = 500,LIFT_TOLERANCE_HIGH = 1000, LIFT_TOLERANCE_TIGHT = 500;
     public static double  INTAKE_RED_MIN = 200, INTAKE_BLUE_MIN = 190, YELLOW_MAX = 650, YELLOW_MIN = 620;
     public static double LIFT_FF = 0.1, WINCH_FF = 0;
-    public static double LIFT_P = 0.0002, LIFT_D = 0.000005, LIFT_I = 0.000;
+    public static double LIFT_P = 0.00016, LIFT_D = 0.000000, LIFT_I = 0.000;
     public static double VINTAKE_TRANSFER = 0.5, VINTAKE_UP = .65, VINTAKE_DOWN = .73, VINTAKE_SWEEP=.83;
 
     public static int LIFT_WALL_AUTO = -1800, LIFT_SPECIMEN_HIGH_AUTO = -14500,LIFT_BASKET_HIGH_AUTO = -49000, //SPECIMEN_HIGH_AUTO=-9000
