@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SpecimenStartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SubToRightSample;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.redSpec_SubToObs4;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -15,23 +14,21 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
+import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveSpecimen;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
+import org.firstinspires.ftc.teamcode.Echo.Commands.GripperAutoCloseCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
@@ -54,30 +51,22 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketSpecimenAuto")
-@Disabled
+@Autonomous(name = "5SpecimenAuto")
 
-public class MVCCCommandBasketSpecimenAuto extends OpMode {
+public class PremiereCommand5SpecimenAuto extends OpMode {
+
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_SpecimenStartPos;
+    Pose2d initialPose = redSpec_StartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
-
-    ExtendoToStateCommand extendoToStateCommand;
-
-    ExtendoToStateCommand extendoSpecLeft;
-    ExtendoToStateCommand extendoSpecMid;
-    ExtendoToStateCommand extendoSpecRight;
-
-    IntakeInCommand intakeIn;
-    IntakeInCommand intakeOut;
 
     private DcMotorEx mFL;
     private DcMotorEx mFR;
@@ -90,28 +79,28 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    //    private ActionCommand RedBasket_StartToSub;
-    private ActionCommand RedBasket_SubToRightSample;
-    //    private ActionCommand RedBasket_RightSampleToBasket;
-//    private ActionCommand RedBasket_BasketToMidSample;
-//    private ActionCommand RedBasket_MidSampleToBasket;
-//    private ActionCommand RedBasket_BasketToLeftSample;
-//    private ActionCommand RedBasket_LeftSampleToBasket;
-    private ActionCommand RedBasket_BasketToAscentPark;
+    private ParallelActionCommand RedSpec_StartToSub;
 
+
+    private ActionCommand RedSpec_SubToObs4Traj;
+    private ParallelActionCommand RedSpec_SubToObs;
     private InstantCommand OpenGripper;
-
     private InstantCommand CloseGripper;
-
     private InstantCommand WristSpecimen;
-
     private InstantCommand ArmSpecimen;
-
     private InstantCommand GripperCheck;
-
-    private DepositToStateCommand depositToStateCommand;
-
-
+    private DepositToStateCommand Wall;
+    private GripperAutoCloseCommand gripperAutoCloseCommand;
+    private ParallelActionCommand RedSpecEx_LeftSpecDepo;
+    private ParallelActionCommand RedSpecEx_MidSpecDepo;
+    private ParallelActionCommand RedSpecEx_RightSpecDepo;
+    private ParallelActionCommand RedSpec_RightSpecDepoToObs;
+    private ParallelActionCommand RedSpec_ObsToSub1;
+    private ParallelActionCommand RedSpec_ObsToSub2;
+    private ParallelActionCommand RedSpec_SubToObs2;
+    private ParallelActionCommand RedSpec_ObsToSub3;
+    private ParallelActionCommand RedSpec_SubToObs3;
+    private ParallelActionCommand RedSpec_ObsToSub4;
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
 
@@ -119,22 +108,24 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
 
-    private MecanumDriveBasket drive;
-
+    private MecanumDriveSpecimen drive;
+    static String botState;
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-//Removes previous Commands from scheduler
+        //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos); //
+        drive = new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos);
         telemetry.addData("Status", "Initialized");
+        //add initial position
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos)); //
-//
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, redSpec_StartPos));
+
+
 
         vintake = new VIntake(hardwareMap);
         arm = new Arm(hardwareMap);
@@ -148,6 +139,22 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
 
 
         CommandScheduler.getInstance().registerSubsystem(vintake);//
+        RedSpec_SubToObs4Traj = new ActionCommand(redSpec_SubToObs4, requirements);
+        RedSpec_StartToSub = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_StartToSub");
+        RedSpecEx_LeftSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_LeftSpecDepo");
+        RedSpecEx_MidSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_MidSpecDepo");
+        RedSpecEx_RightSpecDepo = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpecEx_RightSpecDepo");
+        RedSpec_RightSpecDepoToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_RightSpecDepoToObs");
+        RedSpec_ObsToSub1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub1");
+        RedSpec_SubToObs = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs");
+        RedSpec_ObsToSub2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub2");
+        RedSpec_SubToObs2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs2");
+        RedSpec_ObsToSub3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub3");
+        RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
+        RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
+        arm.sAL.setPosition(BotPositions.ARM_INTAKE);
+        arm.sAR.setPosition(BotPositions.ARM_INTAKE);
+        gripper.sG.setPosition(BotPositions.GRIPPER_CLOSED);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -170,18 +177,13 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
      */
     @Override
     public void start() {
+        botState = "specimen";
+
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-//        intakeIn = new IntakeInCommand(vintake);
-//
-//        intakeOut = new IntakeInCommand(intake);
-//
-//        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
-//
-//        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
-//
-//        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
+        generateTrajectories(new MecanumDriveSpecimen(hardwareMap, initialPose));
+
 
         OpenGripper = new InstantCommand(gripper::open);
 
@@ -189,27 +191,15 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
 
         WristSpecimen = new InstantCommand(wrist::specimen);
 
-        ArmSpecimen = new InstantCommand(arm::specimen);
+        ArmSpecimen = new InstantCommand(arm::specimenAuto);
 
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
+        gripperAutoCloseCommand = new GripperAutoCloseCommand(gripper);
+
+        Wall = new DepositToStateCommand(arm, wrist, gripper, lift, "specimenToWall");
+
         time_since_start = new ElapsedTime();
-
-//        RedBasket_StartToSub = new ActionCommand (redBasket_StartToSub,requirements);
-
-        RedBasket_SubToRightSample = new ActionCommand(redBasket_SubToRightSample, requirements);
-
-//        RedBasket_RightSampleToBasket = new ActionCommand (redBasket_RightSampleToBasket, requirements);
-//
-//        RedBasket_BasketToMidSample = new ActionCommand (redBasket_BasketToMidSample, requirements);
-//
-//        RedBasket_MidSampleToBasket = new ActionCommand (redBasket_MidSampleToBasket, requirements);
-//
-//        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
-//
-//        RedBasket_LeftSampleToBasket = new ActionCommand (redBasket_LeftSampleToBasket, requirements);
-
-        RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
 
         CommandScheduler.getInstance().schedule(
@@ -217,22 +207,28 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
                 new InstantCommand(vintake::transferPosition),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
+
+
+
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_StartToSub"),
-                        RedBasket_SubToRightSample,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreRightSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
+                        RedSpec_StartToSub,
+                        RedSpecEx_LeftSpecDepo,
+                        RedSpecEx_MidSpecDepo,
+                        RedSpecEx_RightSpecDepo,
+                        RedSpec_RightSpecDepoToObs,
+                        RedSpec_ObsToSub1,
+                        RedSpec_SubToObs,
+                        RedSpec_ObsToSub2,
+                        RedSpec_SubToObs2,
+                        RedSpec_ObsToSub3,
+                        RedSpec_SubToObs3,
+                        RedSpec_ObsToSub4,
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        RedBasket_BasketToAscentPark),
-                                new SequentialCommandGroup(
                                         new WaitCommand(500),
-                                        new LiftToStateCommand(lift, 0, 25)))
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
+                                ),
+                        RedSpec_SubToObs4Traj)
                 )
         );
     }
@@ -245,42 +241,16 @@ public class MVCCCommandBasketSpecimenAuto extends OpMode {
 
         CommandScheduler.getInstance().run();
 
-//        if(intake.checkSample()== true){
-//            intake.sIW.setPower(BotPositions.INTAKE_STOP);
-//            intake.sIO.setPower(BotPositions.INTAKE_STOP);
-//            intake.Intaking = false;
-//            CommandScheduler.getInstance().cancelAll();
-//            telemetry.addData("confirmed sample", "yes");
-//        }
-
-
-//        new Trigger(() -> intake.checkSample())
-//                .whenActive(
-//                        new SequentialCommandGroup(
-//
-//                                new InstantCommand(intake::stop)
-//                        )
-//                );
-
-//        new Trigger(() -> intake.checkSample() && (AllianceColor.aColor == intake.checkColor() || intake.checkColor() == "yellow"))
-//                .whenActive(
-//                        new SequentialCommandGroup(
-//                                new InstantCommand(intake::transferPosition),
-//                                new InstantCommand(()->intake.sIW.setPower(.15)),
-//                                new WaitCommand(500),
-//                                new InstantCommand(intake::stop),
-//                                new InstantCommand(extendo::in)
-//                        )
-//                );
-
 
         // Note: to access the drive position info, needed to declare a drive = mecanumDrive as private variable at top of this class
         telemetry.addData("In loop Heading", Math.toDegrees(drive.pose.heading.toDouble()));
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
-        telemetry.addData("Sample acquired", vintake.checkSample());
-
-        telemetry.addData("Alliance Color", AllianceColor.aColor);
+        telemetry.addData("Gripper", gripper.verifyGripper());
+        telemetry.addData("BotState", botState);
+        telemetry.addData("Lift Position", lift.getCurrentPosition());
+        telemetry.addData("Lift Target Position", lift.getTargetPosition());
+        telemetry.addData("Lift localized", lift.localized);
 
         drive.updatePoseEstimate();
         telemetry.update();

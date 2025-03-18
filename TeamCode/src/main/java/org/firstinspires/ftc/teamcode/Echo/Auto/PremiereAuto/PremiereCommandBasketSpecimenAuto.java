@@ -1,13 +1,12 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SampleStartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.redBasket_SpecimenStartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.redBasket_SubToRightSample;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -16,14 +15,11 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
@@ -32,10 +28,8 @@ import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
@@ -58,16 +52,15 @@ import java.util.Set;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "BasketSampleAuto")
-@Disabled
+@Autonomous(name = "BasketSpecimenAuto")
 
-public class MVCCCommandBasketSampleAuto extends OpMode {
+public class PremiereCommandBasketSpecimenAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Pose2d initialPose = redBasket_SampleStartPos;
+    Pose2d initialPose = redBasket_SpecimenStartPos;
 
     // vision here that outputs position
     int visionOutputPosition = 1;
@@ -94,34 +87,14 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    //    private ActionCommand RedBasket_StartToBasket;
-//    private ActionCommand RedBasket_RightSampleToBasket;
-//    private ActionCommand RedBasket_BasketToRightSample;
-//    private ActionCommand RedBasket_RightSampleIntake;
-//    private ActionCommand RedBasket_BasketToMidSample;
-//    private ActionCommand RedBasket_MidSampleToBasket;
-//    private ActionCommand RedBasket_MidSampleIntake;
-//    private ActionCommand RedBasket_BasketToLeftSample;
-//    private ActionCommand RedBasket_LeftSampleToBasket;
-//    private ActionCommand RedBasket_LeftSampleIntake;
+    private ActionCommand RedBasket_SubToRightSample;
     private ActionCommand RedBasket_BasketToAscentPark;
-
-    private String Cycle2, Cycle1;
-
     private InstantCommand OpenGripper;
-
     private InstantCommand CloseGripper;
-
     private InstantCommand WristSpecimen;
-
     private InstantCommand ArmSpecimen;
-
     private InstantCommand GripperCheck;
-
     private DepositToStateCommand depositToStateCommand;
-
-    private ParallelCommandGroup SampleCycle1, SampleCycle2;
-
 
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
@@ -132,8 +105,6 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
     private MecanumDriveBasket drive;
 
-    private double CycleDecision = 1;
-
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -143,11 +114,11 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 //Removes previous Commands from scheduler
         CommandScheduler.getInstance().reset();
 
-        drive = new MecanumDriveBasket(hardwareMap, redBasket_SampleStartPos); //
-//        telemetry.addData("Status", "Initialized");
+        drive = new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos); //
+        telemetry.addData("Status", "Initialized");
 // this line is needed or you get a Dashboard preview error
-        generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SampleStartPos)); //
-
+        generateTrajectories(new MecanumDriveBasket(hardwareMap, redBasket_SpecimenStartPos)); //
+//
 
         vintake = new VIntake(hardwareMap);
         arm = new Arm(hardwareMap);
@@ -162,21 +133,12 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
 
         CommandScheduler.getInstance().registerSubsystem(vintake);//
         // Tell the driver that initialization is complete.
-//        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initialized");
     }
 
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit START
-     * up =1
-     * right = 2
-     * down = 3
-     * left = 4
-     * leftstickbutton = a
-     * rightstickbutton = b
-     * x = 1st cycle
-     * y = 2nd cycle
      */
-
     @Override
     public void init_loop() {
         if (gamepad1.a) {
@@ -185,63 +147,6 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
         if (gamepad1.b) {
             AllianceColor.aColor = "red";
         }
-        if (gamepad1.x){
-            if (gamepad1.dpad_up && gamepad1.left_stick_button) {
-                SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A");
-Cycle1 ="1A";
-            }
-        if (gamepad1.dpad_right && gamepad1.left_stick_button) {
-            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A");
-            Cycle1 ="2A";
-        }
-        if (gamepad1.dpad_down && gamepad1.left_stick_button) {
-            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A");
-            Cycle1 ="3A";
-        }
-
-        if (gamepad1.dpad_up && gamepad1.right_stick_button) {
-            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B");
-            Cycle1 ="1B";
-        }
-        if (gamepad1.dpad_right && gamepad1.right_stick_button) {
-            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B");
-            Cycle1 ="2B";
-        }
-        if (gamepad1.dpad_down && gamepad1.right_stick_button) {
-            SampleCycle1 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B");
-            Cycle1 ="3B";
-        }}
-
-        if (gamepad1.y) {
-            if (gamepad1.dpad_up && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1A_2");
-                Cycle2 ="1A";
-            }
-            if (gamepad1.dpad_right && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2A_2");
-                Cycle2 ="2A";
-            }
-            if (gamepad1.dpad_down && gamepad1.left_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3A_2");
-                Cycle2 ="3A";
-            }
-            if (gamepad1.dpad_up && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub1B_2");
-                Cycle2 ="1B";
-            }
-            if (gamepad1.dpad_right && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub2B_2");
-                Cycle2 ="2B";
-            }
-            if (gamepad1.dpad_down && gamepad1.right_stick_button) {
-                SampleCycle2 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_BasketToSub3B_2");
-                Cycle2 ="3B";
-            }
-        }
-        telemetry.addData("1st_Cycle", Cycle1);
-        telemetry.addData("2nd_Cycle", Cycle2);
-        telemetry.addData("Alliance Color", AllianceColor.aColor);
-        telemetry.update();
     }
 
     /*
@@ -251,17 +156,6 @@ Cycle1 ="1A";
     public void start() {
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
-
-
-//        intakeIn = new IntakeInCommand(vintake);
-//
-//        intakeOut = new IntakeInCommand(intake);
-//
-//        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
-//
-//        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
-//
-//        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
 
         OpenGripper = new InstantCommand(gripper::open);
 
@@ -275,26 +169,7 @@ Cycle1 ="1A";
 
         time_since_start = new ElapsedTime();
 
-
-//        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
-//
-//        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
-//
-//        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
-//
-//        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
-//
-//        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
-//
-//        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
-//
-//        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
-//
-//        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
-//
-//        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
-//
-//        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
+        RedBasket_SubToRightSample = new ActionCommand(redBasket_SubToRightSample, requirements);
 
         RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
@@ -302,32 +177,24 @@ Cycle1 ="1A";
         CommandScheduler.getInstance().schedule(
                 new InstantCommand(extendo::in),
                 new InstantCommand(vintake::transferPosition),
-                new InstantCommand(arm::intake),
                 new InstantCommand(() -> lift.PIDEnabled = true),
 
                 new SequentialCommandGroup(
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_StartToBasketDepo"),
+                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_StartToSub"),
+                        RedBasket_SubToRightSample,
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeRightSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreRightSample"),
-                        new InstantCommand(() -> new AngularVelConstraint(5.5)),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeMidSample"),
-                        new InstantCommand(() -> new AngularVelConstraint(6.689)),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreMidSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_IntakeLeftSample"),
                         new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_ScoreLeftSample"),
-                        SampleCycle1,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket"),
-                        SampleCycle2,
-                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket_2")
-//                        new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redBasket_SubToBasket")
-//                        new ParallelCommandGroup(
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(300),
-//                                        RedBasket_BasketToAscentPark),
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(500),
-//                                       new InstantCommand(() ->arm.sAR.setPosition(BotPositions.ARM_BASKET + .05)),
-//                                        new LiftToStateCommand(lift, 0, 25)))
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(300),
+                                        RedBasket_BasketToAscentPark),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new LiftToStateCommand(lift, 0, 25)))
                 )
         );
     }
@@ -374,8 +241,7 @@ Cycle1 ="1A";
         telemetry.addData("X", drive.pose.position.x);
         telemetry.addData("Y", drive.pose.position.y);
         telemetry.addData("Sample acquired", vintake.checkSample());
-        telemetry.addData("Intake Color", vintake.checkColor());
-        telemetry.addData("Sample Disatnce" ,((DistanceSensor)vintake.cI).getDistance(DistanceUnit.CM));
+
         telemetry.addData("Alliance Color", AllianceColor.aColor);
 
         drive.updatePoseEstimate();
