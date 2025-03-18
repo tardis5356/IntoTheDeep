@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto;
+package org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_BasketToAscentPark;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCBasketAutoTraj.redBasket_SampleStartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.redBasket_BasketToAscentPark;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereBasketAutoTraj.redBasket_SampleStartPos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
@@ -14,9 +13,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -28,14 +25,11 @@ import org.firstinspires.ftc.teamcode.Echo.Auto.Tuning.MecanumDriveBasket;
 import org.firstinspires.ftc.teamcode.Echo.Commands.DepositToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ExtendoToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.IntakeCommands.IntakeInCommand;
-import org.firstinspires.ftc.teamcode.Echo.Commands.LiftToStateCommand;
 import org.firstinspires.ftc.teamcode.Echo.Commands.ParallelActionCommand;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.AllianceColor;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
@@ -59,9 +53,8 @@ import java.util.Set;
  */
 
 @Autonomous(name = "BasketSampleAuto")
-@Disabled
 
-public class MVCCCommandBasketSampleAuto extends OpMode {
+public class PremiereCommandBasketSampleAuto extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -94,16 +87,6 @@ public class MVCCCommandBasketSampleAuto extends OpMode {
     private Lift lift;
     private Wrist wrist;
     private ExampleSubsystem exampleSubsystem;
-    //    private ActionCommand RedBasket_StartToBasket;
-//    private ActionCommand RedBasket_RightSampleToBasket;
-//    private ActionCommand RedBasket_BasketToRightSample;
-//    private ActionCommand RedBasket_RightSampleIntake;
-//    private ActionCommand RedBasket_BasketToMidSample;
-//    private ActionCommand RedBasket_MidSampleToBasket;
-//    private ActionCommand RedBasket_MidSampleIntake;
-//    private ActionCommand RedBasket_BasketToLeftSample;
-//    private ActionCommand RedBasket_LeftSampleToBasket;
-//    private ActionCommand RedBasket_LeftSampleIntake;
     private ActionCommand RedBasket_BasketToAscentPark;
 
     private String Cycle2, Cycle1;
@@ -252,17 +235,6 @@ Cycle1 ="1A";
         Set<Subsystem> requirements = Set.of(exampleSubsystem);
         runtime.reset();
 
-
-//        intakeIn = new IntakeInCommand(vintake);
-//
-//        intakeOut = new IntakeInCommand(intake);
-//
-//        extendoSpecLeft = new ExtendoToStateCommand(intake, extendo, "LeftSpec");
-//
-//        extendoSpecMid = new ExtendoToStateCommand(intake, extendo, "MidSpec");
-//
-//        extendoSpecRight = new ExtendoToStateCommand(intake, extendo, "RightSpec");
-
         OpenGripper = new InstantCommand(gripper::open);
 
         CloseGripper = new InstantCommand(gripper::close);
@@ -274,27 +246,6 @@ Cycle1 ="1A";
         GripperCheck = new InstantCommand(() -> gripper.checkColor());
 
         time_since_start = new ElapsedTime();
-
-
-//        RedBasket_StartToBasket = new ActionCommand(redBasket_StartToBasket, requirements);
-//
-//        RedBasket_BasketToRightSample = new ActionCommand(redBasket_BasketToRightSample, requirements);
-//
-//        RedBasket_RightSampleToBasket = new ActionCommand(redBasket_RightSampleToBasket, requirements);
-//
-//        RedBasket_RightSampleIntake = new ActionCommand(redBasket_RightSampleIntake, requirements);
-//
-//        RedBasket_BasketToMidSample = new ActionCommand(redBasket_BasketToMidSample, requirements);
-//
-//        RedBasket_MidSampleToBasket = new ActionCommand(redBasket_MidSampleToBasket, requirements);
-//
-//        RedBasket_MidSampleIntake = new ActionCommand(redBasket_MidSampleIntake, requirements);
-//
-//        RedBasket_BasketToLeftSample = new ActionCommand(redBasket_BasketToLeftSample, requirements);
-//
-//        RedBasket_LeftSampleToBasket = new ActionCommand(redBasket_LeftSampleToBasket, requirements);
-//
-//        RedBasket_LeftSampleIntake = new ActionCommand(redBasket_LeftSampleIntake, requirements);
 
         RedBasket_BasketToAscentPark = new ActionCommand(redBasket_BasketToAscentPark, requirements);
 
