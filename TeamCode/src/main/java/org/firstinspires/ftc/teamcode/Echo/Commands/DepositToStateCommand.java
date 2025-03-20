@@ -44,7 +44,8 @@ public class DepositToStateCommand extends ParallelCommandGroup {
                 addCommands(
                                 new ParallelCommandGroup(
                                         new LiftToStateCommand(lift, BotPositions.LIFT_TRANSIT-100, BotPositions.LIFT_TOLERANCE_HIGH),
-                                        new SequentialCommandGroup(new WaitCommand(750),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(550),
                                                 new ParallelCommandGroup(new InstantCommand(arm::intake),
                                                         new InstantCommand(wrist::intake),
                                                         new InstantCommand(gripper::intake)
