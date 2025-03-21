@@ -6,11 +6,16 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class LocalizationTest extends LinearOpMode {
     private DcMotorEx mFL, mFR, mBL, mBR;
+    private IMU TestIMU;//
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -18,6 +23,7 @@ public class LocalizationTest extends LinearOpMode {
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
+        TestIMU = hardwareMap.get(IMU.class,"imu");//
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDriveSpecimen.class)) {
@@ -39,6 +45,7 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);
                 telemetry.addData("heading (deg)", Math.toDegrees(drive.pose.heading.toDouble()));
+                telemetry.addData("headingIMU (deg)",TestIMU.getRobotYawPitchRollAngles().getYaw());//
                 telemetry.addData("Par0", mFR.getCurrentPosition());
                 telemetry.addData("Par1",  mFL.getCurrentPosition());
                 telemetry.addData("PerP",  mBR.getCurrentPosition());
