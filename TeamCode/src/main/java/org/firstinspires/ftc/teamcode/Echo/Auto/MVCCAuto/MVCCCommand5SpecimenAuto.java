@@ -56,7 +56,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "5SpecimenAuto")
-@Disabled
+//@Disabled
 
 public class MVCCCommand5SpecimenAuto extends OpMode {
 
