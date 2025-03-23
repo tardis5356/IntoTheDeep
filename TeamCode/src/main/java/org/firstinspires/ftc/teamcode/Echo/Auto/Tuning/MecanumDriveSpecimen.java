@@ -64,13 +64,13 @@ public class MecanumDriveSpecimen {
 
         // drive model parameters
         public double inPerTick =0.00197655; //
-        public double lateralInPerTick = 0.0012606268857847866; //0.00042145826939852453
-        public double trackWidthTicks = 8055.923797863967;//8055.923797863967
+        public double lateralInPerTick = 0.001175; //0.00042145826939852453
+        public double trackWidthTicks = 6355.1;//8055.923797863967
 
         // feedforward parameters (in tick units)
-        public double kS = 0.315;//0.315
-        public double kV = 0.00023; //0.00010597696143860526
-        public double kA = 0.0001;
+        public double kS = 1.6776;//0.315
+        public double kV = 0.00025;//0.00023444; //0.00010597696143860526
+        public double kA = 0.00006 ;//0.0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 80;
@@ -82,11 +82,11 @@ public class MecanumDriveSpecimen {
         public double maxAngAccel = 6.689;//6.689
 
         // path controller gains
-        public double axialGain = 11;
-        public double lateralGain = 8;
-        public double headingGain = 12; // shared with turn
+        public double axialGain = 12;//11;
+        public double lateralGain = 1; //8;
+        public double headingGain = 1;//12; // shared with turn
 
-        public double axialVelGain = 0.0;
+        public double axialVelGain = 5;
         public double lateralVelGain = 0.0;
         public double headingVelGain = 0.0; // shared with turn
     }
@@ -300,7 +300,7 @@ public class MecanumDriveSpecimen {
             //TODO fix the second timer
              double headingToleranceDeg = 1;
             double positionToleranceIn = .3;
-            double timeoutSec = 0.0; //0.1 in specimen, 0.5 in basket
+            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
            // if (t>= timeTrajectory.duration + 2) {`1

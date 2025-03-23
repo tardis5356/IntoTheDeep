@@ -56,7 +56,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "5SpecimenAuto")
-@Disabled
+//@Disabled
 
 public class MVCCCommand5SpecimenAuto extends OpMode {
 
@@ -243,7 +243,8 @@ public class MVCCCommand5SpecimenAuto extends OpMode {
                                         new WaitCommand(500),
                                 new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                                         ),
-                        RedSpec_SubToObs4Traj)
+                        RedSpec_SubToObs4Traj
+                        )
                 )
         );
     }

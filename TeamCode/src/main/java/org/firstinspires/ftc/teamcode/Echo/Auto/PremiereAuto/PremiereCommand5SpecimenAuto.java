@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto;
 
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.redSpec_StartPos;
-import static org.firstinspires.ftc.teamcode.Echo.Auto.PremiereAuto.PremiereSpecimenAutoTraj.redSpec_SubToObs4;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.generateTrajectories;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_StartPos;
+import static org.firstinspires.ftc.teamcode.Echo.Auto.MVCCAuto.MVCCSpecimenAutoTraj.redSpec_SubToObs4;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -14,6 +17,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -29,8 +33,8 @@ import org.firstinspires.ftc.teamcode.Echo.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Extendo;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.VIntake;
+import org.firstinspires.ftc.teamcode.Echo.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Echo.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.TestBed.ActionCommand;
 import org.firstinspires.ftc.teamcode.TestBed.ExampleSubsystem;
@@ -52,6 +56,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "5SpecimenAuto")
+@Disabled
 
 public class PremiereCommand5SpecimenAuto extends OpMode {
 
@@ -97,10 +102,13 @@ public class PremiereCommand5SpecimenAuto extends OpMode {
     private ParallelActionCommand RedSpec_RightSpecDepoToObs;
     private ParallelActionCommand RedSpec_ObsToSub1;
     private ParallelActionCommand RedSpec_ObsToSub2;
+
     private ParallelActionCommand RedSpec_SubToObs2;
     private ParallelActionCommand RedSpec_ObsToSub3;
     private ParallelActionCommand RedSpec_SubToObs3;
     private ParallelActionCommand RedSpec_ObsToSub4;
+//    private ParallelActionCommand RedSpec_SubToObs4;
+
     //    private ExampleSubsystem robot = ExampleSubsystem.getInstance();
     private boolean commandsScheduled = false;
 
@@ -152,6 +160,7 @@ public class PremiereCommand5SpecimenAuto extends OpMode {
         RedSpec_ObsToSub3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub3");
         RedSpec_SubToObs3 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs3");
         RedSpec_ObsToSub4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_ObsToSub4");
+//        RedSpec_SubToObs4 = new ParallelActionCommand(arm, wrist, gripper, lift, extendo, vintake, exampleSubsystem, "redSpec_SubToObs4");
         arm.sAL.setPosition(BotPositions.ARM_INTAKE);
         arm.sAR.setPosition(BotPositions.ARM_INTAKE);
         gripper.sG.setPosition(BotPositions.GRIPPER_CLOSED);
@@ -212,10 +221,16 @@ public class PremiereCommand5SpecimenAuto extends OpMode {
 
                 new SequentialCommandGroup(
                         RedSpec_StartToSub,
+//                        new InstantCommand(() -> new AngularVelConstraint(11)),//9.7
+//                        new InstantCommand(() -> new ProfileAccelConstraint(-60, 80)),//-60,70
+//                        new InstantCommand(() -> new TranslationalVelConstraint(100)),
                         RedSpecEx_LeftSpecDepo,
                         RedSpecEx_MidSpecDepo,
                         RedSpecEx_RightSpecDepo,
                         RedSpec_RightSpecDepoToObs,
+//                        new InstantCommand(() -> new AngularVelConstraint(6.689)),
+//                        new InstantCommand(() -> new ProfileAccelConstraint(-30, 50)),
+//                        new InstantCommand(() -> new TranslationalVelConstraint(79)),
                         RedSpec_ObsToSub1,
                         RedSpec_SubToObs,
                         RedSpec_ObsToSub2,
@@ -228,7 +243,7 @@ public class PremiereCommand5SpecimenAuto extends OpMode {
                                         new WaitCommand(500),
                                         new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE, BotPositions.LIFT_TOLERANCE)
                                 ),
-                        RedSpec_SubToObs4Traj)
+                                RedSpec_SubToObs4Traj)
                 )
         );
     }
