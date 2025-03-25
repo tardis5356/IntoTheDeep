@@ -82,13 +82,13 @@ public class MecanumDriveSpecimen {
         public double maxAngAccel = 6.689;//6.689
 
         // path controller gains
-        public double axialGain = 12;//11;
-        public double lateralGain = 1; //8;
-        public double headingGain = 1;//12; // shared with turn
+        public double axialGain = 4;//11;
+        public double lateralGain = 10; //8;
+        public double headingGain = 5;//12; // shared with turn
 
-        public double axialVelGain = 5;
-        public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.0; // shared with turn
+        public double axialVelGain = 0.2;
+        public double lateralVelGain = 2;
+        public double headingVelGain = 1; // shared with turn
     }
 
     public static Params PARAMS = new Params();
