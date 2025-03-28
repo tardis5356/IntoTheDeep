@@ -21,32 +21,32 @@ import java.util.Arrays;
 public class MVCCSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -61, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -28, Math.toRadians(90)); //two inches from the sub
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-6, -30, Math.toRadians(90)); //two inches from the sub
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(40, -61.5, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos1 = new Pose2d(38, -61.5, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(38, -62, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(43, -62, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-5.5, -27.5, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(-2.5, -25.5, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(0.5, -25.5, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(1.5, -27.5, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(25.5, -41, Math.toRadians(50));
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25.1, -50, Math.toRadians(333));
-    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(30.6, -37, Math.toRadians(40));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32.6, -47, Math.toRadians(324));//320
-    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(41, -41, Math.toRadians(45));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(42, -58, Math.toRadians(315)); //37,-58,335
-    public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(40, -58, Math.toRadians(90));
+//    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-5.5, -28, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(-1, -30, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(-1.5, -30, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(3, -30, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(26, -42, Math.toRadians(50));//25.5
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(327));//25.1
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(33.5, -36, Math.toRadians(40));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32, -47, Math.toRadians(324));//320
+    public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(42.2, -38, Math.toRadians(45));
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(36, -58, Math.toRadians(320)); //37,-58,335
+    public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(40.1, -58, Math.toRadians(90));
 
     public static final Pose2d redBasket_BasketDrop = new Pose2d(-57, -58, Math.toRadians(45));
 
     // positions for strafeTo commands
-    public static final Vector2d redSpec_SubDepoPosition = new Vector2d(-6, -28);
-    public static final Vector2d redSpec_SubDepoPosition1 = new Vector2d(-4, -31);
-    public static final Vector2d redSpec_SubDepoPosition2 = new Vector2d(-3, -29.5);
-    public static final Vector2d redSpec_SubDepoPosition3 = new Vector2d(-1, -29.5);
-    public static final Vector2d redSpec_SubDepoPosition4 = new Vector2d(2, -29.5);
+    public static final Vector2d redSpec_SubDepoPosition = new Vector2d(-6, -30);
+    public static final Vector2d redSpec_SubDepoPosition1 = new Vector2d(-3.5, -30);
+    public static final Vector2d redSpec_SubDepoPosition2 = new Vector2d(-1, -30);
+    public static final Vector2d redSpec_SubDepoPosition3 = new Vector2d(1.5, -30);
+    public static final Vector2d redSpec_SubDepoPosition4 = new Vector2d(3, -30);
     public static final Vector2d redSpec_ObsSpecPosition = new Vector2d(40, -61);
     public static final Vector2d redSpec_ObsSpecPosition1 = new Vector2d(38, -61);
     public static final Vector2d redSpec_ObsSpecPosition2 = new Vector2d(38, -61);
