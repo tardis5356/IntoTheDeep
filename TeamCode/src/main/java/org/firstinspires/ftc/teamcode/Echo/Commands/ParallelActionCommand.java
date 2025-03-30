@@ -223,7 +223,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(gripper::close),
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimenAuto),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         RedSpec_StartToSub,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1800),
@@ -274,7 +274,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub1,
@@ -298,7 +298,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub2,
@@ -322,7 +322,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub3,
@@ -346,7 +346,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub4,
@@ -505,7 +505,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(gripper::close),
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimenAuto),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         RedBasket_StartToSub,
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1800),

@@ -20,16 +20,16 @@ import java.util.Arrays;
 public class MVCCSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -61, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-6, -31, Math.toRadians(90)); //two inches from the sub
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-6, -30, Math.toRadians(90)); //two inches from the sub
     public static final Pose2d redSpec_ObsSpecPos = new Pose2d(40, -61.0001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos1 = new Pose2d(38, -61.0000001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(38, -61.000001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(43, -62.00000001, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-3.5, -31.5, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(-1, -31, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(1.5, -31, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(4, -30, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(-3.5, -29.5, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(-1, -29, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(1.5, -29, Math.toRadians(90)); //y=-29
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(4, -28, Math.toRadians(90)); //y=-29
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(26, -42, Math.toRadians(50));//25.5
     public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(327));//25.1
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(33.5, -36, Math.toRadians(40));
