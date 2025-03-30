@@ -82,11 +82,11 @@ public class MecanumDriveSpecimen {
         public double maxAngAccel = 6.689;//6.689
 
         // path controller gains
-        public double axialGain = 4;//11;
+        public double axialGain = 4;//17;//4;//11;
         public double lateralGain = 10; //8;
         public double headingGain = 5;//12; // shared with turn
 
-        public double axialVelGain = 0.2;
+        public double axialVelGain = 0.2;//4;//0.2;
         public double lateralVelGain = 2;
         public double headingVelGain = 1; // shared with turn
     }
@@ -298,8 +298,8 @@ public class MecanumDriveSpecimen {
             Pose2d error = txWorldTarget.value().minusExp(pose);
             // It only exits the trajectory once within a certain angle or one second after the trajectory finishes.
             //TODO fix the second timer
-             double headingToleranceDeg = 1;
-            double positionToleranceIn = .3;
+             double headingToleranceDeg = 1;//1
+            double positionToleranceIn = 0.5;//0.3
             double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {

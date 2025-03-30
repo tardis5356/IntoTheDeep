@@ -19,14 +19,14 @@ public class MVCCBasketAutoTraj {
     public static final Pose2d redBasket_SampleStartPos = new Pose2d(-39.25, -63, Math.toRadians(0));
     public static final Pose2d redBasket_SpecimenStartPos = new Pose2d(-16, -64, Math.toRadians(90));
     public static final Pose2d redBasket_SubDepoPos = new Pose2d(-2, -32, Math.toRadians(90));
-    public static final Pose2d redBasket_BasketDrop = new Pose2d(-60,-59, Math.toRadians(45));
+    public static final Pose2d redBasket_BasketDrop = new Pose2d(-57,-59, Math.toRadians(45));
 
-    public static final Pose2d redBasket_BasketDrop1 = new Pose2d(-59.5,-60.5, Math.toRadians(45));
+    public static final Pose2d redBasket_BasketDrop1 = new Pose2d(-57,-59, Math.toRadians(45));
     public static final Pose2d redBasket_RightSampleIntakePos =new Pose2d(-47.25, -55.5, Math.toRadians(90));
 //    public static final Pose2d redBasket_RightSampleZonePos =new Pose2d(-46, -50, Math.toRadians(93));
     public static final Pose2d redBasket_MidSampleIntakePos = new Pose2d(-57.25,-53.5, Math.toRadians(90));
 //    public static final Pose2d redBasket_MidSampleZonePos = new Pose2d(-54.5,-49, Math.toRadians(100));
-    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-53, Math.toRadians(115));
+    public static final Pose2d redBasket_LeftSampleIntakePos = new Pose2d(-56,-54, Math.toRadians(115));
 //    public static final Pose2d redBasket_LeftSampleZonePos = new Pose2d(-52,-52, Math.toRadians(120));
     public static final Pose2d redBasket_AscentParkPos = new Pose2d(-21, -12, Math.toRadians(180));
 

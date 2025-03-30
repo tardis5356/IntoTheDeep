@@ -59,7 +59,7 @@ import java.util.Set;
  */
 
 @Autonomous(name = "BasketSampleAuto")
-@Disabled
+//@Disabled
 
 public class MVCCCommandBasketSampleAuto extends OpMode {
     // Declare OpMode members.
