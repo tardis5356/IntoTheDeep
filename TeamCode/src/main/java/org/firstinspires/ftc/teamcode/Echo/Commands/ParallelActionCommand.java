@@ -219,16 +219,20 @@ public class ParallelActionCommand extends ParallelCommandGroup {
             case "redSpec_StartToSub":
                 addCommands(
                         new SequentialCommandGroup(
-                                new ParallelCommandGroup(
+                    new ParallelCommandGroup(
                                         new InstantCommand(gripper::close),
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimenAuto),
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                          //
+                    new SequentialCommandGroup(
+                            new LiftToStateCommand(lift, BotPositions.LIFT_WALL_AUTO, BotPositions.LIFT_TOLERANCE_AUTO),
+                            new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO)
+                    ),
                                         RedSpec_StartToSub),
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(200),
-                                                new InstantCommand(gripper::open),
-                new WaitCommand(200)
+                                                new WaitCommand(100),//200
+                                                new InstantCommand(gripper::open)
+//                                                new WaitCommand(200)
                         )
                 );
 
@@ -269,20 +273,22 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO-5000, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub1,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(200),
-                                                new InstantCommand(gripper::open),
-                                                new WaitCommand(200)
+                                                new WaitCommand(100),//200
+                                                new InstantCommand(gripper::open)
+//                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))
+                                                new InstantCommand(arm::specimenAuto),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO)
+                                                )
                                 )
                         )
                 );
@@ -293,21 +299,21 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO-5000, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub2,
-
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(200),
-                                                new InstantCommand(gripper::open),
-                                                new WaitCommand(200)
+                                                new WaitCommand(100),//200
+                                                new InstantCommand(gripper::open)
+//                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))
+                                                new InstantCommand(arm::specimenAuto),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO))
                                 )
                         )
                 );
@@ -318,20 +324,21 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO-5000, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub3,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(200),
-                                                new InstantCommand(gripper::open),
-                                                new WaitCommand(200)
+                                                new WaitCommand(100),//200
+                                                new InstantCommand(gripper::open)
+//                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))
+                                                new InstantCommand(arm::specimenAuto),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO))
                                 )
                         )
                 );
@@ -342,20 +349,21 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new InstantCommand(gripper::close),
                                 new ParallelCommandGroup(
-                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                                        new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO-5000, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub4,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(200),
-                                                new InstantCommand(gripper::open),
-                                                new WaitCommand(200)
+                                                new WaitCommand(100),//200
+                                                new InstantCommand(gripper::open)
+//                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
                                                 new InstantCommand(gripper::close),
                                                 new InstantCommand(wrist::specimen),
-                                                new InstantCommand(arm::specimenAuto))
+                                                new InstantCommand(arm::specimenAuto),
+                                                new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO))
                                 )
                         )
                 );

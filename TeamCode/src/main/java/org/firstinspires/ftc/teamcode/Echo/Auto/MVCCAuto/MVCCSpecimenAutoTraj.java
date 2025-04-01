@@ -20,22 +20,22 @@ import java.util.Arrays;
 public class MVCCSpecimenAutoTraj {
 
     public static final Pose2d redSpec_StartPos = new Pose2d(8, -61, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -29, Math.toRadians(90)); //two inches from the sub
-    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(40, -61.0001, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos = new Pose2d(-3, -29, Math.toRadians(90)); //-3
+    public static final Pose2d redSpec_ObsSpecPos = new Pose2d(38, -61.0001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos1 = new Pose2d(38, -61.0000001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(38, -61.000001, Math.toRadians(90));
-    public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(43, -62.00000001, Math.toRadians(90));
+    public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(38, -62.00000001, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(0, -28, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(2.5, -27, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(5, -27, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(7.5, -26, Math.toRadians(90)); //y=-29
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(26, -42, Math.toRadians(50));//25.5
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(323));//25.1
-    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32, -34, Math.toRadians(40));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32, -47, Math.toRadians(324));//320
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(1, -28.5, Math.toRadians(90)); //1
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3.5, -27, Math.toRadians(90)); //3.5
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -26.5, Math.toRadians(90)); //6
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(8, -26, Math.toRadians(90)); //8.5
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -44, Math.toRadians(50));//25.5
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(320));//25.1
+    public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32.7, -35, Math.toRadians(50));
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32, -47, Math.toRadians(322));//320
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(42, -37, Math.toRadians(45));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(33, -58, Math.toRadians(315)); //37,-58,335
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(33, -58, Math.toRadians(317)); //37,-58,335
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(40.1, -58, Math.toRadians(90));
 
     // positions for strafeTo commands
@@ -145,25 +145,25 @@ public class MVCCSpecimenAutoTraj {
         redSpec_SubToObs =
                 drive.actionBuilder(redSpec_SubDepoPos1)
                         .setTangent(Math.toRadians(300))
-                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(270),BaseConstraint, WallAccel)
+                        .splineToLinearHeading(redSpec_ObsSpecPos,Math.toRadians(300),BaseConstraint, WallAccel)//270
                         .build();
 
         redSpec_SubToObs2 =
                 drive.actionBuilder(redSpec_SubDepoPos2)
                         .setTangent(Math.toRadians(300))
-                        .splineToLinearHeading(redSpec_ObsSpecPos1,Math.toRadians(270),BaseConstraint, WallAccel)
+                        .splineToLinearHeading(redSpec_ObsSpecPos1,Math.toRadians(300),BaseConstraint, WallAccel)//270
                         .build();
 
         redSpec_SubToObs3 =
                 drive.actionBuilder(redSpec_SubDepoPos3)
-                        .setTangent(Math.toRadians(300))
-                        .splineToLinearHeading(redSpec_ObsSpecPos2,Math.toRadians(270),BaseConstraint, WallAccel)
+                        .setTangent(Math.toRadians(270))
+                        .splineToLinearHeading(redSpec_ObsSpecPos2,Math.toRadians(300),BaseConstraint, WallAccel)//270
                         .build();
 
         redSpec_SubToObs4 =
                 drive.actionBuilder(redSpec_SubDepoPos4)
-                        .setTangent(Math.toRadians(300))
-                        .splineToLinearHeading(redSpec_ObsSpecPos2,Math.toRadians(270),EndingConstraint, endingAccelProfile)
+                        .setTangent(Math.toRadians(270))
+                        .splineToLinearHeading(redSpec_ObsSpecPos2,Math.toRadians(300),EndingConstraint, endingAccelProfile)//270
 //                        .strafeToLinearHeading(redSpec_ObsSpecPosition3, Math.toRadians(90), sweepingConstraint, endingAccelProfile)
                         .build();
 
@@ -243,7 +243,7 @@ public class MVCCSpecimenAutoTraj {
 
         redSpecEx_RightDepoToObsPrep =
                 drive.actionBuilder(redSpecEx_RightSpecDepoPos)
-                        .setTangent(Math.toRadians(180))
+                        .setTangent(Math.toRadians(270))
                         .splineToLinearHeading(redSpecEx_ObsPrepPos, Math.toRadians(270))
                         .build();
 
