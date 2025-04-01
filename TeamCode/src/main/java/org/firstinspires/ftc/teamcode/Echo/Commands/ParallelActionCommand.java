@@ -224,16 +224,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new InstantCommand(wrist::specimen),
                                         new InstantCommand(arm::specimenAuto),
                                         new LiftToStateCommand(lift, BotPositions.LIFT_SPECIMEN_HIGH_AUTO, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
-                                        RedSpec_StartToSub,
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(1800),
+                                        RedSpec_StartToSub),
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(0),
-                                                new InstantCommand(gripper::open)
-                                        )
-                                )
-
-
+                                                new WaitCommand(200),
+                                                new InstantCommand(gripper::open),
+                new WaitCommand(200)
                         )
                 );
 
@@ -279,9 +274,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub1,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(0),
+                                                new WaitCommand(200),
                                                 new InstantCommand(gripper::open),
-                                                new WaitCommand(1000)
+                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
@@ -302,10 +297,11 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub2,
+
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(0),
+                                                new WaitCommand(200),
                                                 new InstantCommand(gripper::open),
-                                                new WaitCommand(1000)
+                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
@@ -327,9 +323,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub3,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(0),
+                                                new WaitCommand(200),
                                                 new InstantCommand(gripper::open),
-                                                new WaitCommand(1000)
+                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
@@ -351,9 +347,9 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                                                 new WaitCommand(100),
                                                 RedSpec_ObsToSub4,
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(0),
+                                                new WaitCommand(200),
                                                 new InstantCommand(gripper::open),
-                                                new WaitCommand(1000)
+                                                new WaitCommand(200)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(650),
