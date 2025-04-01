@@ -26,16 +26,16 @@ public class MVCCSpecimenAutoTraj {
     public static final Pose2d redSpec_ObsSpecPos2 = new Pose2d(38, -61.000001, Math.toRadians(90));
     public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(38, -62.00000001, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(1, -28.5, Math.toRadians(90)); //1
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3.5, -27, Math.toRadians(90)); //3.5
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -26.5, Math.toRadians(90)); //6
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(8, -26, Math.toRadians(90)); //8.5
-    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -44, Math.toRadians(50));//25.5
-    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(320));//25.1
+    public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(1, -28.5, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3.5, -27, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -26.5, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(8, -26, Math.toRadians(90));
+    public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -44, Math.toRadians(50));
+    public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(320));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32.7, -35, Math.toRadians(50));
-    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32, -47, Math.toRadians(322));//320
+    public static final Pose2d redSpecEx_MidSpecDepoPos = new Pose2d(32, -47, Math.toRadians(322));
     public static final Pose2d redSpecEx_RightSpecZonePos = new Pose2d(42, -37, Math.toRadians(45));
-    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(33, -58, Math.toRadians(317)); //37,-58,335
+    public static final Pose2d redSpecEx_RightSpecDepoPos = new Pose2d(33, -58, Math.toRadians(317));
     public static final Pose2d redSpecEx_ObsPrepPos = new Pose2d(40.1, -58, Math.toRadians(90));
 
     // positions for strafeTo commands
