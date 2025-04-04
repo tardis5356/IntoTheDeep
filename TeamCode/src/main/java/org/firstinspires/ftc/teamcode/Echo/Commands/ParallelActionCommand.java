@@ -539,7 +539,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
 
                                         new InstantCommand(vintake::in),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1500),
+                                                new WaitCommand(1100),
                                                 new DepositToStateAutoCommand(arm, wrist, gripper, lift, "basketToIntake")
                                         )),
 

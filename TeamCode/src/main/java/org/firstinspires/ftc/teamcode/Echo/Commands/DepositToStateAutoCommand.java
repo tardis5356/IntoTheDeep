@@ -38,6 +38,21 @@ public class DepositToStateAutoCommand extends ParallelCommandGroup {
                 );
                 //setState = "intake";
                 break;
+            case "basketToIntakeLow":
+                addCommands(
+                        new ParallelCommandGroup(
+                                new LiftToStateCommand(lift, BotPositions.LIFT_INTAKE_AUTO+1000, BotPositions.LIFT_TOLERANCE_TIGHT_AUTO),
+                                new SequentialCommandGroup(
+                                        //new WaitCommand(500),
+                                        new InstantCommand(wrist::intake),
+                                        new InstantCommand(arm::intake),
+                                        new InstantCommand(gripper::intake)
+                                )
+                                //new InstantCommand(wrist::wristIntake)
+                        )
+                );
+                //setState = "intake";
+                break;
 
             case "wallToIntake":
                 //TODO: Test This
