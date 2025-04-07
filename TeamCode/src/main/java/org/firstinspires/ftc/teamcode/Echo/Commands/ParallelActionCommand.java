@@ -230,7 +230,7 @@ public class ParallelActionCommand extends ParallelCommandGroup {
                     ),
                                         RedSpec_StartToSub),
                                                 new InstantCommand(arm::specimenHangAuto),
-                                                new WaitCommand(100),//200
+                                                new WaitCommand(200),//200
                                                 new InstantCommand(gripper::open)
 //                                                new WaitCommand(200)
                         )
