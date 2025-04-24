@@ -27,9 +27,9 @@ public class MVCCSpecimenAutoTraj {
     public static final Pose2d redSpec_ObsSpecPos3 = new Pose2d(38, -62.00000001, Math.toRadians(90));
     public static final Pose2d redSpec_MidPointPos = new Pose2d(36, -40, Math.toRadians(90));
     public static final Pose2d redSpec_SubDepoPos1 = new Pose2d(1, -28.5, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3.5, -27, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(6, -26.5, Math.toRadians(90));
-    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(8, -26, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos2 = new Pose2d(3, -27, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos3 = new Pose2d(5, -26.5, Math.toRadians(90));
+    public static final Pose2d redSpec_SubDepoPos4 = new Pose2d(7, -26, Math.toRadians(90));
     public static final Pose2d redSpecEx_LeftSpecZonePos = new Pose2d(28, -44, Math.toRadians(50));
     public static final Pose2d redSpecEx_LeftSpecDepoPos = new Pose2d(25, -50, Math.toRadians(320));
     public static final Pose2d redSpecEx_MidSpecZonePos = new Pose2d(32.7, -35, Math.toRadians(50));

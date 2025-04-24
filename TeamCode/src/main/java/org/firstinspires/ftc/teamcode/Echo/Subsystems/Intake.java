@@ -160,7 +160,7 @@ public class Intake extends SubsystemBase {
         if (cI.blue()>175&& cI.blue() <430 && cI.red()>630 && cI.red()<1100 && cI.green()<1000){
             return "red";
         }
-        else if (cI.blue()>650 && cI.green()<1700 ){
+        else if (cI.blue()>160 && cI.green()<125){
             return "blue";
         }
         else if (cI.green()>1300){
