@@ -67,6 +67,8 @@ public class VIntake_TeleOp extends CommandOpMode {
 
     boolean gOpen;
 
+    //
+
     //private IntakeInCommand intakeInCommand;
 
     //drivetrain motors and variables
