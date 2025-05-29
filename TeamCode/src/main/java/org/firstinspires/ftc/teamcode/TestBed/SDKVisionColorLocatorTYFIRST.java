@@ -19,11 +19,12 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.TestBed;
 
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.SortOrder;
@@ -31,10 +32,13 @@ import com.qualcomm.robotcore.util.SortOrder;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.RotatedRect;
+import org.openftc.easyopencv.OpenCvCamera;
 
 import java.util.List;
 
@@ -60,13 +64,23 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-//@Disabled
+
 @TeleOp(name = "Concept: Vision Color-Locator", group = "Concept")
-public class ConceptVisionColorLocator extends LinearOpMode
+public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 {
+
+    int desiredTagID;
+
+    AprilTagDetection detectedTag;
+
+    //private OpenCvCamera controlHubCam;
+
+
     @Override
     public void runOpMode()
     {
+
+
         /* Build a "Color Locator" vision processor based on the ColorBlobLocatorProcessor class.
          * - Specify the color range you are looking for.  You can use a predefined color, or create you own color range
          *     .setTargetColorRange(ColorRange.BLUE)                      // use a predefined color match
@@ -107,13 +121,18 @@ public class ConceptVisionColorLocator extends LinearOpMode
          *                                    object, such as when removing noise from an image.
          *                                    "pixels" in the range of 2-4 are suitable for low res images.
          */
-        ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
+
+
+        ColorBlobLocatorProcessor blueLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(ColorRange.BLUE)         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-0.5, 0.5, 0.5, -0.5))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
                 .setBlurSize(5)                               // Smooth the transitions between different colors in image
                 .build();
+
+        AprilTagProcessor aTagP = new AprilTagProcessor.Builder().build();
+
 
         /*
          * Build a vision portal to run the Color Locator process.
@@ -128,8 +147,8 @@ public class ConceptVisionColorLocator extends LinearOpMode
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
         VisionPortal portal = new VisionPortal.Builder()
-                .addProcessor(colorLocator)
-                .setCameraResolution(new Size(320, 240))
+                .addProcessors(blueLocator, aTagP)
+                .setCameraResolution(new Size(1280, 720))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
@@ -139,10 +158,51 @@ public class ConceptVisionColorLocator extends LinearOpMode
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
+
+            if(gamepad1.a){
+                portal.setProcessorEnabled(aTagP, true);
+                portal.setProcessorEnabled(blueLocator, false);
+            }
+            else if(gamepad1.b){
+                portal.setProcessorEnabled(aTagP, false);
+                portal.setProcessorEnabled(blueLocator, true);
+            }
+
+
             telemetry.addData("preview on/off", "... Camera Stream\n");
 
             // Read the current list
-            List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
+            List<ColorBlobLocatorProcessor.Blob> blobs = blueLocator.getBlobs();
+
+            ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.DESCENDING, blobs);
+
+            List<AprilTagDetection>currentDetections = aTagP.getDetections();
+
+            boolean targetFound;
+
+
+
+            for (AprilTagDetection detection : currentDetections) {
+                // Look to see if we have size info on this tag.
+                if (detection.metadata != null) {
+                    //  Check to see if we want to track towards this tag.
+                    if ((desiredTagID < 0) || (detection.id == desiredTagID)) {
+                        // Yes, we want to use this tag.
+                        targetFound = true;
+                        detectedTag = detection;
+                        break;  // don't look any further.
+                    } else {
+                        // This tag is in the library, but we do not want to track it right now.
+//                    telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                    }
+                } else {
+
+                    // This tag is NOT in the library, so we don't have enough information to track to it.
+//                telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+                }
+            }
+
+
 
             /*
              * The list of Blobs can be filtered to remove unwanted Blobs.
@@ -174,6 +234,9 @@ public class ConceptVisionColorLocator extends LinearOpMode
              *     ColorBlobLocatorProcessor.Util.sortByAspectRatio(SortOrder.DESCENDING, blobs);
              */
 
+
+
+
             telemetry.addLine(" Area Density Aspect  Center");
 
             // Display the size (area) and center location for each Blob.
@@ -183,6 +246,12 @@ public class ConceptVisionColorLocator extends LinearOpMode
                 telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
                           b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
             }
+
+            ColorBlobLocatorProcessor.Blob BigBlob = blobs.get(0);
+
+            double cx = BigBlob.getBoxFit().center.x;
+
+
 
             telemetry.update();
             sleep(50);

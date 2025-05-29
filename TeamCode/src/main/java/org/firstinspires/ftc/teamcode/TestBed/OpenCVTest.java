@@ -78,11 +78,11 @@ public class OpenCVTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            double cXerror = (cX-640);
 
-
-            if (Math.abs((cX-640)) > 250 && width >100) {
+            if (Math.abs(cXerror) > 250 && width >100) {
                 //Rotation = (cX - 640) * 0.0005;
-                Rotation = controller.calculate(cX,640);
+                Rotation = controller.calculate(cXerror,0);
             }
             else{
                 Rotation = 0;
