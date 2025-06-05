@@ -25,8 +25,12 @@ import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.arcrobotics.ftclib.controller.PDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -71,6 +75,17 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
     int desiredTagID;
 
+    double cx;
+
+    DcMotor mBL, mBR, mFL, mFR;
+
+    double FB, LR, Rotation;
+
+    PDController controller;
+    public double p = .001, d = .0003;
+
+    boolean targetFound = false;
+
     AprilTagDetection detectedTag;
 
     //private OpenCvCamera controlHubCam;
@@ -79,6 +94,21 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
     @Override
     public void runOpMode()
     {
+
+        mFL = hardwareMap.get(DcMotorEx.class, "mFL");
+        mFR = hardwareMap.get(DcMotorEx.class, "mFR");
+        mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+        mBR = hardwareMap.get(DcMotorEx.class, "mBR");
+
+        mBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        mFR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        controller = new PDController(p, d);
 
 
         /* Build a "Color Locator" vision processor based on the ColorBlobLocatorProcessor class.
@@ -126,7 +156,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
         ColorBlobLocatorProcessor blueLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(ColorRange.BLUE)         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
-                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.5, 0.5, 0.5, -0.5))  // search central 1/4 of camera view
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.75, 0.75, 0.75, -0.75))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
                 .setBlurSize(5)                               // Smooth the transitions between different colors in image
                 .build();
@@ -155,9 +185,13 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
         telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 
+
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
+
+            //portal.stopStreaming();
+            //portal.resumeStreaming();
 
             if(gamepad1.a){
                 portal.setProcessorEnabled(aTagP, true);
@@ -178,13 +212,25 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
             List<AprilTagDetection>currentDetections = aTagP.getDetections();
 
-            boolean targetFound;
 
 
+
+            if(gamepad1.dpad_up){
+                desiredTagID = 5;
+            }
+            else if(gamepad1.dpad_left){
+                desiredTagID = 4;
+            }
+            else if(gamepad1.dpad_right){
+                desiredTagID = 6;
+            }
+            else if (gamepad1.dpad_down){
+                desiredTagID = -1;
+            }
 
             for (AprilTagDetection detection : currentDetections) {
                 // Look to see if we have size info on this tag.
-                if (detection.metadata != null) {
+              //  if (detection.metadata != null) {
                     //  Check to see if we want to track towards this tag.
                     if ((desiredTagID < 0) || (detection.id == desiredTagID)) {
                         // Yes, we want to use this tag.
@@ -195,11 +241,11 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                         // This tag is in the library, but we do not want to track it right now.
 //                    telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
                     }
-                } else {
+              //  } else {
 
                     // This tag is NOT in the library, so we don't have enough information to track to it.
 //                telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
-                }
+             //   }
             }
 
 
@@ -224,7 +270,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
              *   A blob's Aspect ratio is the ratio of boxFit long side to short side.
              *   A perfect Square has an aspect ratio of 1.  All others are > 1
              */
-            ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
+            ColorBlobLocatorProcessor.Util.filterByArea(250, 20000, blobs);  // filter out very small blobs.
 
             /*
              * The list of Blobs can be sorted using the same Blob attributes as listed above.
@@ -247,12 +293,51 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                           b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
             }
 
-            ColorBlobLocatorProcessor.Blob BigBlob = blobs.get(0);
+            if (!blobs.isEmpty()){
+                ColorBlobLocatorProcessor.Blob BigBlob = blobs.get(0);
 
-            double cx = BigBlob.getBoxFit().center.x;
+                cx = BigBlob.getBoxFit().center.x;
+
+            }
+            else if(targetFound){
+                cx = detectedTag.center.x;
+            }
+            else{
+                cx = 1280/2;
+            }
 
 
 
+            double cXerror = (cx-640);
+
+            if (Math.abs(cXerror) > 100 && Math.abs(cXerror) < 400) {
+                //Rotation = (cX - 640) * 0.0005;
+                LR = controller.calculate(cXerror,0)/2;
+            }
+            else if (Math.abs(cXerror)<=100 || gamepad1.start){
+                LR = 0;
+            }
+
+            double mFLPower = FB + LR + Rotation;
+            double mFRPower = FB - LR - Rotation;
+            double mBLPower = FB - LR + Rotation;
+            double mBRPower = FB + LR - Rotation;
+
+            mFL.setPower(mFLPower);
+            mFR.setPower(mFRPower);
+            mBL.setPower(mBLPower);
+            mBR.setPower(mBRPower);
+
+
+            telemetry.addData("cx", cx);
+            telemetry.addData("pdcontroller",controller.calculate(cXerror,0));
+            telemetry.addData("LR", LR);
+            telemetry.addData("aprilTagDetected", targetFound);
+            if(targetFound == true){
+            telemetry.addData("aprilTagCenter", detectedTag.center.x);
+            }
+
+            //telemetry.addData("Detected color", )
             telemetry.update();
             sleep(50);
         }

@@ -42,16 +42,13 @@ public class Gripper extends SubsystemBase {
     }
 
     @Override
-
     public void periodic(){
         //runs constantly in the background
 
         //if the gripper was clear and something is detected inside it, the gripper will close.
         if(gripperClear && verifyGripper()){
             close();
-
         }
-
     }
 
     //the following methods set the gripper fingers to different positions. They are triggered either by manual inputs or automated sequences
