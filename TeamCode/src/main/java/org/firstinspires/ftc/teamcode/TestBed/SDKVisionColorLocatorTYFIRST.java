@@ -40,10 +40,13 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
+import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -75,7 +78,11 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
     int desiredTagID;
 
+    public String currentColor = "blue";
+
     double cx;
+
+    boolean PIDActive;
 
     DcMotor mBL, mBR, mFL, mFR;
 
@@ -90,6 +97,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
     //private OpenCvCamera controlHubCam;
 
+    List<ColorBlobLocatorProcessor.Blob> blobs = new ArrayList<>();
 
     @Override
     public void runOpMode()
@@ -153,15 +161,47 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
          */
 
 
+
         ColorBlobLocatorProcessor blueLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.BLUE)         // use a predefined color match
+                .setTargetColorRange(//ColorRange.BLUE
+                new ColorRange(ColorSpace.RGB,
+                        new Scalar( 30, 45,  105),
+                        new Scalar(60, 75, 135)
+                    )
+                )         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
-                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.75, 0.75, 0.75, -0.75))  // search central 1/4 of camera view
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
                 .setBlurSize(5)                               // Smooth the transitions between different colors in image
                 .build();
 
         AprilTagProcessor aTagP = new AprilTagProcessor.Builder().build();
+
+        ColorBlobLocatorProcessor redLocator = new ColorBlobLocatorProcessor.Builder()
+                .setTargetColorRange(//ColorRange.RED
+                        new ColorRange(ColorSpace.RGB,
+                                new Scalar( 150, 15,  10),
+                                new Scalar(190, 55, 50)
+                        )
+                )         // use a predefined red color match
+                .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
+                .setDrawContours(true)                        // Show contours on the Stream Preview
+                .setBlurSize(5)                               // Smooth the transitions between different colors in image
+                .build();
+
+        ColorBlobLocatorProcessor yellowLocator = new ColorBlobLocatorProcessor.Builder()
+                .setTargetColorRange(//ColorRange.YELLOW
+                        new ColorRange(ColorSpace.RGB,
+                                new Scalar( 195, 135,  0),
+                                new Scalar(235, 175, 40)
+                        )
+                )
+                .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
+                .setDrawContours(true)                        // Show contours on the Stream Preview
+                .setBlurSize(5)                               // Smooth the transitions between different colors in image
+                .build();
 
 
         /*
@@ -177,13 +217,14 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
         VisionPortal portal = new VisionPortal.Builder()
-                .addProcessors(blueLocator, aTagP)
-                .setCameraResolution(new Size(1280, 720))
+                .addProcessors(blueLocator, aTagP, redLocator, yellowLocator)
+                .setCameraResolution(new Size(1600, 896))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
         telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
+
 
 
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
@@ -196,17 +237,56 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
             if(gamepad1.a){
                 portal.setProcessorEnabled(aTagP, true);
                 portal.setProcessorEnabled(blueLocator, false);
+                portal.setProcessorEnabled(redLocator, false);
+                portal.setProcessorEnabled(yellowLocator, false);
             }
             else if(gamepad1.b){
                 portal.setProcessorEnabled(aTagP, false);
+                portal.setProcessorEnabled(blueLocator, false);
+                portal.setProcessorEnabled(redLocator, true);
+                portal.setProcessorEnabled(yellowLocator, false);
+
+                currentColor = "red";
+
+
+            }
+            else if (gamepad1.x){
+                portal.setProcessorEnabled(aTagP, false);
                 portal.setProcessorEnabled(blueLocator, true);
+                portal.setProcessorEnabled(redLocator, false);
+                portal.setProcessorEnabled(yellowLocator, false);
+
+                currentColor = "blue";
+
+
+            }
+            else if (gamepad1.y){
+                portal.setProcessorEnabled(aTagP, false);
+                portal.setProcessorEnabled(blueLocator, false);
+                portal.setProcessorEnabled(redLocator, false);
+                portal.setProcessorEnabled(yellowLocator, true);
+
+                currentColor = "yellow";
+
+                //blobs = yellowLocator.getBlobs();
             }
 
+            if (currentColor == "red"){
+                blobs = redLocator.getBlobs();
+            }
+            else if (currentColor == "blue"){
+                blobs = blueLocator.getBlobs();
+            }
+            else if (currentColor == "yellow"){
+                blobs = yellowLocator.getBlobs();
+            }
 
             telemetry.addData("preview on/off", "... Camera Stream\n");
 
             // Read the current list
-            List<ColorBlobLocatorProcessor.Blob> blobs = blueLocator.getBlobs();
+
+
+
 
             ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.DESCENDING, blobs);
 
@@ -232,12 +312,13 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                 // Look to see if we have size info on this tag.
               //  if (detection.metadata != null) {
                     //  Check to see if we want to track towards this tag.
-                    if ((desiredTagID < 0) || (detection.id == desiredTagID)) {
+                    if (/*(desiredTagID < 0) ||*/ (detection.id == desiredTagID)) {
                         // Yes, we want to use this tag.
                         targetFound = true;
                         detectedTag = detection;
                         break;  // don't look any further.
                     } else {
+                        targetFound = false;
                         // This tag is in the library, but we do not want to track it right now.
 //                    telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
                     }
@@ -297,13 +378,16 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                 ColorBlobLocatorProcessor.Blob BigBlob = blobs.get(0);
 
                 cx = BigBlob.getBoxFit().center.x;
+                PIDActive = true;
 
             }
             else if(targetFound){
                 cx = detectedTag.center.x;
+                PIDActive = true;
             }
             else{
                 cx = 1280/2;
+                PIDActive = false;
             }
 
 
@@ -333,6 +417,10 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
             telemetry.addData("pdcontroller",controller.calculate(cXerror,0));
             telemetry.addData("LR", LR);
             telemetry.addData("aprilTagDetected", targetFound);
+
+            telemetry.addData("PIDActive?", PIDActive);
+
+
             if(targetFound == true){
             telemetry.addData("aprilTagCenter", detectedTag.center.x);
             }

@@ -120,7 +120,7 @@ public class Optimus_TeleOp extends LinearOpMode{
 //            }
 
             if(GripperState){
-                sG.setPosition(.37);
+                sG.setPosition(.3);
             }
             else if(GripperState == false){
                 sG.setPosition(.6);
@@ -132,18 +132,18 @@ public class Optimus_TeleOp extends LinearOpMode{
 //            boolean dpr2 = gamepad2.dpad_right;z
 
             if(ArmPosition > 3650){
-                wristPosition = 0.85;
+                wristPosition = .3;
             }
             else {
                 if (lB2) {
-                    wristPosition = 1;
+                    wristPosition = .5;
                 }
             else if (lB2){
-                wristPosition = 0;
+                wristPosition = .5;
 
             }
                 else if (rB2) {
-                    wristPosition = .7;
+                    wristPosition = .3;
                 } else if (rB2 == false && lB2 == false) {
 
                 }
