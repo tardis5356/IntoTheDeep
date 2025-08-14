@@ -27,6 +27,7 @@ import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -59,9 +60,13 @@ import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
 @TeleOp(name = "Concept: Vision Color-Sensor", group = "Concept")
 public class ConceptVisionColorSensor extends LinearOpMode
 {
+    Servo LED;
+
     @Override
     public void runOpMode()
     {
+        LED = hardwareMap.get(Servo.class, "LED");
+
         /* Build a "Color Sensor" vision processor based on the PredominantColorProcessor class.
          *
          * - Focus the color sensor by defining a RegionOfInterest (ROI) which you want to inspect.
@@ -84,7 +89,7 @@ public class ConceptVisionColorSensor extends LinearOpMode
          *     eg: Green may be reported as YELLOW, as this may be the "closest" match.
          */
         PredominantColorProcessor colorSensor = new PredominantColorProcessor.Builder()
-                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.1, 0.1, 0.1, -0.1))
+                .setRoi(ImageRegion.asUnityCenterCoordinates(-0.01, 0.02, 0.01, -0.02))
                 .setSwatches(
                         PredominantColorProcessor.Swatch.RED,
                         PredominantColorProcessor.Swatch.BLUE,
@@ -116,6 +121,8 @@ public class ConceptVisionColorSensor extends LinearOpMode
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
+            LED.setPosition(.5);
+
             telemetry.addData("DS preview on/off", "3 dots, Camera Stream\n");
 
             // Request the most recent color analysis.
@@ -132,5 +139,6 @@ public class ConceptVisionColorSensor extends LinearOpMode
 
             sleep(20);
         }
+
     }
 }

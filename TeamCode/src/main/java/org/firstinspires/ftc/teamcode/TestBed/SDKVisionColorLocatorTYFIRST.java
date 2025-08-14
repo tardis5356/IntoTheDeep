@@ -31,6 +31,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -76,6 +77,7 @@ import java.util.List;
 public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 {
 
+
     int desiredTagID;
 
     public String currentColor = "blue";
@@ -86,14 +88,24 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
     DcMotor mBL, mBR, mFL, mFR;
 
+    Servo LED;
+
+    double color = .5;
+
     double FB, LR, Rotation;
 
     PDController controller;
-    public double p = .001, d = .0003;
+    public double p = .001, d = .0005;
 
     boolean targetFound = false;
 
     AprilTagDetection detectedTag;
+
+    int Rr=140, Rg=34, Rb=22;
+    int Br=39, Bg=50, Bb=110;
+    int Yr=175, Yg=125, Yb=49;
+
+    int error=25;
 
     //private OpenCvCamera controlHubCam;
 
@@ -116,8 +128,9 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        controller = new PDController(p, d);
+        LED = hardwareMap.get(Servo.class,"LED");
 
+        controller = new PDController(p, d);
 
         /* Build a "Color Locator" vision processor based on the ColorBlobLocatorProcessor class.
          * - Specify the color range you are looking for.  You can use a predefined color, or create you own color range
@@ -164,43 +177,46 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
         ColorBlobLocatorProcessor blueLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(//ColorRange.BLUE
-                new ColorRange(ColorSpace.RGB,
-                        new Scalar( 30, 45,  105),
-                        new Scalar(60, 75, 135)
-                    )
+                new ColorRange(
+                    ColorSpace.YCrCb,
+                        new Scalar( 16,   0, 145),
+                        new Scalar(255, 130, 255))
                 )         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
-                .setBlurSize(5)                               // Smooth the transitions between different colors in image
+                .setBlurSize(20)                               // Smooth the transitions between different colors in image
+                .setErodeSize(10)
                 .build();
 
         AprilTagProcessor aTagP = new AprilTagProcessor.Builder().build();
 
         ColorBlobLocatorProcessor redLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(//ColorRange.RED
-                        new ColorRange(ColorSpace.RGB,
-                                new Scalar( 150, 15,  10),
-                                new Scalar(190, 55, 50)
+                        new ColorRange(ColorSpace.YCrCb,
+                                new Scalar( 32, 166,  0),
+                                new Scalar(255, 255, 132)
                         )
                 )         // use a predefined red color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
-                .setBlurSize(5)                               // Smooth the transitions between different colors in image
-                .build();
+                .setBlurSize(20)                               // Smooth the transitions between different colors in image
+                                        .setErodeSize(10)                               // Smooth the transitions between different colors in image
+                                        .build();
 
         ColorBlobLocatorProcessor yellowLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(//ColorRange.YELLOW
-                        new ColorRange(ColorSpace.RGB,
-                                new Scalar( 195, 135,  0),
-                                new Scalar(235, 175, 40)
+                        new ColorRange(ColorSpace.YCrCb,
+                                new Scalar(100 , 128,   0),
+                                new Scalar(255, 180, 100)
                         )
                 )
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
-                .setBlurSize(5)                               // Smooth the transitions between different colors in image
+                .setBlurSize(20)                               // Smooth the transitions between different colors in image
+                .setErodeSize(10)                               // Smooth the transitions between different colors in image
                 .build();
 
 
@@ -230,6 +246,8 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
+
+            LED.setPosition(color);
 
             //portal.stopStreaming();
             //portal.resumeStreaming();
@@ -271,6 +289,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                 //blobs = yellowLocator.getBlobs();
             }
 
+            ColorBlobLocatorProcessor.Util.filterByArea(1000, 400000, blobs);// filter out very small blobs.
             if (currentColor == "red"){
                 blobs = redLocator.getBlobs();
             }
@@ -289,6 +308,8 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
 
             ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.DESCENDING, blobs);
+
+
 
             List<AprilTagDetection>currentDetections = aTagP.getDetections();
 
@@ -351,7 +372,8 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
              *   A blob's Aspect ratio is the ratio of boxFit long side to short side.
              *   A perfect Square has an aspect ratio of 1.  All others are > 1
              */
-            ColorBlobLocatorProcessor.Util.filterByArea(250, 20000, blobs);  // filter out very small blobs.
+
+            //ColorBlobLocatorProcessor.Util.filterByAspectRatio(2,2.6,blobs);
 
             /*
              * The list of Blobs can be sorted using the same Blob attributes as listed above.
@@ -394,12 +416,12 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
             double cXerror = (cx-640);
 
-            if (Math.abs(cXerror) > 100 && Math.abs(cXerror) < 400) {
+            if (Math.abs(cXerror) > 60) {
                 //Rotation = (cX - 640) * 0.0005;
-                LR = controller.calculate(cXerror,0)/2;
+                //LR = controller.calculate(cXerror,0)/2;
             }
-            else if (Math.abs(cXerror)<=100 || gamepad1.start){
-                LR = 0;
+            else if (Math.abs(cXerror)<=60 || gamepad1.start){
+                //LR = controller.calculate(cXerror,0)/2;
             }
 
             double mFLPower = FB + LR + Rotation;
@@ -430,4 +452,20 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
             sleep(50);
         }
     }
+
+//    public double getScore(ArrayList a){
+//        int d = 0;
+//        if (d <= a.size()){
+//            double score =
+//        }
+//        return score;
+//
+//    }
+
+    public void sortByScore(List a){
+
+
+    }
+
 }
+
