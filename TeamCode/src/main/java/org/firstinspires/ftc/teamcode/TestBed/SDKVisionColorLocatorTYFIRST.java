@@ -23,8 +23,6 @@ package org.firstinspires.ftc.teamcode.TestBed;
 
 import android.util.Size;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -45,9 +43,9 @@ import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
-import org.openftc.easyopencv.OpenCvCamera;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -107,9 +105,39 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
     int error=25;
 
+    static int imgHeight = 896;
+    static int imgWidth = 1600;
+
     //private OpenCvCamera controlHubCam;
 
     List<ColorBlobLocatorProcessor.Blob> blobs = new ArrayList<>();
+
+    public static double calculateScore(ColorBlobLocatorProcessor.Blob c1)
+    {
+                double score = c1.getDensity()*.5 +(.5*(c1.getContourArea()/( 250000)));
+
+                return score;
+            }
+
+
+
+    public static void sortByScore(SortOrder sortOrder, List<ColorBlobLocatorProcessor.Blob> blobs)
+    {
+        blobs.sort(new Comparator<ColorBlobLocatorProcessor.Blob>()
+        {
+            public int compare(ColorBlobLocatorProcessor.Blob c1, ColorBlobLocatorProcessor.Blob c2)
+            {
+                int tmp = (int)Math.signum(calculateScore(c2) - calculateScore(c1));
+
+                if (sortOrder == SortOrder.ASCENDING)
+                {
+                    tmp = -tmp;
+                }
+
+                return tmp;
+            }
+        });
+    }
 
     @Override
     public void runOpMode()
@@ -234,7 +262,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
          */
         VisionPortal portal = new VisionPortal.Builder()
                 .addProcessors(blueLocator, aTagP, redLocator, yellowLocator)
-                .setCameraResolution(new Size(1600, 896))
+                .setCameraResolution(new Size(imgWidth, imgHeight))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
@@ -307,7 +335,7 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
 
 
-            ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.DESCENDING, blobs);
+            SDKVisionColorLocatorTYFIRST.sortByScore(SortOrder.DESCENDING, blobs);
 
 
 
@@ -391,16 +419,17 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
             // Display the size (area) and center location for each Blob.
             for(ColorBlobLocatorProcessor.Blob b : blobs)
             {
+
                 RotatedRect boxFit = b.getBoxFit();
-                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
-                          b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
+                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d) %.3f",
+                          b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y, calculateScore(b)));
             }
 
             if (!blobs.isEmpty()){
                 ColorBlobLocatorProcessor.Blob BigBlob = blobs.get(0);
 
                 cx = BigBlob.getBoxFit().center.x;
-                PIDActive = true;
+               PIDActive = true;
 
             }
             else if(targetFound){
@@ -462,10 +491,10 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 //
 //    }
 
-    public void sortByScore(List a){
-
-
-    }
+//    public void sortByScore(List a){
+//
+//
+//    }
 
 }
 
