@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -41,8 +42,12 @@ import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
+import org.opencv.core.Core;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+import org.firstinspires.ftc.vision.VisionProcessor;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -118,6 +123,44 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
 
                 return score;
             }
+
+    public  class CannyEdgeProcessor implements VisionProcessor {
+        private Mat gray = new Mat();
+        private Mat edges = new Mat();
+        private Mat edgesColor = new Mat();
+        private Mat overlay = new Mat();
+
+        public void init(int width, int height, CameraCalibration calibration) {
+            // Nothing special to initialize here
+
+        }
+
+        @Override
+        public Object processFrame(Mat frame, long captureTimeNanos) {
+            // Convert to grayscale
+            Imgproc.cvtColor(frame, gray, Imgproc.COLOR_RGBA2GRAY);
+
+            // Run Canny edge detection
+            Imgproc.Canny(gray, edges, 100, 200);
+
+            // Convert edges to 4-channel RGBA
+            Imgproc.cvtColor(edges, edgesColor, Imgproc.COLOR_GRAY2RGBA);
+
+            // ✅ Overlay edges (white edges) onto original frame
+            Core.addWeighted(frame, 1.0, edgesColor, 1.0, 0.0, frame);
+
+            return null;  // no object result, just visual modification
+        }
+
+        @Override
+        public void onDrawFrame(android.graphics.Canvas canvas,
+                                int onscreenWidth, int onscreenHeight,
+                                float scaleBmpPxToCanvasPx,
+                                float scaleCanvasDensity,
+                                Object userContext) {
+            // Nothing needed here unless you want extra debug drawings
+        }
+    }
 
 
 
@@ -230,8 +273,8 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
                 .setBlurSize(20)                               // Smooth the transitions between different colors in image
-                                        .setErodeSize(10)                               // Smooth the transitions between different colors in image
-                                        .build();
+                .setErodeSize(10)                               // Smooth the transitions between different colors in image
+                .build();
 
         ColorBlobLocatorProcessor yellowLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(//ColorRange.YELLOW
@@ -261,13 +304,14 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
         VisionPortal portal = new VisionPortal.Builder()
-                .addProcessors(blueLocator, aTagP, redLocator, yellowLocator)
+                .addProcessors(blueLocator, aTagP, redLocator, yellowLocator, new CannyEdgeProcessor())
                 .setCameraResolution(new Size(imgWidth, imgHeight))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
+
         telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
-        telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
+
 
 
 
@@ -313,8 +357,12 @@ public class SDKVisionColorLocatorTYFIRST extends LinearOpMode
                 portal.setProcessorEnabled(yellowLocator, true);
 
                 currentColor = "yellow";
-
-                //blobs = yellowLocator.getBlobs();
+            }
+            else if (gamepad1.dpad_down){
+                portal.setProcessorEnabled(new CannyEdgeProcessor(), false);
+            }
+            else if (gamepad1.dpad_up){
+                portal.setProcessorEnabled(new CannyEdgeProcessor(), true);
             }
 
             ColorBlobLocatorProcessor.Util.filterByArea(1000, 400000, blobs);// filter out very small blobs.
